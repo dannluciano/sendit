@@ -1,10 +1,24 @@
 {% extends 'sistema/base.html' %}
+{% load staticfiles %}
+
 {% block content %}
-<title>SendIT</title> 
-<form action="" method="post">
+<title>SendIT</title>
+<form id="code" action="">
   {% csrf_token %}
-    <div id="editor">Digite Aqui</div>
-  <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-  <button>Enviar</button>
+  <div id="editor">
+function foo(items) {
+  var i;
+  for (i = 0; i &lt; items.length; i++) {
+    alert("Ace Rocks " + items[i]);
+  }
+}</div>
+  <p>
+    <button class="button">Enviar</button>
+  </p>
 </form>
 {% endblock content %}
+
+{% block js %}
+  <script src="{% static 'js/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+  <script src="{% static 'js/app.js' %}" type="text/javascript" charset="utf-8"></script>
+{% endblock js %}

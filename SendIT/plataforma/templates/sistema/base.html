@@ -7,11 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">   
+  <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-  <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
-  <script src="{% static 'js/clipboard.min.js' %}"></script>
-  <script src="{% static 'js/bulma.js' %}"></script>
 </head>
 <body>
   <nav class="nav menu">
@@ -49,15 +46,10 @@
   </nav>
   {% block content %}
   {% endblock content %}
-  <script src="{% static 'js/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/github");
-    var textarea = $('textarea[name="editor"]');
-    editor.getSession().on("change", function () {
-        textarea.val(editor.getSession().getValue());
-    });
-    editor.session.setMode("ace/mode/javascript");
-  </script>
+  <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
+  <script src="{% static 'js/clipboard.min.js' %}"></script>
+  <script src="{% static 'js/bulma.js' %}"></script>
+  {% block js %}
+  {% endblock js %}
 </body>
 </html>

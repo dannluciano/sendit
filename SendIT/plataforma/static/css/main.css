@@ -1,48 +1,67 @@
-html{
+html {
   margin: 0;
   font-size: 16px;
   overflow-x: hidden;
 }
-.menu{
+
+.menu {
   background-color: #f95738;
 }
-.menu a, p{
+
+.menu a,
+p {
   color: #4A4A4A;
 }
-#nome-projeto{
+
+#nome-projeto {
   font-family: 'Gochi Hand', cursive;
   font-size: 1.8rem;
   color: #f4d35e;
 }
-#nome-projeto span{
+
+#nome-projeto span {
   color: #faf0ca;
 }
-.nav-menu .nav-item{
+
+.nav-menu .nav-item {
   color: #faf0ca;
 }
-.nav-menu .nav-item:hover{
+
+.nav-menu .nav-item:hover {
   color: #faf0ca;
 }
-.nav-menu{
+
+.nav-menu {
   background-color: #f95738;
 }
-.icon{
-  color:#faf0ca; 
+
+.icon {
+  color: #faf0ca;
 }
-.nav-toggle{
+
+.nav-toggle {
   background-color: #f95738;
 }
-.nav-toggle.is-active span{
+
+.nav-toggle.is-active span {
   background-color: #faf0ca;
 }
-.nav-toggle:hover{
+
+.nav-toggle:hover {
   background-color: #f95738;
 }
-.nav-toggle span{
+
+.nav-toggle span {
   background-color: #faf0ca;
 }
-#editor { 
+
+#code {
+  top: -20px;
+  position: relative;
+}
+
+#editor {
   width: auto;
-  height: 350px;
+  height: 49vw;
   margin-top: 20px;
 }
