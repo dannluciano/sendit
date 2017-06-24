@@ -53,6 +53,10 @@
   <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/github");
+    var textarea = $('textarea[name="editor"]');
+    editor.getSession().on("change", function () {
+        textarea.val(editor.getSession().getValue());
+    });
     editor.session.setMode("ace/mode/javascript");
   </script>
 </body>

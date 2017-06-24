@@ -1,14 +1,10 @@
 {% extends 'sistema/base.html' %}
 {% block content %}
 <title>SendIT</title> 
-<form action="">
+<form action="" method="post">
   {% csrf_token %}
-<div id="editor">function foo(items) {
-var i;
-for (i = 0; i &lt; items.length; i++) {
-    alert("Ace Rocks " + items[i]);
-}
-  </div>
-<button>Enviar</button>
+    <div id="editor">Digite Aqui</div>
+  <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
+  <button>Enviar</button>
 </form>
 {% endblock content %}

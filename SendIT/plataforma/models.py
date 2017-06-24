@@ -4,7 +4,7 @@ from django.db import models
 class Questoes(models.Model):
   titulo = models.CharField(max_length=255)
   enunciado = models.TextField()
-  entrada = models.TextField()
+  entrada = models.TextField(blank=True)
   saida = models.TextField()
 
   def publish(self):
