@@ -8,4 +8,11 @@ jQuery(document)
     editor.getSession()
       .setMode('ace/mode/javascript')
     editor.setFontSize(20)
+
+    var textarea = $('textarea[name="editor"]')
+    editor.getSession()
+      .on('change', () => {
+        textarea.val(editor.getSession()
+          .getValue())
+      })
   })
