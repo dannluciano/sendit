@@ -16,7 +16,7 @@ def criar_submissao(request, questao_id):
     questao = get_object_or_404(Questoes, pk=questao_id)
     codigo = request.POST['editor']
 
-    sub = Submissoes(questao, codigo)
-    sub.publish()
+    sub = Submissoes(questao=questao, codigo=codigo)
+    sub.save()
 
     return render(request, 'sistema/resultado.html', {'codigo': codigo})
