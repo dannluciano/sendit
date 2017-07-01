@@ -3,23 +3,32 @@
 
 {% block content %}
 <title>SendIT</title>
-<form id="code" action="/questoes/1/submeter/" method="post">
-  {% csrf_token %}
-  <div id="editor">
-function foo(items) {
-  var i;
-  for (i = 0; i &lt; items.length; i++) {
-    alert("Ace Rocks " + items[i]);
-  }
-}</div>
-  <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-  <p>
-    <button class="button">Enviar</button>
-  </p>
-</form>
+<section class="section">
+  {% for questao in questoes %}
+    <div class="card questoes">
+      <header class="card-header">
+        <p class="card-header-title">
+          <a href="/questao/{{questao.id}}" class="links-questao">
+            {{questao.titulo}}
+          </a>
+        </p>
+        <p class="card-header-title tipo-questao">
+          Tipo:
+        </p>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          {{questao.enunciado}}
+          <br>
+          <small>Tags: {{questao.tags}}</small>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <p class="card-footer-item">Acertos: </p>
+        <p class="card-footer-item">Erros: </p>
+        <p class="card-footer-item">Scores: </p>
+      </footer>
+    </div>
+  {% endfor %}
+</section>
 {% endblock content %}
-
-{% block js %}
-  <script src="{% static 'js/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'js/app.js' %}" type="text/javascript" charset="utf-8"></script>
-{% endblock js %}

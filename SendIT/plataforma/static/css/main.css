@@ -4,7 +4,7 @@ html {
   overflow-x: hidden;
 }
 
-.menu {
+.menu-cima {
   background-color: #f95738;
 }
 
@@ -23,6 +23,10 @@ p {
   color: #faf0ca;
 }
 
+.nome-projeto-footer{
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.4rem;
+}
 .nav-menu .nav-item {
   color: #faf0ca;
 }
@@ -54,14 +58,73 @@ p {
 .nav-toggle span {
   background-color: #faf0ca;
 }
-
-#code {
-  top: -20px;
-  position: relative;
-}
-
 #editor {
   width: auto;
-  height: 49vw;
-  margin-top: 20px;
+  height: 30vw;
+}
+.menu{
+  padding-top: 20px;
+  background-color: #595959;
+  margin-bottom: 0;
+  min-height: 90vh;
+}
+.menu p{
+  margin-left: 15px;
+  color: white; 
+}
+.menu ul li a{
+  color: white;
+}
+.menu ul li a:hover{
+  background-color: #6E6E6E;
+  color: white;
+}
+.footer{
+  background-color: black;
+  margin-top: -24px;
+}
+.footer p, strong{
+  color: white;
+}
+.footer a{
+  color: white;
+  text-decoration: underline;
+}
+.questoes{
+  margin-bottom: 30px;
+}
+.links-questao{
+  color: #f95738;
+}
+.tipo-questao{
+  text-align: right;
+  border-left: 1px solid #D8D8D8;
+  margin-right: 1px;
+}
+.entrada-saida{
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
+  border-left: 1px solid #d8d8d8;
+}
+.saida{
+  border-left: 1px solid #d8d8d8;
+}
+.editor-ace{
+  border-left: 1px solid #d8d8d8;
+}
+.play-executar{
+  color: #f95738;
+}
+.botao-executar{
+  border-color: #f95738;
+}
+.botao-executar:hover{
+  border-color: #f95738;
+}
+.img-usuario figure{
+  margin:0 auto;
+}
+.img-usuario p{
+  margin-left: 0;
+  text-align: center;
 }

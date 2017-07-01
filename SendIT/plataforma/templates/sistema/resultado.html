@@ -1,7 +1,11 @@
 {% extends 'sistema/base.html' %}
 {% block content %}
-<title>SendIT</title> 
-<p>Você enviou o código:</p>
-<pre><code>{{codigo}}</code></pre>
-</form>
+<title>SendIT</title>
+<section class="section">
+  {% for questao in questao %} 
+  <h1 class="title">{{questao.titulo}}</h1>
+  {% endfor %}
+  <h2 class="subtitle">Você enviou o código:</h2>
+  <pre><code>{{codigo}}</code></pre>
+</section>
 {% endblock content %}

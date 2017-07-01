@@ -7,6 +7,7 @@ class Questoes(models.Model):
     enunciado = models.TextField()
     entrada = models.TextField(blank=True)
     saida = models.TextField()
+    tags = models.CharField(max_length=255, default="laços")
 
     def publish(self):
         self.save

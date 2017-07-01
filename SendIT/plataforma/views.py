@@ -4,19 +4,20 @@ from .models import Questoes, Submissoes
 
 
 def index(request):
-    if request.POST:
-        codigo = request.POST['editor']
-        return render(request, 'sistema/resultado.html', {'codigo': codigo})
+    questoes = Questoes.objects.all()
+    return render(request, 'sistema/index.html', {'questoes':questoes})
 
-    return render(request, 'sistema/index.html')
-
+def verQuestao(request, questao_id):
+  questaoEscolhida = Questoes.objects.filter(id=questao_id)
+  return render(request, 'sistema/ver-questao.html', {'questao': questaoEscolhida})
 
 @require_POST
 def criar_submissao(request, questao_id):
     questao = get_object_or_404(Questoes, pk=questao_id)
+    questaoEnviada = Questoes.objects.all().filter(id=questao_id)
     codigo = request.POST['editor']
 
     sub = Submissoes(questao=questao, codigo=codigo)
     sub.save()
 
-    return render(request, 'sistema/resultado.html', {'codigo': codigo})
+    return render(request, 'sistema/resultado.html', {'codigo': codigo, 'questao':questaoEnviada})
