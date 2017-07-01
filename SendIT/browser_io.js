@@ -8,33 +8,34 @@ function prompt (msg) {
   process.stdin.resume()
   var buffer = Buffer.alloc(1)
   var result = ''
+  var bytesRead
 
-  do {
+  while (true) {
+    bytesRead = 0
     try {
-      fs.readSync(process.stdin.fd, buffer, 0, 1, null)
+      bytesRead = fs.readSync(process.stdin.fd, buffer, 0, 1)
     } catch (e) {
       if (e.code === 'EAGAIN') {
-        // 'resource temporarily unavailable'
-        // Happens on OS X 10.8.3 (not Windows 7!), if there's no
-        // stdin input - typically when invoking a script without any
-        // input (for interactive stdin input).
-        // If you were to just continue, you'd create a tight loop.
         console.error('ERROR: interactive stdin input not supported.')
         process.exit(1)
       } else if (e.code === 'EOF') {
-        // Happens on Windows 7, but not OS X 10.8.3:
-        // simply signals the end of *piped* stdin input.
         break
       }
       throw e
     }
-    var char = buffer.toString('utf8')
-    if (char !== '\r' && char !== '\n') {
-      result += char
-    } else {
+    if (bytesRead === 0) {
       break
     }
-  } while (char !== '\n')
+
+    var char = buffer.toString('utf8')
+    if (char === '\r') {
+      continue
+    } else if (char === '\n') {
+      break
+    } else {
+      result += char
+    }
+  }
 
   process.stdin.pause()
   return result
