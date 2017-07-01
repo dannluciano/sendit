@@ -1,0 +1,24 @@
+[
+  {
+  "model": "plataforma.questoes",
+  "pk": 1,
+  "fields": {
+    "titulo": "Numeros de 1 at\u00e9 10",
+    "enunciado": "Escreva um algoritmo que imprima os n\u00fameros de 1 at\u00e9 10",
+    "entrada": "",
+    "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "tags": "la\u00e7os"
+  }
+},
+{
+  "model": "plataforma.questoes",
+  "pk": 2,
+  "fields": {
+    "titulo": "Numeros ao Quadrado",
+    "enunciado": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima esses o quadrado desses n\u00fameros.",
+    "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
+    "tags": "la\u00e7os"
+  }
+}
+]
