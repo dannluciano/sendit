@@ -19,7 +19,15 @@ class Questoes(models.Model):
 class Submissoes(models.Model):
     questao = models.ForeignKey(Questoes)
     codigo = models.TextField()
-    status = models.TextField()
+    STATUS_CHOICES = (
+        ('Waiting',         'Esperando ser executada.'),
+        ('JSSintaxError',   'Erro de sintaxe!'),
+        ('JSRuntimeError',  'Erro em execução!'),
+        ('JSTimeoutError',  'Tempo de execução excedido!'),
+        ('DiffError',       'Saída computada diferente da saída esperada!'),
+        ('OK',              'OK'))
+    status = models.CharField(choices=STATUS_CHOICES,
+                              max_length=36, default=STATUS_CHOICES[0])
 
     def publish(self):
         self.save
@@ -32,4 +40,4 @@ class Submissoes(models.Model):
         super(Submissoes, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.questao}-submissao-{self.id}'
+        return f'Questão-{self.questao.id}-Submissão-{self.id}-{self.status}'
