@@ -25,13 +25,9 @@ class Submissoes(models.Model):
         self.save
 
     def save(self, *args, **kwargs):
-        try:
-            run_submission(self.codigo,
-                           self.questao.entrada,
-                           self.questao.saida)
-            self.status = 'OK'
-        except Exception as error:
-            self.status = error
+        self.status = run_submission(self.codigo,
+                                     self.questao.entrada,
+                                     self.questao.saida)
 
         super(Submissoes, self).save(*args, **kwargs)
 

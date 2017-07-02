@@ -1,6 +1,5 @@
 from django.test import TestCase
 from .businnes import run_submission
-from .businnes import JSSintaxError, JSRuntimeError, JSTimeoutError, DiffError
 
 
 class BussinessTestCase(TestCase):
@@ -8,25 +7,29 @@ class BussinessTestCase(TestCase):
         code = """console.log('Hello World!')"""
         expected_input = ''
         expected_output = 'Hello World!\n'
-        self.assertTrue(run_submission(code, expected_input, expected_output))
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
 
     def test_run_ok_submission_with_blank_spaces(self):
         code = """console.log(' Hello World! ')"""
         expected_input = ''
         expected_output = 'Hello World!\n'
-        self.assertTrue(run_submission(code, expected_input, expected_output))
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
 
     def test_run_ok_submission_with_blank_lines(self):
         code = """console.log("\\nHello World!\\n")"""
         expected_input = ''
         expected_output = 'Hello World!'
-        self.assertTrue(run_submission(code, expected_input, expected_output))
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
 
     def test_run_ok_submission_with_alert(self):
         code = """alert('Hello World!')"""
         expected_input = ''
         expected_output = 'Hello World!\n'
-        self.assertTrue(run_submission(code, expected_input, expected_output))
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
 
     def test_run_ok_submission_with_prompt(self):
         code = """
@@ -48,7 +51,8 @@ for (let i = 0; i < 5; i++) {
 64
 100
 """
-        self.assertTrue(run_submission(code, expected_input, expected_output))
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
 
     def test_run_ok_submission_with_confirm_true(self):
         code = """
@@ -81,7 +85,8 @@ true
 true
 true
 """
-        self.assertTrue(run_submission(code, expected_input, expected_output))
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
 
     def test_run_ok_submission_with_confirm_false(self):
         code = """
@@ -113,29 +118,29 @@ false
 false
 false
 """
-        self.assertTrue(run_submission(code, expected_input, expected_output))
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
 
     def test_run_submission_with_prompt_loop(self):
-        with self.assertRaises(JSRuntimeError):
-            code = """prompt()"""
-            expected_input = ''
-            expected_output = 'Hello World'
-            run_submission(code, expected_input, expected_output)
+        code = """prompt()"""
+        expected_input = ''
+        expected_output = 'Hello World'
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'JSRuntimeError')
 
     def test_run_submission_with_sintax_error(self):
-        with self.assertRaises(JSSintaxError):
-            code = """
+        code = """
 if 1 < 2 {
-    console.log('Hello World!')
+console.log('Hello World!')
 }
 """
-            expected_input = ''
-            expected_output = ''
-            run_submission(code, expected_input, expected_output)
+        expected_input = ''
+        expected_output = ''
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'JSSintaxError')
 
     def test_run_submission_with_runtime_error(self):
-        with self.assertRaises(JSRuntimeError):
-            code = """
+        code = """
 function fat(n) {
     if (n < 2) {
         return 1
@@ -144,29 +149,29 @@ function fat(n) {
 }
 fat(65536)
 """
-            expected_input = ''
-            expected_output = ''
-            run_submission(code, expected_input, expected_output)
+        expected_input = ''
+        expected_output = ''
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'JSRuntimeError')
 
     def test_run_submission_with_timeout_error(self):
-        with self.assertRaises(JSTimeoutError):
-            code = """
+        code = """
 while (true) {
 }
 """
-            expected_input = ''
-            expected_output = ''
-            run_submission(code, expected_input, expected_output)
+        expected_input = ''
+        expected_output = ''
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'JSTimeoutError')
 
     def test_run_submission_with_diff_error(self):
-        with self.assertRaises(DiffError):
-            code = """
+        code = """
 for (let i = 1; i <= 10; i++) {
     console.log('i')
 }
 """
-            expected_input = ''
-            expected_output = """
+        expected_input = ''
+        expected_output = """
 1
 2
 3
@@ -178,4 +183,5 @@ for (let i = 1; i <= 10; i++) {
 9
 10
 """
-            run_submission(code, expected_input, expected_output)
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'DiffError')

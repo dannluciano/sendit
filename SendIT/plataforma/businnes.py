@@ -5,75 +5,53 @@ import os
 import shlex
 import time
 import difflib
-
-
-class JSSintaxError(Exception):
-    pass
-
-
-class JSRuntimeError(Exception):
-    pass
-
-
-class JSTimeoutError(Exception):
-    pass
-
-
-class JSNoInputError(Exception):
-    pass
-
-
-class DiffError(Exception):
-    pass
-
+from django.conf import settings
 
 L = logging.getLogger('SubmissionRunner')
-L.addHandler(logging.FileHandler('submission_runner.log'))
-L.setLevel(logging.INFO)
+if settings.DEBUG:
+    L.addHandler(logging.FileHandler('submission_runner.log'))
+    L.setLevel(logging.DEBUG)
+else:
+    L.addHandler(logging.RotatingFileHandler(
+        'submission_runner.log',
+        maxBytes=1024 * 1024))
 
 with open('browser_io.js') as browser_io_file:
     browser_io_code = browser_io_file.read()
 
 
+def create_temp_file(content, temp_dir='', prefix='', suffix='.txt'):
+    file = tempfile.NamedTemporaryFile(
+        'w+', dir=temp_dir, delete=False, prefix=prefix, suffix=suffix)
+    file.write(content)
+    file.seek(0)
+    L.info(f'Created Temporary File: {file.name}')
+    L.debug(file.read())
+    return file
+
+
 def run_submission(code='', expected_input='', expected_output=''):
     L.info('SubmissionRunner Started...')
+    result = 'OK'
     with tempfile.TemporaryDirectory() as tmp_dir:
-        L.info(f'Created Temporary Dir: {tmp_dir}')
-
         os.chdir(tmp_dir)
         pwd = os.getcwd()
-        L.info(f'Changed Working Dir: {pwd}')
+        L.info(f'Created Temporary Changed Working Dir: {pwd}')
 
-        code = f"""
-        {browser_io_code}
-        {code}
-        """
+        fullcode = f"""{browser_io_code}{code}"""
 
-        code_file = tempfile.NamedTemporaryFile(
-            'w+', dir=tmp_dir, delete=False, prefix='code_', suffix='.js')
-        code_file.write(code)
-        code_file.seek(0)
-        L.info(f'Created Temporary File: {code_file.name}')
-        L.debug(code_file.read())
+        code_file = create_temp_file(fullcode, tmp_dir, 'code_', '.js')
 
-        input_file = tempfile.NamedTemporaryFile(
-            'w+', dir=tmp_dir, delete=False, prefix='input_', suffix='.txt')
-        input_file.write(expected_input)
-        input_file.seek(0)
-        L.info(f'Created Temporary File: {input_file.name}')
-        L.debug(input_file.read())
-        input_file.seek(0)
+        input_file = create_temp_file(
+            expected_input, tmp_dir, 'input_', '.txt')
 
-        output_file = tempfile.NamedTemporaryFile(
-            'w+', dir=tmp_dir, delete=False, prefix='output_', suffix='.txt')
-        output_file.write(expected_output)
-        output_file.seek(0)
-        L.info(f'Created Temporary File: {output_file.name}')
-        L.debug(output_file.read())
+        output_file = create_temp_file(
+            expected_output, tmp_dir, 'output_', '.txt')
 
         node_command = f'node -i {code_file.name}'
 
         L.info(f'Executing Node Command: {node_command}')
+        outs = b''
         try:
             if (expected_input != ''):
                 process = subprocess.Popen(
@@ -96,34 +74,30 @@ def run_submission(code='', expected_input='', expected_output=''):
                 errs = process.stderr
 
         except subprocess.TimeoutExpired as error:
-            L.error(f'Timeout Error:')
-            raise JSTimeoutError('Timeout Error')
+            result = 'JSTimeoutError'
+            L.error('Timeout Error:')
         except subprocess.CalledProcessError as error:
             if b'SyntaxError:' in error.stderr:
-                L.error(f'SintaxError: ')
-                raise JSSintaxError('SintaxError')
+                result = 'JSSintaxError'
+                L.error('SintaxError: ')
             else:
+                result = 'JSRuntimeError'
                 L.error(f'RuntimeError: ')
-                raise JSRuntimeError('RuntimeError')
 
-        result_file = tempfile.NamedTemporaryFile(
-            'w+', dir=tmp_dir, delete=False, prefix='result_', suffix='.txt')
-        result_file.write(outs.decode('utf8'))
-        result_file.seek(0)
-        L.info(f'Created Temporary File: {result_file.name}')
-        L.debug(result_file.read())
+        result_file = create_temp_file(
+            outs.decode('utf8'), tmp_dir, 'result_', '.txt')
 
-        diff_command = f'diff -E -b -w -B {output_file.name} {result_file.name}'
-        L.info(f'Executing Diff Command: {diff_command}')
-        try:
-            process = subprocess.run(
-                shlex.split(diff_command),
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                check=True)
-        except subprocess.CalledProcessError as error:
-            L.error('Diff Error: Expected Output != Computed Output')
-            L.debug(error.stdout.decode('utf8'))
-            raise DiffError('Expected Output != Computed Output')
+        if result == 'OK':
+            diff_command = f'diff -E -b -w -B {output_file.name} {result_file.name}'
+            L.info(f'Executing Diff Command: {diff_command}')
+            try:
+                subprocess.run(
+                    shlex.split(diff_command), stdout=subprocess.PIPE, check=True)
+            except subprocess.CalledProcessError as error:
+                result = 'DiffError'
+                L.error('Diff Error: Expected Output != Computed Output')
+                L.debug(error.stdout.decode('utf8'))
 
-        L.info('-------------------------------------------------------------')
-        return True
+    os.chdir(settings.BASE_DIR)
+    L.info('-' * 80)
+    return result
