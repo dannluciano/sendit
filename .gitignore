@@ -104,3 +104,4 @@ SendIT/.vscode/settings.json
 *.sqlite3
 
 .idea/
+.DS_Store

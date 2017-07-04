@@ -31,6 +31,13 @@ class BussinessTestCase(TestCase):
         result = run_submission(code, expected_input, expected_output)
         self.assertEqual(result, 'OK')
 
+    def test_run_ok_submission_with_document_write(self):
+        code = """document.write('Hello World!')"""
+        expected_input = ''
+        expected_output = 'Hello World!\n'
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
+
     def test_run_ok_submission_with_prompt(self):
         code = """
 for (let i = 0; i < 5; i++) {

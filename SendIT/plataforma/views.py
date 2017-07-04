@@ -5,11 +5,13 @@ from .models import Questoes, Submissoes
 
 def index(request):
     questoes = Questoes.objects.all()
-    return render(request, 'sistema/index.html', {'questoes':questoes})
+    return render(request, 'sistema/index.html', {'questoes': questoes})
 
-def verQuestao(request, questao_id):
+
+def ver_questao(request, questao_id):
   questaoEscolhida = Questoes.objects.filter(id=questao_id)
   return render(request, 'sistema/ver-questao.html', {'questao': questaoEscolhida})
+
 
 @require_POST
 def criar_submissao(request, questao_id):

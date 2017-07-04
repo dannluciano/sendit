@@ -1,5 +1,11 @@
 const fs = require('fs')
 
+const document = {
+  write: function (msg) {
+    console.log(msg)
+  }
+}
+
 function alert (msg) {
   console.log(msg)
 }

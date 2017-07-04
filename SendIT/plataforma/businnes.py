@@ -53,7 +53,7 @@ def run_submission(code='', expected_input='', expected_output=''):
         L.info(f'Executing Node Command: {node_command}')
         outs = b''
         try:
-            if (expected_input != ''):
+            if expected_input != '':
                 process = subprocess.Popen(
                     shlex.split(node_command),
                     stdout=subprocess.PIPE,

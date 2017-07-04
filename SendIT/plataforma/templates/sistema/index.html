@@ -2,33 +2,53 @@
 {% load staticfiles %}
 
 {% block content %}
-<title>SendIT</title>
-<section class="section">
-  {% for questao in questoes %}
-    <div class="card questoes">
-      <header class="card-header">
-        <p class="card-header-title">
-          <a href="/questao/{{questao.id}}" class="links-questao">
-            {{questao.titulo}}
-          </a>
-        </p>
-        <p class="card-header-title tipo-questao">
-          Tipo:
-        </p>
-      </header>
-      <div class="card-content">
-        <div class="content">
-          {{questao.enunciado}}
-          <br>
-          <small>Tags: {{questao.tags}}</small>
+<div class="column is-3">
+    <aside class="menu">
+        <div class="img-usuario">
+            <figure class="image is-128x128">
+                <img src="http://bulma.io/images/placeholders/128x128.png">
+            </figure>
+            <p>{{user}}</p>
         </div>
-      </div>
-      <footer class="card-footer">
-        <p class="card-footer-item">Acertos: </p>
-        <p class="card-footer-item">Erros: </p>
-        <p class="card-footer-item">Scores: </p>
-      </footer>
-    </div>
-  {% endfor %}
-</section>
+        <p class="menu-label">
+            Level
+        </p>
+        <p class="menu-label">
+            Score
+        </p>
+        <p class="menu-label">
+            Categoria
+        </p>
+    </aside>
+</div>
+<div class="column">
+    <section class="section">
+        {% for questao in questoes %}
+        <div class="card questoes">
+            <header class="card-header">
+                <p class="card-header-title">
+                    <a href="/questao/{{questao.id}}" class="links-questao">
+                        {{questao.titulo}}
+                    </a>
+                </p>
+                <p class="card-header-title tipo-questao">
+                    Tipo:
+                </p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    {{questao.enunciado}}
+                    <br>
+                    <small>Tags: {{questao.tags}}</small>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <p class="card-footer-item">Acertos: </p>
+                <p class="card-footer-item">Erros: </p>
+                <p class="card-footer-item">Scores: </p>
+            </footer>
+        </div>
+        {% endfor %}
+    </section>
+</div>
 {% endblock content %}

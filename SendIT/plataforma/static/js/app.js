@@ -10,9 +10,17 @@ jQuery(document)
     editor.setFontSize(20)
 
     var textarea = $('textarea[name="editor"]')
+    textarea.val(editor.getSession()
+          .getValue())
+
     editor.getSession()
       .on('change', () => {
         textarea.val(editor.getSession()
           .getValue())
       })
+
+    $('#botao-executar').click((evt) => {
+        $('#code').submit()
+    })
   })
+

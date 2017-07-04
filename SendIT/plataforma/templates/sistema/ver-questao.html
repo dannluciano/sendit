@@ -3,56 +3,45 @@
 
 {% block content %}
 {% for questao in questao %}
-  <title>{{questao.titulo}}</title>
-  <section class="section">
-    <div class="columns">
-      <div class="column">
-        <h1 class="title">
-          {{questao.titulo}}
-        </h1>
-        <h2 class="subtitle">
-          {{questao.enunciado}}
-        </h2>
-        <div class="columns entrada-saida">
-          <div class="column">
-            <h2 class="subtitle">
-              Entrada: <br>
-            </h2>
-          </div>
-          <div class="column saida">
-            <h2 class="subtitle">
-              Saída: <br>
-              {{questao.saida|linebreaksbr}}
-            </h2>
-          </div>
+<div class="column">
+    <title>{{questao.titulo}}</title>
+    <section class="section">
+        <div class="columns">
+            <div class="column">
+                <h1 class="title">
+                    {{questao.titulo}}
+                </h1>
+                <h2 class="subtitle">
+                    {{questao.enunciado}}
+                </h2>
+                <div class="columns entrada-saida">
+                    <div class="column">
+                        <h2 class="subtitle">
+                            Entrada: <br>
+                        </h2>
+                    </div>
+                    <div class="column saida">
+                        <h2 class="subtitle">
+                            Saída: <br>
+                            {{questao.saida|linebreaksbr}}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column editor-ace">
+                <form id="code" action="/questoes/{{questao.id}}/submeter/" method="post">
+                    {% csrf_token %}
+                    <div id="editor">alert("Olá");</div>
+                    <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
+                </form>
+            </div>
         </div>
-      </div>
-      <div class="column editor-ace">
-      <form id="code" action="/questoes/{{questao.id}}/submeter/" method="post">
-        {% csrf_token %}  
-        <div class="columns menu-executar">
-          <div class="column is-1">
-          <button class="button is-outlined botao-executar is-medium"> 
-            <span class="icon is-medium">
-              <i class="fa fa-play play-executar"></i>
-            </span>
-          </button>
-          </div>
-        </div>
-        <div id="editor">function foo(items) {
-  var i;
-  for (i = 0; i &lt; items.length; i++) {
-    alert("Ace Rocks " + items[i]);
-  }
-}</div>
-          <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-        </form>
-      </div>
-    </div>
-  </section>
+</div>
+</section>
 {% endfor %}
 {% endblock content %}
 {% block js %}
-  <script src="{% static 'js/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'js/app.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'js/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'js/app.js' %}" type="text/javascript" charset="utf-8"></script>
 {% endblock js %}
