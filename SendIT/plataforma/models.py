@@ -1,12 +1,13 @@
 from django.db import models
 from .businnes import run_submission
+from django.contrib.auth.models import User
 
-
-class Questoes(models.Model):
+class Question(models.Model):
     titulo = models.CharField(max_length=255)
     enunciado = models.TextField()
     entrada = models.TextField(blank=True)
     saida = models.TextField()
+    scores = models.IntegerField(default=100)
     tags = models.CharField(max_length=255, default="laços")
 
     def publish(self):
@@ -16,8 +17,9 @@ class Questoes(models.Model):
         return f'{self.titulo}'
 
 
-class Submissoes(models.Model):
-    questao = models.ForeignKey(Questoes)
+class Submission(models.Model):
+    autor = models.ForeignKey(User)
+    questao = models.ForeignKey(Question)
     codigo = models.TextField()
     STATUS_CHOICES = (
         ('Waiting',         'Esperando ser executada.'),
@@ -37,7 +39,7 @@ class Submissoes(models.Model):
                                      self.questao.entrada,
                                      self.questao.saida)
 
-        super(Submissoes, self).save(*args, **kwargs)
+        super(Submission, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'Questão-{self.questao.id}-Submissão-{self.id}-{self.status}'

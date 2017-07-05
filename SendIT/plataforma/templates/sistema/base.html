@@ -13,7 +13,7 @@
 <body>
 <nav class="nav menu-cima">
     <div class="nav-left">
-        <a class="nav-item" href="/" id="nome-projeto">Send<span>IT</span></a>
+        <a class="nav-item" href="/home/" id="nome-projeto">Send<span>IT</span></a>
     </div>
     <div class="nav-center">
         <div class="nav-item menu-executar">
@@ -42,31 +42,17 @@
         <a class="nav-item" href="/admin/">
             Admin
         </a>
+        <form action="/sair/" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="sair">
+          <button class="button is-danger is-inverted botao-sair">Sair</button>
+        </form>
     </div>
 </nav>
-<div class="columns">
-
-    {% block content %}
-    {% endblock content %}
-
-</div>
-<footer class="footer">
-    <div class="container">
-        <div class="content has-text-centered">
-            <p>
-                <strong class="nome-projeto-footer">SendIT</strong> by <a href="http://jgthms.com">Nós 3</a>. The source
-                code is licensed
-                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</a>.
-            </p>
-            <p>
-                <a class="icon" href="https://github.com/jgthms/bulma">
-                    <i class="fa fa-github"></i>
-                </a>
-            </p>
-        </div>
-    </div>
-</footer>
+{% block content %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
 <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
 <script src="{% static 'js/clipboard.min.js' %}"></script>
 <script src="{% static 'js/bulma.js' %}"></script>

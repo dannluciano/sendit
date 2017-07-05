@@ -1,0 +1,73 @@
+{% extends 'sistema/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<title>SendIT</title>
+<div class="columns">
+    <div class="column is-3">
+        <aside class="menu">
+            <div class="img-usuario">
+                <figure class="image is-128x128">
+                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                </figure>
+                <p>{{user}}</p>
+            </div>
+            <p class="menu-label">
+                Level
+            </p>
+            <p class="menu-label">
+                Score
+            </p>
+            <p class="menu-label">
+                Categoria
+            </p>
+        </aside>
+    </div>
+    <div class="column">
+        <section class="section">
+            {% for questao in questoes %}
+            <div class="card questoes">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        <a href="/questao/{{questao.id}}" class="links-questao">
+                            {{questao.titulo}}
+                        </a>
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        {{questao.enunciado}}
+                        <br>
+                        <small>Tags: {{questao.tags}}</small>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <p class="card-footer-item">Acertos: </p>
+                    <p class="card-footer-item">Erros: </p>
+                    <p class="card-footer-item">Scores: {{questao.scores}}</p>
+                </footer>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+</div>
+{% endblock content %}
+{% block footer %}
+<footer class="footer">
+    <div class="container">
+        <div class="content has-text-centered">
+            <p>
+                <strong class="nome-projeto-footer">SendIT</strong> by <a href="http://jgthms.com">Nós 3</a>. The source
+                code is licensed
+                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</a>.
+            </p>
+            <p>
+                <a class="icon" href="https://github.com/jgthms/bulma">
+                    <i class="fa fa-github"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+</footer>
+{% endblock %}
