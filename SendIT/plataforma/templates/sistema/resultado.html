@@ -2,9 +2,26 @@
 {% block content %}
 <title>SendIT</title>
 <section class="section">
-  {% for questao in questao %} 
+  {% for questao in questao %}
   <h1 class="title">{{questao.titulo}}</h1>
   {% endfor %}
+  <h2 class="subtitle resultado-submissao">
+    {% ifequal status 'JSSintaxError' %}
+      Resultado da submissão: Erro de sintaxe!
+    {% endifequal %}
+    {% ifequal status 'JSRuntimeError' %}
+      Resultado da submissão: Erro em execução!
+    {% endifequal %}
+    {% ifequal status 'JSTimeoutError' %}
+      Resultado da submissão: Tempo de execução excedido!
+    {% endifequal %}
+    {% ifequal status 'DiffError' %}
+      Resultado da submissão: Saída computada diferente da saída esperada!
+    {% endifequal %}
+    {% ifequal status 'OK' %}
+      Resultado da submissão: Parabéns, você conseguiu acertar a questão!
+    {% endifequal %}
+  </h2>
   <h2 class="subtitle">Você enviou o código:</h2>
   <pre><code>{{codigo}}</code></pre>
 </section>

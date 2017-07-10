@@ -55,7 +55,7 @@ p {
 }
 #editor {
   width: auto;
-  height: 30vw;
+  height: 60vh;
 }
 .menu{
   padding-top: 20px;
@@ -201,4 +201,10 @@ p {
 .botao-sair{
   margin-top: 10px;
   margin-right: 10px;
+}
+.botao-aumentar-diminuir{
+  color: #f95738;
+}
+.resultado-submissao{
+  margin-top: 20px;
 }
