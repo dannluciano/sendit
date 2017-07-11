@@ -6,8 +6,8 @@ class Question(models.Model):
     titulo = models.CharField(max_length=255)
     enunciado = models.TextField()
     entrada = models.TextField(blank=True)
-    saida = models.TextField()
-    scores = models.IntegerField(default=100)
+    saida = models.TextField(blank=True)
+    xp = models.IntegerField(default=100)
     tags = models.CharField(max_length=255, default="laços")
 
     def publish(self):
@@ -16,6 +16,13 @@ class Question(models.Model):
     def __str__(self):
         return f'{self.titulo}'
 
+
+
+class CaseTest(models.Model):
+    questao = models.ForeignKey(Question)
+    entrada = models.TextField(blank=True)
+    saida = models.TextField(blank=True)
+ 
 
 class Submission(models.Model):
     autor = models.ForeignKey(User)
