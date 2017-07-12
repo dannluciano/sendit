@@ -2,11 +2,18 @@ from django.db import models
 from .businnes import run_submission
 from django.contrib.auth.models import User
 
+
+with open('browser_io.js', 'r') as file:
+    DEFAULT_PRE_CODE = file.read()
+
+
 class Question(models.Model):
     titulo = models.CharField(max_length=255)
     enunciado = models.TextField()
     entrada = models.TextField(blank=True)
     saida = models.TextField(blank=True)
+    pre_codigo = models.TextField(default=DEFAULT_PRE_CODE)
+    pos_codigo = models.TextField(default="")
     xp = models.IntegerField(default=100)
     tags = models.CharField(max_length=255, default="laços")
 
@@ -22,7 +29,10 @@ class CaseTest(models.Model):
     questao = models.ForeignKey(Question)
     entrada = models.TextField(blank=True)
     saida = models.TextField(blank=True)
- 
+
+    def __str__(self):
+        return f'Case - {self.id} : Questão: {self.questao}'
+
 
 class Submission(models.Model):
     autor = models.ForeignKey(User)
