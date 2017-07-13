@@ -60,3 +60,24 @@ class Submission(models.Model):
 
     def __str__(self):
         return f'Questão-{self.questao.id}-Submissão-{self.id}-{self.status}'
+
+
+# class Statistic(Submission):
+
+#     @property
+#     def sum(self):
+#         pass
+
+#     class Meta:
+#         proxy = True
+
+
+class SubmissionSummary(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    status = models.CharField(choices=Submission.STATUS_CHOICES,
+                              max_length=36, default=Submission.STATUS_CHOICES[0])
+    sum = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'plataforma_submission_summary'

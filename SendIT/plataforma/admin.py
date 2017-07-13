@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Question, Submission, CaseTest
+from .models import SubmissionSummary
 
 
 class CaseTestInline(admin.StackedInline):
@@ -49,6 +50,16 @@ class SubmissoesAdmin(admin.ModelAdmin):
     search_fields = ['autor__email', 'status']
 
 
+class SubmissionSummaryAdmin(admin.ModelAdmin):
+    list_display = ('status', 'sum')
+    list_display_links = None
+    actions = None
+
+    def has_add_permission(self, request):
+        return False
+
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissoesAdmin)
 admin.site.register(CaseTest)
+admin.site.register(SubmissionSummary, SubmissionSummaryAdmin)
