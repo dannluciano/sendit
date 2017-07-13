@@ -36,7 +36,7 @@
                 </header>
                 <div class="card-content">
                     <div class="content">
-                        {{questao.enunciado}}
+                        {{questao.enunciado|safe|escape}}
                         <br>
                         <small>Tags: {{questao.tags}}</small>
                     </div>

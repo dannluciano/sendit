@@ -1,6 +1,7 @@
 from django.db import models
 from .businnes import run_submission
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 with open('browser_io.js', 'r') as file:
@@ -9,11 +10,11 @@ with open('browser_io.js', 'r') as file:
 
 class Question(models.Model):
     titulo = models.CharField(max_length=255)
-    enunciado = models.TextField()
+    enunciado = RichTextField()
     entrada = models.TextField(blank=True)
     saida = models.TextField(blank=True)
-    pre_codigo = models.TextField(default=DEFAULT_PRE_CODE)
-    pos_codigo = models.TextField(default="")
+    pre_codigo = models.TextField(default=DEFAULT_PRE_CODE, blank=True)
+    pos_codigo = models.TextField(default="", blank=True)
     xp = models.IntegerField(default=100)
     tags = models.CharField(max_length=255, default="laços")
 
@@ -22,7 +23,6 @@ class Question(models.Model):
 
     def __str__(self):
         return f'{self.titulo}'
-
 
 
 class CaseTest(models.Model):

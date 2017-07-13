@@ -11,7 +11,7 @@ jQuery(document)
 
     var textarea = $('textarea[name="editor"]')
     textarea.val(editor.getSession()
-          .getValue())
+      .getValue())
 
     editor.getSession()
       .on('change', () => {
@@ -19,8 +19,9 @@ jQuery(document)
           .getValue())
       })
 
-    $('#botao-executar').click((evt) => {
-        $('#code').submit()
-    })
+    $('#botao-executar')
+      .click((evt) => {
+        $('#code')
+          .submit()
+      })
   })
-

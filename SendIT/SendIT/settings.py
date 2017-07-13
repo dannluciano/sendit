@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'plataforma',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -120,4 +121,22 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 LOGIN_URL = '/'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript',
+                'Superscript', 'TextColor', 'BGColor'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
+                'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Blockquote', 'Link', 'Unlink'],
+            ['Image', 'Table',
+                'Smiley', 'SpecialChar', ],
+            ['RemoveFormat', 'Preview', 'Source']
+        ]
+    },
+}
