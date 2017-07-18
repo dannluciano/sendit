@@ -7,7 +7,7 @@
 5. Depois entre na pasta SendIT ```cd SendIT```
 6. Crie a Base de Dados ```python manage.py migrate```
 7. Inicialize a Base de Dados ```python manage.py loaddata seed```
-8. Crie o super Usuario do Admin ```python manage.py createsuperuse```
+8. Crie o super Usuario do Admin ```python manage.py createsuperuser```
 9. Colete os Arquivos Estaticos ```python manage.py collectstatic```
-10. Rode o servidor ```python manage.py runserve```
+10. Rode o servidor ```python manage.py runserver```
 11. Abra o navegador na url ```localhost:8000/```

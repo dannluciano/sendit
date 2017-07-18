@@ -3,7 +3,7 @@ from .models import Question, Submission, CaseTest
 from .models import SubmissionSummary
 
 
-class CaseTestInline(admin.StackedInline):
+class CaseTestInline(admin.TabularInline):
     model = CaseTest
     extra = 1
 
@@ -61,5 +61,4 @@ class SubmissionSummaryAdmin(admin.ModelAdmin):
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissoesAdmin)
-admin.site.register(CaseTest)
 admin.site.register(SubmissionSummary, SubmissionSummaryAdmin)
