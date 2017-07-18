@@ -62,20 +62,11 @@ class Submission(models.Model):
         return f'Questão-{self.questao.id}-Submissão-{self.id}-{self.status}'
 
 
-# class Statistic(Submission):
-
-#     @property
-#     def sum(self):
-#         pass
-
-#     class Meta:
-#         proxy = True
-
-
 class SubmissionSummary(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    status = models.CharField(choices=Submission.STATUS_CHOICES,
-                              max_length=36, default=Submission.STATUS_CHOICES[0])
+    status = models.CharField(primary_key=True,
+                              choices=Submission.STATUS_CHOICES,
+                              max_length=36,
+                              default=Submission.STATUS_CHOICES[0])
     sum = models.IntegerField()
 
     class Meta:
