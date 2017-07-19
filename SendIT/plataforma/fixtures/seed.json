@@ -3,22 +3,62 @@
     "model": "plataforma.question",
     "pk": 1,
     "fields": {
+      "titulo": "Numeros ao Quadrado",
+      "enunciado": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima o quadrado desses n\u00fameros.",
+      "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+      "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
+      "tags": "la\u00e7os"
+    }
+  },
+  {
+    "model": "plataforma.question",
+    "pk": 2,
+    "fields": {
       "titulo": "Numeros de 1 at\u00e9 10",
       "enunciado": "Escreva um algoritmo que imprima os n\u00fameros de 1 at\u00e9 10",
       "entrada": "",
       "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
       "tags": "la\u00e7os"
     }
-},
+  },
   {
-    "model": "plataforma.question",
+    "model": "plataforma.casetest",
+    "pk": 1,
+    "fields": {
+      "questao": 1,
+      "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+      "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100"
+    }
+  },
+  {
+    "model": "plataforma.casetest",
     "pk": 2,
     "fields": {
-      "titulo": "Numeros ao Quadrado",
-      "enunciado": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima esses o quadrado desses n\u00fameros.",
-      "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
-      "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
-      "tags": "la\u00e7os"
+      "questao": 1,
+      "entrada": "10\r\n20\r\n30\r\n40\r\n50\r\n60\r\n70\r\n80\r\n90\r\n100",
+      "saida": "100\r\n400\r\n900\r\n1600\r\n2500\r\n3600\r\n4900\r\n6400\r\n8100\r\n10000"
     }
-}
+  },
+  {
+    "model": "plataforma.casetest",
+    "pk": 3,
+    "fields": {
+      "questao": 2,
+      "entrada": "",
+      "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$R3PYRpV4Zkzw$f2iz5hwJAKmq/a0yHem5JaqN75jHm99u8CN/vlbqKLg=",
+      "is_superuser": false,
+      "username": "user",
+      "first_name": "Test User",
+      "email": "user@user.com",
+      "is_staff": false,
+      "is_active": true
+    }
+  }
 ]

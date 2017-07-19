@@ -1,5 +1,50 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
+from .models import Question, Submission
 from .businnes import run_submission
+
+
+class SubmissionTestCase(TestCase):
+    fixtures = ['seed']
+
+    def test_submission_save_with_ok_and_case_test(self):
+        question = Question.objects.first()
+        user = User.objects.first()
+        code = """
+for (let i = 0; i < 10; i++) {
+    num = parseInt(prompt())
+    alert(Math.pow(num, 2))
+}
+"""
+        submission = Submission(questao=question, autor=user, codigo=code)
+        submission.save()
+        self.assertEqual(submission.status, 'OK')
+
+    def test_submission_save_with_error_in_first_case_test(self):
+        question = Question.objects.first()
+        user = User.objects.first()
+        code = """
+for (let i = 0; i < 10; i++) {
+    num = parseInt(prompt())
+    alert(Math.pow(num, 2) + 1)
+}
+"""
+        submission = Submission(questao=question, autor=user, codigo=code)
+        submission.save()
+        self.assertEqual(submission.status, 'DiffError')
+
+    def test_submission_save_with_error_in_last_case_test(self):
+        question = Question.objects.first()
+        user = User.objects.first()
+        code = """
+    for (let i = 0; i < 10; i++) {
+        num = parseInt(prompt())
+        alert(i * i)
+    }
+"""
+        submission = Submission(questao=question, autor=user, codigo=code)
+        submission.save()
+        self.assertEqual(submission.status, 'DiffError')
 
 
 class BussinessTestCase(TestCase):

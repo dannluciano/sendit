@@ -106,4 +106,4 @@ SendIT/.vscode/settings.json
 .idea/
 .DS_Store
 
-static/
+staticfiles/

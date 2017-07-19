@@ -3,7 +3,6 @@ from .businnes import run_submission
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
-
 with open('browser_io.js', 'r') as file:
     DEFAULT_PRE_CODE = file.read()
 
@@ -39,12 +38,12 @@ class Submission(models.Model):
     questao = models.ForeignKey(Question)
     codigo = models.TextField()
     STATUS_CHOICES = (
-        ('Waiting',         'Esperando ser executada.'),
-        ('JSSintaxError',   'Erro de sintaxe!'),
-        ('JSRuntimeError',  'Erro em execução!'),
-        ('JSTimeoutError',  'Tempo de execução excedido!'),
-        ('DiffError',       'Saída computada diferente da saída esperada!'),
-        ('OK',              'OK'))
+        ('Waiting', 'Esperando ser executada.'),
+        ('JSSintaxError', 'Erro de sintaxe!'),
+        ('JSRuntimeError', 'Erro em execução!'),
+        ('JSTimeoutError', 'Tempo de execução excedido!'),
+        ('DiffError', 'Saída computada diferente da saída esperada!'),
+        ('OK', 'OK'))
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=36, default=STATUS_CHOICES[0])
 
@@ -52,9 +51,11 @@ class Submission(models.Model):
         self.save
 
     def save(self, *args, **kwargs):
-        self.status = run_submission(self.codigo,
-                                     self.questao.entrada,
-                                     self.questao.saida)
+        casos_de_testes = self.questao.casetest_set.all()
+        for cs in casos_de_testes:
+            self.status = run_submission(self.codigo, cs.entrada, cs.saida)
+            if self.status != 'OK':
+                break
 
         super(Submission, self).save(*args, **kwargs)
 
