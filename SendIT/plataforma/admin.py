@@ -16,7 +16,6 @@ class CaseTestInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-
     fieldsets = (
         (None, {
             'fields': ('titulo', 'enunciado', 'xp', 'tags')
@@ -27,11 +26,11 @@ class QuestionAdmin(admin.ModelAdmin):
         }),
         ('Pré Codigo', {
             'classes': ('collapse',),
-            'fields': ('pre_codigo', ),
+            'fields': ('pre_codigo',),
         }),
         ('Pos Codigo', {
             'classes': ('collapse',),
-            'fields': ('pos_codigo', ),
+            'fields': ('pos_codigo',),
         }),
     )
 
@@ -46,7 +45,7 @@ class QuestionAdmin(admin.ModelAdmin):
 class SubmissoesAdmin(admin.ModelAdmin):
     list_display = ('id', 'status', 'autor', 'questao')
     list_display_links = ('id', 'status')
-    list_filter = ('status', )
+    list_filter = ('status',)
     search_fields = ['autor__email', 'status']
 
 

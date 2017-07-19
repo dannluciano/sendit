@@ -47,9 +47,6 @@ class Submission(models.Model):
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=36, default=STATUS_CHOICES[0])
 
-    def publish(self):
-        self.save
-
     def save(self, *args, **kwargs):
         casos_de_testes = self.questao.casetest_set.all()
         for cs in casos_de_testes:
@@ -73,3 +70,5 @@ class SubmissionSummary(models.Model):
     class Meta:
         managed = False
         db_table = 'plataforma_submission_summary'
+        verbose_name = 'Summary of Submission'
+        verbose_name_plural = 'Summary of Submissions'
