@@ -6,8 +6,7 @@ html {
 .menu-cima {
   background-color: #f95738;
 }
-.menu a,
-p {
+.menu a, p {
   color: #4A4A4A;
 }
 #nome-projeto {
@@ -60,8 +59,9 @@ p {
 .menu{
   padding-top: 20px;
   background-color: #595959;
-  margin-bottom: 0;
-  min-height: 90vh;
+}
+.menu_lateral{
+  background-color: #595959;
 }
 .menu p{
   margin-left: 15px;
@@ -76,7 +76,7 @@ p {
 }
 .footer{
   background-color: black;
-  margin-top: -24px;
+  margin-top: -12px;
 }
 .footer p, strong{
   color: white;
@@ -173,27 +173,13 @@ p {
 .form-login input{
   padding: 9px;
   background-color: rgb(255, 255, 255);
-  border-bottom-color: rgb(181, 181, 181);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
+  border: rgb(181, 181, 181) solid 1px;
+  border-radius: 3px;
   border-image-outset:  0 0 0 0;
   border-image-repeat: stretch stretch;
   border-image-slice: 100% 100% 100% 100%;
   border-image-source: none;
   border-image-width: 1 1 1 1 ;
-  border-left-color: rgb(181, 181, 181);
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-right-color: rgb(181, 181, 181);
-  border-right-style: solid;
-  border-right-width: 1px;
-  border-top-color: rgb(181, 181, 181);
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border-top-style: solid;
-  border-top-width: 1px;
 }
 .form-login button{
   margin-right: 10px;

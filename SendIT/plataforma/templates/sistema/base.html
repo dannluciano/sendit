@@ -25,9 +25,9 @@
         </div>
     </div>
     <span class="nav-toggle" id="nav-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
     </span>
     <div class="nav-right nav-menu" id="nav-menu">
         <a class="nav-item">
@@ -49,8 +49,16 @@
         </form>
     </div>
 </nav>
-{% block content %}
-{% endblock %}
+<div class="columns">
+    <div class="column is-3 menu_lateral">
+        {% block menu_lateral %}
+        {% endblock %}
+    </div>
+    <div class="column">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
 {% block footer %}
 {% endblock %}
 <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
