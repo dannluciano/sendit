@@ -29,6 +29,7 @@ def ver_questao(request, questao_id):
 @require_POST
 @login_required
 def criar_submissao(request, questao_id):
+    questao_id = questao_id
     questao = get_object_or_404(Question, pk=questao_id)
     questaoEnviada = Question.objects.all().filter(id=questao_id)
     codigo = request.POST['editor']
@@ -38,7 +39,10 @@ def criar_submissao(request, questao_id):
     sub.save()
     resultado = sub.status
 
-    return render(request, 'sistema/resultado.html', {'codigo': codigo, 'questao':questaoEnviada, 'status':resultado})
+    return render(request, 'sistema/resultado.html', {'codigo': codigo,
+                                                      'questao':questaoEnviada,
+                                                      'status':resultado,
+                                                      'id_questao':questao_id})
 
 
 @require_POST

@@ -12,19 +12,24 @@
   {% endfor %}
   <h2 class="subtitle resultado-submissao">
     {% ifequal status 'JSSintaxError' %}
-      Resultado da submissão: Erro de sintaxe!
+        Resultado da submissão: Erro de sintaxe!
+        <a href="/questao/{{ id_questao }}/"> Voltar para questão</a>
     {% endifequal %}
     {% ifequal status 'JSRuntimeError' %}
-      Resultado da submissão: Erro em execução!
+        Resultado da submissão: Erro em execução!
+        <a href="/questao/{{ id_questao }}/"> Voltar para questão</a>
     {% endifequal %}
     {% ifequal status 'JSTimeoutError' %}
-      Resultado da submissão: Tempo de execução excedido!
+        Resultado da submissão: Tempo de execução excedido!
+        <a href="/questao/{{ id_questao }}/"> Voltar para questão</a>
     {% endifequal %}
     {% ifequal status 'DiffError' %}
-      Resultado da submissão: Saída computada diferente da saída esperada!
+        Resultado da submissão: Saída computada diferente da saída esperada!
+        <a href="/questao/{{ id_questao }}/"> Voltar para questão</a>
     {% endifequal %}
     {% ifequal status 'OK' %}
-      Resultado da submissão: Parabéns, você conseguiu acertar a questão!
+        Resultado da submissão: Parabéns, você conseguiu acertar a questão!
+        <a href="/home/"> Voltar para lista de questões</a>
     {% endifequal %}
   </h2>
   <h2 class="subtitle">Você enviou o código:</h2>
