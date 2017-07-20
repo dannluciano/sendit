@@ -75,55 +75,55 @@
         </div>
       </div>
     </section>
-  {% endif %}
-  <section class="hero is-medium">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          Aqui uma breve descrição da plataforma
-        </h1>
-        <h2 class="subtitle">
-          E também seus objetivos, finalidade, criadores, etc. <br>
-          <a href="#cadastre-se">Cadastre-se</a>
-        </h2>
-      </div>
-    </div>
-  </section>
-  <section class="hero is-medium" id="cadastre-se">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns">
-          <div class="column is-5 div-cadastro box">
-            <section class="section">
-              <h1 class="title has-text-centered laranja">
-                Cadastro
-              </h1>
-              <form action="/cadastrar/" method="post">
-                {% csrf_token %}
-                <div class="field">
-                  <label class="label">Nome:</label>
-                  <p class="control">
-                    <input class="input" type="text" placeholder="Joana Sousa" name="usuario">
-                  </p>
-                  <label class="label">Email:</label>
-                  <p class="control">
-                    <input class="input" type="email" placeholder="joana@gmail.com" name="email">
-                  </p>
-                  <label class="label">Senha:</label>
-                  <p class="control">
-                    <input class="input" type="password" placeholder="A senha é secreta" name="senha">
-                  </p>
-                  <p class="control align-right">
-                    <button class="button botao-cadastrar">Cadastrar</button>
-                  </p>
-                </div>
-              </form>
-            </section>
+      <section class="hero is-medium">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              Aqui uma breve descrição da plataforma
+            </h1>
+            <h2 class="subtitle">
+              E também seus objetivos, finalidade, criadores, etc. <br>
+              <a href="#cadastre-se">Cadastre-se</a>
+            </h2>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
+      <section class="hero is-medium" id="cadastre-se">
+        <div class="hero-body">
+          <div class="container">
+            <div class="columns">
+              <div class="column is-5 div-cadastro box">
+                <section class="section">
+                  <h1 class="title has-text-centered laranja">
+                    Cadastro
+                  </h1>
+                  <form action="/cadastrar/" method="post">
+                    {% csrf_token %}
+                    <div class="field">
+                      <label class="label">Nome:</label>
+                      <p class="control">
+                        <input class="input" type="text" placeholder="Joana Sousa" name="usuario">
+                      </p>
+                      <label class="label">Email:</label>
+                      <p class="control">
+                        <input class="input" type="email" placeholder="joana@gmail.com" name="email">
+                      </p>
+                      <label class="label">Senha:</label>
+                      <p class="control">
+                        <input class="input" type="password" placeholder="A senha é secreta" name="senha">
+                      </p>
+                      <p class="control align-right">
+                        <button class="button botao-cadastrar">Cadastrar</button>
+                      </p>
+                    </div>
+                  </form>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    {% endif %}
   <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
   <script src="{% static 'js/clipboard.min.js' %}"></script>
   <script src="{% static 'js/bulma.js' %}"></script>
