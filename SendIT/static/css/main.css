@@ -1,0 +1,210 @@
+html {
+  margin: 0;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+.menu-cima {
+  background-color: #f95738;
+}
+.menu a,
+p {
+  color: #4A4A4A;
+}
+#nome-projeto {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.8rem;
+  color: #f4d35e;
+}
+#nome-projeto span {
+  color: #faf0ca;
+}
+.nome-projeto-footer{
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.4rem;
+}
+.nav-menu .nav-item {
+  color: #faf0ca;
+}
+
+.nav-menu .nav-item:hover {
+  color: #faf0ca;
+}
+
+.nav-menu {
+  background-color: #f95738;
+}
+
+.icon {
+  color: #faf0ca;
+}
+
+.nav-toggle {
+  background-color: #f95738;
+}
+
+.nav-toggle.is-active span {
+  background-color: #faf0ca;
+}
+
+.nav-toggle:hover {
+  background-color: #f95738;
+}
+
+.nav-toggle span {
+  background-color: #faf0ca;
+}
+#editor {
+  width: auto;
+  height: 60vh;
+}
+.menu{
+  padding-top: 20px;
+  background-color: #595959;
+  margin-bottom: 0;
+  min-height: 90vh;
+}
+.menu p{
+  margin-left: 15px;
+  color: white;
+}
+.menu ul li a{
+  color: white;
+}
+.menu ul li a:hover{
+  background-color: #6E6E6E;
+  color: white;
+}
+.footer{
+  background-color: black;
+  margin-top: -24px;
+}
+.footer p, strong{
+  color: white;
+}
+.footer a{
+  color: white;
+  text-decoration: underline;
+}
+.questoes{
+  margin-bottom: 30px;
+}
+.links-questao{
+  color: #f95738;
+}
+.tipo-questao{
+  text-align: right;
+  border-left: 1px solid #D8D8D8;
+  margin-right: 1px;
+}
+.entrada-saida{
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
+  border-left: 1px solid #d8d8d8;
+}
+.saida{
+  border-left: 1px solid #d8d8d8;
+}
+.editor-ace{
+  border-left: 1px solid #d8d8d8;
+}
+.play-executar{
+  color: #f95738;
+}
+.botao-executar{
+  border-color: #f95738;
+}
+.botao-executar:hover{
+  border-color: #f95738;
+}
+.img-usuario figure{
+  margin:0 auto;
+}
+.img-usuario p{
+  margin-left: 0;
+  text-align: center;
+}
+.imagem-inicial{
+  background-image: url('../img/inicial.jpeg');
+  background-attachment: fixed;
+}
+.imagem-inicial h1, .imagem-inicial h2{
+  color: white;
+}
+.link-cadastrar{
+  margin-left: 40vw;
+  background-color: #f95738;
+  border: none;
+  color: white;
+}
+.link-cadastrar:hover{
+  color: white;
+}
+.div-cadastro{
+  margin: 0 auto;
+}
+.botao-cadastrar{
+  background-color: #f95738;
+  border: none;
+  color: white;
+}
+.botao-cadastrar:hover{
+  color: white;
+}
+.laranja{
+  color: #f95738;
+}
+#cadastre-se{
+  background-image: url('../img/cadastre.jpg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.align-right{
+  text-align: right;
+}
+.verde{
+  color: #34993a;
+}
+.vermelho{
+  color: #b7172d;
+}
+.form-login{
+  margin-top: 10px;
+}
+.form-login input{
+  padding: 9px;
+  background-color: rgb(255, 255, 255);
+  border-bottom-color: rgb(181, 181, 181);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-image-outset:  0 0 0 0;
+  border-image-repeat: stretch stretch;
+  border-image-slice: 100% 100% 100% 100%;
+  border-image-source: none;
+  border-image-width: 1 1 1 1 ;
+  border-left-color: rgb(181, 181, 181);
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-right-color: rgb(181, 181, 181);
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-top-color: rgb(181, 181, 181);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top-style: solid;
+  border-top-width: 1px;
+}
+.form-login button{
+  margin-right: 10px;
+}
+.botao-sair{
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.botao-aumentar-diminuir{
+  color: #f95738;
+}
+.resultado-submissao{
+  margin-top: 20px;
+}

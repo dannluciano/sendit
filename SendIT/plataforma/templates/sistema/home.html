@@ -2,24 +2,26 @@
 {% load staticfiles %}
 
 {% block menu_lateral %}
-    <title>SendIT</title>
-    <aside class="menu">
-        <div class="img-usuario">
-            <figure class="image is-128x128">
-                <img src="http://bulma.io/images/placeholders/128x128.png">
-            </figure>
-            <p>{{user}}</p>
-        </div>
-        <p class="menu-label">
-            Level
-        </p>
-        <p class="menu-label">
-            XP
-        </p>
-        <p class="menu-label">
-            Categoria
-        </p>
-    </aside>
+    <div class="column is-3 menu_lateral">
+        <title>SendIT</title>
+        <aside class="menu">
+            <div class="img-usuario">
+                <figure class="image is-128x128">
+                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                </figure>
+                <p>{{user}}</p>
+            </div>
+            <p class="menu-label">
+                Level
+            </p>
+            <p class="menu-label">
+                XP
+            </p>
+            <p class="menu-label">
+                Categoria
+            </p>
+        </aside>
+    </div>
 {% endblock %}
 
 {% block content %}

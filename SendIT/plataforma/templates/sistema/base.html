@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    {% block css %}
+    {% endblock %}
 </head>
 <body>
 <nav class="nav menu-cima">
@@ -50,10 +52,8 @@
     </div>
 </nav>
 <div class="columns">
-    <div class="column is-3 menu_lateral">
-        {% block menu_lateral %}
-        {% endblock %}
-    </div>
+    {% block menu_lateral %}
+    {% endblock %}
     <div class="column">
         {% block content %}
         {% endblock %}
