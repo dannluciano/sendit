@@ -54,7 +54,7 @@ html {
 }
 #editor {
   width: auto;
-  height: 60vh;
+  height: 80vh;
 }
 .menu{
   padding-top: 20px;
@@ -107,14 +107,11 @@ html {
 .editor-ace{
   border-left: 1px solid #d8d8d8;
 }
-.play-executar{
-  color: #f95738;
+.enviar-questao{
+  background-color: #f95738;
 }
-.botao-executar{
-  border-color: #f95738;
-}
-.botao-executar:hover{
-  border-color: #f95738;
+.enviar-questao span{
+  color: white;
 }
 .img-usuario figure{
   margin:0 auto;
@@ -193,4 +190,16 @@ html {
 }
 .resultado-submissao{
   margin-top: 20px;
+}
+.divquestao{
+  padding: 24px;
+}
+.invertido{
+  transform: rotate(180deg);
+  transition: 0.8s;
+}
+.enviar-questao{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
 }
