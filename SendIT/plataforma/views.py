@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from random import randint
 
 
 def index(request):
@@ -63,9 +64,21 @@ def cadastrar_usuario(request):
         usuario = request.POST['usuario']
         email = request.POST['email']
         senha = request.POST['senha']
-        novoUsuario = User.objects.create_user(username=usuario, email=email, password=senha)
-        novoUsuario.save()
-        return render(request, 'sistema/index.html', {'resposta': True})
+        try:
+            usuario_aux = User.objects.get(username=request.POST['usuario'])
+
+            if usuario_aux:
+                while usuario_aux.username == usuario:
+                    numero = randint(0, 10000)
+                    usuario += str(numero)
+
+                novoUsuario = User.objects.create_user(username=usuario, email=email, password=senha)
+                novoUsuario.save()
+                return render(request, 'sistema/index.html', {'resposta': True})
+        except User.DoesNotExist:
+            novoUsuario = User.objects.create_user(username=usuario, email=email, password=senha)
+            novoUsuario.save()
+            return render(request, 'sistema/index.html', {'resposta': True})
 
 
 @require_POST
