@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Question, Submission, CaseTest
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .models import Question, Submission, CaseTest, Perfil
 from .models import SubmissionSummary
 
 
@@ -58,6 +60,18 @@ class SubmissionSummaryAdmin(admin.ModelAdmin):
         return False
 
 
+class PerfilInline(admin.StackedInline):
+    model = Perfil
+    can_delete = False
+    verbose_name_plural = 'perfil'
+
+
+class UserAdmin(BaseUserAdmin):
+    inlines = (PerfilInline, )
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissoesAdmin)
 admin.site.register(SubmissionSummary, SubmissionSummaryAdmin)
+admin.site.register(Perfil)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

@@ -22,8 +22,8 @@ def home(request):
 
 @login_required
 def ver_questao(request, questao_id):
-  questaoEscolhida = Question.objects.filter(id=questao_id)
-  return render(request, 'sistema/detalhe-questao.html', {'questao': questaoEscolhida})
+    questaoEscolhida = Question.objects.filter(id=questao_id)
+    return render(request, 'sistema/detalhe-questao.html', {'questao': questaoEscolhida})
 
 
 @require_POST
@@ -32,6 +32,7 @@ def criar_submissao(request, questao_id):
     questao_id = questao_id
     questao = get_object_or_404(Question, pk=questao_id)
     questaoEnviada = Question.objects.all().filter(id=questao_id)
+    xp_questao = questao.xp
     codigo = request.POST['editor']
     id_autor = request.user
 
@@ -39,10 +40,15 @@ def criar_submissao(request, questao_id):
     sub.save()
     resultado = sub.status
 
+    if resultado == 'OK':
+        request.user.perfil.xp += xp_questao
+        request.user.save()
+
     return render(request, 'sistema/resultado.html', {'codigo': codigo,
-                                                      'questao':questaoEnviada,
-                                                      'status':resultado,
-                                                      'id_questao':questao_id})
+                                                      'questao': questaoEnviada,
+                                                      'status': resultado,
+                                                      'id_questao': questao_id,
+                                                      'xp_questao': xp_questao})
 
 
 @require_POST

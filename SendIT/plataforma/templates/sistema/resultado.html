@@ -28,7 +28,8 @@
         <a href="/questao/{{ id_questao }}/"> Voltar para questão</a>
     {% endifequal %}
     {% ifequal status 'OK' %}
-        Resultado da submissão: Parabéns, você conseguiu acertar a questão!
+        Resultado da submissão: Parabéns, você conseguiu acertar a questão e ganhou {{ xp_questao }}XPs! <br>
+        Sua pontuação total é de {{ user.perfil.xp }}XPs
         <a href="/home/"> Voltar para lista de questões</a>
     {% endifequal %}
   </h2>
