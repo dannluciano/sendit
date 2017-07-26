@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import math
 
 with open('browser_io.js', 'r') as file:
     DEFAULT_PRE_CODE = file.read()
@@ -12,6 +13,60 @@ with open('browser_io.js', 'r') as file:
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     xp = models.IntegerField(blank=True, default=0)
+
+    @property
+    def level(self):
+        return int(math.sqrt(self.xp) * 1.5)
+
+    @property
+    def taxa_de_conclusao(self):
+        try:
+            taxa = self.acertos / Question.objects.count() * 100.0
+            return f'{taxa:5.2f}%'
+        except ZeroDivisionError:
+            return '-'
+
+    @property
+    def taxa_de_sucesso(self):
+        try:
+            taxa = self.acertos / self.submissoes * 100.0
+            return f'{taxa:5.2f}%'
+        except ZeroDivisionError:
+            return '-'
+
+    @property
+    def submissoes(self):
+        return Submission.objects.filter(autor_id=self.user_id).count()
+
+    @property
+    def erros_de_sintax(self):
+        return Submission.objects.filter(
+            autor_id=self.user_id,
+            status=Submission.STATUS_CHOICES[1][0]).count()
+
+    @property
+    def erros_de_execucao(self):
+        return Submission.objects.filter(
+            autor_id=self.user_id,
+            status=Submission.STATUS_CHOICES[2][0]).count()
+
+    @property
+    def erros_de_tempo(self):
+        return Submission.objects.filter(
+            autor_id=self.user_id,
+            status=Submission.STATUS_CHOICES[3][0]).count()
+
+    @property
+    def erros_de_saida(self):
+        return Submission.objects.filter(
+            autor_id=self.user_id,
+            status=Submission.STATUS_CHOICES[4][0]).count()
+
+    @property
+    def acertos(self):
+        return Submission.objects.filter(
+            autor_id=self.user_id,
+            status=Submission.STATUS_CHOICES[5][0]).count()
 
     def __str__(self):
         return self.user.username

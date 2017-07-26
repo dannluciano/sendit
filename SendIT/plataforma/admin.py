@@ -48,7 +48,7 @@ class SubmissoesAdmin(admin.ModelAdmin):
     list_display = ('id', 'status', 'autor', 'questao')
     list_display_links = ('id', 'status')
     list_filter = ('status',)
-    search_fields = ['autor__email', 'status']
+    search_fields = ['autor__username', 'autor__email', 'questao__titulo']
 
 
 class SubmissionSummaryAdmin(admin.ModelAdmin):
@@ -69,9 +69,24 @@ class PerfilInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (PerfilInline, )
 
+
+class PerfilAdmin(admin.ModelAdmin):
+    list_display = ('user', 'level', 'xp',
+                    'taxa_de_conclusao', 'taxa_de_sucesso',
+                    'submissoes', 'acertos',
+                    'erros_de_sintax', 'erros_de_execucao',
+                    'erros_de_tempo', 'erros_de_saida')
+    list_display_links = None
+    list_filter = ('user__groups',)
+    search_fields = ['user__username', 'user__email']
+
+    def has_add_permission(self, request):
+        return False
+
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissoesAdmin)
 admin.site.register(SubmissionSummary, SubmissionSummaryAdmin)
-admin.site.register(Perfil)
+admin.site.register(Perfil, PerfilAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
