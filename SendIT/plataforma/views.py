@@ -64,21 +64,12 @@ def cadastrar_usuario(request):
         usuario = request.POST['usuario']
         email = request.POST['email']
         senha = request.POST['senha']
-        try:
-            usuario_aux = User.objects.get(username=request.POST['usuario'])
-
-            if usuario_aux:
-                while usuario_aux.username == usuario:
-                    numero = randint(0, 10000)
-                    usuario += str(numero)
-
-                novoUsuario = User.objects.create_user(username=usuario, email=email, password=senha)
-                novoUsuario.save()
-                return render(request, 'sistema/index.html', {'resposta': True})
-        except User.DoesNotExist:
-            novoUsuario = User.objects.create_user(username=usuario, email=email, password=senha)
-            novoUsuario.save()
-            return render(request, 'sistema/index.html', {'resposta': True})
+        novoUsuario = User.objects.create_user(username=email,
+                                               first_name=usuario,
+                                               email=email,
+                                               password=senha)
+        novoUsuario.save()
+        return render(request, 'sistema/index.html', {'resposta': True})
 
 
 @require_POST
