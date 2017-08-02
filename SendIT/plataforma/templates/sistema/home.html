@@ -9,10 +9,10 @@
                 <figure class="image is-128x128">
                     <img src="http://bulma.io/images/placeholders/128x128.png">
                 </figure>
-                <p>{{user.first_name|upper }}</p>
+                <p>{{ user.first_name|upper }}</p>
             </div>
             <p class="menu-label">
-                Level
+                Level: {{ user.perfil.level }}
             </p>
             <p class="menu-label">
                 XP: {{ user.perfil.xp }}
