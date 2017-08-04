@@ -31,7 +31,7 @@ def home(request):
 
 @login_required
 def questoes_concluidas(request):
-    questoes = Submission.objects.all().filter(autor=request.user)
+    questoes = Submission.objects.all().filter(autor=request.user, status='OK')
     return render(request, 'sistema/questoes-concluidas.html', {'questoes': questoes})
 
 
@@ -39,7 +39,7 @@ def questoes_concluidas(request):
 def ver_questao(request, questao_id):
     # Para nao abrir as questoes que ja submeteu
     questaoEscolhida = Question.objects.filter(id=questao_id)
-    questoesSubmetidas = Submission.objects.all().filter(autor=request.user)
+    questoesSubmetidas = Submission.objects.all().filter(autor=request.user, status='OK')
 
     for questao_submetida in questoesSubmetidas:
         if questao_submetida.questao.id == questao_id:
