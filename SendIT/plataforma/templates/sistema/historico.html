@@ -26,26 +26,26 @@
 
 {% block content %}
     <section class="section">
-        {% for questao in questoes %}
+        {% for questao_submetida in questoes %}
         <div class="card questoes">
             <header class="card-header">
                 <p class="card-header-title">
-                    <a href="/questao/{{questao.id}}" class="links-questao">
-                        {{questao.titulo}}
+                    <a href="questao/{{questao_submetida.id}}" class="links-questao">
+                        {{questao_submetida.questao}}
                     </a>
                 </p>
             </header>
             <div class="card-content">
                 <div class="content">
-                    {{questao.enunciado|safe|escape}}
+                    {{questao_submetida.questao.enunciado|safe|escape}}
                     <br>
-                    <small>Tags: {{questao.tags}}</small>
+                    <small>Tags: {{questao_submetida.questao.tags}}</small>
                 </div>
             </div>
             <footer class="card-footer">
                 <p class="card-footer-item">Acertos: </p>
                 <p class="card-footer-item">Erros: </p>
-                <p class="card-footer-item">XP: {{questao.xp}}</p>
+                <p class="card-footer-item">XP: {{questao_submetida.questao.xp}}</p>
             </footer>
         </div>
         {% endfor %}

@@ -16,8 +16,23 @@ def index(request):
 
 @login_required
 def home(request):
+    questoes_submetidas = Submission.objects.all().filter(autor=request.user)
     questoes = Question.objects.all()
+
+    for questao_submetida in questoes_submetidas:
+        for questaoQuestion in questoes:
+            if questaoQuestion.id == questao_submetida.questao.id:
+                questoes = questoes.exclude(id=questao_submetida.questao.id)
+            else:
+                pass
+
     return render(request, 'sistema/home.html', {'questoes': questoes})
+
+
+@login_required
+def historico(request):
+    questoes = Submission.objects.all().filter(autor=request.user)
+    return render(request, 'sistema/historico.html', {'questoes': questoes})
 
 
 @login_required
