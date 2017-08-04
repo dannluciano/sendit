@@ -30,14 +30,23 @@ def home(request):
 
 
 @login_required
-def historico(request):
+def questoes_concluidas(request):
     questoes = Submission.objects.all().filter(autor=request.user)
-    return render(request, 'sistema/historico.html', {'questoes': questoes})
+    return render(request, 'sistema/questoes-concluidas.html', {'questoes': questoes})
 
 
 @login_required
 def ver_questao(request, questao_id):
+    # Para nao abrir as questoes que ja submeteu
     questaoEscolhida = Question.objects.filter(id=questao_id)
+    questoesSubmetidas = Submission.objects.all().filter(autor=request.user)
+
+    for questao_submetida in questoesSubmetidas:
+        if questao_submetida.questao.id == questao_id:
+            return HttpResponseRedirect("/home/")
+        else:
+            pass
+
     return render(request, 'sistema/detalhe-questao.html', {'questao': questaoEscolhida})
 
 
