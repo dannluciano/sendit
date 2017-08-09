@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Question, Submission
+from .models import Question, Submission, Tags
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -17,7 +17,14 @@ def index(request):
 @login_required
 def home(request):
     questoes_submetidas = Submission.objects.all().filter(autor=request.user)
-    questoes = Question.objects.all()
+    tags = Tags.objects.all()
+
+    if 'ordenar-tag' in request.GET:
+        ordenarTag = request.GET.get('ordenar-tag')
+        questoes = Question.objects.all().filter(tags__tag__icontains=ordenarTag).order_by('-id')
+    else:
+        questoes = Question.objects.all().order_by('-id')
+
 
     for questao_submetida in questoes_submetidas:
         for questaoQuestion in questoes:
@@ -26,12 +33,13 @@ def home(request):
             else:
                 pass
 
-    return render(request, 'sistema/home.html', {'questoes': questoes})
+    return render(request, 'sistema/home.html', {'questoes': questoes,
+                                                 'tags': tags})
 
 
 @login_required
 def questoes_concluidas(request):
-    questoes = Submission.objects.all().filter(autor=request.user, status='OK')
+    questoes = Submission.objects.all().filter(autor=request.user, status='OK').order_by('-id')
     return render(request, 'sistema/questoes-concluidas.html', {'questoes': questoes})
 
 

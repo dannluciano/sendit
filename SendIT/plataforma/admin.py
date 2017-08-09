@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Question, Submission, CaseTest, Perfil
+from .models import Question, Submission, CaseTest, Perfil, Tags
 from .models import SubmissionSummary
 
 
@@ -90,3 +90,4 @@ admin.site.register(SubmissionSummary, SubmissionSummaryAdmin)
 admin.site.register(Perfil, PerfilAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Tags)

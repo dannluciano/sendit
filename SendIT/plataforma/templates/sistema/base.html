@@ -29,7 +29,7 @@
         <a class="nav-item" href="/questoes-concluidas/">
             Questões concluidas
         </a>
-        <form action="/sair/" method="post">
+        <form action="/sair/" method="post" class="nav-item">
           {% csrf_token %}
           <input type="hidden" name="sair">
           <button class="button is-danger is-inverted botao-sair">Sair</button>

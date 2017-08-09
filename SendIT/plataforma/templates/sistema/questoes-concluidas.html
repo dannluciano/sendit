@@ -39,7 +39,9 @@
                 <div class="content">
                     {{questao_submetida.questao.enunciado|safe|escape}}
                     <br>
-                    <small>Tags: {{questao_submetida.questao.tags}}</small>
+                    {% for tag in questao_submetida.tags.all %}
+                        <small class="tag">{{tag.tag}}</small>
+                    {% endfor %}
                 </div>
             </div>
             <footer class="card-footer">

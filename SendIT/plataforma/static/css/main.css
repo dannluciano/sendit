@@ -6,6 +6,12 @@ html {
 .menu-cima {
   background-color: #f95738;
 }
+.nav-menu a.nav-item{
+  color: #faf0ca;
+}
+.nav-menu a.nav-item:hover{
+  color: #faf0ca;
+}
 .menu a, p {
   color: #4A4A4A;
 }
@@ -21,34 +27,21 @@ html {
   font-family: 'Gochi Hand', cursive;
   font-size: 1.4rem;
 }
-.nav-menu .nav-item {
-  color: #faf0ca;
-}
-
-.nav-menu .nav-item:hover {
-  color: #faf0ca;
-}
-
 .nav-menu {
   background-color: #f95738;
 }
-
 .icon {
   color: #faf0ca;
 }
-
 .nav-toggle {
   background-color: #f95738;
 }
-
 .nav-toggle.is-active span {
   background-color: #faf0ca;
 }
-
 .nav-toggle:hover {
   background-color: #f95738;
 }
-
 .nav-toggle span {
   background-color: #faf0ca;
 }
@@ -140,6 +133,7 @@ html {
   margin: 0 auto;
 }
 .botao-cadastrar{
+  margin-top: 10px;
   background-color: #f95738;
   border: none;
   color: white;
@@ -181,10 +175,6 @@ html {
 .form-login button{
   margin-right: 10px;
 }
-.botao-sair{
-  margin-top: 10px;
-  margin-right: 10px;
-}
 .botao-aumentar-diminuir{
   color: #f95738;
 }
@@ -202,4 +192,25 @@ html {
   position: fixed;
   right: 20px;
   bottom: 20px;
+}
+.titulo-detalhe-questao{
+  color: #4A4A4A;
+  font-weight: normal;
+}
+.dropdown{
+  margin-bottom: 20px;
+}
+.back-laranja{
+  color: #f95738;
+  border-color: #f95738;
+}
+.back-laranja .icon i{
+  color: #f95738;
+}
+.back-laranja:hover{
+  background-color: #f95738;
+  color: #faf0ca;
+}
+.back-laranja:hover .icon i{
+  color:#faf0ca;
 }

@@ -83,6 +83,17 @@ def salvar_perfil(sender, instance, **kwargs):
     instance.perfil.save()
 
 
+class Tags(models.Model):
+    tag = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.tag}'
+
+    class Meta:
+        verbose_name_plural = 'Tags'
+        verbose_name = 'Tags'
+
+
 class Question(models.Model):
     titulo = models.CharField(max_length=255)
     enunciado = RichTextField()
@@ -91,7 +102,7 @@ class Question(models.Model):
     pre_codigo = models.TextField(default=DEFAULT_PRE_CODE, blank=True)
     pos_codigo = models.TextField(default="", blank=True)
     xp = models.IntegerField(default=100)
-    tags = models.CharField(max_length=255, default="laços")
+    tags = models.ManyToManyField(Tags)
 
     def publish(self):
         self.save
