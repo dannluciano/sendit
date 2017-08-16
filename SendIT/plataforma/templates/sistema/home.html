@@ -7,7 +7,7 @@
         <aside class="menu">
             <div class="img-usuario">
                 <figure class="image is-128x128">
-                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                    <img src="{% static 'img/plataforma/levels/level_' %}{{ user.perfil.level }}.png">
                 </figure>
                 <p>{{ user.first_name|upper }}</p>
             </div>
