@@ -16,7 +16,7 @@ def index(request):
 
 @login_required
 def home(request):
-    questoes_submetidas = Submission.objects.all().filter(autor=request.user)
+    questoes_submetidas = Submission.objects.all().filter(autor=request.user, status='OK')
     tags = Tags.objects.all()
 
     if 'ordenar-tag' in request.GET:

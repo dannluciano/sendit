@@ -1,58 +1,190 @@
 {% extends 'sistema/base.html' %}
 {% load staticfiles %}
 
-{% block menu_lateral %}
-    <div class="column is-2 menu_lateral">
-        <title>SendIT</title>
-        <aside class="menu">
-            <div class="img-usuario">
-                <figure class="image is-128x128">
-                    <img src="http://bulma.io/images/placeholders/128x128.png">
-                </figure>
-                <p>{{ user.first_name|upper }}</p>
+{% block menu_esquerda %}
+    <title>SendIT</title>
+    <div class="column is-3">
+      <div class="card is-fullwidth">
+        <header class="card-header">
+        </header>
+        <div class="card-content">
+          <a class="card-avatar">
+            <img class="card-avatar-img" src="{% static 'img/plataforma/levels/level_' %}{{ user.perfil.level }}.png">
+          </a>
+
+          <div class="card-user">
+            <div class="card-user-name">
+              <a href="#">{{ user.first_name|upper }}</a>
             </div>
-            <p class="menu-label">
-                Level: {{ user.perfil.level }}
-            </p>
-            <p class="menu-label">
-                XP: {{ user.perfil.xp }}
-            </p>
-            <p class="menu-label">
-                Categoria
-            </p>
-        </aside>
+{#                <span>#}
+{#                  <a href="#">@<span>jsmith</span></a>#}
+{#                </span>#}
+          </div>
+
+          <div class="card-stats">
+            <ul class="card-stats-list">
+              <li class="card-stats-item">
+                <a href="#">
+                  <span class="card-stats-key">Level</span>
+                  <span class="card-stats-val">{{ user.perfil.level }}</span>
+                </a>
+              </li>
+              <li class="card-stats-item">
+                <a href="#">
+                  <span class="card-stats-key">XP</span>
+                  <span class="card-stats-val">{{ user.perfil.xp }}</span>
+                </a>
+              </li>
+              <li class="card-stats-item">
+                <a href="#">
+                  <span class="card-stats-key">Categoria</span>
+                  <span class="card-stats-val"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="box trending">
+        <p class="trend-title"><span class="title is-5">Trends</span> · <a href="#">change</a></p>
+        <p class="trend-hashtag"><a href="#">#hashtag1</a><br>13k statuses</p>
+        <p class="trend-hashtag"><a href="#">#hashtag2</a><br>29k statuses</p>
+        <p class="trend-hashtag"><a href="#">#hashtag3</a><br>2k statuses</p>
+        <p class="trend-hashtag"><a href="#">#hashtag4</a><br>9k statuses</p>
+        <p class="trend-hashtag"><a href="#">#hashtag5</a><br>18k statuses</p>
+        <p class="trend-hashtag"><a href="#">#hashtag6</a><br>168k statuses</p>
+      </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <section class="section">
+    <div class="column is-9">
+      <div class="box">
         {% for questao_submetida in questoes %}
-        <div class="card questoes">
-            <header class="card-header">
-                <p class="card-header-title">
-                    <a href="questao/{{questao_submetida.id}}" class="links-questao">
-                        {{questao_submetida.questao}}
-                    </a>
-                </p>
-            </header>
-            <div class="card-content">
-                <div class="content">
-                    {{questao_submetida.questao.enunciado|safe|escape}}
-                    <br>
-                    {% for tag in questao_submetida.tags.all %}
-                        <small class="tag">{{tag.tag}}</small>
-                    {% endfor %}
-                </div>
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <a href="/questao/{{questao_submetida.questao.id}}" class="links-questao">
+                    {{questao_submetida.questao.titulo}}
+                </a>
+                <br>
+                {{questao_submetida.questao.enunciado|safe|escape}}
+              </p>
             </div>
-            <footer class="card-footer">
-                <p class="card-footer-item">Acertos: </p>
-                <p class="card-footer-item">Erros: </p>
-                <p class="card-footer-item">XP: {{questao_submetida.questao.xp}}</p>
-            </footer>
-        </div>
+            <nav class="level">
+              <div class="level-left">
+              </div>
+            <div class="level-right">
+                <p>XP: {{ questao_submetida.questao.xp }}</p>
+            </div>
+            </nav>
+          </div>
+        </article>
         {% endfor %}
-    </section>
-{% endblock content %}
+      </div>
+    </div>
+{% endblock %}
+
+{#{% block menu_direita %}#}
+{#  <div class="column is-3">#}
+{#      <div class="box">#}
+{#          <div class="dropdown is-hoverable">#}
+{#              <div class="dropdown-trigger">#}
+{#                  <button class="button back-laranja is-outlined" aria-haspopup="true" aria-controls="dropdown-menu4">#}
+{#                      <span>Tags</span>#}
+{#                      <span class="icon is-small">#}
+{#                          <i class="fa fa-angle-down" aria-hidden="true"></i>#}
+{#                      </span>#}
+{#                  </button>#}
+{#              </div>#}
+{#              <div class="dropdown-menu" id="dropdown-menu2" role="menu">#}
+{#                  <div class="dropdown-content">#}
+{#                      <hr class="dropdown-divider">#}
+{#                      <a href="/home/" class="dropdown-item">Voltar ao padrão</a>#}
+{#                      {% for tag in tags %}#}
+{#                          <hr class="dropdown-divider">#}
+{#                          <a href="{{ url }}?ordenar-tag={{ tag }}" class="dropdown-item">{{ tag }}</a>#}
+{#                      {% endfor %}#}
+{#                  </div>#}
+{#              </div>#}
+{#          </div>#}
+{#        <p><span class="title is-5">Who to follow</span> · <a href="#">Refresh</a> · <a href="#">View All</a></p>#}
+{#        <hr>#}
+{#        <div class="columns">#}
+{#          <div class="column is-3 is-marginless">#}
+{#            <div class="image">#}
+{#              <img src="https://placehold.it/200x200">#}
+{#            </div>#}
+{#          </div>#}
+{#          <div class="column is-9">#}
+{#            <p>#}
+{#              <a href="#">#}
+{#                <strong>John Smith</strong>#}
+{#                &commat;jsmith#}
+{#              </a>#}
+{#              <a href="#">#}
+{#                <i class="fa fa-times"></i>#}
+{#              </a>#}
+{#            </p>#}
+{#            <a class="button is-primary is-small">#}
+{#              <span>#}
+{#                + Follow#}
+{#              </span>#}
+{#            </a>#}
+{#          </div>#}
+{#        </div>#}
+{#        <div class="columns">#}
+{#          <div class="column is-3 is-marginless">#}
+{#            <div class="image">#}
+{#              <img src="https://placehold.it/200x200">#}
+{#            </div>#}
+{#          </div>#}
+{#          <div class="column is-9">#}
+{#            <p>#}
+{#              <a href="#">#}
+{#                <strong>Jane Smith</strong>#}
+{#                &commat;janesmith#}
+{#              </a>#}
+{#              <a href="#">#}
+{#                <i class="fa fa-times"></i>#}
+{#              </a>#}
+{#            </p>#}
+{#            <a class="button is-primary is-small">#}
+{#              <span>#}
+{#                + Follow#}
+{#              </span>#}
+{#            </a>#}
+{#          </div>#}
+{#        </div>#}
+{#        <div class="columns">#}
+{#          <div class="column is-3 is-marginless">#}
+{#            <div class="image">#}
+{#              <img src="https://placehold.it/200x200">#}
+{#            </div>#}
+{#          </div>#}
+{#          <div class="column is-9">#}
+{#            <p>#}
+{#              <a href="#">#}
+{#                <strong>Mike Scott</strong>#}
+{#                &commat;mscott#}
+{#              </a>#}
+{#              <a href="#">#}
+{#                <i class="fa fa-times"></i>#}
+{#              </a>#}
+{#            </p>#}
+{#            <a class="button is-primary is-small">#}
+{#              <span>#}
+{#                + Follow#}
+{#              </span>#}
+{#            </a>#}
+{#          </div>#}
+{#        </div>#}
+{##}
+{#      </div>#}
+{#    </div>#}
+{#{% endblock %}#}
 
 {% block footer %}
     <footer class="footer">
