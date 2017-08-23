@@ -16,9 +16,6 @@
             <div class="card-user-name">
               <a href="#">{{ user.first_name|upper }}</a>
             </div>
-{#                <span>#}
-{#                  <a href="#">@<span>jsmith</span></a>#}
-{#                </span>#}
           </div>
 
           <div class="card-stats">
@@ -60,10 +57,6 @@
 
 {% block content %}
     <div class="column is-6">
-{#          <div class="notification is-danger">#}
-{#            <button class="delete" onclick="((this).parentNode.remove())"></button>#}
-{#            This template is not yet finished, it may change. Please check the readme for more information.#}
-{#          </div>#}
       <div class="box">
         {% for questao in questoes %}
         <article class="media">
@@ -96,166 +89,13 @@
 {% block menu_direita %}
   <div class="column is-3">
       <div class="box">
-          <div class="dropdown is-hoverable">
-              <div class="dropdown-trigger">
-                  <button class="button back-laranja is-outlined" aria-haspopup="true" aria-controls="dropdown-menu4">
-                      <span>Tags</span>
-                      <span class="icon is-small">
-                          <i class="fa fa-angle-down" aria-hidden="true"></i>
-                      </span>
-                  </button>
-              </div>
-              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-                  <div class="dropdown-content">
-                      <hr class="dropdown-divider">
-                      <a href="/home/" class="dropdown-item">Voltar ao padrão</a>
-                      {% for tag in tags %}
-                          <hr class="dropdown-divider">
-                          <a href="{{ url }}?ordenar-tag={{ tag }}" class="dropdown-item">{{ tag }}</a>
-                      {% endfor %}
-                  </div>
-              </div>
+          <div class="trending">
+              <p class="trend-title"><span class="title is-5">Tags</span></p>
+              <p class="trend-hashtag"><a href="/home/">Mostrar Todas</a><br></p>
+              {% for tag in tags %}
+                  <p class="trend-hashtag"><a href="{{ url }}?ordenar-tag={{ tag }}">{{ tag }}</a><br></p>
+              {% endfor %}
           </div>
-        <p><span class="title is-5">Who to follow</span> · <a href="#">Refresh</a> · <a href="#">View All</a></p>
-        <hr>
-        <div class="columns">
-          <div class="column is-3 is-marginless">
-            <div class="image">
-              <img src="https://placehold.it/200x200">
-            </div>
-          </div>
-          <div class="column is-9">
-            <p>
-              <a href="#">
-                <strong>John Smith</strong>
-                &commat;jsmith
-              </a>
-              <a href="#">
-                <i class="fa fa-times"></i>
-              </a>
-            </p>
-            <a class="button is-primary is-small">
-              <span>
-                + Follow
-              </span>
-            </a>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-3 is-marginless">
-            <div class="image">
-              <img src="https://placehold.it/200x200">
-            </div>
-          </div>
-          <div class="column is-9">
-            <p>
-              <a href="#">
-                <strong>Jane Smith</strong>
-                &commat;janesmith
-              </a>
-              <a href="#">
-                <i class="fa fa-times"></i>
-              </a>
-            </p>
-            <a class="button is-primary is-small">
-              <span>
-                + Follow
-              </span>
-            </a>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-3 is-marginless">
-            <div class="image">
-              <img src="https://placehold.it/200x200">
-            </div>
-          </div>
-          <div class="column is-9">
-            <p>
-              <a href="#">
-                <strong>Mike Scott</strong>
-                &commat;mscott
-              </a>
-              <a href="#">
-                <i class="fa fa-times"></i>
-              </a>
-            </p>
-            <a class="button is-primary is-small">
-              <span>
-                + Follow
-              </span>
-            </a>
-          </div>
-        </div>
-
       </div>
     </div>
-{% endblock %}
-
-    <section class="section">
-        <div class="dropdown is-hoverable">
-            <div class="dropdown-trigger">
-                <button class="button back-laranja is-outlined" aria-haspopup="true" aria-controls="dropdown-menu4">
-                    <span>Tags</span>
-                    <span class="icon is-small">
-                        <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button>
-            </div>
-            <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-                <div class="dropdown-content">
-                    <hr class="dropdown-divider">
-                    <a href="/home/" class="dropdown-item">Voltar ao padrão</a>
-                    {% for tag in tags %}
-                        <hr class="dropdown-divider">
-                        <a href="{{ url }}?ordenar-tag={{ tag }}" class="dropdown-item">{{ tag }}</a>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        {% for questao in questoes %}
-        <div class="card questoes">
-            <header class="card-header">
-                <p class="card-header-title">
-                    <a href="/questao/{{questao.id}}" class="links-questao">
-                        {{questao.titulo}}
-                    </a>
-                </p>
-            </header>
-            <div class="card-content">
-                <div class="content">
-                    {{questao.enunciado|safe|escape}}
-                    <br>
-                    {% for tag in questao.tags.all %}
-                        <small class="tag">{{tag.tag}}</small>
-                    {% endfor %}
-                </div>
-            </div>
-            <footer class="card-footer">
-                <p class="card-footer-item">Acertos: </p>
-                <p class="card-footer-item">Erros: </p>
-                <p class="card-footer-item">XP: {{questao.xp}}</p>
-            </footer>
-        </div>
-        {% endfor %}
-    </section>
-
-{% block footer %}
-    <footer class="footer">
-        <div class="container">
-            <div class="content has-text-centered">
-                <p>
-                    <strong class="nome-projeto-footer">SendIT</strong> by <a href="http://jgthms.com">Nós 3</a>. The source
-                    code is licensed
-                    <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-                    is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</a>.
-                </p>
-                <p>
-                    <a class="icon" href="https://github.com/jgthms/bulma">
-                        <i class="fa fa-github"></i>
-                    </a>
-                </p>
-            </div>
-        </div>
-    </footer>
 {% endblock %}
