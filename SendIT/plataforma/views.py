@@ -46,7 +46,7 @@ def questoes_concluidas(request):
 @login_required
 def ver_questao(request, questao_id):
     # Para nao abrir as questoes que ja submeteu
-    questaoEscolhida = Question.objects.filter(id=questao_id)
+    questaoEscolhida = Question.objects.filter(id=questao_id).first()
     questoesSubmetidas = Submission.objects.all().filter(autor=request.user, status='OK')
 
     for questao_submetida in questoesSubmetidas:

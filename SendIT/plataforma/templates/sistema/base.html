@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    {% block title %}{% endblock %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -35,16 +36,10 @@
     </div>
 </nav>
 <section class="section main">
-    <div class="container">
-        <div class="columns">
-            {% block menu_esquerda %}
-            {% endblock %}
-            {% block content %}
-            {% endblock %}
-            {% block menu_direita %}
-            {% endblock %}
-        </div>
-    </div>
+    {% block content %}
+    {% endblock %}
+    {% block menu_direita %}
+    {% endblock %}
 </section>
 <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
 <script src="{% static 'js/clipboard.min.js' %}"></script>

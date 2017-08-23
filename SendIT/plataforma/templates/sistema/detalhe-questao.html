@@ -1,64 +1,65 @@
 {% extends 'sistema/base.html' %}
 {% load staticfiles %}
 
+{% block title %}<title>{{ questao.titulo }}</title>{% endblock %}
 {% block content %}
-{% for questao in questao %}
-    <title>{{questao.titulo}}</title>
-    <div class="column" id="enunciado">
-        <h1 class="title titulo-detalhe-questao">
-            {{questao.titulo}}
-        </h1>
-        <br />
-        <h2 class="subtitle">
-            {{questao.enunciado|safe|escape}}
-        </h2>
-        <br />
-        <div class="columns entrada-saida">
-            <div class="column">
-                <h2 class="subtitle">
-                    Entrada: <br>
-                    {{questao.entrada|linebreaksbr}}
-                </h2>
-            </div>
-            <div class="column saida">
-                <h2 class="subtitle">
-                    Saída: <br>
-                    {{questao.saida|linebreaksbr}}
-                </h2>
+    <div class="columns">
+        <div class="column" id="enunciado">
+            <h1 class="title titulo-detalhe-questao">
+                {{ questao.titulo }}
+            </h1>
+            <br/>
+            <h2 class="subtitle">
+                {{ questao.enunciado|safe|escape }}
+            </h2>
+            <br/>
+            <div class="columns entrada-saida">
+                <div class="column">
+                    <h2 class="subtitle">
+                        Entrada: <br>
+                        {{ questao.entrada|linebreaksbr }}
+                    </h2>
+                </div>
+                <div class="column saida">
+                    <h2 class="subtitle">
+                        Saída: <br>
+                        {{ questao.saida|linebreaksbr }}
+                    </h2>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="div-botao-aumentar-diminuir">
-      <a href="#" id="botao" onclick="aumentar_diminuir('aumentar');">
+        <div class="div-botao-aumentar-diminuir">
+            <a href="#" id="botao" onclick="aumentar_diminuir('aumentar')">
         <span class="icon is-large botao-aumentar-diminuir">
           <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
         </span>
-      </a>
+            </a>
+        </div>
+        <div class="column editor-ace">
+            <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
+                {% csrf_token %}
+                <div id="editor">alert("Olá");</div>
+                <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
+                <div class="botao-flutuante">
+                    <button class="button enviar-questao is-medium">
+                    <span class="icon is-medium">
+                        <i class="icone-foguete"></i>
+                    </span>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="column editor-ace">
-        <form id="code" action="/questoes/{{questao.id}}/submeter/" method="post">
-            {% csrf_token %}
-            <div id="editor">alert("Olá");</div>
-            <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-            <div class="botao-flutuante">
-                <button class="button enviar-questao is-medium">
-                <span class="icon is-medium">
-                    <i class="fa fa-play"></i>
-                </span>
-                </button>
-            </div>
-        </form>
     </div>
-{% endfor %}
 {% endblock content %}
 
 {% block js %}
-<script src="{% static 'js/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'js/app.js' %}" type="text/javascript" charset="utf-8"></script>
-<script>
-  function aumentar_diminuir(opcao) {
-      $("#enunciado").toggle(200);
-      $(".fa-chevron-circle-left").toggleClass('invertido');
-  }
-</script>
+    <script src="{% static 'js/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/app.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script>
+      function aumentar_diminuir (opcao) {
+        $('#enunciado').toggle(200)
+        $('.fa-chevron-circle-left').toggleClass('invertido')
+      }
+    </script>
 {% endblock js %}
