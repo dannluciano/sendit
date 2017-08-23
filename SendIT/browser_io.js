@@ -34,9 +34,10 @@ function prompt (msg) {
     }
 
     var char = buffer.toString('utf8')
-    if (char === '\r') {
+      // Read next byte when char is \r or result is empty and char is blank (' ', '\t')
+    if (char === '\r' || (result.length === 0 && (char === ' ' || char === '\t'))) {
       continue
-    } else if (char === '\n') {
+    } else if (char === '\n' || char === ' ' || char === '\t') {
       break
     } else {
       result += char
@@ -48,13 +49,7 @@ function prompt (msg) {
 }
 
 function confirm (msg) {
-  const result = prompt()
+  const result = prompt()[0].toLowerCase()
 
-  if ((result === 'Sim') || (result === 'sim') || (result === 'S') || (result === 's') ||
-    (result === 'Yes') || (result === 'yes') || (result === 'Y') || (result === 'y') ||
-    (result === 'Ok') || (result === 'ok') || (result === '1')) {
-    return true
-  } else {
-    return false
-  }
+  return ((result === 't') || (result === 's') || (result === 'y') || (result === '1'))
 }

@@ -103,6 +103,56 @@ for (let i = 0; i < 5; i++) {
 64
 100
 """
+
+    def test_run_ok_submission_with_prompt_with_two_inputs_in_same_line(self):
+        code = """
+for (let i = 0; i < 5; i++) {
+    num = parseInt(prompt())
+    exp = parseInt(prompt())
+    alert(Math.pow(num, exp))
+}
+"""
+
+        expected_input = """2 2
+4 2
+6 2
+8 2
+10 2
+"""
+
+        expected_output = """4
+16
+36
+64
+100
+"""
+
+        result = run_submission(code, expected_input, expected_output)
+        self.assertEqual(result, 'OK')
+
+    def test_ok_submission_with_prompt_two_inputs_in_same_line_with_spaces(self):
+        code = """
+for (let i = 0; i < 5; i++) {
+    num = parseInt(prompt())
+    exp = parseInt(prompt())
+    alert(Math.pow(num, exp))
+}
+"""
+
+        expected_input = """2   2
+4   2
+6   2
+8   2
+10  2
+"""
+
+        expected_output = """4
+16
+36
+64
+100
+"""
+
         result = run_submission(code, expected_input, expected_output)
         self.assertEqual(result, 'OK')
 
@@ -120,8 +170,8 @@ Sim
 sim
 S
 s
-Ok
-ok
+True
+true
 1
 """
 
@@ -142,7 +192,7 @@ true
 
     def test_run_ok_submission_with_confirm_false(self):
         code = """
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i <= 14; i++) {
     alert(confirm())
 }
 """
@@ -156,9 +206,16 @@ N
 n
 0
 Não
+False
+F
+false
+f
 """
 
-        expected_output = """
+        expected_output = """false
+false
+false
+false
 false
 false
 false
