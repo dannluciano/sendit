@@ -1,85 +1,89 @@
 {% extends 'sistema/base.html' %}
 {% load staticfiles %}
 
-{% block menu_esquerda %}
-    <title>SendIT</title>
-    <div class="column is-3">
-      <div class="card is-fullwidth">
-        <header class="card-header">
-        </header>
-        <div class="card-content">
-          <a class="card-avatar">
-            <img class="card-avatar-img" src="{% static 'img/plataforma/levels/level_' %}{{ user.perfil.level }}.png">
-          </a>
-
-          <div class="card-user">
-            <div class="card-user-name">
-              <a href="#">{{ user.first_name|upper }}</a>
-            </div>
-          </div>
-
-          <div class="card-stats">
-            <ul class="card-stats-list">
-              <li class="card-stats-item">
-                <a href="#">
-                  <span class="card-stats-key">Level</span>
-                  <span class="card-stats-val">{{ user.perfil.level }}</span>
-                </a>
-              </li>
-              <li class="card-stats-item">
-                <a href="#">
-                  <span class="card-stats-key">XP</span>
-                  <span class="card-stats-val">{{ user.perfil.xp }}</span>
-                </a>
-              </li>
-              <li class="card-stats-item">
-                <a href="#">
-                  <span class="card-stats-key">Categoria</span>
-                  <span class="card-stats-val"></span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="spacer"></div>
-      <div class="box trending">
-        <p class="trend-title"><span class="title is-5">Trends</span> · <a href="#">change</a></p>
-        <p class="trend-hashtag"><a href="#">#hashtag1</a><br>13k statuses</p>
-        <p class="trend-hashtag"><a href="#">#hashtag2</a><br>29k statuses</p>
-        <p class="trend-hashtag"><a href="#">#hashtag3</a><br>2k statuses</p>
-        <p class="trend-hashtag"><a href="#">#hashtag4</a><br>9k statuses</p>
-        <p class="trend-hashtag"><a href="#">#hashtag5</a><br>18k statuses</p>
-        <p class="trend-hashtag"><a href="#">#hashtag6</a><br>168k statuses</p>
-      </div>
-    </div>
-{% endblock %}
+{% block title %} <title>Questões Concluídas | SendIT</title> {% endblock %}
 
 {% block content %}
-    <div class="column is-9">
-      <div class="box">
-        {% for questao_submetida in questoes %}
-        <article class="media">
-          <div class="media-content">
-            <div class="content">
-              <p>
-                <a href="/questao/{{questao_submetida.questao.id}}" class="links-questao">
-                    {{questao_submetida.questao.titulo}}
-                </a>
-                <br>
-                {{questao_submetida.questao.enunciado|safe|escape}}
-              </p>
+
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3">
+                <div class="card is-fullwidth">
+                    <header class="card-header">
+                    </header>
+                    <div class="card-content">
+                        <a class="card-avatar">
+                            <img class="card-avatar-img"
+                                 src="{% static 'img/plataforma/levels/level_' %}{{ user.perfil.level }}.png">
+                        </a>
+
+                        <div class="card-user">
+                            <div class="card-user-name">
+                                <a href="#">{{ user.first_name|upper }}</a>
+                            </div>
+                        </div>
+
+                        <div class="card-stats">
+                            <ul class="card-stats-list">
+                                <li class="card-stats-item">
+                                    <a href="#">
+                                        <span class="card-stats-key">Level</span>
+                                        <span class="card-stats-val">{{ user.perfil.level }}</span>
+                                    </a>
+                                </li>
+                                <li class="card-stats-item">
+                                    <a href="#">
+                                        <span class="card-stats-key">XP</span>
+                                        <span class="card-stats-val">{{ user.perfil.xp }}</span>
+                                    </a>
+                                </li>
+                                <li class="card-stats-item">
+                                    <a href="#">
+                                        <span class="card-stats-key">Categoria</span>
+                                        <span class="card-stats-val"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="spacer"></div>
+                <div class="box trending">
+                    <p class="trend-title"><span class="title is-5">Trends</span> · <a href="#">change</a></p>
+                    <p class="trend-hashtag"><a href="#">#hashtag1</a><br>13k statuses</p>
+                    <p class="trend-hashtag"><a href="#">#hashtag2</a><br>29k statuses</p>
+                    <p class="trend-hashtag"><a href="#">#hashtag3</a><br>2k statuses</p>
+                    <p class="trend-hashtag"><a href="#">#hashtag4</a><br>9k statuses</p>
+                    <p class="trend-hashtag"><a href="#">#hashtag5</a><br>18k statuses</p>
+                    <p class="trend-hashtag"><a href="#">#hashtag6</a><br>168k statuses</p>
+                </div>
             </div>
-            <nav class="level">
-              <div class="level-left">
-              </div>
-            <div class="level-right">
-                <p>XP: {{ questao_submetida.questao.xp }}</p>
+            <div class="column is-9">
+                <div class="box">
+                    {% for questao_submetida in questoes %}
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <a href="/questao/{{ questao_submetida.questao.id }}" class="links-questao">
+                                            {{ questao_submetida.questao.titulo }}
+                                        </a>
+                                        <br>
+                                        {{ questao_submetida.questao.enunciado|safe|escape }}
+                                    </p>
+                                </div>
+                                <nav class="level">
+                                    <div class="level-left">
+                                    </div>
+                                    <div class="level-right">
+                                        <p>XP: {{ questao_submetida.questao.xp }}</p>
+                                    </div>
+                                </nav>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
             </div>
-            </nav>
-          </div>
-        </article>
-        {% endfor %}
-      </div>
+        </div>
     </div>
 {% endblock %}
