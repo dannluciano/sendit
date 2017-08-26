@@ -34,13 +34,15 @@ def home(request):
                 pass
 
     return render(request, 'sistema/home.html', {'questoes': questoes,
-                                                 'tags': tags})
+                                                 'tags': tags,
+                                                 'link': 1})
 
 
 @login_required
 def questoes_concluidas(request):
     questoes = Submission.objects.all().filter(autor=request.user, status='OK').order_by('-id')
-    return render(request, 'sistema/questoes-concluidas.html', {'questoes': questoes})
+    return render(request, 'sistema/questoes-concluidas.html', {'questoes': questoes,
+                                                                'link': 2})
 
 
 @login_required
