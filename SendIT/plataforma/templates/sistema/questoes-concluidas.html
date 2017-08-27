@@ -55,28 +55,28 @@
             </div>
         </div>
         <div class="column is-6">
-            {% for submissao in submissoes %}
+            {% for questao in questoes %}
             <div class="box">
                 <article class="media">
                     <div class="media-content">
                         <div class="content">
                             <h2 class="subtitle">
-                                <a href="/questao/{{ questao_submetida.questao.id }}" class="links-questao">
-                                    {{ submissao.questao.titulo }}
+                                <a href="/questao/{{ questao.id }}" class="links-questao">
+                                    {{ questao.titulo }}
                                 </a>
                             </h2>
                             <div>
-                                {{ submissao.questao.enunciado|safe|escape }}
+                                {{ questao.enunciado|safe|escape }}
                             </div>
                         </div>
                         <nav class="level">
                             <div class="level-left">
-                                {% for tag in submissao.questao.tags.all %}
+                                {% for tag in questao.tags.all %}
                                 <small class="tag">{{ tag.tag }}</small>
                                 {% endfor %}
                             </div>
                             <div class="level-right">
-                                <p>XP: {{ submissao.questao.xp }}</p>
+                                <p>XP: {{ questao.xp }}</p>
                             </div>
                         </nav>
                     </div>

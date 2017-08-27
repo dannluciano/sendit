@@ -16,10 +16,11 @@ def index(request):
 
 @login_required
 def home(request):
-    questoes_submetidas = Submission.objects.filter(autor=request.user, status='OK')
-    tags = Tags.objects.all()
+    submissoes_ok = Submission.objects.filter(
+        autor=request.user, status='OK')
 
-    questoes = Question.objects
+    questoes = Question.objects.exclude(
+        submission__in=submissoes_ok).prefetch_related('tags')
 
     if 'tag' in request.GET:
         tag = request.GET.get('tag')
@@ -28,10 +29,7 @@ def home(request):
 
     questoes = questoes.order_by('-id')
 
-    for questao_submetida in questoes_submetidas:
-        for questao in questoes:
-            if questao.id == questao_submetida.questao.id:
-                questoes = questoes.exclude(id=questao_submetida.questao.id)
+    tags = Tags.objects.all()
 
     return render(request,
                   'sistema/home.html', {
@@ -44,34 +42,38 @@ def home(request):
 
 @login_required
 def questoes_concluidas(request):
-    submissoes = Submission.objects.filter(autor=request.user, status='OK')
-    tags = Tags.objects.all()
+    submissoes_ok = Submission.objects.filter(
+        autor=request.user, status='OK').prefetch_related('questao')
+    questoes = Question.objects.filter(
+        submission__in=submissoes_ok).prefetch_related('tags')
+
+    tags = Tags.objects.distinct().filter(question__in=questoes)
 
     if 'tag' in request.GET:
         tag = request.GET.get('tag')
         if tag != 'all':
-            submissoes = submissoes.filter(questao__tags__tag__icontains=tag)
+            questoes = questoes.filter(tags__tag__icontains=tag)
 
-    submissoes = submissoes.order_by('-questao__id')
+    questoes = questoes.order_by('-id')
 
     return render(request,
                   'sistema/questoes-concluidas.html', {
-                      'submissoes': submissoes,
+                      'questoes': questoes,
                       'tags': tags,
                       'link': 2})
 
 
 @login_required
 def ver_questao(request, questao_id):
-    # Para nao abrir as questoes que ja submeteu
-    questaoEscolhida = Question.objects.filter(id=questao_id).first()
-    questoesSubmetidas = Submission.objects.filter(autor=request.user, status='OK')
+    questao = get_object_or_404(Question, pk=questao_id)
+    submissao_ok = Submission.objects.filter(
+        autor=request.user, status='OK', questao_id=questao.id)
 
-    for questao_submetida in questoesSubmetidas:
-        if questao_submetida.questao.id == questao_id:
-            return HttpResponseRedirect("/home/")
-
-    return render(request, 'sistema/detalhe-questao.html', {'questao': questaoEscolhida})
+    return render(request,
+                  'sistema/detalhe-questao.html', {
+                      'questao': questao,
+                      'submissao_ok': submissao_ok
+                  })
 
 
 @require_POST
@@ -119,7 +121,8 @@ def entrar(request):
         return HttpResponseRedirect("/home/")
 
     usuario_aux = User.objects.get(email=request.POST['email'])
-    usuario = authenticate(username=usuario_aux.username, password=request.POST["senha"])
+    usuario = authenticate(username=usuario_aux.username,
+                           password=request.POST["senha"])
     if usuario is not None:
         login(request, usuario)
         return HttpResponseRedirect('/home/')
