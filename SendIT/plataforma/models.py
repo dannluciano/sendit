@@ -5,6 +5,7 @@ from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import math
+import random
 
 with open('browser_io.js', 'r') as file:
     DEFAULT_PRE_CODE = file.read()
@@ -133,6 +134,41 @@ class Submission(models.Model):
         ('OK', 'OK'))
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=36, default=STATUS_CHOICES[0])
+
+    STATUS_PHRASES = {
+        'JSSintaxError': [
+            ('Erro de sintaxe! Tente Novamente.', ''),
+            'Erro de sintaxe! Verifique os parenteses, colchetes e chaves.',
+            'Erro de sintaxe! Não foi dessa vez.'
+        ],
+        'JSRuntimeError': [
+            'Erro em execução!'
+        ],
+        'JSTimeoutError': [
+            'Tempo de execução excedido!'
+        ],
+        'DiffError': [
+            ('Saída computada diferente da saída esperada!', 'img/differror1.png'),
+            ('Essa foi por Pouco!', 'img/differror2.png')
+        ],
+        'OK': [
+            'Parabens!',
+            'Na mosca'
+        ]
+    }
+
+    def _get_random_status(self):
+        try:
+            self._random_status
+        except AttributeError:
+            self._random_status = random.choice(self.STATUS_PHRASES[self.status])
+        return self._random_status
+
+    def get_random_status_phrase(self):
+        return self._get_random_status()[0]
+
+    def get_random_status_image(self):
+        return self._get_random_status()[1]
 
     def save(self, *args, **kwargs):
         casos_de_testes = self.questao.casetest_set.all()

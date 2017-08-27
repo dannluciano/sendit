@@ -16,46 +16,60 @@ def index(request):
 
 @login_required
 def home(request):
-    questoes_submetidas = Submission.objects.all().filter(autor=request.user, status='OK')
+    questoes_submetidas = Submission.objects.filter(autor=request.user, status='OK')
     tags = Tags.objects.all()
 
-    if 'ordenar-tag' in request.GET:
-        ordenarTag = request.GET.get('ordenar-tag')
-        questoes = Question.objects.all().filter(tags__tag__icontains=ordenarTag).order_by('-id')
-    else:
-        questoes = Question.objects.all().order_by('-id')
+    questoes = Question.objects
 
+    if 'tag' in request.GET:
+        tag = request.GET.get('tag')
+        if tag != 'all':
+            questoes = questoes.filter(tags__tag__icontains=tag)
+
+    questoes = questoes.order_by('-id')
 
     for questao_submetida in questoes_submetidas:
-        for questaoQuestion in questoes:
-            if questaoQuestion.id == questao_submetida.questao.id:
+        for questao in questoes:
+            if questao.id == questao_submetida.questao.id:
                 questoes = questoes.exclude(id=questao_submetida.questao.id)
-            else:
-                pass
 
-    return render(request, 'sistema/home.html', {'questoes': questoes,
-                                                 'tags': tags,
-                                                 'link': 1})
+    return render(request,
+                  'sistema/home.html', {
+                      'user': request.user,
+                      'questoes': questoes,
+                      'tags': tags,
+                      'link': 1
+                  })
 
 
 @login_required
 def questoes_concluidas(request):
-    questoes = Submission.objects.all().filter(autor=request.user, status='OK').order_by('-id')
-    return render(request, 'sistema/questoes-concluidas.html', {'questoes': questoes,
-                                                                'link': 2})
+    submissoes = Submission.objects.filter(autor=request.user, status='OK')
+    tags = Tags.objects.all()
+
+    if 'tag' in request.GET:
+        tag = request.GET.get('tag')
+        if tag != 'all':
+            submissoes = submissoes.filter(questao__tags__tag__icontains=tag)
+
+    submissoes = submissoes.order_by('-questao__id')
+
+    return render(request,
+                  'sistema/questoes-concluidas.html', {
+                      'submissoes': submissoes,
+                      'tags': tags,
+                      'link': 2})
 
 
 @login_required
 def ver_questao(request, questao_id):
     # Para nao abrir as questoes que ja submeteu
     questaoEscolhida = Question.objects.filter(id=questao_id).first()
-    questoesSubmetidas = Submission.objects.all().filter(autor=request.user, status='OK')
+    questoesSubmetidas = Submission.objects.filter(autor=request.user, status='OK')
 
     for questao_submetida in questoesSubmetidas:
         if questao_submetida.questao.id == questao_id:
             return HttpResponseRedirect("/home/")
-        else:
-            pass
 
     return render(request, 'sistema/detalhe-questao.html', {'questao': questaoEscolhida})
 
@@ -63,26 +77,20 @@ def ver_questao(request, questao_id):
 @require_POST
 @login_required
 def criar_submissao(request, questao_id):
-    questao_id = questao_id
     questao = get_object_or_404(Question, pk=questao_id)
-    questaoEnviada = Question.objects.all().filter(id=questao_id)
-    xp_questao = questao.xp
     codigo = request.POST['editor']
-    id_autor = request.user
 
-    sub = Submission(autor=id_autor, questao=questao, codigo=codigo)
+    sub = Submission(autor=request.user, questao=questao, codigo=codigo)
     sub.save()
-    resultado = sub.status
 
-    if resultado == 'OK':
-        request.user.perfil.xp += xp_questao
+    if sub.status == 'OK':
+        request.user.perfil.xp += questao.xp
         request.user.save()
 
-    return render(request, 'sistema/resultado.html', {'codigo': codigo,
-                                                      'questao': questaoEnviada,
-                                                      'status': resultado,
-                                                      'id_questao': questao_id,
-                                                      'xp_questao': xp_questao})
+    return render(request,
+                  'sistema/resultado.html', {
+                      'submissao': sub,
+                  })
 
 
 @require_POST
