@@ -27,7 +27,7 @@
         <a href="/home/"> Voltar para lista de questões</a>
     </p>
     {% else %}
-    <a href="/questao/{{ submissao.questao.id }}/">Tentar Novamente</a>
+    <a href="/questao/{{ submissao.questao.id }}/?codigo-enviado={{ codigo_enviado }}">Tentar Novamente</a>
     {% endifequal %}
 </section>
 

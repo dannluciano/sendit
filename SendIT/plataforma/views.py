@@ -69,11 +69,19 @@ def ver_questao(request, questao_id):
     submissao_ok = Submission.objects.filter(
         autor=request.user, status='OK', questao_id=questao.id)
 
-    return render(request,
-                  'sistema/detalhe-questao.html', {
-                      'questao': questao,
-                      'submissao_ok': submissao_ok
-                  })
+    if 'codigo-enviado' in request.GET:
+        return render(request,
+                      'sistema/detalhe-questao.html', {
+                          'questao': questao,
+                          'submissao_ok': submissao_ok,
+                          'codigo_enviado': request.GET.get('codigo-enviado'),
+                      })
+    else:
+        return render(request,
+                      'sistema/detalhe-questao.html', {
+                          'questao': questao,
+                          'submissao_ok': submissao_ok,
+                      })
 
 
 @require_POST
@@ -92,6 +100,7 @@ def criar_submissao(request, questao_id):
     return render(request,
                   'sistema/resultado.html', {
                       'submissao': sub,
+                      'codigo_enviado': codigo,
                   })
 
 

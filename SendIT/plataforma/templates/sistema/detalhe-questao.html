@@ -39,6 +39,20 @@
                 {% if submissao_ok %}
                 <h1 class="title">Codigo Enviado</h1>
                 <pre><code>{{submissao_ok.codigo}}</code></pre>
+                {% elif codigo_enviado %}
+                <h1 class="title">Editor</h1>
+                <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
+                    {% csrf_token %}
+                    <div id="editor">{{ codigo_enviado|linebreaksbr }}</div>
+                    <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
+                    <div class="botao-flutuante">
+                        <button class="button enviar-questao is-medium">
+                            <span class="icon is-medium">
+                                <i class="fa fa-rocket" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+                </form>
                 {% else %}
                 <h1 class="title">Editor</h1>
                 <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
