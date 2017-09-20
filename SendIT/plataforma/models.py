@@ -137,23 +137,35 @@ class Submission(models.Model):
 
     STATUS_PHRASES = {
         'JSSintaxError': [
-            ('Erro de sintaxe! Tente Novamente.', ''),
-            'Erro de sintaxe! Verifique os parenteses, colchetes e chaves.',
-            'Erro de sintaxe! Não foi dessa vez.'
+            ('Erro de sintaxe! Tente Novamente.', 'img/errosintaxe1.png'),
+            ('Erro de sintaxe! Verifique os parenteses, colchetes e chaves.', 'img/errosintaxe2.png'),
+            ('Ahhh não! Não consegui executar o seu código todo. Isso aconteceu por conta de um erro de sintaxe', 'img/errosintaxe3.png'),
+            ('Será que não tem um ponto e vírgula ou um parênteses faltando?', 'img/errosintaxe4.png')
         ],
         'JSRuntimeError': [
-            'Erro em execução!'
+            ('Erro de execução! Tente Novamente.', 'img/erroexecucao1.png'),
+            ('Seu código morreu huahuahua! Ocorreu um erro de execução.', 'img/erroexecucao2.png'),
+            ('Quando isso me acontece dá uma tristeza! Não consegiu executar o seu código. Tem alguma coisa erra nele.', 'img/erroexecucao3.png'),
+            ('Tem certeza que não escreveu alguma nome errado? ', 'img/erroexecucao4.png')
         ],
         'JSTimeoutError': [
-            'Tempo de execução excedido!'
+            ('Tempo de execução excedido! Me deu até sono! Tente Novamente.', 'img/tempoexecucao1.png'),
+            ('O tempo pra executar esse código demorou tanto que eu já encontrei até um alienígena perdido! Tente Novamente.', 'img/tempoexecucao2.png'),
+            ('Sabe a piadinha de navagadores? Seu código está abaixo do IE kkkkkkk', 'img/tempoexecucao3.png'),
+            ('Até o Rubinho faria em um tempo melhor', 'img/tempoexecucao4.png')
         ],
         'DiffError': [
             ('Saída computada diferente da saída esperada!', 'img/differror1.png'),
-            ('Essa foi por Pouco!', 'img/differror2.png')
+            ('Essa foi por Pouco!', 'img/differror2.png'),
+            ('Ops, esse código não era bem o que eu estava esperando!', 'img/differror3.png'),
+            ('Encontrei um erro! A sua saída não está de acordo com a questão.', 'img/differror4.png')
         ],
         'OK': [
-            'Parabens!',
-            'Na mosca'
+            ('Uau! Bem na mosca.', 'img/ok1.png'),
+            ('Você não tem bola de cristal aí não né? Acertou tudo!', 'img/ok2.png'),
+            ('Estou fascinado com essa solução. Parabéns', 'img/ok3.png'),
+            ('Que coisa linda de se ver! Continue sempre assim.', 'img/ok4.png'),
+            ('Que ideia brilhante, estou orgulhoso de você. Acertou a questão.', 'img/ok5.png')
         ]
     }
 

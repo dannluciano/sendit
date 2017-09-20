@@ -13,7 +13,7 @@
             {{ submissao.questao.titulo }}
         </a>
     </h1>
-    <picture>
+    <picture class="img-resultado-questao">
         <img src="{% static submissao.get_random_status_image %}" alt=" Imagem de {{ submissao.status }}">
     </picture>
     <h2 class="subtitle resultado-submissao">

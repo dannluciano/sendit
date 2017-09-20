@@ -327,3 +327,7 @@ span.tag a:hover{
 .trend-hashtag a:hover{
   color: #ff8c6b;
 }
+.img-resultado-questao img{
+  width: 128px;
+  height: 128px;
+}
