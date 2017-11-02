@@ -66,22 +66,14 @@ def questoes_concluidas(request):
 @login_required
 def ver_questao(request, questao_id):
     questao = get_object_or_404(Question, pk=questao_id)
-    submissao_ok = Submission.objects.filter(
-        autor=request.user, status='OK', questao_id=questao.id)
+    ultima_submissao = Submission.objects.filter(
+        autor=request.user, questao_id=questao.id).first()
 
-    if 'codigo-enviado' in request.GET:
-        return render(request,
-                      'sistema/detalhe-questao.html', {
-                          'questao': questao,
-                          'submissao_ok': submissao_ok,
-                          'codigo_enviado': request.GET.get('codigo-enviado'),
-                      })
-    else:
-        return render(request,
-                      'sistema/detalhe-questao.html', {
-                          'questao': questao,
-                          'submissao_ok': submissao_ok,
-                      })
+    return render(request,
+                  'sistema/detalhe-questao.html', {
+                      'questao': questao,
+                      'ultima_submissao': ultima_submissao,
+                  })
 
 
 @require_POST

@@ -191,8 +191,14 @@ class Submission(models.Model):
 
         super(Submission, self).save(*args, **kwargs)
 
+    def is_ok(self):
+        return self.status == 'OK'
+
     def __str__(self):
         return f'Questão-{self.questao.id}-Submissão-{self.id}-{self.status}'
+
+    class Meta:
+        ordering = ['-id']
 
 
 class SubmissionSummary(models.Model):
