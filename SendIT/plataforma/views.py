@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from random import randint
 
 
 def index(request):
@@ -85,6 +86,20 @@ def criar_submissao(request, questao_id):
     sub = Submission(autor=request.user, questao=questao, codigo=codigo)
     sub.save()
 
+    animacoes = ['bounce',
+                 'bounceIn',
+                 'bounceInDown',
+                 'bounceInRight',
+                 'bounceInLeft',
+                 'bounceInUp',
+                 'flash',
+                 'fadeInDown',
+                 'zoomIn',
+                 'jackInTheBox',
+                 'rollIn']
+
+    animacao = randint(0, 11)
+
     if sub.status == 'OK':
         request.user.perfil.xp += questao.xp
         request.user.save()
@@ -93,6 +108,7 @@ def criar_submissao(request, questao_id):
                   'sistema/resultado.html', {
                       'submissao': sub,
                       'codigo_enviado': codigo,
+                      'animacao': animacoes[animacao],
                   })
 
 
