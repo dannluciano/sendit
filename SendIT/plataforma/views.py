@@ -98,7 +98,7 @@ def criar_submissao(request, questao_id):
                  'jackInTheBox',
                  'rollIn']
 
-    animacao = randint(0, 11)
+    animacao = randint(0, 10)
 
     if sub.status == 'OK':
         request.user.perfil.xp += questao.xp
