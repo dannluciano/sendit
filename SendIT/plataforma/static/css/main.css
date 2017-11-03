@@ -14,12 +14,12 @@ body {
 
 #nome-projeto {
   font-family: 'Gochi Hand', cursive;
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #f95738;
 }
 
 #nome-projeto span {
-  color: #faf0ca;
+  color: #959383;
 }
 
 .nome-projeto-footer {
@@ -88,6 +88,8 @@ body {
 .imagem-inicial {
   background-image: url('../img/inicial.jpeg');
   background-attachment: fixed;
+  /*background-size: 100% 100%;*/
+  background-repeat: no-repeat;
 }
 
 .imagem-inicial h1,
@@ -149,14 +151,10 @@ body {
 
 .form-login input {
   padding: 9px;
+  height: 35px;
   background-color: rgb(255, 255, 255);
   border: rgb(181, 181, 181) solid 1px;
   border-radius: 3px;
-  border-image-outset: 0 0 0 0;
-  border-image-repeat: stretch stretch;
-  border-image-slice: 100% 100% 100% 100%;
-  border-image-source: none;
-  border-image-width: 1 1 1 1;
 }
 
 .form-login button {
