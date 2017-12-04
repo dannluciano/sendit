@@ -9,12 +9,13 @@
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
   <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+  <link rel="icon" href="{% static 'img/icon.png' %}" >
   <title>SendIT - Plataforma de programação</title>
 </head>
 <body>
   <nav class="nav menu-cima">
     <div class="nav-left">
-      <a class="nav-item" href="/" id="nome-projeto">Send<span>IT</span></a>
+      <a class="nav-item" href="/" id="nome-projeto"><img src="{% static 'img/logo.png' %}" alt="">end<span>IT</span></a>
     </div>
     <span class="nav-toggle">
       <span></span>
@@ -24,13 +25,13 @@
     <div class="nav-right nav-menu form-login">
       <form action="/entrar/" method="post">
         {% csrf_token %}
-        <p class="control">
+{#        <p class="control">#}
           <input class="" type="email" placeholder="Digite seu email" name="email">
           <input class="" type="password" placeholder="Digite sua senha" name="senha">
           <button class="button is-info">
             Entrar
           </button>
-        </p>
+{#        </p>#}
       </form>
     </div>
   </nav>
