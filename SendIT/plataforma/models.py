@@ -113,7 +113,7 @@ class Question(models.Model):
 
 
 class CaseTest(models.Model):
-    questao = models.ForeignKey(Question)
+    questao = models.ForeignKey(Question, on_delete=models.CASCADE)
     entrada = models.TextField(blank=True)
     saida = models.TextField(blank=True)
 
@@ -122,8 +122,8 @@ class CaseTest(models.Model):
 
 
 class Submission(models.Model):
-    autor = models.ForeignKey(User)
-    questao = models.ForeignKey(Question)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    questao = models.ForeignKey(Question, on_delete=models.CASCADE)
     codigo = models.TextField()
     STATUS_CHOICES = (
         ('Waiting', 'Esperando ser executada.'),
