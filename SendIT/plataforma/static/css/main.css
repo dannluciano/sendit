@@ -94,7 +94,7 @@ body {
 
 .imagem-inicial h1,
 .imagem-inicial h2 {
-  color: white;
+  color: rgba(0,0,0,0.7);
 }
 
 .link-cadastrar {
