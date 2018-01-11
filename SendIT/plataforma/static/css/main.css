@@ -86,15 +86,20 @@ body {
 }
 
 .imagem-inicial {
-  background-image: url('../img/inicial.jpeg');
+  background-image: url('../img/inicial.jpg');
   background-attachment: fixed;
-  /*background-size: 100% 100%;*/
+  background-size: 100% auto;
   background-repeat: no-repeat;
+  opacity:0.90;
+  -moz-opacity: 0.65;
+  filter: alpha(opacity=65);
 }
 
 .imagem-inicial h1,
 .imagem-inicial h2 {
-  color: rgba(0,0,0,0.7);
+  color: #120900;
+  /*background-color: rgba(255, 255, 255, 0.5);*/
+  padding: 10px;
 }
 
 .link-cadastrar {
