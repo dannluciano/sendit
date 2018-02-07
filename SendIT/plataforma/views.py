@@ -83,33 +83,40 @@ def criar_submissao(request, questao_id):
     questao = get_object_or_404(Question, pk=questao_id)
     codigo = request.POST['editor']
 
-    sub = Submission(autor=request.user, questao=questao, codigo=codigo)
-    sub.save()
+    try:
+        pegar_submissao = Submission.objects.get(autor=request.user, questao=questao, status='OK')
+        
+        if pegar_submissao:
+            return HttpResponseRedirect("/questoes-concluidas/")  
 
-    animacoes = ['bounce',
-                 'bounceIn',
-                 'bounceInDown',
-                 'bounceInRight',
-                 'bounceInLeft',
-                 'bounceInUp',
-                 'flash',
-                 'fadeInDown',
-                 'zoomIn',
-                 'jackInTheBox',
-                 'rollIn']
+    except Submission.DoesNotExist:
+        sub = Submission(autor=request.user, questao=questao, codigo=codigo)
+        sub.save()
 
-    animacao = randint(0, 10)
+        animacoes = ['bounce',
+                     'bounceIn',
+                     'bounceInDown',
+                     'bounceInRight',
+                     'bounceInLeft',
+                     'bounceInUp',
+                     'flash',
+                     'fadeInDown',
+                     'zoomIn',
+                     'jackInTheBox',
+                     'rollIn']
 
-    if sub.status == 'OK':
-        request.user.perfil.xp += questao.xp
-        request.user.save()
+        animacao = randint(0, 10)
 
-    return render(request,
-                  'sistema/resultado.html', {
-                      'submissao': sub,
-                      'codigo_enviado': codigo,
-                      'animacao': animacoes[animacao],
-                  })
+        if sub.status == 'OK':
+            request.user.perfil.xp += questao.xp
+            request.user.save()
+
+        return render(request,
+                      'sistema/resultado.html', {
+                          'submissao': sub,
+                          'codigo_enviado': codigo,
+                          'animacao': animacoes[animacao],
+                      })
 
 
 @require_POST
