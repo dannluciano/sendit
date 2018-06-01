@@ -1,0 +1,21 @@
+[[source]]
+
+name = "pypi"
+verify_ssl = true
+url = "https://pypi.python.org/simple"
+
+
+[packages]
+
+django = "==2.0.0"
+django-ckeditor = "==5.3.0"
+sqlparse = "==0.2.3"
+
+
+[dev-packages]
+
+
+
+[requires]
+
+python_version = "3.6"
