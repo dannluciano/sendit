@@ -185,7 +185,12 @@ class Submission(models.Model):
     def save(self, *args, **kwargs):
         casos_de_testes = self.questao.casetest_set.all()
         for cs in casos_de_testes:
-            self.status = run_submission(self.codigo, cs.entrada, cs.saida)
+            codigo = f"""
+                {self.questao.pre_codigo}
+                {self.codigo}
+                {self.questao.pos_codigo}
+                """
+            self.status = run_submission(codigo, cs.entrada, cs.saida)
             if self.status != 'OK':
                 break
 

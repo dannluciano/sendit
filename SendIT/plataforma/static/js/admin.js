@@ -12,7 +12,7 @@
         var textarea = $('<textarea></textarea>', {
             id: `id_${field}`,
             style: 'visibility: hidden; display: none',
-            name: '${field}'
+            name: `${field}`
         }).appendTo(`.field-${field}`);
 
         editor.getSession()

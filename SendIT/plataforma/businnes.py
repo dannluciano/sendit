@@ -3,9 +3,8 @@ import tempfile
 import logging
 import os
 import shlex
-import time
-import difflib
 from django.conf import settings
+
 
 L = logging.getLogger('SubmissionRunner')
 if settings.DEBUG:
@@ -15,9 +14,6 @@ else:
     L.addHandler(logging.RotatingFileHandler(
         'submission_runner.log',
         maxBytes=1024 * 1024))
-
-with open('browser_io.js') as browser_io_file:
-    browser_io_code = browser_io_file.read()
 
 
 def create_temp_file(content, temp_dir='', prefix='', suffix='.txt'):
@@ -38,9 +34,7 @@ def run_submission(code='', expected_input='', expected_output=''):
         pwd = os.getcwd()
         L.info(f'Created Temporary Changed Working Dir: {pwd}')
 
-        fullcode = f"""{browser_io_code}{code}"""
-
-        code_file = create_temp_file(fullcode, tmp_dir, 'code_', '.js')
+        code_file = create_temp_file(code, tmp_dir, 'code_', '.js')
 
         input_file = create_temp_file(
             expected_input, tmp_dir, 'input_', '.txt')
