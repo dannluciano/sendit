@@ -20,8 +20,9 @@ def home(request):
     submissoes_ok = Submission.objects.filter(
         autor=request.user, status='OK')
 
-    questoes = Question.objects.exclude(
-        submission__in=submissoes_ok).prefetch_related('tags')
+    questoes = Question.objects.exclude(submission__in=submissoes_ok)
+    questoes = questoes.exclude(exibir=False)
+    questoes = questoes.prefetch_related('tags')
 
     if 'tag' in request.GET:
         tag = request.GET.get('tag')

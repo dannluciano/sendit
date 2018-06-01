@@ -17,10 +17,20 @@ class CaseTestInline(admin.TabularInline):
     )
 
 
+def esconder(modeladmin, request, queryset):
+    queryset.update(exibir=False)
+esconder.short_description = "Esconder Questões"
+
+
+def exibir(modeladmin, request, queryset):
+    queryset.update(exibir=True)
+exibir.short_description = "Exibir Questões"
+
+
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('titulo', 'enunciado', 'xp', 'tags')
+            'fields': ('titulo', 'enunciado', 'xp', 'tags', 'exibir')
         }),
         ('Entrada e Saida (Exemplo)', {
             'classes': ('collapse',),
@@ -39,6 +49,10 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [
         CaseTestInline,
     ]
+
+    list_display = ('titulo', 'xp', 'exibir')
+
+    actions = [esconder, exibir]
 
     class Media:
         js = ('js/ace.js', 'js/admin.js',)

@@ -104,6 +104,7 @@ class Question(models.Model):
     pos_codigo = models.TextField(default="", blank=True)
     xp = models.IntegerField(default=100)
     tags = models.ManyToManyField(Tags)
+    exibir = models.BooleanField(default=True)
 
     def publish(self):
         self.save
