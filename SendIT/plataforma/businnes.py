@@ -91,6 +91,7 @@ def run_submission(code='', expected_input='', expected_output=''):
                 result = 'DiffError'
                 L.error('Diff Error: Expected Output != Computed Output')
                 L.debug(error.stdout.decode('utf8'))
+                L.debug(outs.decode('utf8'))
 
     os.chdir(settings.BASE_DIR)
     L.info('-' * 80)
