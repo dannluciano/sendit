@@ -47,6 +47,10 @@
             <h1 class="title">Editor</h1>
             <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
                 {% csrf_token %}
+                <select name="linguagem">
+                    <option value="js">JavaScript</option>
+                    <option value="java">Java</option>
+                </select>
                 <pre id="editor">{{ ultima_submissao.codigo}}</pre>
                 <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
                 <div class="botao-flutuante">
@@ -64,6 +68,15 @@
             <h1 class="title">Editor</h1>
             <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
                 {% csrf_token %}
+                <div class="control">
+                    <div class="select is-danger">
+                        <select name="linguagem">
+                            <option value="js">JavaScript</option>
+                            <option value="java">Java</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
                 <pre id="editor">alert("Olá");</pre>
                 <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
                 <div class="botao-flutuante">

@@ -21,7 +21,7 @@ def create_temp_file(content, temp_dir='', prefix='', suffix='.txt'):
         'w+', dir=temp_dir, delete=False, prefix=prefix, suffix=suffix)
     file.write(content)
     file.seek(0)
-    L.info(f'Created Temporary File: {file.name}')
+    L.info('Created Temporary File: {}'.format(file.name))
     L.debug(file.read())
     return file
 
@@ -32,7 +32,7 @@ def run_submission(code='', expected_input='', expected_output=''):
     with tempfile.TemporaryDirectory() as tmp_dir:
         os.chdir(tmp_dir)
         pwd = os.getcwd()
-        L.info(f'Created Temporary Changed Working Dir: {pwd}')
+        L.info('Created Temporary Changed Working Dir: {}'.format(pwd))
 
         code_file = create_temp_file(code, tmp_dir, 'code_', '.js')
 
@@ -42,9 +42,9 @@ def run_submission(code='', expected_input='', expected_output=''):
         output_file = create_temp_file(
             expected_output, tmp_dir, 'output_', '.txt')
 
-        node_command = f'node -i {code_file.name}'
+        node_command = 'node -i {}'.format(code_file.name)
 
-        L.info(f'Executing Node Command: {node_command}')
+        L.info('Executing Node Command: {}'.format(node_command))
         outs = b''
         try:
             if expected_input != '':
@@ -76,14 +76,14 @@ def run_submission(code='', expected_input='', expected_output=''):
                 L.error('SintaxError: ')
             else:
                 result = 'JSRuntimeError'
-                L.error(f'RuntimeError: ')
+                L.error('RuntimeError: ')
 
         result_file = create_temp_file(
             outs.decode('utf8'), tmp_dir, 'result_', '.txt')
 
         if result == 'OK':
-            diff_command = f'diff -E -b -w -B {output_file.name} {result_file.name}'
-            L.info(f'Executing Diff Command: {diff_command}')
+            diff_command = 'diff -E -b -w -B {} {}'.format(output_file.name, result_file.name)
+            L.info('Executing Diff Command: {}'.format(diff_command))
             try:
                 subprocess.run(
                     shlex.split(diff_command), stdout=subprocess.PIPE, check=True)

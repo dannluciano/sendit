@@ -23,7 +23,7 @@ class Perfil(models.Model):
     def taxa_de_conclusao(self):
         try:
             taxa = self.acertos / Question.objects.count() * 100.0
-            return f'{taxa:5.2f}%'
+            return '{:5.2f}%'.format(taxa)
         except ZeroDivisionError:
             return '-'
 
@@ -31,7 +31,7 @@ class Perfil(models.Model):
     def taxa_de_sucesso(self):
         try:
             taxa = self.acertos / self.submissoes * 100.0
-            return f'{taxa:5.2f}%'
+            return '{:5.2f}%'.format(taxa)
         except ZeroDivisionError:
             return '-'
 
@@ -88,7 +88,7 @@ class Tags(models.Model):
     tag = models.CharField(max_length=100)
 
     def __str__(self):
-        return f'{self.tag}'
+        return self.tag
 
     class Meta:
         verbose_name_plural = 'Tags'
@@ -110,7 +110,7 @@ class Question(models.Model):
         self.save
 
     def __str__(self):
-        return f'{self.titulo}'
+        return self.titulo
 
 
 class CaseTest(models.Model):
@@ -119,7 +119,7 @@ class CaseTest(models.Model):
     saida = models.TextField(blank=True)
 
     def __str__(self):
-        return f'Case - {self.id} : Questão: {self.questao}'
+        return 'Case - {} : Questão: {}'.format(self.id, self.questao)
 
 
 class Submission(models.Model):
@@ -186,11 +186,11 @@ class Submission(models.Model):
     def save(self, *args, **kwargs):
         casos_de_testes = self.questao.casetest_set.all()
         for cs in casos_de_testes:
-            codigo = f"""
-{self.questao.pre_codigo}
-{self.codigo}
-{self.questao.pos_codigo}
-"""
+            codigo = """
+{}
+{}
+{}
+""".format(self.questao.pre_codigo, self.codigo, self.questao.pos_codigo)
             self.status = run_submission(codigo, cs.entrada, cs.saida)
             if self.status != 'OK':
                 break
@@ -201,7 +201,7 @@ class Submission(models.Model):
         return self.status == 'OK'
 
     def __str__(self):
-        return f'Questão-{self.questao.id}-Submissão-{self.id}-{self.status}'
+        return 'Questão-{}-Submissão-{}-{}'.format(self.questao.id, self.id, self.status)
 
     class Meta:
         ordering = ['-id']
