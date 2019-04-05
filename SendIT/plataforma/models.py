@@ -128,28 +128,28 @@ class Submission(models.Model):
     codigo = models.TextField()
     STATUS_CHOICES = (
         ('Waiting', 'Esperando ser executada.'),
-        ('JSSintaxError', 'Erro de sintaxe!'),
-        ('JSRuntimeError', 'Erro em execução!'),
-        ('JSTimeoutError', 'Tempo de execução excedido!'),
+        ('SintaxError', 'Erro de sintaxe!'),
+        ('RuntimeError', 'Erro em execução!'),
+        ('TimeoutError', 'Tempo de execução excedido!'),
         ('DiffError', 'Saída computada diferente da saída esperada!'),
         ('OK', 'OK'))
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=36, default=STATUS_CHOICES[0])
 
     STATUS_PHRASES = {
-        'JSSintaxError': [
+        'SintaxError': [
             ('Erro de sintaxe! Tente Novamente.', 'img/errosintaxe1.png'),
             ('Erro de sintaxe! Verifique os parenteses, colchetes e chaves.', 'img/errosintaxe2.png'),
             ('Ahhh não! Não consegui executar o seu código todo. Isso aconteceu por conta de um erro de sintaxe', 'img/errosintaxe3.png'),
             ('Será que não tem um ponto e vírgula ou um parênteses faltando?', 'img/errosintaxe4.png')
         ],
-        'JSRuntimeError': [
+        'RuntimeError': [
             ('Erro de execução! Tente Novamente.', 'img/erroexecucao1.png'),
             ('Seu código morreu huahuahua! Ocorreu um erro de execução.', 'img/erroexecucao2.png'),
             ('Quando isso me acontece dá uma tristeza! Não consegiu executar o seu código. Tem alguma coisa erra nele.', 'img/erroexecucao3.png'),
             ('Tem certeza que não escreveu alguma nome errado? ', 'img/erroexecucao4.png')
         ],
-        'JSTimeoutError': [
+        'TimeoutError': [
             ('Tempo de execução excedido! Me deu até sono! Tente Novamente.', 'img/tempoexecucao1.png'),
             ('O tempo pra executar esse código demorou tanto que eu já encontrei até um alienígena perdido! Tente Novamente.', 'img/tempoexecucao2.png'),
             ('Sabe a piadinha de navagadores? Seu código está abaixo do IE kkkkkkk', 'img/tempoexecucao3.png'),
@@ -184,19 +184,17 @@ class Submission(models.Model):
         return self._get_random_status()[1]
 
     def save(self, *args, **kwargs):
-        casos_de_testes = self.questao.casetest_set.all()
-        for cs in casos_de_testes:
-            codigo = f"""
-{self.questao.pre_codigo}
-{self.codigo}
-{self.questao.pos_codigo}
-"""
-            self.status = run_submission(codigo, cs.entrada, cs.saida)
-            if self.status != 'OK':
-                break
-
         super(Submission, self).save(*args, **kwargs)
 
+        casos_de_testes = self.questao.casetest_set.all()
+        for cs in casos_de_testes:
+            self.status = run_submission(self.id, self.codigo, cs.entrada, cs.saida)
+            if self.status != 'OK':
+                break
+        
+        super(Submission, self).save(*args, **kwargs)
+
+        
     def is_ok(self):
         return self.status == 'OK'
 

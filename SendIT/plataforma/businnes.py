@@ -10,8 +10,6 @@ from django.conf import settings
 
 L = logging.getLogger('SubmissionRunner')
 
-settings.configure(DEBUG=True, BASE_DIR=os.getcwd())
-
 log_file_path = 'temp/submission_runner.log'
 if settings.DEBUG:
     L.addHandler(logging.FileHandler(log_file_path))
@@ -57,44 +55,67 @@ def run_submission(id=0, code='', input='', expected_output=''):
     command = f'javac {code_file.name}'
 
     L.info(f'Executing Command: {command}')
-    process = subprocess.run(shlex.split(command))
-
-    command = f'java Principal'
-
-    L.info(f'Executing Command: {command}')
-    outs = b''
+    errs = b''
     try:
-        if input != '':
-            process = subprocess.Popen(
-                shlex.split(command),
+        process = subprocess.run(shlex.split(command),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                stdin=subprocess.PIPE)
-
-            outs, errs = process.communicate(
-                input=input.encode(),
-                timeout=1)
-        else:
-            process = subprocess.run(
-                shlex.split(command),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=True, timeout=1)
-
-            outs = process.stdout
-            errs = process.stderr
-
+                check=True, timeout=5)
+        outs = process.stdout
+        errs = process.stderr
     except subprocess.TimeoutExpired as error:
-        result = 'JSTimeoutError'
-        L.error('Timeout Error:')
+        result = 'TimeoutError'
+        L.error('Timeout Error: Compilation Timeout')
     except subprocess.CalledProcessError as error:
-        result = 'JSSintaxError'
-        L.error('SintaxError: ')
-
-    result_file = create_temp_file(
-        outs.decode('utf8'), 'result', '.txt')
+        result = 'SintaxError'
+        L.error(f'SintaxError: {error.stderr}')
+        if b'error' in error.stderr:
+            L.info('Verificar qual o tipo do erro de compilação')
 
     if result == 'OK':
+        command = f'java Principal'
+        L.info(f'Executing Command: {command}')
+        outs = b''
+        try:
+            if input != '':
+                process = subprocess.Popen(
+                    shlex.split(command),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    stdin=subprocess.PIPE)
+
+                outs, errs = process.communicate(
+                    input=input.encode(),
+                    timeout=1)
+            else:
+                process = subprocess.run(
+                    shlex.split(command),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=True, timeout=1)
+
+                outs = process.stdout
+                errs = process.stderr
+
+        except subprocess.TimeoutExpired as error:
+            result = 'TimeoutError'
+            L.error('Timeout Error:')
+        except subprocess.CalledProcessError as error:
+            result = 'RuntimeError'
+            L.error(f'Runtime Error: {error.stderr}')
+            if b'error' in error.stderr:
+                L.info('Verificar qual o tipo do erro em Execução')
+        
+        if process.returncode != 0:
+            result = 'RuntimeError'
+            L.error(f'Runtime Error: {errs}')
+            if b'error' in errs:
+                L.info('Verificar qual o tipo do erro em Execução')
+
+    if result == 'OK':
+        result_file = create_temp_file(
+            outs.decode('utf8'), 'result', '.txt')
+
         diff_command = f'diff -E -b -w -B {output_file.name} {result_file.name}'
         L.info(f'Executing Diff Command: {diff_command}')
         try:
@@ -107,75 +128,9 @@ def run_submission(id=0, code='', input='', expected_output=''):
             L.debug(outs.decode('utf8'))
     
     os.chdir(settings.BASE_DIR)
-    if not settings.DEBUG:
-        rmtree(temp_dir_name)
+    # if not settings.DEBUG:
+    #     shutil.rmtree(tmp_dir)
 
+    L.info(result)
     L.info('-' * 80)
     return result
-
-
-if __name__ == "__main__":
-    code = """
-class Principal {
-    public static void main(String args[]) {
-        System.out.println("Ola Mundo");
-    }
-}
-"""
-    input = """"""
-    expected_output = """Ola Mundo"""
-
-    print(run_submission(id=1, code=code, input=input, expected_output=expected_output))
-
-
-    code = """
-class Principal {
-    public static void main(String args[]) {
-        while(true){
-
-        }
-    }
-}
-"""
-    input = """"""
-    expected_output = """Ola Mundo"""
-
-    print(run_submission(id=2, code=code, input=input, expected_output=expected_output))
-
-    code = """
-class Principal {
-    public static void main(String args[]) {
-        System.out.println("Ola Mundo")
-    }
-}
-"""
-    input = """"""
-    expected_output = """Ola Mundo"""
-
-    print(run_submission(id=3, code=code, input=input, expected_output=expected_output))
-
-    code = """
-import java.util.Scanner;    
-class Principal {
-    public static void main(String args[]) {
-        Scanner scanner = null;
-        int i = scanner.nextInt();
-    }
-}
-"""
-    input = """"""
-    expected_output = """Ola Mundo"""
-
-    print(run_submission(id=4, code=code, input=input, expected_output=expected_output))
-
-    code = """
-class Principal {
-    public static void main(String args[]) {
-        System.out.println("Oi");
-    }
-}
-"""
-    input = """"""
-    expected_output = """Ola Mundo"""
-
-    print(run_submission(id=5, code=code, input=input, expected_output=expected_output))
