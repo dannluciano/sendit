@@ -60,7 +60,7 @@ def run_submission(id=0, code='', input='', expected_output=''):
         process = subprocess.run(shlex.split(command),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                check=True, timeout=5)
+                check=True, timeout=3)
         outs = process.stdout
         errs = process.stderr
     except subprocess.TimeoutExpired as error:
