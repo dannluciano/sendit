@@ -10,16 +10,16 @@ class SubmissionError(Exception):
   def __init__(self, message):
     self.message = message
 
-class SintaxError(SubmissionError):
+class SubmissionSintaxError(SubmissionError):
   pass
 
-class RuntimeError(SubmissionError):
+class SubmissionRuntimeError(SubmissionError):
   pass
 
-class TimeoutError(SubmissionError):
+class SubmissionTimeoutError(SubmissionError):
   pass
 
-class DiffError(SubmissionError):
+class SubmissionDiffError(SubmissionError):
   pass
 
 log_file_path = 'temp/submission_runner.log'
@@ -29,65 +29,72 @@ log.setLevel(20)
 
 class SubmissionRunner(object):
 
-  def __init__(self):
-    
+  def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
+    self.compiler_command = 'echo compiler'
+    self.executable_command = 'echo executable'
     self.source_file_name = 'source.txt'
+    self.timeout = 1
 
-  def create_temp_file(self, dir, filename, content):
-    file_path = f'{dir}/{filename}'
+    self.work_dir = f'{tmp_dir}/{work_dir}'
+    self.input_content = input_content
+    self.expected_output_content = expected_output_content
+    self.source_file_content = source_file_content
+  
+  def create_temp_file(self, dirname, filename, content):
+    file_path = f'{dirname}/{filename}'
     with open(file_path, 'w+') as file:
       file.write(content)
       log.info(f'Created Temporary File: {file.name}')
     return
   
   def create_temp_dir(self, dirname):
+    os.makedirs(dirname, exist_ok=True)
+    log.info(f'Created Temporary Directory: {dirname}')
+
+  def create_temp_dirs_and_files(self):
+    self.create_temp_dir(self.work_dir)
+    self.create_temp_file(self.work_dir, 'input.txt', self.input_content)
+    self.create_temp_file(self.work_dir, 'expected_output.txt', self.expected_output_content)
+    self.create_temp_file(self.work_dir, self.source_file_name, self.source_file_content)
+
+  def run_process(self, command):
     try:
-      os.mkdir(dirname)
-    except FileExistsError:
-      pass
-
-  def create_temp_dirs_and_files(self, submission_id, test_case_id, input_content, expected_output_content, source_file_content):
-    submission_dir = f'{tmp_dir}/{submission_id}'
-    test_case_dir = f'{submission_dir}/{test_case_id}'
-    
-    self.create_temp_dir(submission_dir)
-    self.create_temp_dir(test_case_dir)
-
-    self.create_temp_file(test_case_dir, 'input.txt', input_content)
-    self.create_temp_file(test_case_dir, 'expected_output.txt', expected_output_content)
-    self.create_temp_file(test_case_dir, self.source_file_name, source_file_content)
-
-  def run_process(self, command, timeout=1):
-    try:
-      return subprocess.run(command,
-              stdout=subprocess.PIPE,
-              stderr=subprocess.PIPE,
-              check=True, shell=True, timeout=timeout)
+      log.info(f'Spawn Process: timeout {self.timeout} {command}')
+      subprocess.run(command, 
+        shell=True, check=True, timeout=self.timeout)
     except subprocess.TimeoutExpired as error:
-      log.error('Timeout Error:')
-      raise TimeoutError(f'TimeoutError: {command}')
+      log.error(f'Timeout Error: {command}')
+      raise SubmissionTimeoutError('TimeoutError')
 
   def run_compiler(self):
-    pass
+    log.info(f'Executing Compiler: {self.compiler_command}')
+    try:
+      self.run_process(self.compiler_command)
+    except subprocess.CalledProcessError as error:
+      log.error(f'Sintax Error: {error.stderr}')
+      raise SubmissionSintaxError('SintaxError')
   
   def run_executable(self):
-    pass
+    log.info(f'Executing Program: {self.executable_command}')
+    try:
+      self.run_process(self.executable_command)
+    except subprocess.CalledProcessError as error:
+      log.error(f'Runtime Error: {error.stderr}')
+      raise SubmissionRuntimeError('RuntimeError')
 
   def compare_outputs(self):
-    command = f'diff -E -b -w -B {self.work_dir}/expected_output.txt {self.work_dir}/computed_output.txt'
+    command = f'diff -E -b -w -B {self.work_dir}/expected_output.txt {self.work_dir}/computed_output.txt > diff.out.txt 2> diff.err.txt'
     log.info(f'Executing Diff: {command}')
     try:
       self.run_process(command)
     except subprocess.CalledProcessError as error:
       log.error(f'Diff Error: {error.stderr}')
-      raise DiffError('DiffError')
+      raise SubmissionDiffError('DiffError')
 
-  def run(self, submission_id, test_case_id, input_content, expected_output_content, source_file_content):
+  def run(self):
     log.info('-' * 80)
     log.info('Submission Runner Started')
-    self.create_temp_dirs_and_files(submission_id, test_case_id, input_content, expected_output_content, source_file_content)
-    # To-do Refactor: get files paths from creation method 
-    self.work_dir = f'{tmp_dir}/{submission_id}/{test_case_id}'
+    self.create_temp_dirs_and_files()
     try:
       self.run_compiler()
       self.run_executable()
@@ -100,80 +107,43 @@ class SubmissionRunner(object):
 
 
 class C_SubmissionRunner(SubmissionRunner):
-  def __init__(self):
-    super().__init__()
+  def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
+    super().__init__(work_dir, input_content, expected_output_content, source_file_content)
     self.source_file_name = 'main.c'
-  
-  def run_compiler(self):
-    command = f'gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name} 2> {self.work_dir}/compiler.err.out'
-    log.info(f'Executing C Compiler: {command}')
-    try:
-      self.run_process(command)
-    except subprocess.CalledProcessError as error:
-      log.error(f'Sintax Error: {error.stderr}')
-      raise SintaxError('SintaxError')
-  
-  def run_executable(self):
-    command = f'{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt'
-    log.info(f'Executing Program: {command}')
-    try:
-      self.run_process(command)
-    except subprocess.CalledProcessError as error:
-      log.error(f'Runtime Error: {error.stderr}')
-      raise RuntimeError('RuntimeError')
+    self.compiler_command = f'gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
+    self.executable_command = f'{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> stderr.txt'
 
 
 class JAVA_SubmissionRunner(SubmissionRunner):
-  def __init__(self):
-    super().__init__()
+  def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
+    super().__init__(work_dir, input_content, expected_output_content, source_file_content)
     self.source_file_name = 'Principal.java'
-  
-  def run_compiler(self):
-    command = f'javac {self.work_dir}/{self.source_file_name} 2> {self.work_dir}/compiler.err.out'
-    log.info(f'Executing JAVA Compiler: {command}')
-    try:
-      self.run_process(command, timeout=3)
-    except subprocess.CalledProcessError as error:
-      log.error(f'Sintax Error: {error.stderr}')
-      raise SintaxError('SintaxError')
-  
-  def run_executable(self):
-    command = f'java -cp {self.work_dir} Principal < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt'
-    log.info(f'Executing Program: {command}')
-    try:
-      self.run_process(command)
-    except subprocess.CalledProcessError as error:
-      log.error(f'Runtime Error: {error.stderr}')
-      raise RuntimeError('RuntimeError')
+    self.compiler_command = f'javac {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
+    self.executable_command = f'java -cp {self.work_dir} Principal < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> stderr.txt'
+    self.timeout = 3
+
 
 class Python_SubmissionRunner(SubmissionRunner):
-  def __init__(self):
-    super().__init__()
+  def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
+    super().__init__(work_dir, input_content, expected_output_content, source_file_content)
     self.source_file_name = 'main.py'
+    self.compiler_command = f'python -m py_compile {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
+    self.executable_command = f'python {self.work_dir}/{self.source_file_name} < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> stderr.txt'
+
+
+class SubmissionRunnerManager():
   
-  def run_compiler(self):
-    command = f'python -m py_compile {self.work_dir}/{self.source_file_name} 2> {self.work_dir}/compiler.err.out'
-    log.info(f'Executing Python Compiler: {command}')
-    try:
-      self.run_process(command, timeout=3)
-    except subprocess.CalledProcessError as error:
-      log.error(f'Sintax Error: {error.stderr}')
-      raise SintaxError('SintaxError')
-  
-  def run_executable(self):
-    command = f'python {self.work_dir}/{self.source_file_name} < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt'
-    log.info(f'Executing Program: {command}')
-    try:
-      self.run_process(command)
-    except subprocess.CalledProcessError as error:
-      log.error(f'Runtime Error: {error.stderr}')
-      raise RuntimeError('RuntimeError')
-      
-  
+  @staticmethod
+  def exe(lang, work_dir, input_content, expected_output_content, source_file_content):
+    runners = {
+      'c': C_SubmissionRunner,
+      'java': JAVA_SubmissionRunner,
+      'python': Python_SubmissionRunner
+    }
+    return runners[lang](work_dir, input_content, expected_output_content, source_file_content).run()
+
 
 if __name__ == "__main__":  
-  submission_id = 0
-  test_case_id = 0 
   input_content = '' 
   expected_output_content = 'Ola Mundo' 
   c_source_file_content = 'int main(void) {puts("Ola Mundo"); return 0;}'
@@ -185,10 +155,13 @@ if __name__ == "__main__":
 """
   python_source_file_content = 'print("Ola Mundo")'
 
-  C_SubmissionRunner().run(0, 1, input_content, expected_output_content, c_source_file_content)
-  JAVA_SubmissionRunner().run(1, 1, input_content, expected_output_content, java_source_file_content)
-  Python_SubmissionRunner().run(2, 1, input_content, expected_output_content, python_source_file_content)
+  C_SubmissionRunner('0/1', input_content, expected_output_content, c_source_file_content).run()
+  JAVA_SubmissionRunner('1/1', input_content, expected_output_content, java_source_file_content).run()
+  Python_SubmissionRunner('2/1', input_content, expected_output_content, python_source_file_content).run()
   
   input_content = 'Ola Mundo' 
   python_source_file_content = 'print(input())'
-  Python_SubmissionRunner().run(3, 1, input_content, expected_output_content, python_source_file_content)
+  Python_SubmissionRunner('3/1', input_content, expected_output_content, python_source_file_content).run()
+
+  result = SubmissionRunnerManager.exe('python', '3/2', input_content, expected_output_content, python_source_file_content)
+  print(result)
