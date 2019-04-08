@@ -20,6 +20,7 @@
         <div class="nav-left">
             <a class="nav-item is-tab {% if link is 1 %} link-laranja {% endif %}" href="/home/"><i class="fa fa-home"></i> &nbsp; Home</a>
             <a class="nav-item is-tab {% if link is 2 %} link-laranja {% endif %}" href="/questoes-concluidas/"><i class="fa fa-bolt"></i> &nbsp; Questões Concluídas</a>
+            <a class="nav-item is-tab {% if link is 3 %} link-laranja {% endif %}" href="/admin/"><i class="fa fa-adm"></i> &nbsp; Administração</a>
         </div>
         <span class="nav-toggle" id="nav-toggle">
             <span></span>
@@ -42,6 +43,7 @@
     {% block menu_direita %}
     {% endblock %}
 </section>
+
 <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
 <script src="{% static 'js/clipboard.min.js' %}"></script>
 <script src="{% static 'js/bulma.js' %}"></script>

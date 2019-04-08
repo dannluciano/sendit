@@ -1,14 +1,14 @@
 from django.db import models
-from .businnes import run_submission
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from ckeditor.fields import RichTextField
+
 import math
 import random
 
-with open('browser_io.js', 'r') as file:
-    DEFAULT_PRE_CODE = file.read()
+from .submission_runner import SubmissionRunnerManager
 
 
 class Perfil(models.Model):
@@ -100,8 +100,6 @@ class Question(models.Model):
     enunciado = RichTextField()
     entrada = models.TextField(blank=True)
     saida = models.TextField(blank=True)
-    pre_codigo = models.TextField(default=DEFAULT_PRE_CODE, blank=True)
-    pos_codigo = models.TextField(default="", blank=True)
     xp = models.IntegerField(default=100)
     tags = models.ManyToManyField(Tags)
     exibir = models.BooleanField(default=True)
@@ -135,6 +133,15 @@ class Submission(models.Model):
         ('OK', 'OK'))
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=36, default=STATUS_CHOICES[0])
+
+    LANGUAGE_CHOICES = (
+        ('unkwon', 'Unkwon'),
+        ('c', 'C'),
+        ('java', 'Java'),
+        ('python', 'Python'),
+    )
+    language = models.CharField(choices=LANGUAGE_CHOICES,
+                              max_length=10, default=STATUS_CHOICES[0])
 
     STATUS_PHRASES = {
         'SintaxError': [
@@ -188,7 +195,8 @@ class Submission(models.Model):
 
         casos_de_testes = self.questao.casetest_set.all()
         for cs in casos_de_testes:
-            self.status = run_submission(self.id, self.codigo, cs.entrada, cs.saida)
+            work_dir = f'{self.id}/{cs.id}'
+            self.status = SubmissionRunnerManager().exe(self.language, work_dir, cs.entrada, cs.saida, self.codigo)
             if self.status != 'OK':
                 break
         

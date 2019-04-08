@@ -4,80 +4,95 @@
 {% block title %}<title>{{ questao.titulo }}</title>{% endblock %}
 
 {% block content %}
-<div class="columns">
-    <div class="column">
-        <section class="box">
-            <h1 class="title">
-                {{ questao.titulo }}
-            </h1>
+
+<section class="box">
+    <h1 class="title">
+        {{ questao.titulo }}
+    </h1>
+    <div>
+        {{ questao.enunciado|safe|escape }}
+    </div>
+    <br />
+    <div class="columns entrada-saida">
+        <div class="column">
+            <h2 class="subtitle">
+                Entrada:
+            </h2>
             <div>
-                {{ questao.enunciado|safe|escape }}
+                {{ questao.entrada|linebreaksbr }}
             </div>
-            <br/>
-            <div class="columns entrada-saida">
-                <div class="column">
-                    <h2 class="subtitle">
-                        Entrada:
-                    </h2>
-                    <div>
-                        {{ questao.entrada|linebreaksbr }}
-                    </div>
-                </div>
-                <div class="column saida">
-                    <h2 class="subtitle">
-                        Saída:
-                    </h2>
-                    <div>
-                        {{ questao.saida|linebreaksbr }}
-                    </div>
-                </div>
+        </div>
+        <div class="column saida">
+            <h2 class="subtitle">
+                Saída:
+            </h2>
+            <div>
+                {{ questao.saida|linebreaksbr }}
             </div>
-        </section>
+        </div>
     </div>
-    <div class="column">
-        <section class="box">
-            {% if ultima_submissao %}
-            {% if ultima_submissao.is_ok %}
+</section>
 
-            <h1 class="title">Codigo Enviado</h1>
-            <pre><code>{{ultima_submissao.codigo}}</code></pre>
 
-            {% else %}
+<section class="box">
+    {% if ultima_submissao %}
+    {% if ultima_submissao.is_ok %}
 
-            <h1 class="title">Editor</h1>
-            <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
-                {% csrf_token %}
-                <pre id="editor">{{ ultima_submissao.codigo}}</pre>
-                <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-                <div class="botao-flutuante">
-                    <button class="button enviar-questao is-medium">
-                                <span class="icon is-medium">
-                                    <i class="fa fa-rocket" aria-hidden="true"></i>
-                                </span>
-                    </button>
-                </div>
-            </form>
+    <h1 class="title">Codigo Enviado</h1>
+    <pre><code>{{ultima_submissao.codigo}}</code></pre>
 
-            {% endif %}
+    {% else %}
 
-            {% else %}
-            <h1 class="title">Editor</h1>
-            <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
-                {% csrf_token %}
-                <pre id="editor">alert("Olá");</pre>
-                <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-                <div class="botao-flutuante">
-                    <button class="button enviar-questao is-medium">
-                            <span class="icon is-medium">
-                                <i class="fa fa-rocket" aria-hidden="true"></i>
-                            </span>
-                    </button>
-                </div>
-            </form>
-            {% endif %}
-        </section>
-    </div>
-</div>
+    <h1 class="title">Editor</h1>
+    <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
+        <div class="select">
+            <select id="language-select" name="language">
+                <option value="_"       {% if ultima_submissao.language == "_"%}selected{%endif%}>Escolha sua Linguagem Preferida</option>
+                <option value="c"       {% if ultima_submissao.language == "c"%}selected{%endif%}>C</option>
+                <option value="java"    {% if ultima_submissao.language == "java"%}selected{%endif%}>Java</option>
+                <option value="python"  {% if ultima_submissao.language == "python"%}selected{%endif%}>Python</option>
+            </select>
+        </div>
+        {% csrf_token %}
+        <pre id="editor">{{ ultima_submissao.codigo}}</pre>
+        <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
+        <div class="botao-flutuante">
+            <button class="button enviar-questao is-medium">
+                <span class="icon is-medium">
+                    <i class="fa fa-rocket" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+    </form>
+
+    {% endif %}
+
+    {% else %}
+    <h1 class="title">Editor</h1>
+    <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
+        {% csrf_token %}
+        <div class="select">
+            <select id="language-select" name="language">
+                <option value="_">Escolha sua Linguagem Preferida</option>
+                <option value="c">C</option>
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+            </select>
+        </div>
+        <pre id="editor"></pre>
+        <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
+        <div class="botao-flutuante">
+            <button class="button enviar-questao is-medium">
+                <span class="icon is-medium">
+                    <i class="fa fa-rocket" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+    </form>
+    {% endif %}
+</section>
+
+
 {% endblock content %}
 
 {% block js %}

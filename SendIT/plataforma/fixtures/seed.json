@@ -184,8 +184,6 @@
     "enunciado": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima o quadrado desses n\u00fameros.",
     "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
     "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
-    "pre_codigo": "const fs = require('fs')\n\nconst document = {\n  write: function (msg) {\n    console.log(msg)\n  }\n}\n\nfunction alert (msg) {\n  console.log(msg)\n}\n\nfunction prompt (msg) {\n  process.stdin.resume()\n  var buffer = Buffer.alloc(1)\n  var result = ''\n  var bytesRead\n\n  while (true) {\n    bytesRead = 0\n    try {\n      bytesRead = fs.readSync(process.stdin.fd, buffer, 0, 1)\n    } catch (e) {\n      if (e.code === 'EAGAIN') {\n        console.error('ERROR: interactive stdin input not supported.')\n        process.exit(1)\n      } else if (e.code === 'EOF') {\n        break\n      }\n      throw e\n    }\n    if (bytesRead === 0) {\n      break\n    }\n\n    var char = buffer.toString('utf8')\n      // Read next byte when char is \\r or result is empty and char is blank (' ', '\\t')\n    if (char === '\\r' || (result.length === 0 && (char === ' ' || char === '\\t'))) {\n      continue\n    } else if (char === '\\n' || char === ' ' || char === '\\t') {\n      break\n    } else {\n      result += char\n    }\n  }\n\n  process.stdin.pause()\n  return result\n}\n\nfunction confirm (msg) {\n  const result = prompt()[0].toLowerCase()\n\n  return ((result === 't') || (result === 's') || (result === 'y') || (result === '1'))\n}\n",
-    "pos_codigo": "",
     "xp": 5,
     "exibir": true,
     "tags": [
@@ -202,8 +200,6 @@
     "enunciado": "Escreva um algoritmo que imprima os n\u00fameros de 1 at\u00e9 10",
     "entrada": "",
     "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
-    "pre_codigo": "const fs = require('fs')\n\nconst document = {\n  write: function (msg) {\n    console.log(msg)\n  }\n}\n\nfunction alert (msg) {\n  console.log(msg)\n}\n\nfunction prompt (msg) {\n  process.stdin.resume()\n  var buffer = Buffer.alloc(1)\n  var result = ''\n  var bytesRead\n\n  while (true) {\n    bytesRead = 0\n    try {\n      bytesRead = fs.readSync(process.stdin.fd, buffer, 0, 1)\n    } catch (e) {\n      if (e.code === 'EAGAIN') {\n        console.error('ERROR: interactive stdin input not supported.')\n        process.exit(1)\n      } else if (e.code === 'EOF') {\n        break\n      }\n      throw e\n    }\n    if (bytesRead === 0) {\n      break\n    }\n\n    var char = buffer.toString('utf8')\n      // Read next byte when char is \\r or result is empty and char is blank (' ', '\\t')\n    if (char === '\\r' || (result.length === 0 && (char === ' ' || char === '\\t'))) {\n      continue\n    } else if (char === '\\n' || char === ' ' || char === '\\t') {\n      break\n    } else {\n      result += char\n    }\n  }\n\n  process.stdin.pause()\n  return result\n}\n\nfunction confirm (msg) {\n  const result = prompt()[0].toLowerCase()\n\n  return ((result === 't') || (result === 's') || (result === 'y') || (result === '1'))\n}\n",
-    "pos_codigo": "",
     "xp": 5,
     "exibir": true,
     "tags": [
@@ -220,8 +216,6 @@
     "enunciado": "<p>Escreva um algoritmo que leia um n&uacute;mero e imprima o cubo do n&uacute;mero lido</p>",
     "entrada": "5",
     "saida": "125",
-    "pre_codigo": "const fs = require('fs')\n\nconst document = {\n  write: function (msg) {\n    console.log(msg)\n  }\n}\n\nfunction alert (msg) {\n  console.log(msg)\n}\n\nfunction prompt (msg) {\n  process.stdin.resume()\n  var buffer = Buffer.alloc(1)\n  var result = ''\n  var bytesRead\n\n  while (true) {\n    bytesRead = 0\n    try {\n      bytesRead = fs.readSync(process.stdin.fd, buffer, 0, 1)\n    } catch (e) {\n      if (e.code === 'EAGAIN') {\n        console.error('ERROR: interactive stdin input not supported.')\n        process.exit(1)\n      } else if (e.code === 'EOF') {\n        break\n      }\n      throw e\n    }\n    if (bytesRead === 0) {\n      break\n    }\n\n    var char = buffer.toString('utf8')\n      // Read next byte when char is \\r or result is empty and char is blank (' ', '\\t')\n    if (char === '\\r' || (result.length === 0 && (char === ' ' || char === '\\t'))) {\n      continue\n    } else if (char === '\\n' || char === ' ' || char === '\\t') {\n      break\n    } else {\n      result += char\n    }\n  }\n\n  process.stdin.pause()\n  return result\n}\n\nfunction confirm (msg) {\n  const result = prompt()[0].toLowerCase()\n\n  return ((result === 't') || (result === 's') || (result === 'y') || (result === '1'))\n}\n",
-    "pos_codigo": "",
     "xp": 100,
     "exibir": true,
     "tags": [
@@ -237,8 +231,6 @@
     "enunciado": "<p>Escreva um programa que escreva &quot;<strong>Ola Mundo</strong>&quot; no terminal</p>",
     "entrada": "",
     "saida": "Ola Mundo",
-    "pre_codigo": "const fs = require('fs')\n\nconst document = {\n  write: function (msg) {\n    console.log(msg)\n  }\n}\n\nfunction alert (msg) {\n  console.log(msg)\n}\n\nfunction prompt (msg) {\n  process.stdin.resume()\n  var buffer = Buffer.alloc(1)\n  var result = ''\n  var bytesRead\n\n  while (true) {\n    bytesRead = 0\n    try {\n      bytesRead = fs.readSync(process.stdin.fd, buffer, 0, 1)\n    } catch (e) {\n      if (e.code === 'EAGAIN') {\n        console.error('ERROR: interactive stdin input not supported.')\n        process.exit(1)\n      } else if (e.code === 'EOF') {\n        break\n      }\n      throw e\n    }\n    if (bytesRead === 0) {\n      break\n    }\n\n    var char = buffer.toString('utf8')\n      // Read next byte when char is \\r or result is empty and char is blank (' ', '\\t')\n    if (char === '\\r' || (result.length === 0 && (char === ' ' || char === '\\t'))) {\n      continue\n    } else if (char === '\\n' || char === ' ' || char === '\\t') {\n      break\n    } else {\n      result += char\n    }\n  }\n\n  process.stdin.pause()\n  return result\n}\n\nfunction confirm (msg) {\n  const result = prompt()[0].toLowerCase()\n\n  return ((result === 't') || (result === 's') || (result === 'y') || (result === '1'))\n}\n",
-    "pos_codigo": "",
     "xp": 1,
     "exibir": true,
     "tags": [

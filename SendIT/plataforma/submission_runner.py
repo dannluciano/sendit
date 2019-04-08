@@ -60,7 +60,7 @@ class SubmissionRunner(object):
   def run_process(self, command):
     try:
       log.info(f'Spawn Process: timeout {self.timeout} {command}')
-      subprocess.run(command, 
+      subprocess.run(f'exec {command}', 
         shell=True, check=True, timeout=self.timeout)
     except subprocess.TimeoutExpired as error:
       log.error(f'Timeout Error: {command}')
@@ -83,7 +83,7 @@ class SubmissionRunner(object):
       raise SubmissionRuntimeError('RuntimeError')
 
   def compare_outputs(self):
-    command = f'diff -E -b -w -B {self.work_dir}/expected_output.txt {self.work_dir}/computed_output.txt > diff.out.txt 2> diff.err.txt'
+    command = f'diff -E -b -w -B {self.work_dir}/expected_output.txt {self.work_dir}/computed_output.txt > {self.work_dir}/diff.out.txt 2> {self.work_dir}/diff.err.txt'
     log.info(f'Executing Diff: {command}')
     try:
       self.run_process(command)
@@ -111,7 +111,7 @@ class C_SubmissionRunner(SubmissionRunner):
     super().__init__(work_dir, input_content, expected_output_content, source_file_content)
     self.source_file_name = 'main.c'
     self.compiler_command = f'gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
-    self.executable_command = f'{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> stderr.txt'
+    self.executable_command = f'{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt'
 
 
 class JAVA_SubmissionRunner(SubmissionRunner):
@@ -119,7 +119,7 @@ class JAVA_SubmissionRunner(SubmissionRunner):
     super().__init__(work_dir, input_content, expected_output_content, source_file_content)
     self.source_file_name = 'Principal.java'
     self.compiler_command = f'javac {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
-    self.executable_command = f'java -cp {self.work_dir} Principal < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> stderr.txt'
+    self.executable_command = f'java -cp {self.work_dir} Principal < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt'
     self.timeout = 3
 
 
@@ -128,11 +128,10 @@ class Python_SubmissionRunner(SubmissionRunner):
     super().__init__(work_dir, input_content, expected_output_content, source_file_content)
     self.source_file_name = 'main.py'
     self.compiler_command = f'python -m py_compile {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
-    self.executable_command = f'python {self.work_dir}/{self.source_file_name} < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> stderr.txt'
+    self.executable_command = f'python {self.work_dir}/{self.source_file_name} < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt'
 
 
 class SubmissionRunnerManager():
-  
   @staticmethod
   def exe(lang, work_dir, input_content, expected_output_content, source_file_content):
     runners = {
@@ -141,27 +140,3 @@ class SubmissionRunnerManager():
       'python': Python_SubmissionRunner
     }
     return runners[lang](work_dir, input_content, expected_output_content, source_file_content).run()
-
-
-if __name__ == "__main__":  
-  input_content = '' 
-  expected_output_content = 'Ola Mundo' 
-  c_source_file_content = 'int main(void) {puts("Ola Mundo"); return 0;}'
-  java_source_file_content = """class Principal { 
-  public static void main(String[] args) {
-    System.out.println("Ola Mundo");
-  } 
-}
-"""
-  python_source_file_content = 'print("Ola Mundo")'
-
-  C_SubmissionRunner('0/1', input_content, expected_output_content, c_source_file_content).run()
-  JAVA_SubmissionRunner('1/1', input_content, expected_output_content, java_source_file_content).run()
-  Python_SubmissionRunner('2/1', input_content, expected_output_content, python_source_file_content).run()
-  
-  input_content = 'Ola Mundo' 
-  python_source_file_content = 'print(input())'
-  Python_SubmissionRunner('3/1', input_content, expected_output_content, python_source_file_content).run()
-
-  result = SubmissionRunnerManager.exe('python', '3/2', input_content, expected_output_content, python_source_file_content)
-  print(result)
