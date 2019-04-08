@@ -83,6 +83,7 @@ def ver_questao(request, questao_id):
 def criar_submissao(request, questao_id):
     questao = get_object_or_404(Question, pk=questao_id)
     codigo = request.POST['editor']
+    lang = request.POST['language']
 
     try:
         pegar_submissao = Submission.objects.get(autor=request.user, questao=questao, status='OK')
@@ -91,7 +92,7 @@ def criar_submissao(request, questao_id):
             return HttpResponseRedirect("/questoes-concluidas/")  
 
     except Submission.DoesNotExist:
-        sub = Submission(autor=request.user, questao=questao, codigo=codigo)
+        sub = Submission(autor=request.user, questao=questao, codigo=codigo, language=lang)
         sub.save()
 
         animacoes = ['bounce',
