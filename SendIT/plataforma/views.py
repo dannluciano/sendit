@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 from random import randint
 
 
@@ -15,6 +16,7 @@ def index(request):
     return render(request, 'sistema/index.html')
 
 
+@cache_page(60 * 15)
 @login_required
 def home(request):
     submissoes_ok = Submission.objects.filter(
@@ -29,7 +31,7 @@ def home(request):
         if tag != 'all':
             questoes = questoes.filter(tags__tag__icontains=tag)
 
-    questoes = questoes.order_by('-id')
+    questoes = questoes.order_by('?')
 
     tags = Tags.objects.all()
 
