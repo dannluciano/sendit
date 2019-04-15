@@ -33,7 +33,7 @@ class SubmissionRunner(object):
     self.compiler_command = 'echo compiler'
     self.executable_command = 'echo executable'
     self.source_file_name = 'source.txt'
-    self.timeout = 1
+    self.timeout = 5
 
     self.work_dir = f'{tmp_dir}/{work_dir}'
     self.input_content = input_content

@@ -9,6 +9,12 @@ function activateAcePlugin (editor, lang, newSubmission) {
         editor.getSession().setValue('#include <stdio.h>')
       }
       break
+    case 'c++11':
+      editor.getSession().setMode('ace/mode/c_cpp')
+      if (newSubmission) {
+        editor.getSession().setValue('#include <iostream>')
+      }
+      break
     case 'java':
       editor.getSession().setMode('ace/mode/java')
       if (newSubmission) {
