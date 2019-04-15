@@ -1,514 +1,323 @@
 [
-  {
-    "model": "auth.permission",
-    "pk": 1,
-    "fields": {
-      "name": "Can add log entry",
-      "content_type": 1,
-      "codename": "add_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 2,
-    "fields": {
-      "name": "Can change log entry",
-      "content_type": 1,
-      "codename": "change_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 3,
-    "fields": {
-      "name": "Can delete log entry",
-      "content_type": 1,
-      "codename": "delete_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 4,
-    "fields": {
-      "name": "Can add permission",
-      "content_type": 2,
-      "codename": "add_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 5,
-    "fields": {
-      "name": "Can change permission",
-      "content_type": 2,
-      "codename": "change_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 6,
-    "fields": {
-      "name": "Can delete permission",
-      "content_type": 2,
-      "codename": "delete_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 7,
-    "fields": {
-      "name": "Can add group",
-      "content_type": 3,
-      "codename": "add_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 8,
-    "fields": {
-      "name": "Can change group",
-      "content_type": 3,
-      "codename": "change_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 9,
-    "fields": {
-      "name": "Can delete group",
-      "content_type": 3,
-      "codename": "delete_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 10,
-    "fields": {
-      "name": "Can add user",
-      "content_type": 4,
-      "codename": "add_user"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 11,
-    "fields": {
-      "name": "Can change user",
-      "content_type": 4,
-      "codename": "change_user"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 12,
-    "fields": {
-      "name": "Can delete user",
-      "content_type": 4,
-      "codename": "delete_user"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 13,
-    "fields": {
-      "name": "Can add content type",
-      "content_type": 5,
-      "codename": "add_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 14,
-    "fields": {
-      "name": "Can change content type",
-      "content_type": 5,
-      "codename": "change_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 15,
-    "fields": {
-      "name": "Can delete content type",
-      "content_type": 5,
-      "codename": "delete_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 16,
-    "fields": {
-      "name": "Can add session",
-      "content_type": 6,
-      "codename": "add_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 17,
-    "fields": {
-      "name": "Can change session",
-      "content_type": 6,
-      "codename": "change_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 18,
-    "fields": {
-      "name": "Can delete session",
-      "content_type": 6,
-      "codename": "delete_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 19,
-    "fields": {
-      "name": "Can add question",
-      "content_type": 7,
-      "codename": "add_question"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 20,
-    "fields": {
-      "name": "Can change question",
-      "content_type": 7,
-      "codename": "change_question"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 21,
-    "fields": {
-      "name": "Can delete question",
-      "content_type": 7,
-      "codename": "delete_question"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 22,
-    "fields": {
-      "name": "Can add submission",
-      "content_type": 8,
-      "codename": "add_submission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 23,
-    "fields": {
-      "name": "Can change submission",
-      "content_type": 8,
-      "codename": "change_submission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 24,
-    "fields": {
-      "name": "Can delete submission",
-      "content_type": 8,
-      "codename": "delete_submission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 25,
-    "fields": {
-      "name": "Can add case test",
-      "content_type": 9,
-      "codename": "add_casetest"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 26,
-    "fields": {
-      "name": "Can change case test",
-      "content_type": 9,
-      "codename": "change_casetest"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 27,
-    "fields": {
-      "name": "Can delete case test",
-      "content_type": 9,
-      "codename": "delete_casetest"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 28,
-    "fields": {
-      "name": "Can add Summary of Submission",
-      "content_type": 10,
-      "codename": "add_submissionsummary"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 29,
-    "fields": {
-      "name": "Can change Summary of Submission",
-      "content_type": 10,
-      "codename": "change_submissionsummary"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 30,
-    "fields": {
-      "name": "Can delete Summary of Submission",
-      "content_type": 10,
-      "codename": "delete_submissionsummary"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 31,
-    "fields": {
-      "name": "Can add perfil",
-      "content_type": 11,
-      "codename": "add_perfil"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 32,
-    "fields": {
-      "name": "Can change perfil",
-      "content_type": 11,
-      "codename": "change_perfil"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 33,
-    "fields": {
-      "name": "Can delete perfil",
-      "content_type": 11,
-      "codename": "delete_perfil"
-    }
-  },
-  {
-    "model": "auth.group",
-    "pk": 1,
-    "fields": {
-      "name": "Alunos",
-      "permissions": [
-        11,
-        22,
-        16,
-        17,
-        18
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Alunos",
+    "permissions": [
+      [
+        "change_user",
+        "auth",
+        "user"
+      ],
+      [
+        "add_submission",
+        "plataforma",
+        "submission"
+      ],
+      [
+        "add_session",
+        "sessions",
+        "session"
+      ],
+      [
+        "change_session",
+        "sessions",
+        "session"
+      ],
+      [
+        "delete_session",
+        "sessions",
+        "session"
       ]
-    }
-  },
-  {
-    "model": "plataforma.tags",
-    "pk": 1,
-    "fields": {
-      "tag": "Entrada e Sa\u00edda"
-    }
-  },
-  {
-    "model": "plataforma.tags",
-    "pk": 2,
-    "fields": {
-      "tag": "Estruturas de Controle"
-    }
-  },
-  {
-    "model": "plataforma.tags",
-    "pk": 3,
-    "fields": {
-      "tag": "Estruturas de Repeti\u00e7\u00e3o"
-    }
-  },
-  {
-    "model": "plataforma.tags",
-    "pk": 4,
-    "fields": {
-      "tag": "Fun\u00e7\u00f5es"
-    }
-  },
-  {
-    "model": "plataforma.tags",
-    "pk": 5,
-    "fields": {
-      "tag": "Introdu\u00e7\u00e3o"
-    }
-  },
-  {
-    "model": "plataforma.question",
-    "pk": 1,
-    "fields": {
-      "titulo": "Numeros ao Quadrado",
-      "enunciado": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima o quadrado desses n\u00fameros.",
-      "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
-      "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
-      "pre_codigo": "const fs = require('fs')\n\nconst document = {\n  write: function (msg) {\n    console.log(msg)\n  }\n}\n\nfunction alert (msg) {\n  console.log(msg)\n}\n\nfunction prompt (msg) {\n  process.stdin.resume()\n  var buffer = Buffer.alloc(1)\n  var result = ''\n  var bytesRead\n\n  while (true) {\n    bytesRead = 0\n    try {\n      bytesRead = fs.readSync(process.stdin.fd, buffer, 0, 1)\n    } catch (e) {\n      if (e.code === 'EAGAIN') {\n        console.error('ERROR: interactive stdin input not supported.')\n        process.exit(1)\n      } else if (e.code === 'EOF') {\n        break\n      }\n      throw e\n    }\n    if (bytesRead === 0) {\n      break\n    }\n\n    var char = buffer.toString('utf8')\n      // Read next byte when char is \\r or result is empty and char is blank (' ', '\\t')\n    if (char === '\\r' || (result.length === 0 && (char === ' ' || char === '\\t'))) {\n      continue\n    } else if (char === '\\n' || char === ' ' || char === '\\t') {\n      break\n    } else {\n      result += char\n    }\n  }\n\n  process.stdin.pause()\n  return result\n}\n\nfunction confirm (msg) {\n  const result = prompt()[0].toLowerCase()\n\n  return ((result === 't') || (result === 's') || (result === 'y') || (result === '1'))\n}\n",
-      "pos_codigo": "",
-      "xp": 5,
-      "tags": [
-        1,
-        3
-      ]
-    }
-  },
-  {
-    "model": "plataforma.question",
-    "pk": 2,
-    "fields": {
-      "titulo": "Numeros de 1 at\u00e9 10",
-      "enunciado": "Escreva um algoritmo que imprima os n\u00fameros de 1 at\u00e9 10",
-      "entrada": "",
-      "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
-      "xp": 5,
-      "tags": [
-        1,
-        3
-      ]
-    }
-  },
-  {
-    "model": "plataforma.question",
-    "pk": 3,
-    "fields": {
-      "titulo": "N\u00famero ao Cubo",
-      "enunciado": "<p>Escreva um algoritmo que leia um n&uacute;mero e imprima o cubo do n&uacute;mero lido</p>",
-      "entrada": "5",
-      "saida": "125",
-      "xp": 100,
-      "tags": [
-        1
-      ]
-    }
-  },
-  {
-    "model": "plataforma.question",
-    "pk": 4,
-    "fields": {
-      "titulo": "Ol\u00e1 Mundo",
-      "enunciado": "<p>Escreva um programa que escreva &quot;<strong>Ola Mundo</strong>&quot; no terminal</p>",
-      "entrada": "",
-      "saida": "Ola Mundo",
-      "xp": 1,
-      "tags": [
-        1,
-        5
-      ]
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 1,
-    "fields": {
-      "questao": 1,
-      "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
-      "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 2,
-    "fields": {
-      "questao": 1,
-      "entrada": "10\r\n20\r\n30\r\n40\r\n50\r\n60\r\n70\r\n80\r\n90\r\n100",
-      "saida": "100\r\n400\r\n900\r\n1600\r\n2500\r\n3600\r\n4900\r\n6400\r\n8100\r\n10000"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 3,
-    "fields": {
-      "questao": 2,
-      "entrada": "",
-      "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 4,
-    "fields": {
-      "questao": 3,
-      "entrada": "1",
-      "saida": "1"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 5,
-    "fields": {
-      "questao": 3,
-      "entrada": "2",
-      "saida": "8"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 6,
-    "fields": {
-      "questao": 3,
-      "entrada": "3",
-      "saida": "27"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 7,
-    "fields": {
-      "questao": 3,
-      "entrada": "4",
-      "saida": "64"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 8,
-    "fields": {
-      "questao": 3,
-      "entrada": "5",
-      "saida": "125"
-    }
-  },
-  {
-    "model": "plataforma.casetest",
-    "pk": 9,
-    "fields": {
-      "questao": 4,
-      "entrada": "",
-      "saida": "Ola Mundo"
-    }
-  },
-  {
-    "model": "auth.user",
-    "pk": 1,
-    "fields": {
-      "password": "pbkdf2_sha256$36000$R3PYRpV4Zkzw$f2iz5hwJAKmq/a0yHem5JaqN75jHm99u8CN/vlbqKLg=",
-      "is_superuser": false,
-      "username": "user",
-      "first_name": "Test User",
-      "email": "user@user.com",
-      "is_staff": false,
-      "is_active": true,
-      "groups": [
-        1
-      ]
-    }
-  },
-  {
-    "model": "plataforma.perfil",
-    "pk": 1,
-    "fields": {
-      "xp": 0,
-      "user_id": 1
-    }
+    ]
   }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$R3PYRpV4Zkzw$f2iz5hwJAKmq/a0yHem5JaqN75jHm99u8CN/vlbqKLg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "user",
+    "first_name": "Test User",
+    "last_name": "",
+    "email": "user@user.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2018-11-22T23:48:52.030Z",
+    "groups": [
+      [
+        "Alunos"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$RyrWHTHKvYiG$daC6fyYzPVCJmcXBc3u9wC8Mtiws84tkTjU9gl4o3Bg=",
+    "last_login": "2019-04-05T12:35:12.036Z",
+    "is_superuser": true,
+    "username": "dannluciano",
+    "first_name": "",
+    "last_name": "",
+    "email": "dannluciano@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2018-11-22T23:53:58.987Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0xetn0t1430f1u83nqunsli5i9u2gujv",
+  "fields": {
+    "session_data": "NjhjM2Q0YTU0OGNmYjYyODFlMzY0NWZmNDZjMTMxZjAwZDMyZTViODp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNTYyN2U5NmI5MmJiMWVkNmZhNmQ4ZTAxNTQ4YmZkNzJlOGVmMzJkIn0=",
+    "expire_date": "2019-04-18T18:02:09.882Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2qtddegceqr5ivd49j93s2s62c0lzq2a",
+  "fields": {
+    "session_data": "YmFhOTg0NmVhMTQ5YmE4OTUxNTI5YjMyYWUwMjFkNWMwODlmMDczNjp7Il9hdXRoX3VzZXJfaGFzaCI6ImNhMzZiNzhkZGM5YTI5MjdkODk2ZGJlNDA0NTdmNDgwY2MwYWU4NDciLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=",
+    "expire_date": "2019-04-10T13:44:19.465Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4i4o0uz15mtpn7oy94jgo56h1wkxwz8s",
+  "fields": {
+    "session_data": "NjhjM2Q0YTU0OGNmYjYyODFlMzY0NWZmNDZjMTMxZjAwZDMyZTViODp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNTYyN2U5NmI5MmJiMWVkNmZhNmQ4ZTAxNTQ4YmZkNzJlOGVmMzJkIn0=",
+    "expire_date": "2019-04-19T12:35:12.080Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5fv770nprdgucf22ga01x2rpildgcwe5",
+  "fields": {
+    "session_data": "NjhjM2Q0YTU0OGNmYjYyODFlMzY0NWZmNDZjMTMxZjAwZDMyZTViODp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIxNTYyN2U5NmI5MmJiMWVkNmZhNmQ4ZTAxNTQ4YmZkNzJlOGVmMzJkIn0=",
+    "expire_date": "2019-04-18T18:22:06.045Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mw26zreqj6m210w70tojdseaqjpbssmr",
+  "fields": {
+    "session_data": "NDU5MWFhMTQ1MzdjZTM5YWMzMjUzMDg0NDI4ZjBhN2VjNWY0MTM4Njp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI3MmFiMTZlMDgxYWYwYTZiZjM5MGUzNjgzZDJkMTM1ZmMxYmRmNGQyIn0=",
+    "expire_date": "2018-12-07T00:57:28.710Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "xznr5ydmzjesu9kd207rtx2u6itpekq8",
+  "fields": {
+    "session_data": "NTBkNDI1Mzc0NGNjMzI3ZmVjMWVlMDY0MDFhZjBkYTJjZDRjYTI4Mjp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9oYXNoIjoiY2EzNmI3OGRkYzlhMjkyN2Q4OTZkYmU0MDQ1N2Y0ODBjYzBhZTg0NyIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+    "expire_date": "2019-04-16T14:31:08.737Z"
+  }
+},
+{
+  "model": "plataforma.perfil",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "user"
+    ],
+    "xp": 0
+  }
+},
+{
+  "model": "plataforma.perfil",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "dannluciano"
+    ],
+    "xp": 215
+  }
+},
+{
+  "model": "plataforma.tags",
+  "pk": 1,
+  "fields": {
+    "tag": "Entrada e Sa\u00edda"
+  }
+},
+{
+  "model": "plataforma.tags",
+  "pk": 2,
+  "fields": {
+    "tag": "Estruturas de Controle"
+  }
+},
+{
+  "model": "plataforma.tags",
+  "pk": 3,
+  "fields": {
+    "tag": "Estruturas de Repeti\u00e7\u00e3o"
+  }
+},
+{
+  "model": "plataforma.tags",
+  "pk": 4,
+  "fields": {
+    "tag": "Fun\u00e7\u00f5es"
+  }
+},
+{
+  "model": "plataforma.tags",
+  "pk": 5,
+  "fields": {
+    "tag": "Introdu\u00e7\u00e3o"
+  }
+},
+{
+  "model": "plataforma.question",
+  "pk": 1,
+  "fields": {
+    "titulo": "Numeros ao Quadrado",
+    "enunciado": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima o quadrado desses n\u00fameros.",
+    "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
+    "xp": 5,
+    "exibir": true,
+    "tags": [
+      1,
+      3
+    ]
+  }
+},
+{
+  "model": "plataforma.question",
+  "pk": 2,
+  "fields": {
+    "titulo": "Numeros de 1 at\u00e9 10",
+    "enunciado": "Escreva um algoritmo que imprima os n\u00fameros de 1 at\u00e9 10",
+    "entrada": "",
+    "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "xp": 5,
+    "exibir": true,
+    "tags": [
+      1,
+      3
+    ]
+  }
+},
+{
+  "model": "plataforma.question",
+  "pk": 3,
+  "fields": {
+    "titulo": "N\u00famero ao Cubo",
+    "enunciado": "<p>Escreva um algoritmo que leia um n&uacute;mero e imprima o cubo do n&uacute;mero lido</p>",
+    "entrada": "5",
+    "saida": "125",
+    "xp": 100,
+    "exibir": true,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "plataforma.question",
+  "pk": 4,
+  "fields": {
+    "titulo": "Ol\u00e1 Mundo",
+    "enunciado": "<p>Escreva um programa que escreva &quot;<strong>Ola Mundo</strong>&quot; no terminal</p>",
+    "entrada": "",
+    "saida": "Ola Mundo",
+    "xp": 1,
+    "exibir": true,
+    "tags": [
+      1,
+      5
+    ]
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 1,
+  "fields": {
+    "questao": 1,
+    "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 2,
+  "fields": {
+    "questao": 1,
+    "entrada": "10\r\n20\r\n30\r\n40\r\n50\r\n60\r\n70\r\n80\r\n90\r\n100",
+    "saida": "100\r\n400\r\n900\r\n1600\r\n2500\r\n3600\r\n4900\r\n6400\r\n8100\r\n10000"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 3,
+  "fields": {
+    "questao": 2,
+    "entrada": "",
+    "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 4,
+  "fields": {
+    "questao": 3,
+    "entrada": "1",
+    "saida": "1"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 5,
+  "fields": {
+    "questao": 3,
+    "entrada": "2",
+    "saida": "8"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 6,
+  "fields": {
+    "questao": 3,
+    "entrada": "3",
+    "saida": "27"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 7,
+  "fields": {
+    "questao": 3,
+    "entrada": "4",
+    "saida": "64"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 8,
+  "fields": {
+    "questao": 3,
+    "entrada": "5",
+    "saida": "125"
+  }
+},
+{
+  "model": "plataforma.casetest",
+  "pk": 9,
+  "fields": {
+    "questao": 4,
+    "entrada": "",
+    "saida": "Ola Mundo"
+  }
+}
 ]

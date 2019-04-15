@@ -36,14 +36,6 @@ class QuestionAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
             'fields': ('entrada', 'saida'),
         }),
-        ('Pré Codigo', {
-            'classes': ('collapse',),
-            'fields': ('pre_codigo',),
-        }),
-        ('Pos Codigo', {
-            'classes': ('collapse',),
-            'fields': ('pos_codigo',),
-        }),
     )
 
     inlines = [

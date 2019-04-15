@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from .models import Question, Submission
-from .businnes import run_submission
 
 
 class SubmissionTestCase(TestCase):
@@ -11,12 +10,19 @@ class SubmissionTestCase(TestCase):
         question = Question.objects.first()
         user = User.objects.first()
         code = """
-for (let i = 0; i < 10; i++) {
-    num = parseInt(prompt())
-    alert(Math.pow(num, 2))
+import java.util.*;
+class Principal {
+    public static void main(String args[]) {
+        Scanner entrada = new Scanner(System.in);
+        while(entrada.hasNextInt()) {
+                int numero = entrada.nextInt();
+                System.out.println(numero*numero);
+        }
+    }
 }
 """
-        submission = Submission(questao=question, autor=user, codigo=code)
+        language = 'java'
+        submission = Submission(questao=question, autor=user, codigo=code, language=language)
         submission.save()
         self.assertEqual(submission.status, 'OK')
 
@@ -24,273 +30,248 @@ for (let i = 0; i < 10; i++) {
         question = Question.objects.first()
         user = User.objects.first()
         code = """
-for (let i = 0; i < 10; i++) {
-    num = parseInt(prompt())
-    alert(Math.pow(num, 2) + 1)
+class Principal {
+    public static void main(String args[]) {
+        System.out.println("Ola!!!");
+    }
 }
 """
-        submission = Submission(questao=question, autor=user, codigo=code)
-        submission.save()
-        self.assertEqual(submission.status, 'DiffError')
-
-    def test_submission_save_with_error_in_last_case_test(self):
-        question = Question.objects.first()
-        user = User.objects.first()
-        code = """
-    for (let i = 0; i < 10; i++) {
-        num = parseInt(prompt())
-        alert(i * i)
-    }
-"""
-        submission = Submission(questao=question, autor=user, codigo=code)
+        language = 'java'
+        submission = Submission(questao=question, autor=user, codigo=code, language=language)
         submission.save()
         self.assertEqual(submission.status, 'DiffError')
 
 
-class BussinessTestCase(TestCase):
+from .submission_runner import C_SubmissionRunner
+class C_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
-        code = """console.log('Hello World!')"""
-        expected_input = ''
-        expected_output = 'Hello World!\n'
-        result = run_submission(code, expected_input, expected_output)
+        work_dir = 'tests/c/0/1'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <stdio.h>
+            int main(void) {
+                char str[5];
+                scanf("%s", str);
+                printf("Ola, %s", str);
+            }
+        """
+        result = C_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
         self.assertEqual(result, 'OK')
 
-    def test_run_ok_submission_with_blank_spaces(self):
-        code = """console.log(' Hello World! ')"""
-        expected_input = ''
-        expected_output = 'Hello World!\n'
-        result = run_submission(code, expected_input, expected_output)
+
+    def test_run_sintax_error_submission(self):
+        work_dir = 'tests/c/0/2'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <stdio.h>
+            int main(void) {
+                char str[5]
+                scanf("%s", str)
+                printf("Ola, %s", str)
+            
+        """
+        result = C_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'SintaxError')
+    
+    def test_run_runtime_error_submission(self):
+        work_dir = 'tests/c/0/3'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <stdio.h>
+            int main(void) {
+                char* str;
+                char* nome = *str;
+                printf("Ola, %s", nome);
+            }
+            
+        """
+        result = C_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'RuntimeError')
+
+    def test_run_timeout_error_submission(self):
+        work_dir = 'tests/c/0/4'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <stdio.h>
+            int main(void) {
+                char str[5];
+                scanf("%s", str);
+                while(1){
+                    printf("Ola, %s", str);
+                }
+            }
+        """
+        result = C_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'TimeoutError')
+
+    def test_run_diff_error_submission(self):
+        work_dir = 'tests/c/0/5'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <stdio.h>
+            int main(void) {
+                char str[5];
+                scanf("%s", str);
+                printf("Ola, %s", "Maria");
+            }
+        """
+        result = C_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'DiffError')
+
+
+from .submission_runner import JAVA_SubmissionRunner
+class JAVA_SubmissionRunnerTestCase(TestCase):
+    def test_run_ok_submission(self):
+        work_dir = 'tests/java/0/1'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            import java.util.Scanner;
+            class Principal {
+                public static void main (String[] args) {
+                    Scanner entrada = new Scanner(System.in);
+                    String nome = entrada.next();
+                    System.out.println("Ola, " + nome);
+                }
+            }
+        """
+        result = JAVA_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
         self.assertEqual(result, 'OK')
 
-    def test_run_ok_submission_with_blank_lines(self):
-        code = """console.log("\\nHello World!\\n")"""
-        expected_input = ''
-        expected_output = 'Hello World!'
-        result = run_submission(code, expected_input, expected_output)
+
+    def test_run_sintax_error_submission(self):
+        work_dir = 'tests/java/0/2'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            import java.util.Scanner;
+            class Principal {
+                public static void main (String[] args) {
+                    Scanner entrada = new Scanner(System.in)
+                    String nome = entrada.next()
+                    System.out.println("Ola, " + nome)
+                
+            
+        """
+        result = JAVA_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'SintaxError')
+    
+    def test_run_runtime_error_submission(self):
+        work_dir = 'tests/java/0/3'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            import java.util.Scanner;
+            class Principal {
+                public static void main (String[] args) {
+                    Scanner entrada = null;
+                    String nome = entrada.next();
+                    System.out.println("Ola, " + nome);
+                }
+            }
+        """
+        result = JAVA_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'RuntimeError')
+
+    def test_run_timeout_error_submission(self):
+        work_dir = 'tests/java/0/4'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            import java.util.Scanner;
+            class Principal {
+                public static void main (String[] args) {
+                    Scanner entrada = new Scanner(System.in);
+                    String nome = entrada.next();
+                    while(true) {
+                        System.out.println("Ola, " + nome);
+                    }
+                }
+            }
+        """
+        result = JAVA_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'TimeoutError')
+
+    def test_run_diff_error_submission(self):
+        work_dir = 'tests/java/0/5'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            import java.util.Scanner;
+            class Principal {
+                public static void main (String[] args) {
+                    Scanner entrada = new Scanner(System.in);
+                    String nome = entrada.next();
+                    System.out.println("Ola, Maria");
+                }
+            }
+        """
+        result = JAVA_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'DiffError')
+
+
+from .submission_runner import Python_SubmissionRunner
+class Python_SubmissionRunnerTestCase(TestCase):
+    def test_run_ok_submission(self):
+        work_dir = 'tests/python/0/1'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+str = input()
+print("Ola,", str)
+"""
+        result = Python_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
         self.assertEqual(result, 'OK')
 
-    def test_run_ok_submission_with_alert(self):
-        code = """alert('Hello World!')"""
-        expected_input = ''
-        expected_output = 'Hello World!\n'
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'OK')
 
-    def test_run_ok_submission_with_document_write(self):
-        code = """document.write('Hello World!')"""
-        expected_input = ''
-        expected_output = 'Hello World!\n'
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'OK')
-
-    def test_run_ok_submission_with_prompt(self):
-        code = """
-for (let i = 0; i < 5; i++) {
-    num = parseInt(prompt())
-    alert(Math.pow(num, 2))
+    def test_run_sintax_error_submission(self):
+        work_dir = 'tests/c/0/2'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+str = input()
+if str {
+    print("Ola,", str)
 }
 """
-        expected_input = """2
-4
-6
-8
-10
+        result = Python_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'SintaxError')
+    
+    def test_run_runtime_error_submission(self):
+        work_dir = 'tests/python/0/3'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+str = input()
+pri.nt("Ola,", str)
 """
+        result = Python_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'RuntimeError')
 
-        expected_output = """4
-16
-36
-64
-100
+    def test_run_timeout_error_submission(self):
+        work_dir = 'tests/python/0/4'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+str = input()
+while(True):
+    print("Ola,", str)
 """
+        result = Python_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
+        self.assertEqual(result, 'TimeoutError')
 
-    def test_run_ok_submission_with_prompt_with_two_inputs_in_same_line(self):
-        code = """
-for (let i = 0; i < 5; i++) {
-    num = parseInt(prompt())
-    exp = parseInt(prompt())
-    alert(Math.pow(num, exp))
-}
+    def test_run_diff_error_submission(self):
+        work_dir = 'tests/c/0/5'
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+str = input()
+print("Ola, Maria")
 """
-
-        expected_input = """2 2
-4 2
-6 2
-8 2
-10 2
-"""
-
-        expected_output = """4
-16
-36
-64
-100
-"""
-
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'OK')
-
-    def test_ok_submission_with_prompt_two_inputs_in_same_line_with_spaces(self):
-        code = """
-for (let i = 0; i < 5; i++) {
-    num = parseInt(prompt())
-    exp = parseInt(prompt())
-    alert(Math.pow(num, exp))
-}
-"""
-
-        expected_input = """2   2
-4   2
-6   2
-8   2
-10  2
-"""
-
-        expected_output = """4
-16
-36
-64
-100
-"""
-
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'OK')
-
-    def test_run_ok_submission_with_confirm_true(self):
-        code = """
-for (let i = 1; i <= 10; i++) {
-    alert(confirm())
-}
-"""
-        expected_input = """Yes
-yes
-Y
-y
-Sim
-sim
-S
-s
-True
-true
-1
-"""
-
-        expected_output = """
-true
-true
-true
-true
-true
-true
-true
-true
-true
-true
-"""
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'OK')
-
-    def test_run_ok_submission_with_confirm_false(self):
-        code = """
-for (let i = 1; i <= 14; i++) {
-    alert(confirm())
-}
-"""
-        expected_input = """No
-no
-N
-n
-Nao
-nao
-N
-n
-0
-Não
-False
-F
-false
-f
-"""
-
-        expected_output = """false
-false
-false
-false
-false
-false
-false
-false
-false
-false
-false
-false
-false
-false
-"""
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'OK')
-
-    def test_run_submission_with_prompt_loop(self):
-        code = """prompt()"""
-        expected_input = ''
-        expected_output = 'Hello World'
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'JSRuntimeError')
-
-    def test_run_submission_with_sintax_error(self):
-        code = """
-if 1 < 2 {
-console.log('Hello World!')
-}
-"""
-        expected_input = ''
-        expected_output = ''
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'JSSintaxError')
-
-    def test_run_submission_with_runtime_error(self):
-        code = """
-function fat(n) {
-    if (n < 2) {
-        return 1
-    }
-    return n * fat(n-1)
-}
-fat(65536)
-"""
-        expected_input = ''
-        expected_output = ''
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'JSRuntimeError')
-
-    def test_run_submission_with_timeout_error(self):
-        code = """
-while (true) {
-}
-"""
-        expected_input = ''
-        expected_output = ''
-        result = run_submission(code, expected_input, expected_output)
-        self.assertEqual(result, 'JSTimeoutError')
-
-    def test_run_submission_with_diff_error(self):
-        code = """
-for (let i = 1; i <= 10; i++) {
-    console.log('i')
-}
-"""
-        expected_input = ''
-        expected_output = """
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-"""
-        result = run_submission(code, expected_input, expected_output)
+        result = Python_SubmissionRunner(work_dir, input_content, expected_output_content, source_file_content).run()
         self.assertEqual(result, 'DiffError')
