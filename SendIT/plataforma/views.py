@@ -16,7 +16,6 @@ def index(request):
     return render(request, 'sistema/index.html')
 
 
-@cache_page(60 * 15)
 @login_required
 def home(request):
     submissoes_ok = Submission.objects.filter(
@@ -42,6 +41,16 @@ def home(request):
                       'tags': tags,
                       'link': 1
                   })
+
+
+@login_required
+def aleatoria(request):
+    rid = randint(1, Question.objects.count())
+    try:
+        Question.objects.get(pk=rid)
+        return HttpResponseRedirect(f'/questao/{rid}')
+    except Question.DoesNotExist:
+        return HttpResponseRedirect(f'/aleatoria/')
 
 
 @login_required

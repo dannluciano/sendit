@@ -5,13 +5,14 @@
 
 {% block content %}
 <section class="box">
-    <h1 class="title">
+    <h1 class="title has-text-centered">
         {{ questao.titulo }}
     </h1>
     <div>
         {{ questao.enunciado|safe|escape }}
     </div>
     <br />
+    {% if questao.entrada or questao.saida %}
     <div class="columns entrada-saida">
         <div class="column">
             <h2 class="subtitle">
@@ -30,6 +31,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </section>
 
 <section class="box">
