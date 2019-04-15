@@ -122,6 +122,18 @@ class Cplusplus11_SubmissionRunner(SubmissionRunner):
     self.executable_command = f'{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt'
 
 
+class JavaScript_SubmissionRunner(SubmissionRunner):
+  def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
+    super().__init__(work_dir, input_content, expected_output_content, source_file_content)
+    self.source_file_name = 'index.js'
+    self.compiler_command = f'nodejs -c {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
+    self.executable_command = f'nodejs {self.work_dir}/main.js < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt'
+    
+  def run_executable(self):
+    self.run_process(f'cat browser_io.js {self.work_dir}/{self.source_file_name} > {self.work_dir}/main.js')
+    super().run_executable()
+
+
 class JAVA_SubmissionRunner(SubmissionRunner):
   def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
     super().__init__(work_dir, input_content, expected_output_content, source_file_content)

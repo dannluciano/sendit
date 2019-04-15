@@ -1,7 +1,7 @@
 /* eslint-env browser, jquery */
 /* global ace */
 
-function activateAcePlugin (editor, lang, newSubmission) {
+function activateAcePlugin(editor, lang, newSubmission) {
   switch (lang) {
     case 'c':
       editor.getSession().setMode('ace/mode/c_cpp')
@@ -13,6 +13,12 @@ function activateAcePlugin (editor, lang, newSubmission) {
       editor.getSession().setMode('ace/mode/c_cpp')
       if (newSubmission) {
         editor.getSession().setValue('#include <iostream>')
+      }
+      break
+    case 'javascript':
+      editor.getSession().setMode('ace/mode/js')
+      if (newSubmission) {
+        editor.getSession().setValue('alert("Ola Mundo")')
       }
       break
     case 'java':
@@ -32,37 +38,37 @@ function activateAcePlugin (editor, lang, newSubmission) {
 }
 
 jQuery(document)
-    .ready(function () {
-      var editor = ace.edit('editor')
-      editor.setTheme('ace/theme/github')
-      editor.getSession().setMode('ace/mode/c')
-      editor.setFontSize(20)
-      editor.$blockScrolling = Infinity
+  .ready(function () {
+    var editor = ace.edit('editor')
+    editor.setTheme('ace/theme/github')
+    editor.getSession().setMode('ace/mode/c')
+    editor.setFontSize(20)
+    editor.$blockScrolling = Infinity
 
-      var textarea = $('textarea[name="editor"]')
+    var textarea = $('textarea[name="editor"]')
+    textarea.val(editor.getSession().getValue())
+
+    editor.getSession().on('change', function () {
       textarea.val(editor.getSession().getValue())
-
-      editor.getSession().on('change', function () {
-        textarea.val(editor.getSession().getValue())
-      })
-
-      $('#botao-executar').click(function (evt) {
-        $('#code').submit()
-      })
-
-      $('#language-select').on('change', function () {
-        var lang = $('#language-select').val()
-        activateAcePlugin(editor, lang, true)
-      })
-      if (textarea.val() !== '') {
-        var lang = $('#language-select').val()
-        activateAcePlugin(editor, lang, false)
-      }
-
-      $('#code').submit(function (evt) {
-        var lang = $('#language-select').val()
-        if (lang === '_') {
-          evt.preventDefault()
-        }
-      })
     })
+
+    $('#botao-executar').click(function (evt) {
+      $('#code').submit()
+    })
+
+    $('#language-select').on('change', function () {
+      var lang = $('#language-select').val()
+      activateAcePlugin(editor, lang, true)
+    })
+    if (textarea.val() !== '') {
+      var lang = $('#language-select').val()
+      activateAcePlugin(editor, lang, false)
+    }
+
+    $('#code').submit(function (evt) {
+      var lang = $('#language-select').val()
+      if (lang === '_') {
+        evt.preventDefault()
+      }
+    })
+  })
