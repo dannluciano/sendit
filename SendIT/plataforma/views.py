@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 from random import randint
 
 
@@ -29,7 +30,7 @@ def home(request):
         if tag != 'all':
             questoes = questoes.filter(tags__tag__icontains=tag)
 
-    questoes = questoes.order_by('-id')
+    questoes = questoes.order_by('?')
 
     tags = Tags.objects.all()
 
@@ -40,6 +41,16 @@ def home(request):
                       'tags': tags,
                       'link': 1
                   })
+
+
+@login_required
+def aleatoria(request):
+    rid = randint(1, Question.objects.count())
+    try:
+        Question.objects.get(pk=rid)
+        return HttpResponseRedirect(f'/questao/{rid}')
+    except Question.DoesNotExist:
+        return HttpResponseRedirect(f'/aleatoria/')
 
 
 @login_required
@@ -83,6 +94,7 @@ def ver_questao(request, questao_id):
 def criar_submissao(request, questao_id):
     questao = get_object_or_404(Question, pk=questao_id)
     codigo = request.POST['editor']
+    lang = request.POST['language']
 
     try:
         pegar_submissao = Submission.objects.get(autor=request.user, questao=questao, status='OK')
@@ -91,7 +103,7 @@ def criar_submissao(request, questao_id):
             return HttpResponseRedirect("/questoes-concluidas/")  
 
     except Submission.DoesNotExist:
-        sub = Submission(autor=request.user, questao=questao, codigo=codigo)
+        sub = Submission(autor=request.user, questao=questao, codigo=codigo, language=lang)
         sub.save()
 
         animacoes = ['bounce',

@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index),
     url(r'^home/$', views.home),
+    url(r'^aleatoria/$', views.aleatoria),
     url(r'^questoes-concluidas/$', views.questoes_concluidas),
     url(r'^questoes/(?P<questao_id>\d+)/submeter/$',
         views.criar_submissao, name='criar_submissao'),

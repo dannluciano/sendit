@@ -107,3 +107,4 @@ SendIT/.vscode/settings.json
 .DS_Store
 
 staticfiles/
+temp/

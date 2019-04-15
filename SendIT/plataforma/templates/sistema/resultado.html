@@ -17,6 +17,9 @@
     <picture class="img-resultado-questao">
         <img src="{% static submissao.get_random_status_image %}" alt=" Imagem de {{ submissao.status }}" class="animated {{ animacao }}">
     </picture>
+    <h1 class="subtitle resultado-submissao animated {{ animacao }}">
+        {{ submissao.status }}
+    </h2>
     <h2 class="subtitle resultado-submissao animated {{ animacao }}">
         {{ submissao.get_random_status_phrase }}
     </h2>
@@ -28,7 +31,7 @@
         <a href="/home/"> Voltar para lista de questões</a>
     </p>
     {% else %}
-    <a href="/questao/{{ submissao.questao.id }}">Tentar Novamente</a>
+    <a class="button" href="/questao/{{ submissao.questao.id }}">Tentar Novamente</a>
     {% endifequal %}
 </section>
 

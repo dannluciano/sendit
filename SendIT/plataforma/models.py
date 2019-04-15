@@ -1,14 +1,14 @@
 from django.db import models
-from .businnes import run_submission
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from ckeditor.fields import RichTextField
+
 import math
 import random
 
-with open('browser_io.js', 'r') as file:
-    DEFAULT_PRE_CODE = file.read()
+from .submission_runner import SubmissionRunnerManager
 
 
 class Perfil(models.Model):
@@ -23,7 +23,7 @@ class Perfil(models.Model):
     def taxa_de_conclusao(self):
         try:
             taxa = self.acertos / Question.objects.count() * 100.0
-            return '{:5.2f}%'.format(taxa)
+            return f'{taxa:5.2f}%'
         except ZeroDivisionError:
             return '-'
 
@@ -31,7 +31,7 @@ class Perfil(models.Model):
     def taxa_de_sucesso(self):
         try:
             taxa = self.acertos / self.submissoes * 100.0
-            return '{:5.2f}%'.format(taxa)
+            return f'{taxa:5.2f}%'
         except ZeroDivisionError:
             return '-'
 
@@ -88,7 +88,7 @@ class Tags(models.Model):
     tag = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.tag
+        return f'{self.tag}'
 
     class Meta:
         verbose_name_plural = 'Tags'
@@ -100,8 +100,6 @@ class Question(models.Model):
     enunciado = RichTextField()
     entrada = models.TextField(blank=True)
     saida = models.TextField(blank=True)
-    pre_codigo = models.TextField(default=DEFAULT_PRE_CODE, blank=True)
-    pos_codigo = models.TextField(default="", blank=True)
     xp = models.IntegerField(default=100)
     tags = models.ManyToManyField(Tags)
     exibir = models.BooleanField(default=True)
@@ -110,7 +108,7 @@ class Question(models.Model):
         self.save
 
     def __str__(self):
-        return self.titulo
+        return f'{self.titulo}'
 
 
 class CaseTest(models.Model):
@@ -119,7 +117,7 @@ class CaseTest(models.Model):
     saida = models.TextField(blank=True)
 
     def __str__(self):
-        return 'Case - {} : Questão: {}'.format(self.id, self.questao)
+        return f'Case - {self.id} : Questão: {self.questao}'
 
 
 class Submission(models.Model):
@@ -128,28 +126,37 @@ class Submission(models.Model):
     codigo = models.TextField()
     STATUS_CHOICES = (
         ('Waiting', 'Esperando ser executada.'),
-        ('JSSintaxError', 'Erro de sintaxe!'),
-        ('JSRuntimeError', 'Erro em execução!'),
-        ('JSTimeoutError', 'Tempo de execução excedido!'),
+        ('SintaxError', 'Erro de sintaxe!'),
+        ('RuntimeError', 'Erro em execução!'),
+        ('TimeoutError', 'Tempo de execução excedido!'),
         ('DiffError', 'Saída computada diferente da saída esperada!'),
         ('OK', 'OK'))
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=36, default=STATUS_CHOICES[0])
 
+    LANGUAGE_CHOICES = (
+        ('unkwon', 'Unkwon'),
+        ('c', 'C'),
+        ('java', 'Java'),
+        ('python', 'Python'),
+    )
+    language = models.CharField(choices=LANGUAGE_CHOICES,
+                              max_length=10, default=STATUS_CHOICES[0])
+
     STATUS_PHRASES = {
-        'JSSintaxError': [
+        'SintaxError': [
             ('Erro de sintaxe! Tente Novamente.', 'img/errosintaxe1.png'),
             ('Erro de sintaxe! Verifique os parenteses, colchetes e chaves.', 'img/errosintaxe2.png'),
             ('Ahhh não! Não consegui executar o seu código todo. Isso aconteceu por conta de um erro de sintaxe', 'img/errosintaxe3.png'),
             ('Será que não tem um ponto e vírgula ou um parênteses faltando?', 'img/errosintaxe4.png')
         ],
-        'JSRuntimeError': [
+        'RuntimeError': [
             ('Erro de execução! Tente Novamente.', 'img/erroexecucao1.png'),
             ('Seu código morreu huahuahua! Ocorreu um erro de execução.', 'img/erroexecucao2.png'),
             ('Quando isso me acontece dá uma tristeza! Não consegiu executar o seu código. Tem alguma coisa erra nele.', 'img/erroexecucao3.png'),
             ('Tem certeza que não escreveu alguma nome errado? ', 'img/erroexecucao4.png')
         ],
-        'JSTimeoutError': [
+        'TimeoutError': [
             ('Tempo de execução excedido! Me deu até sono! Tente Novamente.', 'img/tempoexecucao1.png'),
             ('O tempo pra executar esse código demorou tanto que eu já encontrei até um alienígena perdido! Tente Novamente.', 'img/tempoexecucao2.png'),
             ('Sabe a piadinha de navagadores? Seu código está abaixo do IE kkkkkkk', 'img/tempoexecucao3.png'),
@@ -184,24 +191,23 @@ class Submission(models.Model):
         return self._get_random_status()[1]
 
     def save(self, *args, **kwargs):
-        casos_de_testes = self.questao.casetest_set.all()
-        for cs in casos_de_testes:
-            codigo = """
-{}
-{}
-{}
-""".format(self.questao.pre_codigo, self.codigo, self.questao.pos_codigo)
-            self.status = run_submission(codigo, cs.entrada, cs.saida)
-            if self.status != 'OK':
-                break
-
         super(Submission, self).save(*args, **kwargs)
 
+        casos_de_testes = self.questao.casetest_set.all()
+        for cs in casos_de_testes:
+            work_dir = f'{self.id}/{cs.id}'
+            self.status = SubmissionRunnerManager().exe(self.language, work_dir, cs.entrada, cs.saida, self.codigo)
+            if self.status != 'OK':
+                break
+        
+        super(Submission, self).save(*args, **kwargs)
+
+        
     def is_ok(self):
         return self.status == 'OK'
 
     def __str__(self):
-        return 'Questão-{}-Submissão-{}-{}'.format(self.questao.id, self.id, self.status)
+        return f'Questão-{self.questao.id}-Submissão-{self.id}-{self.status}'
 
     class Meta:
         ordering = ['-id']
