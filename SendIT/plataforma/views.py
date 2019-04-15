@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
 from random import randint
 
 
@@ -30,7 +29,7 @@ def home(request):
         if tag != 'all':
             questoes = questoes.filter(tags__tag__icontains=tag)
 
-    questoes = questoes.order_by('?')
+    questoes = questoes.order_by('xp')
 
     tags = Tags.objects.all()
 
