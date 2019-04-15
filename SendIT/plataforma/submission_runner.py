@@ -114,6 +114,14 @@ class C_SubmissionRunner(SubmissionRunner):
     self.executable_command = f'{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt'
 
 
+class Cplusplus11_SubmissionRunner(SubmissionRunner):
+  def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
+    super().__init__(work_dir, input_content, expected_output_content, source_file_content)
+    self.source_file_name = 'main.c'
+    self.compiler_command = f'g++ --std=c++11 -o {self.work_dir}/main {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt'
+    self.executable_command = f'{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt'
+
+
 class JAVA_SubmissionRunner(SubmissionRunner):
   def __init__(self, work_dir, input_content, expected_output_content, source_file_content):
     super().__init__(work_dir, input_content, expected_output_content, source_file_content)
@@ -136,6 +144,8 @@ class SubmissionRunnerManager():
   def exe(lang, work_dir, input_content, expected_output_content, source_file_content):
     runners = {
       'c': C_SubmissionRunner,
+      'c++11': Cplusplus11_SubmissionRunner,
+      'javascript': JavaScript_SubmissionRunner,
       'java': JAVA_SubmissionRunner,
       'python': Python_SubmissionRunner
     }
