@@ -156,14 +156,14 @@ def entrar(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect("/home/")
 
-    usuario_aux = User.objects.get(email=request.POST['email'])
-    usuario = authenticate(username=usuario_aux.username,
+    try:
+        usuario = User.objects.get(email=request.POST['email'])
+        usuario = authenticate(username=usuario.username,
                            password=request.POST["senha"])
-    if usuario is not None:
         login(request, usuario)
         return HttpResponseRedirect('/home/')
-
-    return HttpResponseRedirect('/')
+    except User.DoesNotExist:
+        return HttpResponseRedirect('/')
 
 
 @login_required
