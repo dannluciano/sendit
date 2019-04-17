@@ -41,7 +41,6 @@ jQuery(document)
   .ready(function () {
     var editor = ace.edit('editor')
     editor.setTheme('ace/theme/github')
-    editor.getSession().setMode('ace/mode/c')
     editor.setFontSize(20)
     editor.$blockScrolling = Infinity
 
