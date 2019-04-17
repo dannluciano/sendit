@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Question, Submission, CaseTest, Perfil, Tags
-from .models import SubmissionSummary
+from .models import Question, Submission, CaseTest, Perfil, Tags, SubmissionSummary
 
 
 class CaseTestInline(admin.TabularInline):
