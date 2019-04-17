@@ -1,0 +1,2 @@
+release: python manage.py migrate --noinput
+web: gunicorn -b 0.0.0.0:$PORT SendIT.wsgi --capture-output --access-logfile - --log-file - 

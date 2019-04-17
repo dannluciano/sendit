@@ -6,6 +6,9 @@ url = "https://pypi.python.org/simple"
 [packages]
 django = "*"
 django-ckeditor = "*"
+psycopg2 = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
