@@ -164,6 +164,7 @@ CACHES = {
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 60*60
 
 LOGGING = {
     'version': 1,
