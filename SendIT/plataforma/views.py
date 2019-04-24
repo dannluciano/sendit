@@ -6,6 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from random import randint
+import logging
+
+log = logging.getLogger(__name__)
+log.setLevel(20)
 
 
 def index(request):
@@ -154,15 +158,16 @@ def cadastrar_usuario(request):
 @require_POST
 def entrar(request):
     if request.user.is_authenticated:
+        log.info('User has already been Authenticated')
         return HttpResponseRedirect("/home/")
-
-    try:
-        usuario = User.objects.get(email=request.POST['email'])
-        usuario = authenticate(username=usuario.username,
-                           password=request.POST["senha"])
+    
+    usuario = authenticate(request, username=request.POST['email'], password=request.POST['senha'])
+    if usuario is not None:
+        log.info('User Authenticated')
         login(request, usuario)
         return HttpResponseRedirect('/home/')
-    except User.DoesNotExist:
+    else:
+        log.info('User Not Authenticated!')
         return HttpResponseRedirect('/')
 
 
