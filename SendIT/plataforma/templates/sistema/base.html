@@ -65,6 +65,7 @@
     <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
     <script src="{% static 'js/clipboard.min.js' %}"></script>
     <script src="{% static 'js/bulma.js' %}"></script>
+    {% include 'session_security/all.html' %}
     {% block js %}
     {% endblock js %}
 </body>
