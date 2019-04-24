@@ -20,7 +20,7 @@ class Perfil(models.Model):
         return int(math.sqrt(self.xp) * 1.5)
 
     @property
-    def taxa_de_conclusao(self):
+    def tx_conclusao(self):
         try:
             taxa = self.acertos / Question.objects.count() * 100.0
             return f'{taxa:5.2f}%'
@@ -28,7 +28,7 @@ class Perfil(models.Model):
             return '-'
 
     @property
-    def taxa_de_sucesso(self):
+    def tx_sucesso(self):
         try:
             taxa = self.acertos / self.submissoes * 100.0
             return f'{taxa:5.2f}%'

@@ -77,7 +77,7 @@ class UserAdmin(BaseUserAdmin):
 
 class PerfilAdmin(admin.ModelAdmin):
     list_display = ('user', 'level', 'xp',
-                    'taxa_de_conclusao', 'taxa_de_sucesso',
+                    'tx_conclusao', 'tx_sucesso',
                     'submissoes', 'acertos',
                     'erros_de_sintax', 'erros_de_execucao',
                     'erros_de_tempo', 'erros_de_saida')
