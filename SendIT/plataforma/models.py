@@ -72,6 +72,9 @@ class Perfil(models.Model):
     def __str__(self):
         return self.user.username
 
+    class Meta:
+        ordering = ['user__username']
+
 
 @receiver(post_save, sender=User)
 def criar_perfil(sender, instance, created, **kwargs):
