@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Question, Submission, Tags
+from .models import Question, Submission, Tags, Perfil
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -133,6 +133,12 @@ def criar_submissao(request, questao_id):
                           'codigo_enviado': codigo,
                           'animacao': animacoes[animacao],
                       })
+
+
+@login_required
+def quadro_de_medalhas(request):
+    usuarios = Perfil.objects.select_related('user').filter(user__is_superuser=False).order_by('-xp')
+    return render(request, 'sistema/quadro_de_medalhas.html', {'usuarios': usuarios})
 
 
 @require_POST
