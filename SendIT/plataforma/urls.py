@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^questao/(?P<questao_id>\d+)/$', views.ver_questao),
     url(r'^cadastrar/$', views.cadastrar_usuario),
     url(r'^entrar/$', views.entrar),
-    url(r'^sair/$', views.sair)
+    url(r'^sair/$', views.sair),
+    url(r'^pontuacao/$', views.quadro_de_medalhas),
 ]
