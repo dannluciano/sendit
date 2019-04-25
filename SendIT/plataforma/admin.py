@@ -65,6 +65,12 @@ class SubmissionSummaryAdmin(admin.ModelAdmin):
         return False
 
 
+class SubmissionInline(admin.StackedInline):
+    model = Submission
+    extra = 0
+    verbose_name_plural = 'Submissões'
+
+
 class PerfilInline(admin.StackedInline):
     model = Perfil
     can_delete = False
@@ -72,7 +78,20 @@ class PerfilInline(admin.StackedInline):
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (PerfilInline, )
+    list_display = ('username', 'first_name', 'get_xp', 'get_groups', 'is_staff', 'is_superuser')
+    inlines = (PerfilInline, SubmissionInline, )
+
+    def get_xp(self, obj):
+        return obj.perfil.xp
+    get_xp.short_description = 'XP'
+    get_xp.admin_order_field = 'perfil__xp'
+
+    def get_groups(self, obj):
+        short_name = lambda n: str(n)
+        groups = [short_name(group) for group in obj.groups.all()]
+        return ', '.join(groups)
+    get_groups.short_description = 'Groups'
+
 
 
 class PerfilAdmin(admin.ModelAdmin):
@@ -81,7 +100,7 @@ class PerfilAdmin(admin.ModelAdmin):
                     'submissoes', 'acertos',
                     'erros_de_sintax', 'erros_de_execucao',
                     'erros_de_tempo', 'erros_de_saida')
-    list_display_links = None
+    list_display_links = ('user',)
     list_filter = ('user__groups',)
     search_fields = ['user__username', 'user__email']
 
