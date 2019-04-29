@@ -210,6 +210,12 @@ class Submission(models.Model):
         
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        if self.status == 'OK':
+            perfil = self.autor.perfil
+            perfil.xp = perfil.xp - self.questao.xp
+            perfil.save()
+        super().delete(*args, **kwargs)
         
     def is_ok(self):
         return self.status == 'OK'
