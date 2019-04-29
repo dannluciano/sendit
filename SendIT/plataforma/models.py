@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
-
 from ckeditor.fields import RichTextField
 
 import math
@@ -209,13 +208,6 @@ class Submission(models.Model):
                 break
         
         super().save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        if self.status == 'OK':
-            perfil = self.autor.perfil
-            perfil.xp = perfil.xp - self.questao.xp
-            perfil.save()
-        super().delete(*args, **kwargs)
         
     def is_ok(self):
         return self.status == 'OK'
@@ -225,6 +217,14 @@ class Submission(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+
+@receiver(pre_delete, sender=Submission)
+def remove_xp(sender, instance, **kwargs):
+    if instance.status == 'OK':
+            perfil = instance.autor.perfil
+            perfil.xp = perfil.xp - instance.questao.xp
+            perfil.save()
 
 
 class SubmissionSummary(models.Model):
