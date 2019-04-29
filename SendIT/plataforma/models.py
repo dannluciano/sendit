@@ -113,6 +113,9 @@ class Question(models.Model):
     def __str__(self):
         return f'{self.titulo}'
 
+    class Meta:
+        ordering = ['titulo']
+
 
 class CaseTest(models.Model):
     questao = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -140,6 +143,8 @@ class Submission(models.Model):
     LANGUAGE_CHOICES = (
         ('unkwon', 'Unkwon'),
         ('c', 'C'),
+        ('c++11', 'C++11'),
+        ('javascript', 'JavaScript'),
         ('java', 'Java'),
         ('python', 'Python'),
     )
@@ -194,7 +199,7 @@ class Submission(models.Model):
         return self._get_random_status()[1]
 
     def save(self, *args, **kwargs):
-        super(Submission, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
         casos_de_testes = self.questao.casetest_set.all()
         for cs in casos_de_testes:
@@ -203,7 +208,7 @@ class Submission(models.Model):
             if self.status != 'OK':
                 break
         
-        super(Submission, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
         
     def is_ok(self):

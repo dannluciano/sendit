@@ -41,7 +41,9 @@ class QuestionAdmin(admin.ModelAdmin):
         CaseTestInline,
     ]
 
-    list_display = ('titulo', 'xp', 'exibir')
+    list_display = ('id', 'titulo', 'xp', 'exibir')
+    list_display_links = ('id', 'titulo')
+    search_fields = ['titulo',] 
 
     actions = [esconder, exibir]
 
