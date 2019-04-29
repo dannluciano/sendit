@@ -48,12 +48,8 @@ def home(request):
 
 @login_required
 def aleatoria(request):
-    rid = randint(1, Question.objects.count())
-    try:
-        Question.objects.get(pk=rid)
-        return HttpResponseRedirect(f'/questao/{rid}')
-    except Question.DoesNotExist:
-        return HttpResponseRedirect(f'/aleatoria/')
+    q = Question.objects.exclude(exibir=False).order_by('?')[0]
+    return HttpResponseRedirect(f'/questao/{q.id}')
 
 
 @login_required
@@ -81,7 +77,8 @@ def questoes_concluidas(request):
 
 @login_required
 def ver_questao(request, questao_id):
-    questao = get_object_or_404(Question, pk=questao_id)
+    questao = get_object_or_404(Question, pk=questao_id, exibir=True)
+
     ultima_submissao = Submission.objects.filter(
         autor=request.user, questao_id=questao.id).first()
 
