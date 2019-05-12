@@ -52,7 +52,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class SubmissoesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'status', 'autor', 'questao')
+    list_display = ('id', 'status', 'autor', 'questao', 'timestamp')
     list_display_links = ('id', 'status')
     list_filter = ('status',)
     search_fields = ['autor__username', 'autor__email', 'questao__titulo']
