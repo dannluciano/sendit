@@ -138,6 +138,7 @@ class Submission(models.Model):
         ('OK', 'OK'))
     status = models.CharField(choices=STATUS_CHOICES,
                               max_length=36, default=STATUS_CHOICES[0])
+    timestamp = models.DateTimeField(auto_now=True)
 
     LANGUAGE_CHOICES = (
         ('unkwon', 'Unkwon'),
