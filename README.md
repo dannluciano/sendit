@@ -7,7 +7,8 @@
 ```brew install python3 postgresql```
 2. Após isto, instale o pipenv: 
 ```pip install pipenv```
-3. Crie um virtualenv e as instale as dependencias do projeto 
+3. Crie um virtualenv e as instale as dependencias do projeto
+```pipenv --python 3.6```
 ```pipenv install```
 4. Depois entre na pasta SendIT 
 ```cd SendIT```
@@ -19,7 +20,9 @@
 ```python manage.py createsuperuser```
 8. Colete os Arquivos Estaticos 
 ```python manage.py collectstatic```
-9. Rode o servidor web
+9. Criar pasta temporaria
+```mkdir temp```
+10. Rode o servidor web
     em modo de desenvolvimento:
 ```python manage.py runserver```
     em modo de produção:
