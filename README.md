@@ -1,10 +1,13 @@
 # sendit
 
-1. Se não estiver o pip instalado execute: 
-```python get-pip.py install```
+1. Instale Python >= 3.6 e PostgreSQL 11:
+    no Linux ou no Windows SubfileSystem Linux (WSL):
+```apt install python3 postgresql```
+    no Mac OS:
+```brew install python3 postgresql```
 2. Após isto, instale o pipenv: 
 ```pip install pipenv```
-3. Crie um virtualenv e as instale as dependencias do projetocom o comando 
+3. Crie um virtualenv e as instale as dependencias do projeto 
 ```pipenv install```
 4. Depois entre na pasta SendIT 
 ```cd SendIT```
@@ -16,7 +19,10 @@
 ```python manage.py createsuperuser```
 8. Colete os Arquivos Estaticos 
 ```python manage.py collectstatic```
-9. Rode o servidor 
+9. Rode o servidor web
+    em modo de desenvolvimento:
 ```python manage.py runserver```
+    em modo de produção:
+```gunicorn -b 0.0.0.0:8000 -w 16 -t 30 --preload --capture-output --access-logfile - --log-file - SendIT.wsgi```
 11. Abra o navegador na url 
 ```localhost:8000/```
