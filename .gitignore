@@ -108,3 +108,4 @@ SendIT/.vscode/settings.json
 
 staticfiles/
 temp/
+.vscode/settings.json
