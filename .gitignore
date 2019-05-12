@@ -110,4 +110,5 @@ staticfiles/
 temp/
 
 settings_local.py
+.vscode/settings.json
 
