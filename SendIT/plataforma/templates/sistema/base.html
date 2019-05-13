@@ -29,13 +29,13 @@
     <nav class="nav has-shadow menu-cima">
 
         <div class="nav-left">
-            <a class="nav-item is-tab {% if link is 1 %} link-laranja {% endif %}" href="{% url 'plataforma:home' %}"><i
+            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'home' %} link-laranja{% endif %}" href="{% url 'plataforma:home' %}"><i
                     class="fa fa-home"></i> &nbsp; Home</a>
-            <a class="nav-item is-tab {% if link is 2 %} link-laranja {% endif %}" href="{% url 'plataforma:questoes-concluidas' %}"><i
+            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'questoes-concluidas' %} link-laranja{% endif %}" href="{% url 'plataforma:questoes-concluidas' %}"><i
                     class="fa fa-bolt"></i>&nbsp; Questões Concluídas</a>
-            <a class="nav-item is-tab {% if link is 3 %} link-laranja {% endif %}" href="{% url 'plataforma:aleatoria' %}"><i
+            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'ver-questao' %} link-laranja{% endif %}" href="{% url 'plataforma:aleatoria' %}"><i
                     class="fas fa-random"></i>&nbsp; Questão Aleatória</a>
-            <a class="nav-item is-tab {% if link is 4 %} link-laranja {% endif %}" href="{% url 'plataforma:pontuacao' %}"><i
+            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'pontuacao' %} link-laranja{% endif %}" href="{% url 'plataforma:pontuacao' %}"><i
                     class="fas fa-medal"></i>&nbsp; Quadro de Pontos</a>
         </div>
         <span class="nav-toggle" id="nav-toggle">

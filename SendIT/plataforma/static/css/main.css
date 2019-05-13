@@ -46,8 +46,22 @@ body {
   margin-bottom: 30px;
 }
 
-.links-questao {
+.links-questao{
   color: #f95738;
+}
+
+.menu-cima .nav-left a.link-laranja{
+  color: #f95738;
+  border-bottom: 3px solid #f95738;
+}
+
+.menu-cima .nav-left a.is-tab:hover{
+  border-bottom: 1px solid #f95738;
+}
+
+.menu-cima .nav-left a.link-laranja:hover{
+  color: #ff8c6b;
+  border-bottom: 3px solid #ff8c6b;
 }
 
 .links-questao:hover {
