@@ -15,7 +15,7 @@
 <body>
   <nav class="nav menu-cima">
     <div class="nav-left">
-      <a class="nav-item" href="/" id="nome-projeto"><img src="{% static 'img/logo.png' %}" alt="">end<span>IT</span></a>
+      <a class="nav-item" href="{% url 'plataforma:index' %}" id="nome-projeto"><img src="{% static 'img/logo.png' %}" alt="">end<span>IT</span></a>
     </div>
     <span class="nav-toggle">
       <span></span>
@@ -23,7 +23,7 @@
       <span></span>
     </span>
     <div class="nav-right nav-menu form-login">
-      <form action="/entrar/" method="post">
+      <form action="{% url 'plataforma:entrar' %}" method="post">
         {% csrf_token %}
 {#        <p class="control">#}
           <input class="" type="email" placeholder="Digite seu email" name="email">
@@ -100,7 +100,7 @@
                   <h1 class="title has-text-centered laranja">
                     Cadastro
                   </h1>
-                  <form action="/cadastrar/" method="post">
+                  <form action="{% url 'plataforma:cadastrar' %}" method="post">
                     {% csrf_token %}
                     <div class="field">
                       <label class="label">Nome:</label>
