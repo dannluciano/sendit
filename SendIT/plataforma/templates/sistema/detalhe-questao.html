@@ -40,7 +40,7 @@
         <h1 class="title">Codigo Enviado</h1>
         <pre><code>{{ultima_submissao.codigo}}</code></pre>
         {% else %}
-        <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
+        <form id="code" action="{% url 'plataforma:submeter' questao.id %}" method="post">
             <h1 class="title is-inline-block">Linguagem:</h1>
             <div class="select is-inline-block">
                 <select id="language-select" name="language">
@@ -64,7 +64,7 @@
         </form>
         {% endif %}
     {% else %}
-    <form id="code" action="/questoes/{{ questao.id }}/submeter/" method="post">
+    <form id="code" action="{% url 'plataforma:submeter' questao.id %}" method="post">
         <h1 class="title is-inline-block">Linguagem:</h1>
         <div class="select is-inline-block">
             <select id="language-select" name="language">
