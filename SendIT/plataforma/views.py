@@ -24,26 +24,25 @@ def home(request):
     submissoes_ok = Submission.objects.filter(
         autor=request.user, status='OK')
 
-    questoes = Question.objects.exclude(submission__in=submissoes_ok)
-    questoes = questoes.exclude(exibir=False)
-    questoes = questoes.prefetch_related('tags')
+    questions = Question.objects.exclude(submission__in=submissoes_ok)
+    questions = questions.exclude(exibir=False)
+    questions = questions.prefetch_related('tags')
 
     if 'tag' in request.GET:
         tag = request.GET.get('tag')
         if tag != 'all':
-            questoes = questoes.filter(tags__tag__icontains=tag)
+            questions = questions.filter(tags__tag__icontains=tag)
 
-    questoes = questoes.order_by('xp')
+    questions = questions.order_by('xp')
 
     tags = Tags.objects.all()
 
     return render(request,
                   'sistema/home.html', {
                       'user': request.user,
-                      'questoes': questoes,
+                      'questoes': questions,
                       'tags': tags,
-                      'link': 1
-                  })
+                      })
 
 
 @login_required
@@ -56,57 +55,57 @@ def aleatoria(request):
 def questoes_concluidas(request):
     submissoes_ok = Submission.objects.filter(
         autor=request.user, status='OK').prefetch_related('questao')
-    questoes = Question.objects.filter(
+    questions = Question.objects.filter(
         submission__in=submissoes_ok).prefetch_related('tags')
 
-    tags = Tags.objects.distinct().filter(question__in=questoes)
+    tags = Tags.objects.distinct().filter(question__in=questions)
 
     if 'tag' in request.GET:
         tag = request.GET.get('tag')
         if tag != 'all':
-            questoes = questoes.filter(tags__tag__icontains=tag)
+            questions = questions.filter(tags__tag__icontains=tag)
 
-    questoes = questoes.order_by('-id')
+    questions = questions.order_by('-id')
 
     return render(request,
                   'sistema/questoes-concluidas.html', {
-                      'questoes': questoes,
-                      'tags': tags,
-                      'link': 2})
+                      'questoes': questions,
+                      'tags': tags
+                      })
 
 
 @login_required
-def ver_questao(request, questao_id):
-    questao = get_object_or_404(Question, pk=questao_id, exibir=True)
+def ver_questao(request, question_id):
+    question = get_object_or_404(Question, pk=question_id, exibir=True)
 
-    ultima_submissao = Submission.objects.filter(
-        autor=request.user, questao_id=questao.id).first()
+    last_submission = Submission.objects.filter(
+        autor=request.user, questao_id=question.id).first()
 
     return render(request,
                   'sistema/detalhe-questao.html', {
-                      'questao': questao,
-                      'ultima_submissao': ultima_submissao,
+                      'questao': question,
+                      'ultima_submissao': last_submission,
                   })
 
 
 @require_POST
 @login_required
-def criar_submissao(request, questao_id):
-    questao = get_object_or_404(Question, pk=questao_id)
-    codigo = request.POST['editor']
+def criar_submissao(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    code = request.POST['editor']
     lang = request.POST['language']
 
     try:
-        pegar_submissao = Submission.objects.get(autor=request.user, questao=questao, status='OK')
+        get_submission = Submission.objects.get(autor=request.user, questao=question, status='OK')
         
-        if pegar_submissao:
+        if get_submission:
             return HttpResponseRedirect("/questoes-concluidas/")  
 
     except Submission.DoesNotExist:
-        sub = Submission(autor=request.user, questao=questao, codigo=codigo, language=lang)
+        sub = Submission(autor=request.user, questao=question, codigo=code, language=lang)
         sub.save()
 
-        animacoes = ['bounce',
+        animations = ['bounce',
                      'bounceIn',
                      'bounceInDown',
                      'bounceInRight',
@@ -121,40 +120,40 @@ def criar_submissao(request, questao_id):
         animacao = randint(0, 10)
 
         if sub.status == 'OK':
-            request.user.perfil.xp += questao.xp
+            request.user.perfil.xp += question.xp
             request.user.save()
 
         return render(request,
                       'sistema/resultado.html', {
                           'submissao': sub,
-                          'codigo_enviado': codigo,
-                          'animacao': animacoes[animacao],
+                          'codigo_enviado': code,
+                          'animacao': animations[animacao],
                       })
 
 
 @login_required
 def quadro_de_medalhas(request):
-    usuarios = Perfil.objects.select_related('user').filter(user__is_superuser=False).order_by('-xp')
-    return render(request, 'sistema/quadro_de_medalhas.html', {'usuarios': usuarios})
+    users = Perfil.objects.select_related('user').filter(user__is_superuser=False).order_by('-xp')
+    return render(request, 'sistema/quadro_de_medalhas.html', {'usuarios': users})
 
 
 @require_POST
 def cadastrar_usuario(request):
     try:
-        usuario_aux = User.objects.get(email=request.POST['email'])
+        aux_user = User.objects.get(email=request.POST['email'])
 
-        if usuario_aux:
+        if aux_user:
             return render(request, 'sistema/index.html', {'erro': True})
 
     except User.DoesNotExist:
-        usuario = request.POST['usuario']
+        user = request.POST['usuario']
         email = request.POST['email']
-        senha = request.POST['senha']
-        novoUsuario = User.objects.create_user(username=email,
-                                               first_name=usuario,
+        password = request.POST['senha']
+        newUser = User.objects.create_user(username=email,
+                                               first_name=user,
                                                email=email,
-                                               password=senha)
-        novoUsuario.save()
+                                               password=password)
+        newUser.save()
         return render(request, 'sistema/index.html', {'resposta': True})
 
 
@@ -164,10 +163,10 @@ def entrar(request):
         log.info('User has already been Authenticated')
         return HttpResponseRedirect("/home/")
     
-    usuario = authenticate(request, username=request.POST['email'], password=request.POST['senha'])
-    if usuario is not None:
+    user = authenticate(request, username=request.POST['email'], password=request.POST['senha'])
+    if user is not None:
         log.info('User Authenticated')
-        login(request, usuario)
+        login(request, user)
         return HttpResponseRedirect('/home/')
     else:
         log.info('User Not Authenticated!')
