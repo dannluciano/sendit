@@ -9,13 +9,22 @@ html a{
 }
 
 html a:hover{
-  color: #ff8c6b;
+  color: ;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+section.bg-color-laranja{
+  /* background-image:linear-gradient(to bottom right, #f95738,#ff8c6b, #ffa58c, #ffd4c8) ; */
+  background-color: #f95738;
+}
+
+section.bg-color-laranja input:focus{
+  /* background-image:linear-gradient(to bottom right, #f95738,#ff8c6b, #ffa58c, #ffd4c8) ; */
+  border-color: #f95738;
+}
 
 .tag {
   margin-right: 5px;
