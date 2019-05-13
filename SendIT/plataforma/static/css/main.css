@@ -4,9 +4,18 @@ html {
   overflow-x: hidden;
 }
 
+html a{
+  color: #f95738;
+}
+
+html a:hover{
+  color: #ff8c6b;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
+
 
 .tag {
   margin-right: 5px;
