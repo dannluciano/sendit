@@ -1,16 +1,15 @@
-from django.conf.urls import url
+from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index),
-    url(r'^home/$', views.home),
-    url(r'^aleatoria/$', views.aleatoria),
-    url(r'^questoes-concluidas/$', views.questoes_concluidas),
-    url(r'^questoes/(?P<questao_id>\d+)/submeter/$',
-        views.criar_submissao, name='criar_submissao'),
-    url(r'^questao/(?P<questao_id>\d+)/$', views.ver_questao),
-    url(r'^cadastrar/$', views.cadastrar_usuario),
-    url(r'^entrar/$', views.entrar),
-    url(r'^sair/$', views.sair),
-    url(r'^pontuacao/$', views.quadro_de_medalhas),
+    path('', views.index),
+    path('home/', views.home),
+    path('aleatoria/', views.aleatoria),
+    path('questoes-concluidas/', views.questoes_concluidas),
+    path('questoes/<int:questao_id>/submeter/', views.criar_submissao, name='criar_submissao'),
+    path('questao/<int:questao_id>/', views.ver_questao),
+    path('cadastrar/', views.cadastrar_usuario),
+    path('entrar/', views.entrar),
+    path('sair/', views.sair),
+    path('pontuacao/', views.quadro_de_medalhas),
 ]
