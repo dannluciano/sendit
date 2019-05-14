@@ -138,6 +138,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_URL = '/'
 
+LOGIN_REDIRECT_URL = '/home/'
+
+LOGOUT_REDIRECT_URL = '/'
+
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
@@ -181,3 +185,11 @@ LOGGING = {
         },
     },
 }
+
+
+# SETTINGS LOCAL
+try:
+    # execfile(os.path.join(BASE_DIR,'scrum/settings_local.py'),globals(),locals())
+    exec(open(os.path.join(BASE_DIR, 'SendIT/settings_local.py')).read())
+except IOError as e:
+    pass

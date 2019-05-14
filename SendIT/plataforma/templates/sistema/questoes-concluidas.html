@@ -61,7 +61,7 @@
                     <div class="media-content">
                         <div class="content">
                             <h2 class="subtitle">
-                                <a href="/questao/{{ questao.id }}" class="links-questao">
+                                <a href="{% url 'plataforma:ver-questao' questao.id %}" class="links-questao">
                                     {{ questao.titulo }}
                                 </a>
                             </h2>
@@ -92,7 +92,7 @@
                                 Desculpe, mas você ainda não resolveu nenhuma Questão!
                             </h2>
                             <p>
-                                Tente começar pelas questões <a href="/home/?tag=Introdução">introdutórias</a>
+                                Tente começar pelas questões <a href="{% url 'plataforma:home' %}?tag=Introdução">introdutórias</a>
                             </p>
                         </div>
                     </div>

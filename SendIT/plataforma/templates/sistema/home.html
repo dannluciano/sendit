@@ -60,7 +60,7 @@
                     <div class="media-content">
                         <div class="content">
                             <h2 class="subtitle">
-                                <a href="/questao/{{ questao.id }}" class="links-questao">
+                                <a href="{% url 'plataforma:ver-questao' questao.id %}" class="links-questao">
                                     {{ questao.titulo }}
                                 </a>
                             </h2>
@@ -103,10 +103,10 @@
                 <div class="trending">
                     <p class="trend-title"><span class="title is-5">Tags</span></p>
                     <div class="tags">
-                        <span class="tag"><a href="/home/">Todas</a></span>
+                        <span class="tag"><a href="{% url 'plataforma:home' %}">Todas</a></span>
                         {% for tag in tags %}
                         <span class="tag">
-                            <a href="{{ url }}?tag={{ tag }}">
+                            <a href="{% url 'plataforma:home' %}?tag={{ tag }}">
                                 {{ tag }}
                             </a>
                         </span>

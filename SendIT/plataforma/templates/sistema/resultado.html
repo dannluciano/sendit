@@ -10,7 +10,7 @@
 
 <section class="section box has-text-centered">
     <h1 class="title animated {{ animacao }}">
-        <a href="/questao/{{ submissao.questao.id }}/">
+        <a href="{% url 'plataforma:ver-questao' submissao.questao.id %}">
             {{ submissao.questao.titulo }}
         </a>
     </h1>
@@ -28,10 +28,10 @@
         Você ganhou {{ submissao.questao.xp }} XPs!
     </p>
     <p>
-        <a href="/home/"> Voltar para lista de questões</a>
+        <a href="{% url 'plataforma:home' %}"> Voltar para lista de questões</a>
     </p>
     {% else %}
-    <a class="button" href="/questao/{{ submissao.questao.id }}">Tentar Novamente</a>
+    <a class="button" href="{% url 'plataforma:ver-questao' submissao.questao.id %}">Tentar Novamente</a>
     {% endifequal %}
 </section>
 
