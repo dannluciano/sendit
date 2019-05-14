@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 app_name = 'plataforma'
 
 urlpatterns = [
-    path('', auth_views.LoginView.as_view(template_name='sistema/index.html'), name='index'),
+    path('', auth_views.LoginView.as_view(template_name='sistema/index.html', redirect_authenticated_user=True, redirect_field_name = '/home/'), name='index'),
     path('sair/', auth_views.LogoutView.as_view(next_page='/'),  name='sair'),
     path('home/', views.home, name="home"),
     path('aleatoria/', views.aleatoria, name="aleatoria"),
