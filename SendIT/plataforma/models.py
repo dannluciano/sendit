@@ -136,8 +136,7 @@ class Submission(models.Model):
         ('TimeoutError', 'Tempo de execução excedido!'),
         ('DiffError', 'Saída computada diferente da saída esperada!'),
         ('OK', 'OK'))
-    status = models.CharField(choices=STATUS_CHOICES,
-                              max_length=36, default=STATUS_CHOICES[0])
+    status = models.CharField(choices=STATUS_CHOICES, default=STATUS_CHOICES[0][0], max_length=255)
     timestamp = models.DateTimeField(auto_now=True)
 
     LANGUAGE_CHOICES = (
@@ -149,7 +148,7 @@ class Submission(models.Model):
         ('python', 'Python'),
     )
     language = models.CharField(choices=LANGUAGE_CHOICES,
-                              max_length=10, default=STATUS_CHOICES[0])
+                              max_length=10, default=STATUS_CHOICES[0][0])
 
     STATUS_PHRASES = {
         'SintaxError': [
@@ -231,8 +230,8 @@ def remove_xp(sender, instance, **kwargs):
 class SubmissionSummary(models.Model):
     status = models.CharField(primary_key=True,
                               choices=Submission.STATUS_CHOICES,
-                              max_length=36,
-                              default=Submission.STATUS_CHOICES[0])
+                              max_length=255,
+                              default=Submission.STATUS_CHOICES[0][0])
     sum = models.IntegerField()
 
     class Meta:
