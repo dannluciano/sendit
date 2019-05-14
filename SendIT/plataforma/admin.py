@@ -47,6 +47,9 @@ class QuestionAdmin(admin.ModelAdmin):
 
     actions = [esconder, exibir]
 
+    save_as = True
+    save_on_top = True
+
     class Media:
         js = ('js/ace.js', 'js/admin.js',)
 
