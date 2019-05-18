@@ -83,19 +83,19 @@ class PerfilInline(admin.StackedInline):
 
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ('username', 'first_name', 'get_xp', 'get_groups', 'is_staff', 'is_superuser')
-    inlines = (PerfilInline, SubmissionInline, )
+    list_display = ('username', 'first_name', 'is_staff', 'is_superuser')
+    inlines = (PerfilInline, )
 
-    def get_xp(self, obj):
-        return obj.perfil.xp
-    get_xp.short_description = 'XP'
-    get_xp.admin_order_field = 'perfil__xp'
+    # def get_xp(self, obj):
+    #     return obj.perfil.xp
+    # get_xp.short_description = 'XP'
+    # get_xp.admin_order_field = 'perfil__xp'
 
-    def get_groups(self, obj):
-        short_name = lambda n: str(n)
-        groups = [short_name(group) for group in obj.groups.all()]
-        return ', '.join(groups)
-    get_groups.short_description = 'Groups'
+    # def get_groups(self, obj):
+    #     short_name = lambda n: str(n)
+    #     groups = [short_name(group) for group in obj.groups.all()]
+    #     return ', '.join(groups)
+    # get_groups.short_description = 'Groups'
 
 
 
