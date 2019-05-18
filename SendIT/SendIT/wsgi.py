@@ -10,16 +10,20 @@ https://docs.djangoproject.com/en/1.11/howto/deployment/wsgi/
 from django.db.backends.signals import connection_created
 from django.dispatch import receiver
 
+
 @receiver(connection_created)
 def setup_postgres(connection, **kwargs):
-    if connection.vendor != 'postgresql':
+    if connection.vendor != "postgresql":
         return
-    
+
     # Timeout statements after 30 seconds.
     with connection.cursor() as cursor:
-        cursor.execute("""
+        cursor.execute(
+            """
             SET statement_timeout TO 20000;
-        """)
+        """
+        )
+
 
 import os
 
