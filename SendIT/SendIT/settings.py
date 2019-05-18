@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'session_security',
     'plataforma',
     'ckeditor',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'session_security.middleware.SessionSecurityMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'SendIT.urls'
@@ -193,3 +195,6 @@ try:
     exec(open(os.path.join(BASE_DIR, 'SendIT/settings_local.py')).read())
 except IOError as e:
     pass
+
+
+INTERNAL_IPS = ['127.0.0.1',]
