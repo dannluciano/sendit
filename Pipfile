@@ -10,6 +10,7 @@ psycopg2 = "*"
 gunicorn = "*"
 whitenoise = "*"
 django-session-security = "*"
+django-sql-explorer = "*"
 
 [dev-packages]
 pylint = "*"
