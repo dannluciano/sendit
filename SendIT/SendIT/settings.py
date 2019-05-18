@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'plataforma',
     'ckeditor',
     'debug_toolbar',
+    'explorer',
 ]
 
 MIDDLEWARE = [
@@ -197,4 +198,9 @@ except IOError as e:
     pass
 
 
+# Django Degub Toolbar
 INTERNAL_IPS = ['127.0.0.1',]
+
+# Django Query Explorer
+EXPLORER_CONNECTIONS = { 'Default': 'default' } 
+EXPLORER_DEFAULT_CONNECTION = 'default'
