@@ -12,6 +12,6 @@ urlpatterns = [
     path('questoes-concluidas/', views.questoes_concluidas, name="questoes-concluidas"),
     path('questoes/<int:question_id>/submeter/', views.criar_submissao, name='submeter'),
     path('questao/<int:question_id>/', views.ver_questao, name="ver-questao"),
-    path('cadastrar/', views.cadastrar_usuario, name="cadastrar"),
+    path('cadastrar/', views.signup, name="cadastrar"),
     path('pontuacao/', views.quadro_de_medalhas, name="pontuacao"),
 ]

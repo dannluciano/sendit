@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from .forms import SignUpForm
 from random import randint
 import logging
 
@@ -18,6 +20,20 @@ def index(request):
 
     return render(request, 'sistema/index.html')
 
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            print("é valido")
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect('/home/')
+    else:
+        form = SignUpForm()
+    return render(request, 'sistema/signup.html', {'form': form})
 
 @login_required
 def home(request):
@@ -44,12 +60,10 @@ def home(request):
                       'tags': tags,
                       })
 
-
 @login_required
 def aleatoria(request):
     q = Question.objects.exclude(exibir=False).order_by('?')[0]
     return HttpResponseRedirect(f'/questao/{q.id}')
-
 
 @login_required
 def questoes_concluidas(request):
@@ -73,7 +87,6 @@ def questoes_concluidas(request):
                       'tags': tags
                       })
 
-
 @login_required
 def ver_questao(request, question_id):
     question = get_object_or_404(Question, pk=question_id, exibir=True)
@@ -86,7 +99,6 @@ def ver_questao(request, question_id):
                       'questao': question,
                       'ultima_submissao': last_submission,
                   })
-
 
 @require_POST
 @login_required
@@ -130,12 +142,10 @@ def criar_submissao(request, question_id):
                           'animacao': animations[animacao],
                       })
 
-
 @login_required
 def quadro_de_medalhas(request):
     users = Perfil.objects.select_related('user').filter(user__is_superuser=False).order_by('-xp')
     return render(request, 'sistema/quadro_de_medalhas.html', {'usuarios': users})
-
 
 @require_POST
 def cadastrar_usuario(request):
@@ -156,7 +166,6 @@ def cadastrar_usuario(request):
         newUser.save()
         return render(request, 'sistema/index.html', {'resposta': True})
 
-
 @require_POST
 def entrar(request):
     if request.user.is_authenticated:
@@ -171,7 +180,6 @@ def entrar(request):
     else:
         log.info('User Not Authenticated!')
         return HttpResponseRedirect('/')
-
 
 @login_required
 def sair(request):
