@@ -65,7 +65,7 @@ def home(request):
 @login_required
 def random_question(request):
     q = Question.objects.exclude(exibir=False).order_by('?')[0]
-    return HttpResponseRedirect(f'/questao/{q.id}')
+    return HttpResponseRedirect(f'/question/{q.id}')
 
 @login_required
 def completed_issues(request):
@@ -113,7 +113,7 @@ def create_submission(request, question_id):
         get_submission = Submission.objects.get(autor=request.user, questao=question, status='OK')
         
         if get_submission:
-            return HttpResponseRedirect("/questoes-concluidas/")  
+            return HttpResponseRedirect("/completed-issues/")  
 
     except Submission.DoesNotExist:
         sub = Submission(autor=request.user, questao=question, codigo=code, language=lang)
