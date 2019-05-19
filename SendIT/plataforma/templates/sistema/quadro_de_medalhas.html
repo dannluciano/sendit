@@ -30,7 +30,7 @@
                             {{forloop.counter}}
                         {% endif %}
                     </td>
-                    <td>{{usuario.user.first_name}}</td>
+                    <td>{{usuario.user.get_full_name}}</td>
                     <td>{{usuario.user.email}}</td>
                     <td class="has-text-centered">{{usuario.xp}}</td>
                     <td class="has-text-centered">{{usuario.level}}</td>
