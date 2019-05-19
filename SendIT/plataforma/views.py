@@ -21,6 +21,9 @@ def index(request):
     return render(request, 'sistema/index.html')
 
 def signup(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect("/home/")
+
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -60,12 +63,12 @@ def home(request):
                       })
 
 @login_required
-def aleatoria(request):
+def random_question(request):
     q = Question.objects.exclude(exibir=False).order_by('?')[0]
     return HttpResponseRedirect(f'/questao/{q.id}')
 
 @login_required
-def questoes_concluidas(request):
+def completed_issues(request):
     submissoes_ok = Submission.objects.filter(
         autor=request.user, status='OK').prefetch_related('questao')
     questions = Question.objects.filter(
@@ -87,7 +90,7 @@ def questoes_concluidas(request):
                       })
 
 @login_required
-def ver_questao(request, question_id):
+def get_question(request, question_id):
     question = get_object_or_404(Question, pk=question_id, exibir=True)
 
     last_submission = Submission.objects.filter(
@@ -101,7 +104,7 @@ def ver_questao(request, question_id):
 
 @require_POST
 @login_required
-def criar_submissao(request, question_id):
+def create_submission(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     code = request.POST['editor']
     lang = request.POST['language']
@@ -142,45 +145,7 @@ def criar_submissao(request, question_id):
                       })
 
 @login_required
-def quadro_de_medalhas(request):
+def medal_board(request):
     users = Perfil.objects.select_related('user').filter(user__is_superuser=False).order_by('-xp')
     return render(request, 'sistema/quadro_de_medalhas.html', {'usuarios': users})
 
-@require_POST
-def cadastrar_usuario(request):
-    try:
-        aux_user = User.objects.get(email=request.POST['email'])
-
-        if aux_user:
-            return render(request, 'sistema/index.html', {'erro': True})
-
-    except User.DoesNotExist:
-        user = request.POST['usuario']
-        email = request.POST['email']
-        password = request.POST['senha']
-        newUser = User.objects.create_user(username=email,
-                                               first_name=user,
-                                               email=email,
-                                               password=password)
-        newUser.save()
-        return render(request, 'sistema/index.html', {'resposta': True})
-
-@require_POST
-def entrar(request):
-    if request.user.is_authenticated:
-        log.info('User has already been Authenticated')
-        return HttpResponseRedirect("/home/")
-    
-    user = authenticate(request, username=request.POST['email'], password=request.POST['senha'])
-    if user is not None:
-        log.info('User Authenticated')
-        login(request, user)
-        return HttpResponseRedirect('/home/')
-    else:
-        log.info('User Not Authenticated!')
-        return HttpResponseRedirect('/')
-
-@login_required
-def sair(request):
-    logout(request)
-    return HttpResponseRedirect('/')
