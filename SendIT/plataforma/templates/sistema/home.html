@@ -18,7 +18,11 @@
 
                 <div class="card-user">
                     <div class="card-user-name">
-                        <a href="#">{{ user.username|upper }}</a>
+                        {% if user.get_full_name %}
+                        <a>{{ user.get_full_name|upper }}</a>
+                        {% else %}
+                        <a>{{ user.username|upper }}</a>
+                        {% endif %}
                     </div>
                 </div>
 
