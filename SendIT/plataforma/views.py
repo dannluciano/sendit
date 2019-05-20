@@ -20,22 +20,24 @@ def index(request):
 
     return render(request, "sistema/index.html")
 
+
 def signup(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect("/home/")
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('/home/')
+            return HttpResponseRedirect("/home/")
     else:
         form = SignUpForm()
-    return render(request, 'sistema/signup.html', {'form': form})
+    return render(request, "sistema/signup.html", {"form": form})
+
 
 @login_required
 def home(request):
@@ -60,10 +62,11 @@ def home(request):
         {"user": request.user, "questoes": questions, "tags": tags},
     )
 
+
 @login_required
 def random_question(request):
-    q = Question.objects.exclude(exibir=False).order_by('?')[0]
-    return HttpResponseRedirect(f'/question/{q.id}')
+    q = Question.objects.exclude(exibir=False).order_by("?")[0]
+    return HttpResponseRedirect(f"/question/{q.id}")
 
 
 @login_required
@@ -90,6 +93,7 @@ def completed_issues(request):
         {"questoes": questions, "tags": tags},
     )
 
+
 @login_required
 def get_question(request, question_id):
     question = get_object_or_404(Question, pk=question_id, exibir=True)
@@ -104,6 +108,7 @@ def get_question(request, question_id):
         {"questao": question, "ultima_submissao": last_submission},
     )
 
+
 @require_POST
 @login_required
 def create_submission(request, question_id):
@@ -117,4 +122,50 @@ def create_submission(request, question_id):
         )
 
         if get_submission:
-            return HttpResponseRedirect("/completed-issues/")  
+            return HttpResponseRedirect("/completed-issues/")
+    except Submission.DoesNotExist:
+        sub = Submission(
+            autor=request.user, questao=question, codigo=code, language=lang
+        )
+        sub.save()
+
+        animations = [
+            "bounce",
+            "bounceIn",
+            "bounceInDown",
+            "bounceInRight",
+            "bounceInLeft",
+            "bounceInUp",
+            "flash",
+            "fadeInDown",
+            "zoomIn",
+            "jackInTheBox",
+            "rollIn",
+        ]
+
+        animacao = randint(0, 10)
+
+        if sub.status == "OK":
+            request.user.perfil.xp += question.xp
+            request.user.save()
+
+        return render(
+            request,
+            "sistema/resultado.html",
+            {
+                "submissao": sub,
+                "codigo_enviado": code,
+                "animacao": animations[animacao],
+            },
+        )
+
+
+@login_required
+def medal_board(request):
+    users = (
+        Perfil.objects.select_related("user")
+        .filter(user__is_superuser=False)
+        .order_by("-xp")
+    )
+    return render(request, "sistema/quadro_de_medalhas.html", {"usuarios": users})
+
