@@ -10,9 +10,12 @@ psycopg2 = "*"
 gunicorn = "*"
 whitenoise = "*"
 django-session-security = "*"
+django-sql-explorer = "*"
 
 [dev-packages]
 pylint = "*"
+django-debug-toolbar = "*"
+black = "*"
 
 [requires]
 python_version = "3.6"

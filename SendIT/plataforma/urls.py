@@ -2,7 +2,7 @@ from django.urls import include, path
 from . import views
 from django.contrib.auth import views as auth_views
 
-app_name = 'plataforma'
+app_name = "plataforma"
 
 urlpatterns = [
     path('', auth_views.LoginView.as_view(template_name='sistema/index.html', redirect_authenticated_user=True, redirect_field_name = '/home/'), name='index'),
