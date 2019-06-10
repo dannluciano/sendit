@@ -78,5 +78,27 @@ class StatisticsView(models.Model):
     class Meta:
         managed = False
         db_table = "statistics_view"
-        verbose_name = "StatisticsView"
-        verbose_name_plural = "StatisticsView"
+        verbose_name = "Statistics"
+        verbose_name_plural = "Statistics"
+
+
+class SubmissionSummaryView(models.Model):
+    SQL = """
+    CREATE OR REPLACE VIEW submission_summary_view AS
+    SELECT plataforma_submission.status,
+        count(*) AS sum
+    FROM plataforma_submission
+    GROUP BY plataforma_submission.status 
+    UNION 
+    SELECT 'Total', count(*) FROM plataforma_submission;
+    """
+
+    REVERSE_SQL = """DROP VIEW IF EXISTS submission_summary_view;"""
+    status = models.CharField(primary_key=True, max_length=255, editable=False)
+    sum = models.IntegerField(editable=False)
+
+    class Meta:
+        managed = False
+        db_table = "submission_summary_view"
+        verbose_name = "Summary of Submission"
+        verbose_name_plural = "Summary of Submissions"
