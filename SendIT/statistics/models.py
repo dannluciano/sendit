@@ -6,14 +6,16 @@ class LeaderboardView(models.Model):
     SQL = """
     CREATE OR REPLACE VIEW leaderboard_view AS
     WITH DATA AS
-        (SELECT auth_user.username, coalesce(SUM(plataforma_question.xp) FILTER (WHERE status='OK'), 0) AS xp
-        FROM plataforma_submission
-        JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
-        JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
-        GROUP BY auth_user.id
-        ORDER BY xp DESC)
+    (SELECT auth_user.username
+            , coalesce(SUM(plataforma_question.xp) FILTER (WHERE status='OK'), 0) AS xp
+            , LEAST(coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
+    FROM plataforma_submission
+    JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
+    JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
+    GROUP BY auth_user.id
+    ORDER BY xp DESC)
     SELECT ROW_NUMBER() OVER () as position, *
-        FROM DATA;
+    FROM DATA;
     """
 
     REVERSE_SQL = """DROP VIEW IF EXISTS leaderboard_view;"""
@@ -21,6 +23,7 @@ class LeaderboardView(models.Model):
     position = models.IntegerField(primary_key=True, editable=False)
     username = models.CharField(max_length=255, editable=False)
     xp = models.IntegerField(editable=False)
+    level = models.IntegerField(editable=False)
 
     class Meta:
         managed = False
