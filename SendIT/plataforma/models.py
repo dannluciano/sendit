@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from django.urls import reverse
+
 from ckeditor.fields import RichTextField
 
 import math
@@ -16,7 +18,7 @@ class Perfil(models.Model):
 
     @property
     def level(self):
-        return int(math.sqrt(self.xp) * 1.5)
+        return min(int(math.sqrt(self.xp) * 1.5), 74)
 
     @property
     def tx_conclusao(self):
@@ -105,6 +107,9 @@ class Question(models.Model):
     xp = models.IntegerField(default=100)
     tags = models.ManyToManyField(Tags)
     exibir = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return f"/question/{self.pk}/"
 
     def publish(self):
         self.save
@@ -228,7 +233,8 @@ class Submission(models.Model):
         try:
             self._random_status
         except AttributeError:
-            self._random_status = random.choice(self.STATUS_PHRASES[self.status])
+            self._random_status = random.choice(
+                self.STATUS_PHRASES[self.status])
         return self._random_status
 
     def get_random_status_phrase(self):

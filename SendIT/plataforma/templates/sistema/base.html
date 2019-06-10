@@ -45,8 +45,14 @@
         </span>
 
         <div class="nav-right nav-menu" id="nav-menu">
-            <a class="nav-item is-tab link-laranja" href="/admin/"><i class="fas fa-user-shield"></i>&nbsp;
-                Administração</a>
+            {% if request.user.is_staff %}
+                <a class="nav-item is-tab link-laranja" href="{% url 'admin:index' %}">
+                    <i class="fas fa-user-shield"></i>&nbsp;Administração
+                </a>
+                <a class="nav-item is-tab link-laranja" href="{% url 'explorer_index' %}">
+                    <i class="fas fa-table"></i>&nbsp;Explorer
+                </a>
+            {% endif %}
             <form action="{% url 'plataforma:sair' %}" method="post" class="nav-item">
                 {% csrf_token %}
                 <input type="hidden" name="sair">
