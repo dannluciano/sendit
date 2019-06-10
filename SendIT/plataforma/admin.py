@@ -8,7 +8,8 @@ class CaseTestInline(admin.TabularInline):
     model = CaseTest
     extra = 1
 
-    fieldsets = (("Teste", {"classes": ("collapse",), "fields": ("entrada", "saida")}),)
+    fieldsets = (
+        ("Teste", {"classes": ("collapse",), "fields": ("entrada", "saida")}),)
 
 
 def esconder(modeladmin, request, queryset):
@@ -50,9 +51,10 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class SubmissoesAdmin(admin.ModelAdmin):
-    list_display = ("id", "status", "autor", "questao", "timestamp")
+    list_display = ("id", "status", "autor",
+                    "questao", "language", "timestamp")
     list_display_links = ("id", "status")
-    list_filter = ("status",)
+    list_filter = ("status", "language")
     search_fields = ["autor__username", "autor__email", "questao__titulo"]
 
 
@@ -118,7 +120,6 @@ class PerfilAdmin(admin.ModelAdmin):
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissoesAdmin)
 admin.site.register(SubmissionSummary, SubmissionSummaryAdmin)
-admin.site.register(Perfil, PerfilAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Tags)
