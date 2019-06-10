@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Question, Submission, Tags, Perfil
+from .models import Question, Submission, Tags
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from random import randint
 import logging
+from statistics.models import LeaderboardView
 
 log = logging.getLogger(__name__)
 log.setLevel(20)
@@ -145,10 +146,6 @@ def create_submission(request, question_id):
 
         animacao = randint(0, 10)
 
-        if sub.status == "OK":
-            request.user.perfil.xp += question.xp
-            request.user.save()
-
         return render(
             request,
             "sistema/resultado.html",
@@ -163,9 +160,6 @@ def create_submission(request, question_id):
 @login_required
 def medal_board(request):
     users = (
-        Perfil.objects.select_related("user")
-        .filter(user__is_superuser=False)
-        .order_by("-xp")
+        LeaderboardView.objects.order_by("-xp")
     )
     return render(request, "sistema/quadro_de_medalhas.html", {"usuarios": users})
-

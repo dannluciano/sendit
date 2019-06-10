@@ -12,7 +12,7 @@ class ViewAdmin(admin.ModelAdmin):
 
 
 class LeaderboardViewAdmin(ViewAdmin):
-    list_display = ('position', 'username', 'xp')
+    list_display = ('position', 'username', 'xp', 'level')
 
     ordering = ('-xp', )
 
