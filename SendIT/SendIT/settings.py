@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "session_security",
     "plataforma",
+    "views",
     "ckeditor",
     "debug_toolbar",
     "explorer",
