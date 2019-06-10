@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.urls import reverse
 
@@ -10,6 +9,46 @@ import math
 import random
 
 from .submission_runner import SubmissionRunnerManager
+
+from django.db import connection
+from collections import namedtuple
+
+
+def raw_sql(sql, params=[]):
+    with connection.cursor() as cursor:
+        cursor.execute(sql, params)
+        desc = cursor.description
+        nt_result = namedtuple('Result', [col[0] for col in desc])
+        return [nt_result(*row) for row in cursor.fetchall()]
+
+
+class UserData():
+    def __init__(self, _id, *args, **kwargs):
+        self.id = _id
+        self.cache = None
+        self.setup_cache()
+
+    def setup_cache(self):
+        SQL = """
+                SELECT auth_user.username as username
+                    , coalesce(SUM(plataforma_question.xp) FILTER (WHERE status='OK'), 0) AS xp
+                    , LEAST(coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
+                FROM plataforma_submission
+                JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
+                JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
+                WHERE auth_user.id = %s
+                GROUP BY auth_user.username 
+        """
+        self.cache = raw_sql(SQL, [self.id])
+
+    def username(self):
+        return self.cache[0].username
+
+    def level(self):
+        return self.cache[0].level
+
+    def xp(self):
+        return self.cache[0].xp
 
 
 class Tags(models.Model):

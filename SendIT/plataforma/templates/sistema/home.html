@@ -12,7 +12,7 @@
                 <figure class="image has-text-centered is-256x256">
                     <a href="#">
                         <img class="card-avatar-img"
-                             src="{% static 'img/plataforma/levels/level_' %}{{ user.perfil.level }}.png">
+                             src="{% static 'img/plataforma/levels/level_' %}{{ user.level }}.png">
                     </a>
                 </figure>
 
@@ -29,11 +29,11 @@
                 <ul class="card-stats-list">
                     <li class="card-stats-item">
                         <span class="card-stats-key">Level</span>
-                        <span class="card-stats-val">{{ user.perfil.level }}</span>
+                        <span class="card-stats-val">{{ user.level }}</span>
                     </li>
                     <li class="card-stats-item">
                         <span class="card-stats-key">XP</span>
-                        <span class="card-stats-val">{{ user.perfil.xp }}</span>
+                        <span class="card-stats-val">{{ user.xp }}</span>
                     </li>
                     <li class="card-stats-item">
                         <span class="card-stats-key">Categoria</span>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Question, Submission, Tags
+from .models import Question, Submission, Tags, UserData
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -40,8 +40,14 @@ def signup(request):
     return render(request, "sistema/signup.html", {"form": form})
 
 
+def current_user_data(request):
+    return UserData(request.user.id)
+
+
 @login_required
 def home(request):
+    user = current_user_data(request)
+
     submissoes_ok = Submission.objects.filter(autor=request.user, status="OK")
 
     questions = Question.objects.exclude(submission__in=submissoes_ok)
@@ -60,7 +66,7 @@ def home(request):
     return render(
         request,
         "sistema/home.html",
-        {"user": request.user, "questoes": questions, "tags": tags},
+        {"user": user, "questoes": questions, "tags": tags},
     )
 
 
@@ -72,6 +78,8 @@ def random_question(request):
 
 @login_required
 def completed_issues(request):
+    user = current_user_data(request)
+
     submissoes_ok = Submission.objects.filter(
         autor=request.user, status="OK"
     ).prefetch_related("questao")
@@ -91,7 +99,7 @@ def completed_issues(request):
     return render(
         request,
         "sistema/questoes-concluidas.html",
-        {"questoes": questions, "tags": tags},
+        {"user": user, "questoes": questions, "tags": tags},
     )
 
 
