@@ -50,6 +50,10 @@ class UserData():
     def xp(self):
         return self.cache[0].xp
 
+    def avatar_url(self):
+        level = self.level()
+        return f'img/plataforma/levels/level_{level}.png'
+
 
 class Tags(models.Model):
     tag = models.CharField(max_length=100)
