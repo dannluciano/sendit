@@ -46,8 +46,6 @@ class QuestionAdmin(admin.ModelAdmin):
     save_as = True
     save_on_top = True
 
-    list_editable = ("exibir",)
-
     class Media:
         js = ("js/ace.js", "js/admin.js")
 

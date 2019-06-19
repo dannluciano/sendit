@@ -10,6 +10,9 @@ class ViewAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+    def has_change_permission(request, obj=None):
+        return False
+
 
 class LeaderboardViewAdmin(ViewAdmin):
     list_display = ('position', 'username', 'xp', 'level')
