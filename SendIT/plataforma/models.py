@@ -8,18 +8,7 @@ from ckeditor.fields import RichTextField
 import math
 import random
 
-from .submission_runner import SubmissionRunnerManager
-
-from django.db import connection
-from collections import namedtuple
-
-
-def raw_sql(sql, params=[]):
-    with connection.cursor() as cursor:
-        cursor.execute(sql, params)
-        desc = cursor.description
-        nt_result = namedtuple('Result', [col[0] for col in desc])
-        return [nt_result(*row) for row in cursor.fetchall()]
+from .utils import raw_sql
 
 
 class UserData():
