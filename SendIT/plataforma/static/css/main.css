@@ -64,16 +64,16 @@ section.bg-color-laranja input:focus{
   color: #f95738;
 }
 
-.menu-cima .nav-left a.link-laranja{
+a.link-laranja{
   color: #f95738;
   border-bottom: 3px solid #f95738;
 }
 
-.menu-cima .nav-left a.is-tab:hover{
+a.is-tab:hover{
   border-bottom: 1px solid #f95738;
 }
 
-.menu-cima .nav-left a.link-laranja:hover{
+a.link-laranja:hover{
   color: #ff8c6b;
   border-bottom: 3px solid #ff8c6b;
 }
@@ -326,16 +326,16 @@ ul.card-stats-list {
   z-index: 1000;
 }
 
-.container .nav-left a.nav-item:hover{
+.container a.nav-item:hover{
   border-bottom: #f95738 1px solid;
 }
 
-.container .nav-left a.link-laranja{
+.container a.link-laranja{
   color: #f95738;
   border-bottom: #f95738 solid 3px;
 }
 
-.container .nav-left a.link-laranja:hover{
+.container a.link-laranja:hover{
   color: #f95738;
   border-bottom: #ff8c6b solid 3px;
 }
