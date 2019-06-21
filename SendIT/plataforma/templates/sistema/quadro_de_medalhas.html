@@ -17,22 +17,22 @@
                 </tr>
             </thead>
             {% for usuario in usuarios %}
-                <tr>
-                    <td class="has-text-centered">
-                        {% if forloop.counter == 1 %}
-                            <img src="{% static 'img/plataforma/podium/1.png' %}" alt="">    
-                        {% elif forloop.counter == 2 %}
-                            <img src="{% static 'img/plataforma/podium/2.png' %}" alt="">
-                        {% elif forloop.counter == 3 %}
-                            <img src="{% static 'img/plataforma/podium/3.png' %}" alt="">   
-                        {% else %}
-                            {{forloop.counter}}
-                        {% endif %}
-                    </td>
-                    <td>{{usuario.username}}</td>
-                    <td class="has-text-centered">{{usuario.xp}}</td>
-                    <td class="has-text-centered">{{usuario.level}}</td>
-                </tr>
+            <tr>
+                <td class="has-text-centered">
+                    {% if forloop.counter == 1 %}
+                    <img src="{% static 'img/plataforma/podium/1.png' %}" alt="">
+                    {% elif forloop.counter == 2 %}
+                    <img src="{% static 'img/plataforma/podium/2.png' %}" alt="">
+                    {% elif forloop.counter == 3 %}
+                    <img src="{% static 'img/plataforma/podium/3.png' %}" alt="">
+                    {% else %}
+                    {{forloop.counter}}
+                    {% endif %}
+                </td>
+                <td>{{usuario.username}}</td>
+                <td class="has-text-centered">{{usuario.xp}}</td>
+                <td class="has-text-centered">{{usuario.level}}</td>
+            </tr>
             {% endfor %}
         </table>
     </div>
