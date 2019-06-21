@@ -199,20 +199,6 @@ class Submission(models.Model):
     def get_random_status_image(self):
         return self._get_random_status()[1]
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        casos_de_testes = self.questao.casetest_set.all()
-        for cs in casos_de_testes:
-            work_dir = f"{self.id}/{cs.id}"
-            self.status = SubmissionRunnerManager().exe(
-                self.language, work_dir, cs.entrada, cs.saida, self.codigo
-            )
-            if self.status != "OK":
-                break
-
-        super().save(*args, **kwargs)
-
     def is_ok(self):
         return self.status == "OK"
 
