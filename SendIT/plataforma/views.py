@@ -10,6 +10,8 @@ from .forms import SignUpForm
 from random import randint
 import logging
 from statistics.models import LeaderboardView
+import django_rq
+from .worker import run_submission_runner
 
 log = logging.getLogger(__name__)
 log.setLevel(20)
@@ -138,6 +140,10 @@ def create_submission(request, question_id):
         )
         sub.save()
 
+        django_rq.enqueue(run_submission_runner, sub.id)
+
+        return HttpResponseRedirect("/submissions/")
+
         animations = [
             "bounce",
             "bounceIn",
@@ -171,3 +177,10 @@ def medal_board(request):
         LeaderboardView.objects.order_by("-xp")
     )
     return render(request, "sistema/quadro_de_medalhas.html", {"usuarios": users})
+
+
+@login_required
+def submissions_list(request):
+    user = current_user_data(request)
+    submissions = Submission.objects.filter(autor=request.user)
+    return render(request, "sistema/submissions.html", {"submissions": submissions, "user": user})

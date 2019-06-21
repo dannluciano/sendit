@@ -11,11 +11,11 @@ gunicorn = "*"
 whitenoise = "*"
 django-session-security = "*"
 django-sql-explorer = "*"
+django-rq = "*"
 
 [dev-packages]
 pylint = "*"
 django-debug-toolbar = "*"
-black = "*"
 
 [requires]
 python_version = "3.6"

@@ -14,4 +14,5 @@ urlpatterns = [
     path('question/<int:question_id>/', views.get_question, name="ver-questao"),
     path('signup/', views.signup, name="cadastrar"),
     path('ranking/', views.medal_board, name="pontuacao"),
+    path('submissions/', views.submissions_list, name="submissions")
 ]
