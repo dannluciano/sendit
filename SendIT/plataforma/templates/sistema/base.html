@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
+
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
@@ -18,7 +18,7 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
@@ -28,38 +28,52 @@
 </head>
 
 <body>
-    <nav class="nav has-shadow menu-cima">
+    <nav class="nav has-shadow menu-cima navbar" role="navigation" aria-label="main navigation">
 
-        <div class="nav-left">
-            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'home' %} link-laranja{% endif %}" href="{% url 'plataforma:home' %}"><i
-                    class="fa fa-home"></i> &nbsp; Home</a>
-            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'questoes-concluidas' %} link-laranja{% endif %}" href="{% url 'plataforma:questoes-concluidas' %}"><i
-                    class="fa fa-bolt"></i>&nbsp; Questões Concluídas</a>
-            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'ver-questao' %} link-laranja{% endif %}" href="{% url 'plataforma:aleatoria' %}"><i
-                    class="fas fa-random"></i>&nbsp; Questão Aleatória</a>
-            <a class="nav-item is-tab {% if request.resolver_match.url_name == 'pontuacao' %} link-laranja{% endif %}" href="{% url 'plataforma:pontuacao' %}"><i
-                    class="fas fa-medal"></i>&nbsp; Quadro de Pontos</a>
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <img src="{% static 'img/icon.png' %}">
+            </a>
+
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
-        <span class="nav-toggle" id="nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </span>
 
-        <div class="nav-right nav-menu" id="nav-menu">
-            {% if request.user.is_staff %}
-                <a class="nav-item is-tab link-laranja" href="{% url 'admin:index' %}">
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-laranja{% endif %}"
+                    href="{% url 'plataforma:home' %}"><i class="fa fa-home"></i> &nbsp; Home</a>
+                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'questoes-concluidas' %} link-laranja{% endif %}"
+                    href="{% url 'plataforma:questoes-concluidas' %}"><i class="fa fa-bolt"></i>&nbsp; Questões
+                    Concluídas</a>
+                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ver-questao' %} link-laranja{% endif %}"
+                    href="{% url 'plataforma:aleatoria' %}"><i class="fas fa-random"></i>&nbsp; Questão
+                    Aleatória</a>
+                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'pontuacao' %} link-laranja{% endif %}"
+                    href="{% url 'plataforma:pontuacao' %}"><i class="fas fa-medal"></i>&nbsp; Quadro de Pontos</a>
+                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %}  link-laranja{% endif %}"
+                    href="{% url 'plataforma:submissions' %}"><i class="fa fa-rocket"></i>&nbsp; Envios</a>
+            </div>
+
+            <div class="navbar-end">
+                {% if request.user.is_staff %}
+                <a class="navbar-item is-tab" href="{% url 'admin:index' %}">
                     <i class="fas fa-user-shield"></i>&nbsp;Administração
                 </a>
-                <a class="nav-item is-tab link-laranja" href="{% url 'explorer_index' %}">
+                <a class="navbar-item is-tab" href="{% url 'explorer_index' %}">
                     <i class="fas fa-table"></i>&nbsp;Explorer
                 </a>
-            {% endif %}
-            <form action="{% url 'plataforma:sair' %}" method="post" class="nav-item">
-                {% csrf_token %}
-                <input type="hidden" name="sair">
-                <button class="button is-danger botao-sair">Sair</button>
-            </form>
+                {% endif %}
+                <form action="{% url 'plataforma:sair' %}" method="post" class="nav-item">
+                    {% csrf_token %}
+                    <input type="hidden" name="sair">
+                    <button class="button is-danger botao-sair">Sair</button>
+                </form>
+            </div>
         </div>
 
     </nav>
