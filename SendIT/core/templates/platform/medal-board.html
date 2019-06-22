@@ -1,0 +1,40 @@
+{% extends 'platform/base.html' %}
+{% load staticfiles %}
+
+{% block title %}<title>SendIT - Quadro de Medalhas</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="box">
+        <h1 class="title has-text-centered">Quadro de Medalhas</h1>
+        <table class="table is-bordered is-striped is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Posição</th>
+                    <th>Nome de Usuario:</th>
+                    <th>Experiencia:</th>
+                    <th>Level:</th>
+                </tr>
+            </thead>
+            {% for user in users %}
+            <tr>
+                <td class="has-text-centered">
+                    {% if forloop.counter == 1 %}
+                    <img src="{% static 'img/platform/podium/1.png' %}" alt="">
+                    {% elif forloop.counter == 2 %}
+                    <img src="{% static 'img/platform/podium/2.png' %}" alt="">
+                    {% elif forloop.counter == 3 %}
+                    <img src="{% static 'img/platform/podium/3.png' %}" alt="">
+                    {% else %}
+                    {{forloop.counter}}
+                    {% endif %}
+                </td>
+                <td>{{user.username}}</td>
+                <td class="has-text-centered">{{user.xp}}</td>
+                <td class="has-text-centered">{{user.level}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
