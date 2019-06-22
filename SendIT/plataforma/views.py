@@ -1,16 +1,22 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.decorators.http import require_POST
-from .models import Question, Submission, Tags, UserData
-from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
+from datetime import timedelta
+import logging
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm
-from random import randint
-import logging
-from statistics.models import LeaderboardView
+from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.views.decorators.http import require_POST
+from django.utils import timezone
+
 import django_rq
+
+from .forms import SignUpForm
+from .models import Question, Submission, Tags, UserData
+
+from statistics.models import LeaderboardView
+
 from .worker import run_submission_runner
 
 log = logging.getLogger(__name__)
