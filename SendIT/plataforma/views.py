@@ -133,48 +133,58 @@ def create_submission(request, question_id):
     code = request.POST["editor"]
     lang = request.POST["language"]
 
-    try:
-        get_submission = Submission.objects.get(
-            autor=request.user, questao=question, status="OK"
-        )
+    log.info("New Submission Received")
 
-        if get_submission:
-            return HttpResponseRedirect("/completed-issues/")
-    except Submission.DoesNotExist:
-        sub = Submission(
-            autor=request.user, questao=question, codigo=code, language=lang
-        )
-        sub.save()
+    ok_submission = Submission.objects.filter(
+        autor=request.user, questao=question, status="OK"
+    )
+    if ok_submission:
+        log.info("Already exists OK Submission")
+        return HttpResponseRedirect("/completed-issues/")
 
-        django_rq.enqueue(run_submission_runner, sub.id)
+    time_threshold = timezone.now() - timedelta(seconds=30)
+    last_submissions = Submission.objects.filter(
+        autor=request.user, questao=question, timestamp__gt=time_threshold
+    )
 
-        return HttpResponseRedirect("/submissions/")
+    if last_submissions:
+        log.info("Already exists Submission with less than 30 seconds")
+        return HttpResponseRedirect(question.get_absolute_url())
 
-        animations = [
-            "bounce",
-            "bounceIn",
-            "bounceInDown",
-            "bounceInRight",
-            "bounceInLeft",
-            "bounceInUp",
-            "flash",
-            "fadeInDown",
-            "zoomIn",
-            "jackInTheBox",
-            "rollIn",
-        ]
+    log.info("Does not exist any OK Submission")
+    sub = Submission(autor=request.user, questao=question, codigo=code, language=lang)
+    sub.save()
 
-        animacao = randint(0, 10)
+    django_rq.enqueue(run_submission_runner, sub.id)
+    log.info("Submission was to Queue")
 
-        return render(
-            request,
-            "sistema/resultado.html",
-            {
-                "submissao": sub,
-                "codigo_enviado": code,
-                "animacao": animations[animacao],
-            },
-        )
+    return HttpResponseRedirect("/submissions/")
+
+    # animations = [
+    #     "bounce",
+    #     "bounceIn",
+    #     "bounceInDown",
+    #     "bounceInRight",
+    #     "bounceInLeft",
+    #     "bounceInUp",
+    #     "flash",
+    #     "fadeInDown",
+    #     "zoomIn",
+    #     "jackInTheBox",
+    #     "rollIn",
+    # ]
+
+    # animacao = randint(0, 10)
+
+    # return render(
+    #     request,
+    #     "sistema/resultado.html",
+    #     {
+    #         "submissao": sub,
+    #         "codigo_enviado": code,
+    #         "animacao": animations[animacao],
+    #     },
+    # )
 
 
 @login_required
