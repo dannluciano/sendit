@@ -189,9 +189,7 @@ def create_submission(request, question_id):
 
 @login_required
 def medal_board(request):
-    users = (
-        LeaderboardView.objects.order_by("-xp")
-    )
+    users = LeaderboardView.objects.order_by("-xp")
     return render(request, "sistema/quadro_de_medalhas.html", {"usuarios": users})
 
 
