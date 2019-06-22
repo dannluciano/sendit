@@ -1,0 +1,86 @@
+{% extends 'platform/base.html' %}
+{% load staticfiles %}
+
+{% block title %}<title>SendIT</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="columns">
+        <div class="column is-3">
+            <div class="box">
+
+                <figure class="image has-text-centered is-256x256">
+                    <a href="#">
+                        <img class="card-avatar-img" src="{% static user.avatar_url %}">
+                    </a>
+                </figure>
+
+                <div class="card-user">
+                    <div class="card-user-name">
+                        {% if user.get_full_name %}
+                        <a>{{ user.get_full_name|upper }}</a>
+                        {% else %}
+                        <a>{{ user.username|upper }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <ul class="card-stats-list">
+                    <li class="card-stats-item">
+                        <span class="card-stats-key">Level</span>
+                        <span class="card-stats-val">{{ user.level }}</span>
+                    </li>
+                    <li class="card-stats-item">
+                        <span class="card-stats-key">XP</span>
+                        <span class="card-stats-val">{{ user.xp }}</span>
+                    </li>
+                    <li class="card-stats-item">
+                        <span class="card-stats-key">Categoria</span>
+                        <span class="card-stats-val"></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="box trending">
+                <p class="trend-title"><span class="title is-5">Melhores da Semana</span></p>
+                <p class="trend-hashtag">
+                    <img src="{% static 'img/platform/podium/first.png' %}" alt="1º" width="24">
+                    <a href="#">Fulano</a> - 13k xps
+                </p>
+                <p class="trend-hashtag">
+                    <img src="{% static 'img/platform/podium/second.png' %}" alt="2º" width="24">
+                    <a href="#">Beltrano</a> - 29k xps
+                </p>
+                <p class="trend-hashtag">
+                    <img src="{% static 'img/platform/podium/third.png' %}" alt="3º" width="24">
+                    <a href="#">Cicrano</a> - 2k xps
+                </p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box">
+                <h1 class="title has-text-centered">Submissões</h1>
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Questão</th>
+                            <th>Linguagem</th>
+                            <th>Situação</th>
+                            <th>Data e Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for submission in submissions %}
+                        <tr>
+                            <td><a href="{{submission.questao.get_absolute_url}}">{{submission.question.title}}</a></td>
+                            <td>{{submission.language}}</td>
+                            <td>{{submission.status}}</td>
+                            <td>{{submission.timestamp}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+</div>

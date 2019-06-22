@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "debug_toolbar",
     "explorer",
+    "core",
 ]
 
 MIDDLEWARE = [
