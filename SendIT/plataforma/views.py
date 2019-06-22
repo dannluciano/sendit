@@ -198,5 +198,10 @@ def medal_board(request):
 @login_required
 def submissions_list(request):
     user = current_user_data(request)
-    submissions = Submission.objects.filter(autor=request.user)
-    return render(request, "sistema/submissions.html", {"submissions": submissions, "user": user})
+    submissions = Submission.objects.select_related("questao").filter(
+        autor=request.user
+    )
+    return render(
+        request, "sistema/submissions.html", {"submissions": submissions, "user": user}
+    )
+
