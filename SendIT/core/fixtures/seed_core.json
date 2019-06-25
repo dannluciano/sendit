@@ -12,7 +12,7 @@
       ],
       [
         "add_submission",
-        "plataforma",
+        "core",
         "submission"
       ],
       [
@@ -122,7 +122,7 @@
   }
 },
 {
-  "model": "plataforma.perfil",
+  "model": "core.perfil",
   "pk": 1,
   "fields": {
     "user": [
@@ -132,7 +132,7 @@
   }
 },
 {
-  "model": "plataforma.perfil",
+  "model": "core.perfil",
   "pk": 2,
   "fields": {
     "user": [
@@ -142,50 +142,50 @@
   }
 },
 {
-  "model": "plataforma.tags",
+  "model": "core.tags",
   "pk": 1,
   "fields": {
     "tag": "Entrada e Sa\u00edda"
   }
 },
 {
-  "model": "plataforma.tags",
+  "model": "core.tags",
   "pk": 2,
   "fields": {
     "tag": "Estruturas de Controle"
   }
 },
 {
-  "model": "plataforma.tags",
+  "model": "core.tags",
   "pk": 3,
   "fields": {
     "tag": "Estruturas de Repeti\u00e7\u00e3o"
   }
 },
 {
-  "model": "plataforma.tags",
+  "model": "core.tags",
   "pk": 4,
   "fields": {
     "tag": "Fun\u00e7\u00f5es"
   }
 },
 {
-  "model": "plataforma.tags",
+  "model": "core.tags",
   "pk": 5,
   "fields": {
     "tag": "Introdu\u00e7\u00e3o"
   }
 },
 {
-  "model": "plataforma.question",
+  "model": "core.question",
   "pk": 1,
   "fields": {
-    "titulo": "Numeros ao Quadrado",
-    "enunciado": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima o quadrado desses n\u00fameros.",
-    "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
-    "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
+    "title": "Numeros ao Quadrado",
+    "statement": "Fa\u00e7a um algoritmo que leia 10 n\u00fameros e imprima o quadrado desses n\u00fameros.",
+    "sample_input": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "sample_output": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100",
     "xp": 5,
-    "exibir": true,
+    "visible": true,
     "tags": [
       1,
       3
@@ -193,15 +193,15 @@
   }
 },
 {
-  "model": "plataforma.question",
+  "model": "core.question",
   "pk": 2,
   "fields": {
-    "titulo": "Numeros de 1 at\u00e9 10",
-    "enunciado": "Escreva um algoritmo que imprima os n\u00fameros de 1 at\u00e9 10",
-    "entrada": "",
-    "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "title": "Numeros de 1 at\u00e9 10",
+    "statement": "Escreva um algoritmo que imprima os n\u00fameros de 1 at\u00e9 10",
+    "sample_input": "",
+    "sample_output": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
     "xp": 5,
-    "exibir": true,
+    "visible": true,
     "tags": [
       1,
       3
@@ -209,30 +209,30 @@
   }
 },
 {
-  "model": "plataforma.question",
+  "model": "core.question",
   "pk": 3,
   "fields": {
-    "titulo": "N\u00famero ao Cubo",
-    "enunciado": "<p>Escreva um algoritmo que leia um n&uacute;mero e imprima o cubo do n&uacute;mero lido</p>",
-    "entrada": "5",
-    "saida": "125",
+    "title": "N\u00famero ao Cubo",
+    "statement": "<p>Escreva um algoritmo que leia um n&uacute;mero e imprima o cubo do n&uacute;mero lido</p>",
+    "sample_input": "5",
+    "sample_output": "125",
     "xp": 100,
-    "exibir": true,
+    "visible": true,
     "tags": [
       1
     ]
   }
 },
 {
-  "model": "plataforma.question",
+  "model": "core.question",
   "pk": 4,
   "fields": {
-    "titulo": "Ol\u00e1 Mundo",
-    "enunciado": "<p>Escreva um programa que escreva &quot;<strong>Ola Mundo</strong>&quot; no terminal</p>",
-    "entrada": "",
-    "saida": "Ola Mundo",
+    "title": "Ol\u00e1 Mundo",
+    "statement": "<p>Escreva um programa que escreva &quot;<strong>Ola Mundo</strong>&quot; no terminal</p>",
+    "sample_input": "",
+    "sample_output": "Ola Mundo",
     "xp": 1,
-    "exibir": true,
+    "visible": true,
     "tags": [
       1,
       5
@@ -240,84 +240,84 @@
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 1,
   "fields": {
     "questao": 1,
-    "entrada": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
-    "saida": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100"
+    "sample_input": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10",
+    "sample_output": "1\r\n4\r\n9\r\n16\r\n25\r\n36\r\n49\r\n64\r\n81\r\n100"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 2,
   "fields": {
     "questao": 1,
-    "entrada": "10\r\n20\r\n30\r\n40\r\n50\r\n60\r\n70\r\n80\r\n90\r\n100",
-    "saida": "100\r\n400\r\n900\r\n1600\r\n2500\r\n3600\r\n4900\r\n6400\r\n8100\r\n10000"
+    "sample_input": "10\r\n20\r\n30\r\n40\r\n50\r\n60\r\n70\r\n80\r\n90\r\n100",
+    "sample_output": "100\r\n400\r\n900\r\n1600\r\n2500\r\n3600\r\n4900\r\n6400\r\n8100\r\n10000"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 3,
   "fields": {
     "questao": 2,
-    "entrada": "",
-    "saida": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10"
+    "sample_input": "",
+    "sample_output": "1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n10"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 4,
   "fields": {
     "questao": 3,
-    "entrada": "1",
-    "saida": "1"
+    "sample_input": "1",
+    "sample_output": "1"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 5,
   "fields": {
     "questao": 3,
-    "entrada": "2",
-    "saida": "8"
+    "sample_input": "2",
+    "sample_output": "8"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 6,
   "fields": {
     "questao": 3,
-    "entrada": "3",
-    "saida": "27"
+    "sample_input": "3",
+    "sample_output": "27"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 7,
   "fields": {
     "questao": 3,
-    "entrada": "4",
-    "saida": "64"
+    "sample_input": "4",
+    "sample_output": "64"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 8,
   "fields": {
     "questao": 3,
-    "entrada": "5",
-    "saida": "125"
+    "sample_input": "5",
+    "sample_output": "125"
   }
 },
 {
-  "model": "plataforma.casetest",
+  "model": "core.casetest",
   "pk": 9,
   "fields": {
     "questao": 4,
-    "entrada": "",
-    "saida": "Ola Mundo"
+    "sample_input": "",
+    "sample_output": "Ola Mundo"
   }
 }
 ]
