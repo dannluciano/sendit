@@ -55,11 +55,11 @@ class Tags(models.Model):
 class Question(models.Model):
     title = models.CharField(max_length=255)
     statement = RichTextField()
-    input = models.TextField(blank=True)
-    output = models.TextField(blank=True)
+    sample_input = models.TextField(blank=True)
+    sample_output = models.TextField(blank=True)
     xp = models.IntegerField(default=100)
     tags = models.ManyToManyField(Tags)
-    show = models.BooleanField(default=True)
+    visible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
         return f"/question/{self.pk}/"
@@ -73,8 +73,8 @@ class Question(models.Model):
 
 class CaseTest(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    input = models.TextField(blank=True)
-    output = models.TextField(blank=True)
+    sample_input = models.TextField(blank=True)
+    sample_output = models.TextField(blank=True)
 
     def __str__(self):
         return f"Case - {self.id} : Questão: {self.questino}"

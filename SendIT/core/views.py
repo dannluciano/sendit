@@ -53,7 +53,7 @@ def home(request):
     user = current_user_data(request)
     submissoes_ok = Submission.objects.filter(author=request.user, status="OK")
     questions = Question.objects.exclude(submission__in=submissoes_ok)
-    questions = questions.exclude(show=False)
+    questions = questions.exclude(visible=False)
     questions = questions.prefetch_related("tags")
 
     if "tag" in request.GET:
@@ -74,7 +74,7 @@ def home(request):
 
 @login_required
 def random_question(request):
-    q = Question.objects.exclude(show=False).order_by("?")[0]
+    q = Question.objects.exclude(visible=False).order_by("?")[0]
     return HttpResponseRedirect(f"/question/{q.id}")
 
 
@@ -106,7 +106,7 @@ def completed_issues(request):
 
 @login_required
 def get_question(request, question_id):
-    question = get_object_or_404(Question, pk=question_id, show=True)
+    question = get_object_or_404(Question, pk=question_id, visible=True)
 
     last_submission = Submission.objects.filter(
         author=request.user, question_id=question.id
