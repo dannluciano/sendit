@@ -9,18 +9,18 @@ class CaseTestInline(admin.TabularInline):
     extra = 1
 
     fieldsets = (
-        ("Teste", {"classes": ("collapse",), "fields": ("input", "output")}),)
+        ("Teste", {"classes": ("collapse",), "fields": ("sample_input", "sample_output")}),)
 
 
 def hide(modeladmin, request, queryset):
-    queryset.update(exibir=False)
+    queryset.update(visible=False)
 
 
 hide.short_description = "Esconder Questões"
 
 
 def show(modeladmin, request, queryset):
-    queryset.update(exibir=True)
+    queryset.update(visible=True)
 
 
 show.short_description = "Exibir Questões"
@@ -28,16 +28,16 @@ show.short_description = "Exibir Questões"
 
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {"fields": ("title", "statement", "xp", "tags", "show")}),
+        (None, {"fields": ("title", "statement", "xp", "tags", "visible")}),
         (
             "Entrada e Saida (Exemplo)",
-            {"classes": ("collapse",), "fields": ("input", "output")},
+            {"classes": ("collapse",), "fields": ("sample_input", "sample_output")},
         ),
     )
 
     inlines = [CaseTestInline]
 
-    list_display = ("id", "title", "xp", "show")
+    list_display = ("id", "title", "xp", "visible")
     list_display_links = ("id", "title")
     search_fields = ["title"]
 
@@ -50,7 +50,7 @@ class QuestionAdmin(admin.ModelAdmin):
         js = ("js/ace.js", "js/admin.js")
 
 
-class SubmissoesAdmin(admin.ModelAdmin):
+class SubmissionsAdmin(admin.ModelAdmin):
     list_display = ("id", "status", "author",
                     "question", "language", "timestamp")
     list_display_links = ("id", "status")
@@ -74,7 +74,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(Submission, SubmissoesAdmin)
+admin.site.register(Submission, SubmissionsAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Tags)
