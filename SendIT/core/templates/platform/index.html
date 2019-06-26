@@ -20,7 +20,7 @@
                                 <div class="content">
                                     <p class="title has-text-centered">Login</p>
                                     {% block content %}
-                                    <form method="post" action="{% url 'plataforma:index' %}">
+                                    <form method="post" action="{% url 'core:index' %}">
                                     {% csrf_token %}
                                     <div class="field">
                                         <label class="label has-text-centered">Usuário:</label>
@@ -37,7 +37,7 @@
                                     <p class="control has-text-centered">
                                         <button class="button is-info">Login</button>
                                     </p>
-                                    <p class="control">Novo(a) por aqui? <a href="{% url 'plataforma:cadastrar' %}">Cadastre-se</a></p>
+                                    <p class="control">Novo(a) por aqui? <a href="{% url 'core:signup' %}">Cadastre-se</a></p>
                                     <input type="hidden" name="next" value="{{ next }}">
                                     </form>
                                 

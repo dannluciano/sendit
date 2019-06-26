@@ -8,7 +8,7 @@ admin.site.index_title = "SendIt"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("plataforma.urls", namespace="plataforma")),
+    path("", include("core.urls", namespace="core")),
     path("session_security/", include("session_security.urls")),
     path("explorer/", include("explorer.urls")),
     path('django-rq/', include('django_rq.urls')),
