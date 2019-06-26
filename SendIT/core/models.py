@@ -17,11 +17,11 @@ class UserData():
     def setup_cache(self):
         SQL = """
                 SELECT auth_user.username as username
-                    , coalesce(SUM(plataforma_question.xp) FILTER (WHERE status='OK'), 0) AS xp
-                    , LEAST(coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
-                FROM plataforma_submission
-                JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
-                JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
+                    , coalesce(SUM(core_question.xp) FILTER (WHERE status='OK'), 0) AS xp
+                    , LEAST(coalesce(sqrt(SUM(core_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
+                FROM core_submission
+                JOIN core_question ON (core_submission.question_id = core_question.id)
+                JOIN auth_user ON (core_submission.author_id = auth_user.id)
                 WHERE auth_user.id = %s
                 GROUP BY auth_user.username 
         """
@@ -77,7 +77,7 @@ class CaseTest(models.Model):
     sample_output = models.TextField(blank=True)
 
     def __str__(self):
-        return f"Case - {self.id} : Questão: {self.questino}"
+        return f"Case - {self.id} : Questão: {self.question}"
 
 
 class Submission(models.Model):

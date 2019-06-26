@@ -122,26 +122,6 @@
   }
 },
 {
-  "model": "core.perfil",
-  "pk": 1,
-  "fields": {
-    "user": [
-      "user"
-    ],
-    "xp": 0
-  }
-},
-{
-  "model": "core.perfil",
-  "pk": 2,
-  "fields": {
-    "user": [
-      "dannluciano"
-    ],
-    "xp": 215
-  }
-},
-{
   "model": "core.tags",
   "pk": 1,
   "fields": {
