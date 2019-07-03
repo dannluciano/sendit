@@ -11,7 +11,6 @@ import random
 from .utils import raw_sql
 
 
-class UserData():
 class UserData:
     def __init__(self, _id, *args, **kwargs):
         self.id = _id
@@ -25,7 +24,6 @@ class UserData:
                     , LEAST(coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
                 FROM plataforma_submission
                 JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
-                JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
                 LEFT JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
                 WHERE auth_user.id = %s
                 GROUP BY auth_user.username 
@@ -43,7 +41,7 @@ class UserData:
 
     def avatar_url(self):
         level = self.level()
-        return f'img/plataforma/levels/level_{level}.png'
+        return f"img/plataforma/levels/level_{level}.png"
         return f"img/plataforma/levels/level_{level}.png"
 
 
@@ -192,8 +190,7 @@ class Submission(models.Model):
         try:
             self._random_status
         except AttributeError:
-            self._random_status = random.choice(
-                self.STATUS_PHRASES[self.status])
+            self._random_status = random.choice(self.STATUS_PHRASES[self.status])
         return self._random_status
 
     def get_random_status_phrase(self):
