@@ -1,6 +1,8 @@
 /* eslint-env browser, jquery */
 /* global ace */
 
+ace.config.set("basePath", "/static/js/");
+
 function activateAcePlugin(editor, lang, newSubmission) {
   switch (lang) {
     case 'c':
