@@ -11,7 +11,7 @@ class LeaderboardView(models.Model):
             , LEAST(coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
     FROM plataforma_submission
     JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
-    JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
+    RIGHT JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
     GROUP BY auth_user.id
     ORDER BY xp DESC)
     SELECT ROW_NUMBER() OVER () as position, *
@@ -41,9 +41,9 @@ class StatisticsView(models.Model):
         , coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0)::int as level
         , coalesce(SUM(plataforma_question.xp) FILTER (WHERE status='OK'), 0) AS xp
         , COUNT (*) FILTER (WHERE status='OK') as Number_Of_Submissions_OK
-        , COUNT (*) as Number_Of_Submission
+        , COUNT (*) FILTER (WHERE status <> '') as Number_Of_Submission
 
-        , COUNT (*) FILTER (WHERE status='OK')::NUMERIC(5,2) / (SELECT COUNT(*) FROM plataforma_question) * 100.0 as conclusion_rate
+        , COUNT (*) FILTER (WHERE status='OK')::NUMERIC(5,2) / greatest((SELECT COUNT(*) FROM plataforma_question), 1) * 100.0 as conclusion_rate
         , COUNT (*) FILTER (WHERE status='OK')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as sucess_rate
         , COUNT (*) FILTER (WHERE status='SintaxError')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as sintax_error_rate
         , COUNT (*) FILTER (WHERE status='RuntimeError')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as runtime_error_rate
@@ -52,7 +52,7 @@ class StatisticsView(models.Model):
 
     FROM plataforma_submission
     JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
-    JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
+    RIGHT JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
     GROUP BY auth_user.id
     ORDER BY xp DESC;
     """

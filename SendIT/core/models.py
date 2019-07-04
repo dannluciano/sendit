@@ -21,7 +21,7 @@ class UserData():
                     , LEAST(coalesce(sqrt(SUM(core_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
                 FROM core_submission
                 JOIN core_question ON (core_submission.question_id = core_question.id)
-                JOIN auth_user ON (core_submission.author_id = auth_user.id)
+                RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
                 WHERE auth_user.id = %s
                 GROUP BY auth_user.username 
         """
@@ -38,7 +38,7 @@ class UserData():
 
     def avatar_url(self):
         level = self.level()
-        return f'img/platform/levels/level_{level}.png'
+        return f"img/platform/levels/level_{level}.png"
 
 
 class Tags(models.Model):
@@ -62,7 +62,7 @@ class Question(models.Model):
     visible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return f"/question/{self.pk}/"
+        return f"/questions/{self.pk}/"
 
     def __str__(self):
         return f"{self.title}"
@@ -81,7 +81,8 @@ class CaseTest(models.Model):
 
 
 class Submission(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author_submission")
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="author_submission")
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     code = models.TextField()
     STATUS_CHOICES = (
