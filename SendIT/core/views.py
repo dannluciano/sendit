@@ -75,7 +75,7 @@ def home(request):
 @login_required
 def random_question(request):
     q = Question.objects.exclude(visible=False).order_by("?")[0]
-    return HttpResponseRedirect(f"/question/{q.id}")
+    return HttpResponseRedirect(f"/questions/{q.id}")
 
 
 @login_required
@@ -145,39 +145,14 @@ def create_submission(request, question_id):
         return HttpResponseRedirect(question.get_absolute_url())
 
     log.info("Does not exist any OK Submission")
-    sub = Submission(author=request.user, question=question, code=code, language=lang)
+    sub = Submission(author=request.user, question=question,
+                     code=code, language=lang)
     sub.save()
 
-    django_rq.enqueue(run_submission_runner, sub.id)
+    django_rq.enqueue(run_submission_runner, sub.id, ttl=60*60*24*7)
     log.info("Submission was to Queue")
 
     return HttpResponseRedirect("/submissions/")
-
-    # animations = [
-    #     "bounce",
-    #     "bounceIn",
-    #     "bounceInDown",
-    #     "bounceInRight",
-    #     "bounceInLeft",
-    #     "bounceInUp",
-    #     "flash",
-    #     "fadeInDown",
-    #     "zoomIn",
-    #     "jackInTheBox",
-    #     "rollIn",
-    # ]
-
-    # animacao = randint(0, 10)
-
-    # return render(
-    #     request,
-    #     "sistema/resultado.html",
-    #     {
-    #         "submissao": sub,
-    #         "codigo_enviado": code,
-    #         "animacao": animations[animacao],
-    #     },
-    # )
 
 
 @login_required
@@ -193,6 +168,6 @@ def submissions_list(request):
         author=request.user
     )
     return render(
-        request, "platform/submissions.html", {"submissions": submissions, "user": user}
+        request, "platform/submissions.html", {
+            "submissions": submissions, "user": user}
     )
-
