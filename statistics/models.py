@@ -7,11 +7,11 @@ class LeaderboardView(models.Model):
     CREATE OR REPLACE VIEW leaderboard_view AS
     WITH DATA AS
     (SELECT auth_user.username
-            , coalesce(SUM(plataforma_question.xp) FILTER (WHERE status='OK'), 0) AS xp
-            , LEAST(coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
-    FROM plataforma_submission
-    JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
-    RIGHT JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
+            , coalesce(SUM(core_question.xp) FILTER (WHERE status='OK'), 0) AS xp
+            , LEAST(coalesce(sqrt(SUM(core_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
+    FROM core_submission
+    JOIN core_question ON (core_submission.question_id = core_question.id)
+    RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
     GROUP BY auth_user.id
     ORDER BY xp DESC)
     SELECT ROW_NUMBER() OVER () as position, *
@@ -38,21 +38,21 @@ class StatisticsView(models.Model):
     CREATE OR REPLACE VIEW statistics_view AS
     SELECT
         auth_user.username
-        , coalesce(sqrt(SUM(plataforma_question.xp) FILTER (WHERE status='OK')) * 1.5, 0)::int as level
-        , coalesce(SUM(plataforma_question.xp) FILTER (WHERE status='OK'), 0) AS xp
+        , coalesce(sqrt(SUM(core_question.xp) FILTER (WHERE status='OK')) * 1.5, 0)::int as level
+        , coalesce(SUM(core_question.xp) FILTER (WHERE status='OK'), 0) AS xp
         , COUNT (*) FILTER (WHERE status='OK') as Number_Of_Submissions_OK
         , COUNT (*) FILTER (WHERE status <> '') as Number_Of_Submission
 
-        , COUNT (*) FILTER (WHERE status='OK')::NUMERIC(5,2) / greatest((SELECT COUNT(*) FROM plataforma_question), 1) * 100.0 as conclusion_rate
+        , COUNT (*) FILTER (WHERE status='OK')::NUMERIC(5,2) / greatest((SELECT COUNT(*) FROM core_question), 1) * 100.0 as conclusion_rate
         , COUNT (*) FILTER (WHERE status='OK')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as sucess_rate
         , COUNT (*) FILTER (WHERE status='SintaxError')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as sintax_error_rate
         , COUNT (*) FILTER (WHERE status='RuntimeError')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as runtime_error_rate
         , COUNT (*) FILTER (WHERE status='TimeoutError')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as timeout_error_rate
         , COUNT (*) FILTER (WHERE status='DiffError')::NUMERIC(5,2) / greatest(COUNT (*), 1) * 100.0 as diff_error_rate
 
-    FROM plataforma_submission
-    JOIN plataforma_question ON (plataforma_submission.questao_id = plataforma_question.id)
-    RIGHT JOIN auth_user ON (plataforma_submission.autor_id = auth_user.id)
+    FROM core_submission
+    JOIN core_question ON (core_submission.question_id = core_question.id)
+    RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
     GROUP BY auth_user.id
     ORDER BY xp DESC;
     """
@@ -88,12 +88,12 @@ class StatisticsView(models.Model):
 class SubmissionSummaryView(models.Model):
     SQL = """
     CREATE OR REPLACE VIEW submission_summary_view AS
-    SELECT plataforma_submission.status,
+    SELECT core_submission.status,
         count(*) AS sum
-    FROM plataforma_submission
-    GROUP BY plataforma_submission.status 
+    FROM core_submission
+    GROUP BY core_submission.status 
     UNION 
-    SELECT 'Total', count(*) FROM plataforma_submission;
+    SELECT 'Total', count(*) FROM core_submission;
     """
 
     REVERSE_SQL = """DROP VIEW IF EXISTS submission_summary_view;"""
