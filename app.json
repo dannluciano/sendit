@@ -7,7 +7,7 @@
     "logo": "",
     "success_url": "/",
     "scripts": {
-        "predeploy": "pipenv install --dev"
+        "postdeploy": "echo Deployed"
     },
     "env": {
         "WEB_CONCURRENCY": {
