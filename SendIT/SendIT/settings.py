@@ -56,7 +56,6 @@ MIDDLEWARE = [
     "session_security.middleware.SessionSecurityMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "SendIT.urls"
@@ -198,7 +197,6 @@ LOGGING = {
 
 # SETTINGS LOCAL
 try:
-    # execfile(os.path.join(BASE_DIR,'scrum/settings_local.py'),globals(),locals())
     exec(open(os.path.join(BASE_DIR, "SendIT/settings_local.py")).read())
 except IOError as e:
     pass
