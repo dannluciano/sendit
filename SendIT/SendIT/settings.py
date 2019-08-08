@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django_rq",
     "statistics",
     "ckeditor",
-    "debug_toolbar",
     "explorer",
     "core",
 ]
