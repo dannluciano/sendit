@@ -6,6 +6,9 @@ import subprocess
 
 tmp_dir = "temp"
 
+if not os.path.exists(tmp_dir):
+    os.makedirs(tmp_dir)
+
 
 class SubmissionError(Exception):
     def __init__(self, message):
