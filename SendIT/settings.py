@@ -83,18 +83,11 @@ WSGI_APPLICATION = "SendIT.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
-
-DATABASES = {
-    "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "sendit_db",
+        "NAME": "senditdb",
         "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "localhost",
+        "PASSWORD": "186ea09d63b6036f7de823fbbed929aa",
+        "HOST": "dokku-postgres-senditdb",
     }
 }
 
@@ -208,12 +201,14 @@ INTERNAL_IPS = ["127.0.0.1"]
 EXPLORER_CONNECTIONS = {"Default": "default"}
 EXPLORER_DEFAULT_CONNECTION = "default"
 
+
 RQ_QUEUES = {
     'default': {
-        'HOST': 'localhost',
+        'HOST': 'dokku-redis-senditdb',
         'PORT': 6379,
         'DB': 0,
-        'PASSWORD': '',
+        'PASSWORD': '297f44d9666c31d1417444d65b886a8eb200209b44b875785db39298a2db1477',
+        'USER': 'senditdb',
         'DEFAULT_TIMEOUT': 360,
     },
 }
