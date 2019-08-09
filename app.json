@@ -3,11 +3,13 @@
     "description": "This app does one little thing, and does it well.",
     "keywords": [],
     "website": "",
-    "repository": "",
+    "repository": "https://github.com/dannluciano/sendit/",
     "logo": "",
     "success_url": "/",
     "scripts": {
-        "postdeploy": "echo Deployed"
+        "dokku": {
+            "predeploy": "echo 'Deploy Started'"
+        }
     },
     "env": {
         "WEB_CONCURRENCY": {
