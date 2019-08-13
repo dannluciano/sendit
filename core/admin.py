@@ -31,7 +31,8 @@ class QuestionAdmin(admin.ModelAdmin):
         (None, {"fields": ("title", "statement", "xp", "tags", "visible")}),
         (
             "Entrada e Saida (Exemplo)",
-            {"classes": ("collapse",), "fields": ("sample_input", "sample_output")},
+            {"classes": ("collapse",), "fields": (
+                "sample_input", "sample_output")},
         ),
     )
 
@@ -39,6 +40,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
     list_display = ("id", "title", "xp", "visible")
     list_display_links = ("id", "title")
+    list_filter = ("tags", )
     search_fields = ["title"]
 
     actions = [hide, show]
