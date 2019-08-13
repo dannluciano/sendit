@@ -176,7 +176,7 @@ class JAVA_SubmissionRunner(SubmissionRunner):
         self.source_file_name = "Principal.java"
         self.compiler_command = f"javac {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt"
         self.executable_command = f"java -cp {self.work_dir} Principal < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt"
-        self.timeout = 3
+        self.timeout = 5
 
 
 class Python_SubmissionRunner(SubmissionRunner):
