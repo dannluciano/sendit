@@ -149,7 +149,8 @@ def create_submission(request, question_id):
                      code=code, language=lang)
     sub.save()
 
-    django_rq.enqueue(run_submission_runner, sub.id, ttl=60*60*24*7)
+    ttl = 60*60*24*7
+    django_rq.enqueue(run_submission_runner, sub.id, ttl=ttl, result_ttl=ttl)
     log.info("Submission was to Queue")
 
     return HttpResponseRedirect("/submissions/")
