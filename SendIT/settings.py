@@ -177,6 +177,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 60 * 60
 
+SESSION_SECURITY_EXPIRE_AFTER = 60 * 30
+SESSION_SECURITY_WARN_AFTER = SESSION_SECURITY_EXPIRE_AFTER - 60
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
