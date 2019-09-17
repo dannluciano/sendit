@@ -135,13 +135,13 @@ def create_submission(request, question_id):
         log.info("Already exists OK Submission")
         return HttpResponseRedirect("/completed-issues/")
 
-    time_threshold = timezone.now() - timedelta(seconds=30)
+    time_threshold = timezone.now() - timedelta(seconds=15)
     last_submissions = Submission.objects.filter(
         author=request.user, question=question, timestamp__gt=time_threshold
     )
 
     if last_submissions:
-        log.info("Already exists Submission with less than 30 seconds")
+        log.info("Already exists Submission with less than 15 seconds")
         return HttpResponseRedirect(question.get_absolute_url())
 
     log.info("Does not exist any OK Submission")
