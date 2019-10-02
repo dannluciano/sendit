@@ -68,7 +68,7 @@
                     <i class="fas fa-table"></i>&nbsp;Explorer
                 </a>
                 {% endif %}
-                <form action="{% url 'core:logout' %}" method="post" class="nav-item">
+                <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
                     {% csrf_token %}
                     <input type="hidden" name="sair">
                     <button class="button is-danger botao-sair">Sair</button>

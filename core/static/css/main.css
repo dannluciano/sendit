@@ -359,3 +359,8 @@ span.tag a:hover{
   width: 128px;
   height: 128px;
 }
+
+.tag:not(body).is-orange {
+  background-color:#f95738;
+  color:#fff;
+ }

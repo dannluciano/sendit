@@ -17,13 +17,15 @@ class UserData():
     def setup_cache(self):
         SQL = """
                 SELECT auth_user.username as username
+                    , auth_user.first_name as first_name
+                    , auth_user.last_name as last_name
                     , coalesce(SUM(core_question.xp) FILTER (WHERE status='OK'), 0) AS xp
                     , LEAST(coalesce(sqrt(SUM(core_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
                 FROM core_submission
                 JOIN core_question ON (core_submission.question_id = core_question.id)
                 RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
                 WHERE auth_user.id = %s
-                GROUP BY auth_user.username 
+                GROUP BY auth_user.username, auth_user.first_name, auth_user.last_name
         """
         self.cache = raw_sql(SQL, [self.id])
 
@@ -35,6 +37,12 @@ class UserData():
 
     def xp(self):
         return self.cache[0].xp
+
+    def full_name(self):
+        fn = self.cache[0].first_name
+        ln = self.cache[0].last_name
+
+        return f"{fn} {ln}"
 
     def avatar_url(self):
         level = self.level()
