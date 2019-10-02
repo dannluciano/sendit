@@ -190,13 +190,6 @@ LOGGING = {
 }
 
 
-# SETTINGS LOCAL
-try:
-    exec(open(os.path.join(BASE_DIR, "SendIT/settings_local.py")).read())
-except IOError as e:
-    pass
-
-
 # Django Degub Toolbar
 INTERNAL_IPS = ["127.0.0.1"]
 
@@ -216,3 +209,10 @@ RQ_QUEUES = {
     },
 }
 RQ_SHOW_ADMIN_LINK = True
+
+
+# SETTINGS LOCAL
+try:
+    exec(open(os.path.join(BASE_DIR, "SendIT/settings_local.py")).read())
+except IOError as e:
+    pass
