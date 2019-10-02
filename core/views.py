@@ -14,6 +14,8 @@ from .worker import run_submission_runner
 import django_rq
 import logging
 
+from .domain import get_best_users_of_week
+
 
 log = logging.getLogger(__name__)
 log.setLevel(20)
@@ -61,14 +63,20 @@ def home(request):
         if tag != "all":
             questions = questions.filter(tags__tag__icontains=tag)
 
-    questions = questions.order_by("xp")
+    questions = questions.order_by("xp")[:5]
 
     tags = Tags.objects.all()
 
+    best_users_of_week = get_best_users_of_week()
+
     return render(
         request,
-        "platform/home.html",
-        {"user": user, "questions": questions, "tags": tags},
+        "platform/home.html", {
+            "user": user,
+            "questions": questions,
+            "tags": tags,
+            "best_users_of_week": best_users_of_week
+        },
     )
 
 
