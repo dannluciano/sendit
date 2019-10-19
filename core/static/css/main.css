@@ -1,3 +1,98 @@
+* {
+  box-sizing: border-box;
+  margin: 0 0;
+  padding: 0 0;
+  border: 0;
+}
+
+:root {
+  --black: #002635;
+  --white: #FFFFFF;
+  --black-ligth: #002635;
+  --white-ligth: #E6E6DC;
+  --red-dark: #c43060;
+  --red-ligth: #ff5a67;
+  --orange-dark: #A53105;
+  --orange-ligth: #F95738;
+  --yellow-dark: #F08E48;
+  --yellow-ligth: #FFCC1B;
+  --green-dark: #7FC06E;
+  --green-ligth: #9CF087;
+  --blue-dark: #1C8DB2;
+  --blue-ligth: #7EB2DD;
+  --purple-dark: #C694FF;
+  --purple-ligth: #FB94FF;
+  --cyan-dark: #00CCCC;
+  --cyan-ligth: #00FFFF;
+}
+
+[data-theme=dark] {
+  --bg: var(--black);
+  --fg: var(--white);
+
+  --red: var(--red-dark);
+  --orange: var(--orange-dark);
+  --yellow: var(--yellow-dark);
+  --green: var(--green-dark);
+  --blue: var(--blue-dark);
+  --purple: var(--purple-dark);
+  --cyan: var(--cyan-dark);
+
+  background-color: var(--bg) !important;
+  color: var(--fg);
+}
+
+[data-theme=ligth] {
+  --bg: var(--white);
+  --fg: var(--black);
+
+  --red: var(--red-ligth);
+  --orange: var(--orange-ligth);
+  --yellow: var(--yellow-ligth);
+  --green: var(--green-ligth);
+  --blue: var(--blue-ligth);
+  --purple: var(--purple-ligth);
+  --cyan: var(--cyan-ligth);
+
+  background-color: var(--bg) !important;
+  color: var(--fg);
+}
+
+.theme {
+  background-color: var(--bg) !important;
+  color: var(--fg) !important;
+}
+
+.background-global {
+  background-color: var(--orange);
+}
+
+.navbar.has-shadow {
+  box-shadow: 0 2px 0 0 var(--bg) !important;
+}
+
+.box {
+  background-color: var(--bg) !important;
+  color: var(--fg) !important;
+}
+
+.title {
+  color: var(--fg) !important;
+}
+
+.subtitle {
+  color: var(--fg) !important;
+}
+
+.table {
+  background-color: var(--bg) !important;
+  color: var(--fg) !important;
+}
+
+thead td, .table thead th {
+  color: var(--fg) !important;
+}
+
 html {
   margin: 0;
   font-size: 16px;
@@ -13,12 +108,10 @@ body {
 }
 
 section.bg-color-laranja{
-  /* background-image:linear-gradient(to bottom right, #f95738,#ff8c6b, #ffa58c, #ffd4c8) ; */
   background-color: #f95738;
 }
 
 section.bg-color-laranja input:focus{
-  /* background-image:linear-gradient(to bottom right, #f95738,#ff8c6b, #ffa58c, #ffd4c8) ; */
   border-color: #f95738;
 }
 
