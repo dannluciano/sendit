@@ -1,9 +1,9 @@
 /* eslint-env browser, jquery */
 /* global ace */
 
-ace.config.set("basePath", "/static/js/");
+ace.config.set('basePath', '/static/js/')
 
-function activateAcePlugin(editor, lang, newSubmission) {
+function activateAcePlugin (editor, lang, newSubmission) {
   switch (lang) {
     case 'c':
       editor.getSession().setMode('ace/mode/c_cpp')
@@ -18,7 +18,7 @@ function activateAcePlugin(editor, lang, newSubmission) {
       }
       break
     case 'javascript':
-      editor.getSession().setMode('ace/mode/js')
+      editor.getSession().setMode('ace/mode/javascript')
       if (newSubmission) {
         editor.getSession().setValue('alert("Ola Mundo")')
       }
@@ -39,11 +39,17 @@ function activateAcePlugin(editor, lang, newSubmission) {
   }
 }
 
+function setEditorTheme () {
+  var theme = document.body.dataset.theme || 'ligth'
+  var editor = ace.edit('editor')
+  editor.setTheme('ace/theme/tomorrow_' + theme)
+}
+
 jQuery(document)
   .ready(function () {
+    setEditorTheme()
     var editor = ace.edit('editor')
-    editor.setTheme('ace/theme/github')
-    editor.setFontSize(20)
+    editor.setFontSize(24)
     editor.$blockScrolling = Infinity
 
     var textarea = $('textarea[name="editor"]')

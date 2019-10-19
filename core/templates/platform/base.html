@@ -28,7 +28,7 @@
 </head>
 
 <body>
-    <nav class="nav has-shadow menu-cima navbar" role="navigation" aria-label="main navigation">
+    <nav class="nav has-shadow menu-cima navbar theme" role="navigation" aria-label="main navigation">
 
         <div class="navbar-brand">
             <a class="navbar-item" href="/">
@@ -68,6 +68,9 @@
                     <i class="fas fa-table"></i>&nbsp;Explorer
                 </a>
                 {% endif %}
+                <div class="navbar-item">
+                    <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
+                </div>
                 <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
                     {% csrf_token %}
                     <input type="hidden" name="sair">
@@ -77,7 +80,7 @@
         </div>
 
     </nav>
-    <section class="section main bg-color-laranja">
+    <section class="section main background-global">
         {% block content %}
         {% endblock %}
         {% block menu_direita %}
