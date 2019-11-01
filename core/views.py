@@ -15,6 +15,7 @@ import django_rq
 import logging
 
 from .domain import get_best_users_of_week
+from .domain import random_unresolved_question
 
 
 log = logging.getLogger(__name__)
@@ -82,7 +83,7 @@ def home(request):
 
 @login_required
 def random_question(request):
-    q = Question.objects.exclude(visible=False).order_by("?")[0]
+    q = random_unresolved_question(request.user)
     return HttpResponseRedirect(f"/questions/{q.id}")
 
 
