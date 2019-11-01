@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import LeaderboardView, StatisticsView, SubmissionSummaryView
+from .models import LeaderboardView, StatisticsView, SubmissionSummaryView, LogRecord
 
 
 class ViewAdmin(admin.ModelAdmin):
@@ -10,8 +10,12 @@ class ViewAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
-    def has_change_permission(request, obj=None):
+    def has_change_permission(self, request, obj=None):
         return False
+
+
+class LogRecordAdmin(ViewAdmin):
+    list_display = ('id', 'user', 'check_in', 'check_out', 'duration')
 
 
 class LeaderboardViewAdmin(ViewAdmin):
@@ -29,6 +33,7 @@ class SubmissionSummaryViewAdmin(ViewAdmin):
     list_display = ('status', 'sum')
 
 
+admin.site.register(LogRecord, LogRecordAdmin)
 admin.site.register(LeaderboardView, LeaderboardViewAdmin)
 admin.site.register(StatisticsView, StatisticsViewAdmin)
 admin.site.register(SubmissionSummaryView, SubmissionSummaryViewAdmin)
