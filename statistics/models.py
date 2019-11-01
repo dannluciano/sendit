@@ -1,4 +1,45 @@
+import uuid
 from django.db import models
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+from django.utils import timezone
+
+
+@receiver(user_logged_in)
+def user_logged_in(sender, request, user, **kwargs):
+    LogRecord.objects.create(user=user.username)
+
+
+@receiver(user_logged_out)
+def user_logged_out(sender, request, user, **kwargs):
+    lr = LogRecord.objects.filter(
+        user=user.username, check_out__isnull=True).last()
+    if lr:
+        lr.check_out = timezone.now()
+        lr.save()
+
+
+def format_time(time):
+    s = time.seconds
+    hours, remainder = divmod(s, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return '{:02}:{:02}:{:02}'.format(int(hours), int(minutes), int(seconds))
+
+
+class LogRecord(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.CharField(max_length=255)
+    check_in = models.DateTimeField(auto_now_add=True)
+    check_out = models.DateTimeField(null=True)
+
+    @property
+    def duration(self):
+        if self.check_out:
+            return format_time(self.check_out - self.check_in)
+        return '-'
+
+    class Meta:
+        ordering = ['check_in']
 
 
 class LeaderboardView(models.Model):
