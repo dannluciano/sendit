@@ -1,4 +1,7 @@
+from django.db.models import Q
+
 from .utils import raw_sql
+from .models import Submission, Question
 
 
 def get_best_users_of_week():
@@ -15,3 +18,12 @@ ORDER BY xp DESC
 LIMIT 3;
 """
     return raw_sql(SQL)
+
+
+def random_unresolved_question(user):
+    questions_ok = Submission.objects.filter(
+        author=user, status="OK").values_list('question_id')
+    rand_question = Question.objects.exclude(
+        Q(visible=False) | Q(id__in=questions_ok)
+    ).order_by("?")[0]
+    return rand_question
