@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "session_security.middleware.SessionSecurityMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "statistics.middleware.LastActivityMiddleware",
 ]
 
 ROOT_URLCONF = "SendIT.urls"
