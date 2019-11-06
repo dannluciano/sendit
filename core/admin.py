@@ -53,7 +53,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class SubmissionsAdmin(admin.ModelAdmin):
-    list_display = ("id", "status", "author",
+    list_display = ("id", "uuid", "status", "author",
                     "question", "language", "timestamp")
     list_display_links = ("id", "status")
     list_filter = ("status", "language")
