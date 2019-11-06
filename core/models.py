@@ -6,6 +6,7 @@ from ckeditor.fields import RichTextField
 from .utils import raw_sql
 import math
 import random
+import uuid
 
 
 class UserData():
@@ -89,6 +90,7 @@ class CaseTest(models.Model):
 
 
 class Submission(models.Model):
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="author_submission")
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
