@@ -1,28 +1,31 @@
-{% extends 'platform/home.html' %}
+{% extends 'platform/base.html' %}
 {% load staticfiles %}
 
-{% block title %}<title>SendIT</title>{% endblock %}
+{% block title %}<title>SendIT - Envios</title>{% endblock %}
 
-{% block info %}
-<div class="column">
+{% block content %}
+<div class="container">
     <div class="box">
         <h1 class="title has-text-centered">Submissões</h1>
-        <table class="table is-fullwidth">
+        <table class="table is-bordered is-fullwidth">
             <thead>
                 <tr>
                     <th>Questão</th>
                     <th>Linguagem</th>
                     <th>Situação</th>
                     <th>Data e Hora</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for submission in submissions %}
                 <tr>
-                    <td><a href="{{submission.question.get_absolute_url}}">{{submission.question.title}}</a></td>
+                    <td><a href="{{submission.question.get_absolute_url}}">{{submission.question.title}}</a>
+                    </td>
                     <td>{{submission.language}}</td>
                     <td>{{submission.status}}</td>
                     <td>{{submission.timestamp}}</td>
+                    <td><a href="{{submission.get_absolute_url}}" class="button is-info">Acessar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -30,5 +33,3 @@
     </div>
 </div>
 {% endblock %}
-</div>
-</div>

@@ -17,5 +17,10 @@ urlpatterns = [
          views.get_question, name="get-question"),
     path('signup/', views.signup, name="signup"),
     path('ranking/', views.medal_board, name="ranking"),
-    path('submissions/', views.submissions_list, name="submissions")
+    path('submissions/', views.submissions_list, name="submissions"),
+    path('submissions/<str:submission_uuid>/',
+         views.submission_detail, name="submissions-detail"),
+    path('submissions/<str:submission_uuid>/status/',
+         views.submission_status, name="submissions-status"),
+
 ]

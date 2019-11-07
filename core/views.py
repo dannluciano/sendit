@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from datetime import timedelta
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -162,7 +163,7 @@ def create_submission(request, question_id):
     django_rq.enqueue(run_submission_runner, sub.id, ttl=ttl, result_ttl=ttl)
     log.info("Submission was to Queue")
 
-    return HttpResponseRedirect("/submissions/")
+    return HttpResponseRedirect(sub.get_absolute_url())
 
 
 @login_required
@@ -181,3 +182,30 @@ def submissions_list(request):
         request, "platform/submissions.html", {
             "submissions": submissions, "user": user}
     )
+
+
+@login_required
+def submission_detail(request, submission_uuid):
+    submission = get_object_or_404(Submission, uuid=submission_uuid)
+
+    if submission.author != request.user:
+        return HttpResponseRedirect("/home/")
+
+    if submission.is_waiting:
+        return HttpResponseRedirect(submission.get_absolute_url())
+
+    return render(request, "platform/submission-detail.html", {"submission": submission})
+
+
+@login_required
+def submission_status(request, submission_uuid):
+    submission = get_object_or_404(Submission, uuid=submission_uuid)
+    if request.is_ajax():
+        dict = {
+            'uuid': submission.uuid,
+            'status': submission.status,
+            'url': submission.get_absolute_url(),
+        }
+        return JsonResponse(dict)
+    else:
+        return render(request, "platform/submission-status.html", {"submission": submission})
