@@ -190,6 +190,15 @@ class Submission(models.Model):
         ],
     }
 
+    @property
+    def is_waiting(self):
+        return self.status == self.STATUS_CHOICES[0][0]
+
+    def get_absolute_url(self):
+        if self.is_waiting:
+            return f"/submissions/{self.uuid}/status/"
+        return f"/submissions/{self.uuid}/"
+
     def _get_random_status(self):
         try:
             self._random_status
