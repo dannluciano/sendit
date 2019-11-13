@@ -1,0 +1,115 @@
+{% extends 'platform/base.html' %}
+{% load staticfiles %}
+
+{% block title %}<title>SendIT</title>{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="columns">
+        <div class="column is-3">
+            <div class="box">
+
+                <figure class="image has-text-centered is-256x256">
+                    <a href="#">
+                        <img class="card-avatar-img" src="{% static user.avatar_url %}">
+                    </a>
+                </figure>
+
+                <div class="card-user">
+                    <div class="card-user-name">
+                        {% if user.full_name %}
+                        <a>{{ user.full_name | upper }}</a>
+                        {% else %}
+                        <a>{{ user.username | upper }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <ul class="card-stats-list">
+                    <li class="card-stats-item">
+                        <span class="card-stats-key">Level</span>
+                        <span class="card-stats-val">{{ user.level }}</span>
+                    </li>
+                    <li class="card-stats-item">
+                        <span class="card-stats-key">XP</span>
+                        <span class="card-stats-val">{{ user.xp }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box trending">
+                <p class="trend-title">
+                    <span class="title is-5">
+                        Melhores da Semana
+                    </span>
+                </p>
+                {% if best_users_of_week %}
+                {% for user in best_users_of_week %}
+                <p class="trend-hashtag">
+                    <img src="{% static 'img/platform/podium/first.png' %}" alt="1º" width="24">
+                    <a href="#">{{user.username}}</a> - {{user.xp}} XPs
+                </p>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% block info %}
+        <div class="column is-6">
+            <div class="box trending">
+                <div class="tags">
+                    <span class="tag"><a href="{% url 'core:home' %}">Todas</a></span>
+                    {% for tag in tags %}
+                    <span class="tag">
+                        <a href="{% url 'core:home' %}?tag={{ tag }}">
+                            {{ tag }}
+                        </a>
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% for question in questions %}
+            <div class="box">
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                            <h2 class="subtitle">
+                                <a href="{% url 'core:get-question' question.id %}" class="links-questao">
+                                    {{ question.title }}
+                                </a>
+                            </h2>
+                        </div>
+                        <nav class="level">
+                            <div class="level-left">
+                                <small class="tag is-orange">XP: {{ question.xp }}</small>
+                                {% for tag in question.tags.all %}
+                                <small class="tag">{{ tag.tag }}</small>
+                                {% endfor %}
+                            </div>
+                        </nav>
+                    </div>
+                </article>
+            </div>
+            {% empty %}
+            <div class="box">
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content has-text-centered">
+                            <img src="{% static 'img/platform/finish.png' %}" alt="Finish">
+                            <h2 class="subtitle">
+                                Parabens você já resolveu todas as questões da nossa Plataforma!
+                            </h2>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="column is-3">
+            <div class="box trending">
+                <p class="trend-title"><span class="title is-5">Estatísticas</span></p>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
