@@ -1,0 +1,19 @@
+from .domain import set_last_activity
+from django.conf import settings
+
+
+class LastActivityMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
+        status_200 = response.status_code == 200
+        path_is_not_static = not request.path.startswith(settings.STATIC_URL)
+        user_is_authenticated = request.user.is_authenticated
+
+        if status_200 and path_is_not_static and user_is_authenticated:
+            set_last_activity(request.user.username)
+
+        return response

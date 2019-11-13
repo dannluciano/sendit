@@ -109,4 +109,6 @@ SendIT/.vscode/settings.json
 staticfiles/
 temp/
 
+settings_local.py
 .vscode/settings.json
+

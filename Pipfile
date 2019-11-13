@@ -6,11 +6,17 @@ url = "https://pypi.python.org/simple"
 [packages]
 django = "*"
 django-ckeditor = "*"
-sqlparse = "*"
+psycopg2-binary = "*"
+gunicorn = "*"
+whitenoise = "*"
+django-session-security = "*"
+django-sql-explorer = "*"
 django-rq = "*"
-psycopg-binary = "*"
 
 [dev-packages]
+pylint = "*"
+django-debug-toolbar = "*"
+autopep8 = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
