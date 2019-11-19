@@ -17,6 +17,8 @@ class ViewAdmin(admin.ModelAdmin):
 class LogRecordAdmin(ViewAdmin):
     list_display = ('id', 'user', 'check_in', 'check_out', 'duration')
 
+    ordering = ['-check_in']
+
 
 class LeaderboardViewAdmin(ViewAdmin):
     list_display = ('position', 'username', 'xp', 'level')
