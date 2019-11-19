@@ -22,7 +22,7 @@ class LogRecord(models.Model):
         return '-'
 
     class Meta:
-        ordering = ['check_in']
+        ordering = ['-check_in']
 
 
 class LeaderboardView(models.Model):
