@@ -1,3 +1,4 @@
+import io
 import os
 import logging
 import logging.handlers
@@ -31,12 +32,11 @@ class SubmissionDiffError(SubmissionError):
     pass
 
 
-log_file_path = "temp/submission_runner.log"
 log = logging.getLogger("SubmissionRunner")
-log.addHandler(
-    logging.handlers.RotatingFileHandler(log_file_path, maxBytes=1024 * 1024)
-)
-log.setLevel(20)
+log.setLevel(logging.INFO)
+
+log_capture_string = io.StringIO()
+log.addHandler(logging.StreamHandler(log_capture_string))
 
 
 class SubmissionRunner(object):
@@ -52,6 +52,7 @@ class SubmissionRunner(object):
         self.input_content = input_content
         self.expected_output_content = expected_output_content
         self.source_file_content = source_file_content
+        self.last_output = ''
 
     def create_temp_file(self, dirname, filename, content):
         file_path = f"{dirname}/{filename}"
@@ -74,14 +75,17 @@ class SubmissionRunner(object):
             self.work_dir, self.source_file_name, self.source_file_content
         )
 
-    def run_process(self, command):
+    def run_process(self, command, input_=None):
         try:
-            log.info(f"Spawn Process: timeout {self.timeout} {command}")
-            subprocess.run(
-                f"exec {command}", shell=True, check=True, timeout=self.timeout
+            import shlex
+
+            result = subprocess.run(
+                shlex.split(command), shell=False, check=True, timeout=self.timeout,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, input=input_
             )
+            self.last_output = result.stdout.decode('utf-8')
         except subprocess.TimeoutExpired as error:
-            log.error(f"Timeout Error: {command}")
+            self.last_output = error.stdout
             raise SubmissionTimeoutError("TimeoutError")
 
     def run_compiler(self):
@@ -89,29 +93,29 @@ class SubmissionRunner(object):
         try:
             self.run_process(self.compiler_command)
         except subprocess.CalledProcessError as error:
-            log.error(f"Sintax Error: {error.stderr}")
+            self.last_output = error.stdout.decode('utf-8')
             raise SubmissionSintaxError("SintaxError")
 
     def run_executable(self):
         log.info(f"Executing Program: {self.executable_command}")
         try:
-            self.run_process(self.executable_command)
+            self.run_process(self.executable_command,
+                             self.input_content.encode())
         except subprocess.CalledProcessError as error:
-            log.error(f"Runtime Error: {error.stderr}")
+            self.last_output = error.stdout.decode('utf-8')
             raise SubmissionRuntimeError("RuntimeError")
 
     def compare_outputs(self):
-        command = f"diff -E -b -w -B {self.work_dir}/expected_output.txt {self.work_dir}/computed_output.txt > {self.work_dir}/diff.out.txt 2> {self.work_dir}/diff.err.txt"
+        command = f"diff -u -E -b -w -B - {self.work_dir}/expected_output.txt"
         log.info(f"Executing Diff: {command}")
         try:
-            self.run_process(command)
+            self.run_process(command, self.last_output.encode())
         except subprocess.CalledProcessError as error:
-            log.error(f"Diff Error: {error.stderr}")
+            self.last_output = error.stdout.decode('utf-8')
             raise SubmissionDiffError("DiffError")
 
     def run(self):
         log.info("-" * 80)
-        log.info("Submission Runner Started")
         self.create_temp_dirs_and_files()
         try:
             self.run_compiler()
@@ -119,9 +123,15 @@ class SubmissionRunner(object):
             self.compare_outputs()
         except SubmissionError as error:
             log.info(error.message)
-            return error.message
+            return {
+                'status': error.message,
+                'output': self.last_output
+            }
         log.info("OK")
-        return "OK"
+        return {
+            'status': "OK",
+            'output': ""
+        }
 
 
 class C_SubmissionRunner(SubmissionRunner):
@@ -132,8 +142,8 @@ class C_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "main.c"
-        self.compiler_command = f"gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt"
-        self.executable_command = f"{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt"
+        self.compiler_command = f"gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name}"
+        self.executable_command = f"{self.work_dir}/main"
 
 
 class Cplusplus11_SubmissionRunner(SubmissionRunner):
@@ -144,26 +154,24 @@ class Cplusplus11_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "main.c"
-        self.compiler_command = f"g++ --std=c++11 -o {self.work_dir}/main {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt"
-        self.executable_command = f"{self.work_dir}/main < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt"
+        self.compiler_command = f"g++ --std=c++11 -o {self.work_dir}/main {self.work_dir}/{self.source_file_name}"
+        self.executable_command = f"{self.work_dir}/main"
 
 
 class JavaScript_SubmissionRunner(SubmissionRunner):
     def __init__(
         self, work_dir, input_content, expected_output_content, source_file_content
     ):
+        iof = open('browser_io.js', mode='r')
+        ioc = iof.read()
+        iof.close()
+        source_file_content = f'{ioc}\n{source_file_content}'
         super().__init__(
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "index.js"
-        self.compiler_command = f"nodejs -c {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt"
-        self.executable_command = f"nodejs {self.work_dir}/main.js < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt"
-
-    def run_executable(self):
-        self.run_process(
-            f"cat browser_io.js {self.work_dir}/{self.source_file_name} > {self.work_dir}/main.js"
-        )
-        super().run_executable()
+        self.compiler_command = f"nodejs -c {self.work_dir}/{self.source_file_name}"
+        self.executable_command = f"nodejs {self.work_dir}/{self.source_file_name}"
 
 
 class JAVA_SubmissionRunner(SubmissionRunner):
@@ -174,8 +182,8 @@ class JAVA_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "Principal.java"
-        self.compiler_command = f"javac {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt"
-        self.executable_command = f"java -cp {self.work_dir} Principal < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt"
+        self.compiler_command = f"javac {self.work_dir}/{self.source_file_name}"
+        self.executable_command = f"java -cp {self.work_dir} Principal"
         self.timeout = 5
 
 
@@ -187,8 +195,8 @@ class Python_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "main.py"
-        self.compiler_command = f"python -m py_compile {self.work_dir}/{self.source_file_name} > {self.work_dir}/compiler.out.txt 2> {self.work_dir}/compiler.err.txt"
-        self.executable_command = f"python {self.work_dir}/{self.source_file_name} < {self.work_dir}/input.txt > {self.work_dir}/computed_output.txt 2> {self.work_dir}/stderr.txt"
+        self.compiler_command = f"python -m py_compile {self.work_dir}/{self.source_file_name}"
+        self.executable_command = f"python {self.work_dir}/{self.source_file_name}"
 
 
 class SubmissionRunnerManager:
@@ -203,6 +211,14 @@ class SubmissionRunnerManager:
             "java": JAVA_SubmissionRunner,
             "python": Python_SubmissionRunner,
         }
-        return runners[lang](
+
+        result = runners[lang](
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
+
+        log_contents = log_capture_string.getvalue()
+        return {
+            'status': result['status'],
+            'output': result['output'],
+            'log': log_contents,
+        }
