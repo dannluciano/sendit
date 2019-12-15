@@ -41,6 +41,30 @@
         </p>
         {% endifequal %}
     </div>
+
+    {% if submission.status != 'OK' %}
+    <div class="box">
+        <h2 class="title has-text-centered">
+            Saída do Programa
+        </h2>
+        {% ifequal submission.status 'DiffError' %}
+        <div id="diff-container">
+        </div>
+        <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}">
+        <script src="{% static 'js/diff2html.min.js' %}"></script>
+
+        <script>
+            var diffHtml = Diff2Html.getPrettyHtml(
+                '{{submission.output|escapejs}}',
+                { inputFormat: 'diff', showFiles: false, matching: 'lines', outputFormat: 'side-by-side' }
+            );
+            document.getElementById("diff-container").innerHTML = diffHtml;
+        </script>
+        {% else %}
+        <pre><code>{{submission.output}}</code></pre>
+        {% endifequal %}
+    </div>
+    {% endif %}
     <div class="box">
         <h2 class="title has-text-centered">
             Código Enviado

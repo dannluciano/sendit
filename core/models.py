@@ -120,6 +120,9 @@ class Submission(models.Model):
         choices=LANGUAGE_CHOICES, max_length=10, default=STATUS_CHOICES[0][0]
     )
 
+    log = models.TextField(blank=True)
+    output = models.TextField(blank=True)
+
     STATUS_PHRASES = {
         "SintaxError": [
             ("Erro de sintaxe! Tente Novamente.", "img/errosintaxe1.png"),
