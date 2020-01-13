@@ -58,6 +58,26 @@
   color: var(--fg);
 }
 
+html {
+  margin: 0;
+  font-size: 16px;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+html a{
+  color: #f95738;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  height: 100%;
+}
+
+.main {
+  min-height: 100vh;
+}
+
 .theme {
   background-color: var(--bg) !important;
   color: var(--fg) !important;
@@ -91,20 +111,6 @@
 
 thead td, .table thead th {
   color: var(--fg) !important;
-}
-
-html {
-  margin: 0;
-  font-size: 16px;
-  overflow-x: hidden;
-}
-
-html a{
-  color: #f95738;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 section.bg-color-laranja{
@@ -301,12 +307,6 @@ a.link-laranja:hover{
   transition: 0.8s;
 }
 
-.enviar-questao {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-}
-
 .titulo-detalhe-questao {
   color: #4A4A4A;
   font-weight: normal;
@@ -413,10 +413,6 @@ ul.card-stats-list {
 
 .trending .trend-hashtag {
   padding-bottom: 8px;
-}
-
-.botao-flutuante>button {
-  z-index: 1000;
 }
 
 .container a.nav-item:hover{
