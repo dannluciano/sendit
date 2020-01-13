@@ -1,27 +1,26 @@
 {% extends 'platform/base.html' %}
 {% load static %}
 
-{% block title %} <title>Questões Concluídas | SendIT</title> {% endblock %}
+{% block title %}<title>Questões Concluídas | SendIT</title>{% endblock %}
 
 {% block content %}
-
 <div class="container">
     <div class="columns">
         <div class="column is-3">
             <div class="box">
+
                 <figure class="image has-text-centered is-256x256">
                     <a href="#">
-                        <img class="card-avatar-img"
-                             src="{% static user.avatar_url %}">
+                        <img class="card-avatar-img" src="{% static user.avatar_url %}">
                     </a>
                 </figure>
 
                 <div class="card-user">
                     <div class="card-user-name">
-                        {% if user.get_full_name %}
-                        <a>{{ user.get_full_name|upper }}</a>
+                        {% if user.full_name %}
+                        <a>{{ user.full_name | upper }}</a>
                         {% else %}
-                        <a>{{ user.username|upper }}</a>
+                        <a>{{ user.username | upper }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -35,29 +34,39 @@
                         <span class="card-stats-key">XP</span>
                         <span class="card-stats-val">{{ user.xp }}</span>
                     </li>
-                    <li class="card-stats-item">
-                        <span class="card-stats-key">Categoria</span>
-                        <span class="card-stats-val"></span>
-                    </li>
                 </ul>
             </div>
+
             <div class="box trending">
-                <p class="trend-title"><span class="title is-5">Melhores da Semana</span></p>
+                <p class="trend-title">
+                    <span class="title is-5">
+                        Melhores da Semana
+                    </span>
+                </p>
+                {% if best_users_of_week %}
+                {% for user in best_users_of_week %}
                 <p class="trend-hashtag">
                     <img src="{% static 'img/platform/podium/first.png' %}" alt="1º" width="24">
-                    <a href="#">Fulano</a> - 13k xps
+                    <a href="#">{{user.username}}</a> - {{user.xp}} XPs
                 </p>
-                <p class="trend-hashtag">
-                    <img src="{% static 'img/platform/podium/second.png' %}" alt="2º" width="24">
-                    <a href="#">Beltrano</a> - 29k xps
-                </p>
-                <p class="trend-hashtag">
-                    <img src="{% static 'img/platform/podium/third.png' %}" alt="3º" width="24">
-                    <a href="#">Cicrano</a> - 2k xps
-                </p>
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
+        {% block info %}
         <div class="column is-6">
+            <div class="box trending">
+                <div class="tags">
+                    <span class="tag"><a href="{% url 'core:completed-question' %}">Todas</a></span>
+                    {% for tag in tags %}
+                    <span class="tag">
+                        <a href="{% url 'core:completed-question' %}?tag={{ tag }}">
+                            {{ tag }}
+                        </a>
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
             {% for question in questions %}
             <div class="box">
                 <article class="media">
@@ -68,18 +77,13 @@
                                     {{ question.title }}
                                 </a>
                             </h2>
-                            <div>
-                                {{ question.statement|safe|escape }}
-                            </div>
                         </div>
                         <nav class="level">
                             <div class="level-left">
+                                <small class="tag is-orange">XP: {{ question.xp }}</small>
                                 {% for tag in question.tags.all %}
                                 <small class="tag">{{ tag.tag }}</small>
                                 {% endfor %}
-                            </div>
-                            <div class="level-right">
-                                <p>XP: {{ question.xp }}</p>
                             </div>
                         </nav>
                     </div>
@@ -95,7 +99,7 @@
                                 Desculpe, mas você ainda não resolveu nenhuma Questão!
                             </h2>
                             <p>
-                                Tente começar pelas questões <a href="{% url 'core:home' %}?tag=Introdução">introdutórias</a>
+                                Tente começar pelas questões <a href="{% url 'core:completed-question' %}?tag=Introdução">introdutórias</a>
                             </p>
                         </div>
                     </div>
@@ -104,27 +108,7 @@
             {% endfor %}
         </div>
 
-        <div class="column is-3">
-            <div class="box">
-                <div class="trending">
-                    <p class="trend-title"><span class="title is-5">Tags</span></p>
-                    <div class="tags">
-                        <span class="tag">
-                            <a href="{{ url }}?tag=all">
-                                Todas
-                            </a>
-                        </span>
-                        {% for tag in tags %}
-                        <span class="tag">
-                            <a href="{{ url }}?tag={{ tag }}">
-                                {{ tag }}
-                            </a>
-                        </span>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endblock %}
 
     </div>
 </div>

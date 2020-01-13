@@ -107,10 +107,16 @@ def completed_issues(request):
 
     questions = questions.order_by("-id")
 
+    best_users_of_week = get_best_users_of_week()
+
     return render(
         request,
-        "platform/completed-questions.html",
-        {"user": user, "questions": questions, "tags": tags},
+        "platform/completed-questions.html",{
+            "user": user, 
+            "questions": questions, 
+            "tags": tags,
+            "best_users_of_week": get_best_users_of_week
+        },
     )
 
 
