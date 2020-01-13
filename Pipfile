@@ -25,4 +25,4 @@ python_version = "3.8"
 
 [scripts]
 start = "forego start -c web=1,worker=1"
-dev = "DEBUG=True python manage.py runserver 0.0.0.0:5100"
+dev = "python manage.py runserver 0.0.0.0:5100"
