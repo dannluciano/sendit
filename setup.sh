@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 if [ -z "$(find -H /var/lib/apt/lists -maxdepth 0 -mtime -7)" ]; then
     echo "==> Install Linux Packages"
     sudo apt-get update
@@ -25,7 +23,7 @@ if ! [ -x "$(command -v forego)" ]; then
     rm -f forego-stable-linux-amd64.tgz
 fi
 
-pipenv --venv
+pipenv --venv &>/dev/null
 if [ $? -eq 1 ]; then
     echo "==> Creating Virtualenv"
     pipenv --python 3
