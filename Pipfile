@@ -9,9 +9,11 @@ django-ckeditor = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
 whitenoise = "*"
-django-session-security = "*"
-django-sql-explorer = "*"
+#django-session-security = "*"
+#django-sql-explorer = "*"
 django-rq = "*"
+six = "*"
+unicodecsv = "*"
 
 [dev-packages]
 pylint = "*"
@@ -19,4 +21,8 @@ django-debug-toolbar = "*"
 autopep8 = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
+
+[scripts]
+start = "forego start -c web=1,worker=1"
+dev = "DEBUG=True python manage.py runserver 0.0.0.0:5100"
