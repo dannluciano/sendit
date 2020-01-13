@@ -43,12 +43,14 @@
             <div class="box">
                 <div class="select is-inline-block is-large">
                     <select id="language-select" name="language" class="is-inline-block">
-                        <option value="_">Escolha sua Linguagem Preferida</option>
-                        <option value="c">C</option>
-                        <option value="c++11">C++11</option>
-                        <option value="javascript">JavaScript</option>
-                        <option value="java">Java</option>
-                        <option value="python">Python</option>
+                        <option value="c" {% if last_submission.language == "c"%}selected{%endif%}>C</option>
+                        <option value="c++11" {% if last_submission.language == "c++11"%}selected{%endif%}>C++11
+                        </option>
+                        <option value="javascript" {% if last_submission.language == "javascript"%}selected{%endif%}>
+                            JavaScript</option>
+                        <option value="java" {% if last_submission.language == "java"%}selected{%endif%}>Java</option>
+                        <option value="python" {% if last_submission.language == "python"%}selected{%endif%}>Python
+                        </option>
                     </select>
                 </div>
                 <button class="button is-inline-block is-large enviar-questao">
