@@ -67,21 +67,24 @@
                     {% endfor %}
                 </div>
             </div>
-            {% for question in questions %}
+            {% for submission in ok_submissions %}
             <div class="box">
                 <article class="media">
                     <div class="media-content">
                         <div class="content">
                             <h2 class="subtitle">
-                                <a href="{% url 'core:get-question' question.id %}" class="links-questao">
-                                    {{ question.title }}
+                                <a href="{% url 'core:get-question' submission.question.id %}" class="links-questao">
+                                    {{ submission.question.title }}
                                 </a>
                             </h2>
+                            <a href="{% url 'core:submissions-detail' submission.uuid%}" class="button is-info">
+                                Ver Submissão
+                            </a>
                         </div>
                         <nav class="level">
                             <div class="level-left">
-                                <small class="tag is-orange">XP: {{ question.xp }}</small>
-                                {% for tag in question.tags.all %}
+                                <small class="tag is-orange">XP: {{ submission.question.xp }}</small>
+                                {% for tag in submission.question.tags.all %}
                                 <small class="tag">{{ tag.tag }}</small>
                                 {% endfor %}
                             </div>
@@ -99,7 +102,8 @@
                                 Desculpe, mas você ainda não resolveu nenhuma Questão!
                             </h2>
                             <p>
-                                Tente começar pelas questões <a href="{% url 'core:completed-question' %}?tag=Introdução">introdutórias</a>
+                                Tente começar pelas questões <a
+                                    href="{% url 'core:completed-question' %}?tag=Introdução">introdutórias</a>
                             </p>
                         </div>
                     </div>

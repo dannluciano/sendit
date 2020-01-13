@@ -35,60 +35,62 @@
         {% endif %}
     </section>
 
-    <section class="box">
+    <section>
         {% if last_submission %}
         {% if last_submission.is_ok %}
-        <h1 class="title">Codigo Enviado</h1>
-        <pre><code>{{last_submission.code}}</code></pre>
         {% else %}
         <form id="code" action="{% url 'core:submit' question.id %}" method="post">
-            <h1 class="title is-inline-block">Linguagem:</h1>
-            <div class="select is-inline-block">
-                <select id="language-select" name="language">
-                    <option value="c" {% if last_submission.language == "c"%}selected{%endif%}>C</option>
-                    <option value="c++11" {% if last_submission.language == "c++11"%}selected{%endif%}>C++11</option>
-                    <option value="javascript" {% if last_submission.language == "javascript"%}selected{%endif%}>
-                        JavaScript
-                    </option>
-                    <option value="java" {% if last_submission.language == "java"%}selected{%endif%}>Java</option>
-                    <option value="python" {% if last_submission.language == "python"%}selected{%endif%}>Python</option>
-                </select>
-            </div>
-            {% csrf_token %}
-            <pre id="editor">{{ last_submission.code}}</pre>
-            <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-            <div class="botao-flutuante">
-                <button class="button enviar-questao is-medium">
-                    <span class="icon is-medium">
-                        <i class="fa fa-rocket" aria-hidden="true"></i>
+            <div class="box">
+                <div class="select is-inline-block is-large">
+                    <select id="language-select" name="language" class="is-inline-block">
+                        <option value="_">Escolha sua Linguagem Preferida</option>
+                        <option value="c">C</option>
+                        <option value="c++11">C++11</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="java">Java</option>
+                        <option value="python">Python</option>
+                    </select>
+                </div>
+                <button class="button is-inline-block is-large enviar-questao">
+                    <span class="icon">
+                        <i class="fa fa-rocket" aria-label="Enviar" aria-details="Enviar"></i>
                     </span>
                 </button>
             </div>
+            {% csrf_token %}
+            <pre id="editor" class="box">{{ last_submission.code}}</pre>
+            <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
         </form>
         {% endif %}
         {% else %}
         <form id="code" action="{% url 'core:submit' question.id %}" method="post">
-            <h1 class="title is-inline-block">Linguagem:</h1>
-            <div class="select is-inline-block">
-                <select id="language-select" name="language">
-                    <option value="_">Escolha sua Linguagem Preferida</option>
-                    <option value="c">C</option>
-                    <option value="c++11">C++11</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="java">Java</option>
-                    <option value="python">Python</option>
-                </select>
+            <div class="box">
+                <div class="select is-inline-block is-large">
+                    <select id="language-select" name="language" class="is-inline-block">
+                        <option value="_">Escolha sua Linguagem Preferida</option>
+                        <option value="c">C</option>
+                        <option value="c++11">C++11</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="java">Java</option>
+                        <option value="python">Python</option>
+                    </select>
+                </div>
+                <button class="button is-inline-block is-large enviar-questao">
+                    <span class="icon">
+                        <i class="fa fa-rocket" aria-label="Enviar"></i>
+                    </span>
+                </button>
             </div>
             {% csrf_token %}
-            <pre id="editor"></pre>
+            <pre id="editor" class="box"></pre>
             <textarea name="editor" id="codigoEnviado" style="display: none;"></textarea>
-            <div class="botao-flutuante">
+            {% comment %} <div class="botao-flutuante">
                 <button class="button enviar-questao is-medium">
                     <span class="icon is-medium">
                         <i class="fa fa-rocket" aria-hidden="true"></i>
                     </span>
                 </button>
-            </div>
+            </div> {% endcomment %}
         </form>
         {% endif %}
     </section>

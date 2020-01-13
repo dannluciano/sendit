@@ -113,7 +113,7 @@ def completed_issues(request):
         request,
         "platform/completed-questions.html",{
             "user": user, 
-            "questions": questions, 
+            "ok_submissions": ok_submissions, 
             "tags": tags,
             "best_users_of_week": get_best_users_of_week
         },
