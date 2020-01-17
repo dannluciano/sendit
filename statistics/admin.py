@@ -15,14 +15,15 @@ class ViewAdmin(admin.ModelAdmin):
 
 
 class LogRecordAdmin(ViewAdmin):
+    date_hierarchy = 'check_in'
     list_display = ('id', 'user', 'check_in', 'check_out', 'duration')
-
+    list_filter = ('check_in', 'check_out')
     ordering = ['-check_in']
+    search_fields = ('user', )
 
 
 class LeaderboardViewAdmin(ViewAdmin):
     list_display = ('position', 'username', 'xp', 'level')
-
     ordering = ('-xp', )
 
 
