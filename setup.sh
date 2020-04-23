@@ -11,9 +11,12 @@ if [ -z "$(find -H /var/lib/apt/lists -maxdepth 0 -mtime -7)" ]; then
     sudo apt-get install -qq $(grep -vE "^\s*#" apt-packages | tr "\n" " ")
 fi
 
+PYTHON_VERSION=$(python3 -c 'import platform; print(platform.python_version())')
+echo "Global Python Version $PYTHON_VERSION"
+
 if ! [ -x "$(command -v pipenv)" ]; then
     echo "==> Instaling Pipenv"
-    pip install --user -U pipenv
+    pip3 install --user -U pipenv
 fi
 
 if ! [ -x "$(command -v forego)" ]; then
@@ -26,7 +29,7 @@ fi
 pipenv --venv &>/dev/null
 if [ $? -eq 1 ]; then
     echo "==> Creating Virtualenv"
-    pipenv --python 3
+    pipenv --python $PYTHON_VERSION
     pipenv install --dev
 fi
 
