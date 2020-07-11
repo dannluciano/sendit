@@ -23,7 +23,7 @@ class LogRecordAdmin(ViewAdmin):
 
 
 class LeaderboardViewAdmin(ViewAdmin):
-    list_display = ('position', 'username', 'xp', 'level')
+    list_display = ('position', 'username', 'xp', 'level', 'group')
     ordering = ('-xp', )
 
 

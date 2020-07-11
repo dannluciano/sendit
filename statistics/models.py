@@ -30,15 +30,21 @@ class LeaderboardView(models.Model):
     SQL = """
     CREATE OR REPLACE VIEW leaderboard_view AS
     WITH DATA AS
-    (SELECT auth_user.username
-            , coalesce(SUM(core_question.xp) FILTER (WHERE status='OK'), 0) AS xp
-            , LEAST(coalesce(sqrt(SUM(core_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
-    FROM core_submission
-    JOIN core_question ON (core_submission.question_id = core_question.id)
-    RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
-    GROUP BY auth_user.id
-    ORDER BY xp DESC)
-    SELECT ROW_NUMBER() OVER () as position, *
+    (SELECT auth_user.username,
+          coalesce(SUM(core_question.xp) FILTER (
+                                                 WHERE status='OK'), 0) AS xp,
+          LEAST(coalesce(sqrt(SUM(core_question.xp) FILTER (
+                                                            WHERE status='OK')) * 1.5, 0, 74))::int AS LEVEL,
+        auth_group.name as group
+        FROM core_submission
+        JOIN core_question ON (core_submission.question_id = core_question.id)
+        RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
+        JOIN auth_user_groups ON (auth_user.id = auth_user_groups.user_id)
+        JOIN auth_group ON (auth_group.id = auth_user_groups.group_id)
+        GROUP BY auth_user.id, auth_group.name
+        ORDER BY xp DESC)
+    SELECT ROW_NUMBER() OVER () AS POSITION,
+                         *
     FROM DATA;
     """
 
@@ -48,6 +54,7 @@ class LeaderboardView(models.Model):
     username = models.CharField(max_length=255, editable=False)
     xp = models.IntegerField(editable=False)
     level = models.IntegerField(editable=False)
+    group = models.CharField(max_length=255, editable=False)
 
     class Meta:
         managed = False

@@ -3,11 +3,12 @@ from datetime import timedelta
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.utils import timezone
+from django.db.models import Q
 from .forms import SignUpForm
 from .models import Question, Submission, Tags, UserData
 from statistics.models import LeaderboardView
@@ -175,7 +176,23 @@ def create_submission(request, question_id):
 @login_required
 def medal_board(request):
     users = LeaderboardView.objects.order_by("-xp")
-    return render(request, "platform/medal-board.html", {"users": users})
+
+    current_group = request.GET.get("group", "all")
+    if current_group != "all":
+        users = users.filter(group=current_group)
+    
+    groups = Group.objects.filter(~Q(name="Staff"))
+
+    return render(
+        request, 
+        "platform/medal-board.html", 
+        {
+            "current_user":  request.user.username,
+            "current_group": current_group,
+            "users": users,
+            "groups": groups
+        }
+    )
 
 
 @login_required
