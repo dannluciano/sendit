@@ -1,40 +1,74 @@
-{% extends 'platform/base.html' %}
-{% load static %}
-
-{% block title %}<title>SendIT - Quadro de Medalhas</title>{% endblock %}
-
+{% extends 'platform/base.html' %} 
+{% load static %} 
+{% block title %}
+<title>SendIT - Quadro de Medalhas</title>
+{% endblock %} 
 {% block content %}
 <div class="container">
     <div class="box">
         <h1 class="title has-text-centered">Quadro de Medalhas</h1>
-        <table class="table is-bordered is-fullwidth">
-            <thead>
-                <tr>
-                    <th>Posição</th>
-                    <th>Nome de Usuario:</th>
-                    <th>Experiencia:</th>
-                    <th>Level:</th>
-                </tr>
-            </thead>
-            {% for user in users %}
-            <tr>
-                <td class="has-text-centered">
-                    {% if forloop.counter == 1 %}
-                    <img src="{% static 'img/platform/podium/1.png' %}" alt="">
-                    {% elif forloop.counter == 2 %}
-                    <img src="{% static 'img/platform/podium/2.png' %}" alt="">
-                    {% elif forloop.counter == 3 %}
-                    <img src="{% static 'img/platform/podium/3.png' %}" alt="">
+    
+        <form class="form">
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label for="group" class="label">Turma:</label>
+                </div>
+                <div class="field-body">
+                    <div class="select">
+                        <select name="group" id="group">
+                            <option value="all">Todas</option>
+                            {% for group in groups %}
+                                <option value="{{group.name}}" 
+                                    {% if group.name == current_group%}
+                                        selected
+                                    {% endif %}>
+                                    {{group.name}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="button is-primary">Filtar</button>
+                </div>
+            </div>
+        </form>
+    
+        <section class="section">
+            <table class="table is-bordered is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Posição</th>
+                        <th>Nome de Usuario:</th>
+                        <th>Turma</th>
+                        <th>Experiencia:</th>
+                        <th>Level:</th>
+                    </tr>
+                </thead>
+                {% for user in users %}
+                    {% if user.username == current_user %}
+                        <tr class="is-selected">
                     {% else %}
-                    {{forloop.counter}}
+                        <tr>
                     {% endif %}
-                </td>
-                <td>{{user.username}}</td>
-                <td class="has-text-centered">{{user.xp}}</td>
-                <td class="has-text-centered">{{user.level}}</td>
-            </tr>
-            {% endfor %}
-        </table>
+                        <td class="has-text-centered">
+                            {% if forloop.counter == 1 %}
+                                <img src="{% static 'img/platform/podium/1.png' %}" alt=""> 
+                            {% elif forloop.counter == 2 %}
+                                <img src="{% static 'img/platform/podium/2.png' %}" alt=""> 
+                            {% elif forloop.counter == 3 %}
+                                <img src="{% static 'img/platform/podium/3.png' %}" alt=""> 
+                            {% else %} 
+                                {{forloop.counter}} 
+                            {% endif %}
+                        </td>
+                        <td>{{user.username}}</td>
+                        <td>{{user.group}}</td>
+                        <td class="has-text-centered">{{user.xp}}</td>
+                        <td class="has-text-centered">{{user.level}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+        
     </div>
 </div>
 {% endblock %}
