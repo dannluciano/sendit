@@ -15,6 +15,7 @@ django-rq = "*"
 six = "*"
 unicodecsv = "*"
 django-request = "*"
+django-miniexplorer = "*"
 
 [dev-packages]
 pylint = "*"
