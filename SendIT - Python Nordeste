@@ -1,0 +1,10 @@
+#Como melhoramos o aprendizado de algoritmos?
+
+	Não é novidade para ninguém da área da computação que **Algoritmos e Linguagens de Programação** são o 'bicho papão' para quem esta iniciando na área. Com o objetivo de melhorar o aprendizado dos alunos o IFPI/CASRN desenvolveu o SendIT, uma plataforma online onde vários exercícios computacionais são propostos. Os usuários podem submeter respostas para os problemas. Apos uma submissão o usuário recebe uma reposta com informações de erros ou acertos. 
+	
+	Atualmente o SendIT suporta as linguagens de programação C, C++, Java, Python e JavaScript.
+	 
+	Está palestra possui como publico alvo: alunos, professores e demais interessados no processo de aprendizado de algoritmos e linguagens de programação.
+	
+	O SendIT foi desenvolvido em Python, Django, RQ, PostgreSQL, Redis e Dokku.
+
