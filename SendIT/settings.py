@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "explorer",
     "core",
+    "editor",
     "miniexplorer"
 ]
 
