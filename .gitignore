@@ -112,3 +112,4 @@ temp/
 settings_local.py
 .vscode/settings.json
 
+dokku.ssh.priv_key
