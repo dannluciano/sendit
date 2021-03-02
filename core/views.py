@@ -211,7 +211,7 @@ def submissions_list(request):
 def submission_detail(request, submission_uuid):
     submission = get_object_or_404(Submission, uuid=submission_uuid)
 
-    if submission.author != request.user:
+    if submission.author != request.user and request.user.is_staff == False:
         return HttpResponseRedirect("/home/")
 
     if submission.is_waiting:
