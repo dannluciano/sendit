@@ -215,6 +215,7 @@ RQ_QUEUES = {
 }
 RQ_SHOW_ADMIN_LINK = True
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # SETTINGS LOCAL
 try:
