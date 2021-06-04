@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ViewsConfig(AppConfig):
-    name = 'views'
+class StatisticsConfig(AppConfig):
+    name = 'statistics'
