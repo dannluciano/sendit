@@ -117,7 +117,7 @@ class Submission(models.Model):
         ("python", "Python"),
     )
     language = models.CharField(
-        choices=LANGUAGE_CHOICES, max_length=10, default=STATUS_CHOICES[0][0]
+        choices=LANGUAGE_CHOICES, max_length=10, default=LANGUAGE_CHOICES[0][0]
     )
 
     log = models.TextField(blank=True)
