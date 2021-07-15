@@ -68,9 +68,10 @@ class SubmissionRunner(object):
     def create_temp_dirs_and_files(self):
         self.create_temp_dir(self.work_dir)
         self.create_temp_file(self.work_dir, "input.txt", self.input_content)
-        self.create_temp_file(
-            self.work_dir, "expected_output.txt", self.expected_output_content
-        )
+        if self.expected_output_content:
+            self.create_temp_file(
+                self.work_dir, "expected_output.txt", self.expected_output_content
+            )
         self.create_temp_file(
             self.work_dir, self.source_file_name, self.source_file_content
         )
@@ -120,7 +121,8 @@ class SubmissionRunner(object):
         try:
             self.run_compiler()
             self.run_executable()
-            self.compare_outputs()
+            if self.expected_output_content:
+                self.compare_outputs()
         except SubmissionError as error:
             log.info(error.message)
             return {
@@ -130,7 +132,7 @@ class SubmissionRunner(object):
         log.info("OK")
         return {
             'status': "OK",
-            'output': ""
+            'output': self.last_output
         }
 
 
@@ -207,6 +209,7 @@ class SubmissionRunnerManager:
         runners = {
             "c": C_SubmissionRunner,
             "c++11": Cplusplus11_SubmissionRunner,
+            "cplusplus": Cplusplus11_SubmissionRunner,
             "javascript": JavaScript_SubmissionRunner,
             "java": JAVA_SubmissionRunner,
             "python": Python_SubmissionRunner,

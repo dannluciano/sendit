@@ -9,6 +9,27 @@ from .models import Question, Submission
 import logging
 logging.disable(logging.CRITICAL)
 
+@tag('unit')
+class C_SubmissionWithoutExpectedOutputTestCase(TestCase):
+    def test_run_ok_submission(self):
+        work_dir = "tests/c/0/1"
+        input_content = """Joao"""
+        expected_output_content = "Ola, Joao"
+        source_file_content = """
+            #include <stdio.h>
+            int main(void) {
+                char str[5];
+                scanf("%s", str);
+                printf("Ola, %s", str);
+            }
+        """
+        result = C_SubmissionRunner(
+            work_dir, input_content, None, source_file_content
+        ).run()
+        print(result)
+        self.assertEqual(result['status'], "OK")
+        self.assertEqual(result['output'], expected_output_content)
+
 
 @tag('c')
 class C_SubmissionRunnerTestCase(TestCase):
