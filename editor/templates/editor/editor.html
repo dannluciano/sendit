@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block content %}
+    {% csrf_token %}
     <section class="box full-height">
+        <div class="loader-wrapper">
+            <div class="loader is-loading"></div>
+        </div>
         <div class="select is-inline-block is-large">
             <select id="language-select" name="language" class="is-inline-block">
                 <option value="null">Escolha uma Linguagem</option>
@@ -18,11 +22,40 @@
             </select>
         </div>
         <div class="is-inline-block">
-            <button class="button is-large is-primary is-disabled">Executar</button>
-            <button class="button is-large is-success is-disabled">Salvar</button>
+            <div class="field is-horizontal">   
+                <button id="run-button" class="button is-large is-primary">Executar</button>
+                {% comment %}
+                <div class="field-label is-normal">
+                    <label class="label">Nome do Arquivo:</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <input class="input is-large" type="text" name="filename">
+                    </div>
+                </div>
+                <button class="button is-large is-success ">Salvar</button>
+                {% endcomment %}
+            </div>
         </div>
         <hr>
         <textarea name="editor" id="editor" rows="2"></textarea>
+    </section>
+
+    <section class="box full-height">
+        <div class="columns">
+            <div class="column is-half">
+                <h1 class="title">
+                    Entrada:
+                </h1>
+                <textarea name="input" id="input" class="textarea has-fixed-size"></textarea>
+            </div>
+            <div class="column is-half">
+                <h1 class="title">
+                    Saída:
+                </h1>
+                <pre><code id="output"></code></pre>
+            </div>
+        </div>
     </section>
 {% endblock content %}
 
