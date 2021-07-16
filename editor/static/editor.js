@@ -1,4 +1,4 @@
-/* global CodeMirror */
+/* global CodeMirror, fetch */
 
 document.addEventListener('DOMContentLoaded', function () {
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
