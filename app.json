@@ -2,13 +2,13 @@
     "name": "SendIT",
     "description": "This app does one little thing, and does it well.",
     "keywords": [],
-    "website": "",
+    "website": "https://sendit.dannluciano.com.br/",
     "repository": "https://github.com/dannluciano/sendit/",
     "logo": "",
     "success_url": "/",
     "scripts": {
         "dokku": {
-            "predeploy": "echo 'Deploy Started'",
+            "predeploy": "echo 'Deploy Started' && python manage.py migrate --noinput",
             "postdeploy": "echo 'Deploy Ended'"
         }
     },
