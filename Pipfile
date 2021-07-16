@@ -15,6 +15,7 @@ six = "*"
 unicodecsv = "*"
 django-request = "*"
 django-miniexplorer = "*"
+django-mini-system-monitor = "*"
 
 [dev-packages]
 pylint = "*"

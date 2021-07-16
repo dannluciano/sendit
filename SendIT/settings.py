@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     "explorer",
     "core",
     "editor",
-    "miniexplorer"
+    "miniexplorer",
+    "mini_system_monitor",
 ]
 
 MIDDLEWARE = [
