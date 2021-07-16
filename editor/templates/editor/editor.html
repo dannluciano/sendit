@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block content %}
+    <div class="loader-wrapper">
+        <div class="loader is-loading"></div>
+    </div>
     {% csrf_token %}
     <section class="box full-height">
-        <div class="loader-wrapper">
-            <div class="loader is-loading"></div>
-        </div>
         <div class="select is-inline-block is-large">
             <select id="language-select" name="language" class="is-inline-block">
                 <option value="null">Escolha uma Linguagem</option>
