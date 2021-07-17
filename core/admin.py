@@ -61,7 +61,9 @@ class SubmissionsAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ("username", "first_name", "is_staff", "is_superuser")
+    list_display = ("username", "first_name", "last_name", "email", "is_staff", "is_superuser", "last_login")
+    search_fields = ("username", "first_name", "last_name", "email", )
+    list_filter = BaseUserAdmin.list_filter + ("last_login",)
 
     # def get_xp(self, obj):
     #     return obj.perfil.xp
