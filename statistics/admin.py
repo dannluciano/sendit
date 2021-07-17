@@ -37,6 +37,6 @@ class SubmissionSummaryViewAdmin(ViewAdmin):
 
 
 admin.site.register(LogRecord, LogRecordAdmin)
-admin.site.register(LeaderboardView, LeaderboardViewAdmin)
-admin.site.register(StatisticsView, StatisticsViewAdmin)
-admin.site.register(SubmissionSummaryView, SubmissionSummaryViewAdmin)
+# admin.site.register(LeaderboardView, LeaderboardViewAdmin)
+# admin.site.register(StatisticsView, StatisticsViewAdmin)
+# admin.site.register(SubmissionSummaryView, SubmissionSummaryViewAdmin)
