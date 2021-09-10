@@ -176,11 +176,11 @@
         },
         "rq": {
             "hashes": [
-                "sha256:7af1e9706dbe6f1eac16dffacd8271ec27c1369950941f14dab6bb08a62979d7",
-                "sha256:bdfef943de838955e474cfd0e25b9b8c53ed4b9c361fe4bb11cf56d17a87acc5"
+                "sha256:92950a3e60863de48dd1800882939bbaf089a37497ebf9f2ecf7c9fd0a4c4a95",
+                "sha256:be09ec43fae9a75a4d26ea3cd520e5fa3ea2ea8cf481be33e6ec9416f0369cac"
             ],
             "markers": "python_version >= '3.5'",
-            "version": "==1.9.0"
+            "version": "==1.10.0"
         },
         "six": {
             "hashes": [
@@ -192,11 +192,11 @@
         },
         "sqlparse": {
             "hashes": [
-                "sha256:017cde379adbd6a1f15a61873f43e8274179378e95ef3fede90b5aa64d304ed0",
-                "sha256:0f91fd2e829c44362cbcfab3e9ae12e22badaa8a29ad5ff599f9ec109f0454e8"
+                "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae",
+                "sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d"
             ],
-            "markers": "python_version >= '3.5'",
-            "version": "==0.4.1"
+            "index": "pypi",
+            "version": "==0.4.2"
         },
         "unicodecsv": {
             "hashes": [
@@ -225,11 +225,11 @@
         },
         "astroid": {
             "hashes": [
-                "sha256:38b95085e9d92e2ca06cf8b35c12a74fa81da395a6f9e65803742e6509c05892",
-                "sha256:606b2911d10c3dcf35e58d2ee5c97360e8477d7b9f3efc3f24811c93e6fc2cd9"
+                "sha256:3975a0bd5373bdce166e60c851cfcbaf21ee96de80ec518c1f4cb3e94c3fb334",
+                "sha256:ab7f36e8a78b8e54a62028ba6beef7561db4cdb6f2a5009ecc44a6f42b5697ef"
             ],
             "markers": "python_version ~= '3.6'",
-            "version": "==2.6.2"
+            "version": "==2.6.6"
         },
         "autopep8": {
             "hashes": [
@@ -257,11 +257,11 @@
         },
         "isort": {
             "hashes": [
-                "sha256:eed17b53c3e7912425579853d078a0832820f023191561fcee9d7cae424e0813",
-                "sha256:f65ce5bd4cbc6abdfbe29afc2f0245538ab358c14590912df638033f157d555e"
+                "sha256:9c2ea1e62d871267b78307fe511c0838ba0da28698c5732d54e2790bf3ba9899",
+                "sha256:e17d6e2b81095c9db0a03a8025a957f334d6ea30b26f9ec70805411e5c7c81f2"
             ],
             "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
-            "version": "==5.9.2"
+            "version": "==5.9.3"
         },
         "lazy-object-proxy": {
             "hashes": [
@@ -323,11 +323,11 @@
         },
         "sqlparse": {
             "hashes": [
-                "sha256:017cde379adbd6a1f15a61873f43e8274179378e95ef3fede90b5aa64d304ed0",
-                "sha256:0f91fd2e829c44362cbcfab3e9ae12e22badaa8a29ad5ff599f9ec109f0454e8"
+                "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae",
+                "sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d"
             ],
-            "markers": "python_version >= '3.5'",
-            "version": "==0.4.1"
+            "index": "pypi",
+            "version": "==0.4.2"
         },
         "toml": {
             "hashes": [
