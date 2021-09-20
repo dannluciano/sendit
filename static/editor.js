@@ -1,4 +1,4 @@
-/* global CodeMirror, setupRunner */
+/* global CodeMirror, Clipboard, setupRunner */
 
 document.addEventListener('DOMContentLoaded', function () {
   const languagesMode = {
@@ -45,12 +45,12 @@ document.addEventListener('DOMContentLoaded', function () {
     viewportMargin: Infinity
   })
 
-  function setupLanguage (language) {
+  function setupLanguage (language, force = false) {
     if (language !== 'null') {
       editor.setOption('mode', languagesMode[language])
       editor.setOption('readOnly', false)
       editor.setOption('indentUnit', languagesConfig[language].indentUnit)
-      if (editor.getValue().length === 0) {
+      if (editor.getValue().length === 0 || force) {
         editor.setValue(languagesHelloWorld[language])
       }
       console.log('Changed Language to:' + language + ':' + editor.getOption('mode') +
@@ -65,11 +65,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     languageSelector.addEventListener('change', function (event) {
       const language = event.target.value
-      setupLanguage(language)
+      setupLanguage(language, true)
     })
   }
 
   if (setupRunner) {
     setupRunner(editor, languageSelector)
+  }
+
+  const copyButton = document.getElementById('copy-button')
+  if (copyButton) {
+    const clipboard = new Clipboard(copyButton, {
+      text: function (trigger) {
+        return editor.getValue()
+      }
+    })
+
+    clipboard.on('error', function (e) {
+      console.error('Action:', e.action)
+      console.error('Trigger:', e.trigger)
+    })
   }
 })
