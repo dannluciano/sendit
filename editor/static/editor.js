@@ -12,11 +12,29 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   const languagesHelloWorld = {
-    c: '#include <stdio.h>\nint main() {\n\tputs("Ola Mundo");\n\treturn 0;\n}\n',
-    cplusplus: '#include <iostream>\nint main() {\n\tstd::cout << "Ola Mundo" << std::endl;\n\treturn 0;\n}',
-    java: 'class Principal {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Ola Mundo");\n\t}\n}',
+    c: '#include <stdio.h>\nint main() {\n    puts("Ola Mundo");\n    return 0;\n}\n',
+    cplusplus: '#include <iostream>\nint main() {\n    std::cout << "Ola Mundo" << std::endl;\n    return 0;\n}',
+    java: 'class Principal {\n    public static void main(String[] args) {\n        System.out.println("Ola Mundo");\n    }\n}',
     javascript: 'console.log("Ola Mundo")',
     python: 'print("Ola Mundo")'
+  }
+
+  const languagesConfig = {
+    c: {
+      indentUnit: 4
+    },
+    cplusplus: {
+      indentUnit: 4
+    },
+    java: {
+      indentUnit: 4
+    },
+    javascript: {
+      indentUnit: 2
+    },
+    python: {
+      indentUnit: 2
+    }
   }
 
   const editorTextArea = document.getElementById('editor')
@@ -33,8 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (language !== 'null') {
       editor.setOption('mode', languagesMode[language])
       editor.setOption('readOnly', false)
+      editor.setOption('indentUnit', languagesConfig[language].indentUnit)
       editor.setValue(languagesHelloWorld[language])
-      console.log('Changed Language to:' + language + ':' + editor.getOption('mode'))
+      console.log('Changed Language to:' + language + ':' + editor.getOption('mode') +
+        ' Identation: ' + editor.getOption('indentUnit'))
     }
   }
 
