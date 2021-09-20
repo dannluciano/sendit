@@ -28,13 +28,26 @@
         </select>
     </div>
     <div class="is-inline-block">
-        <div class="field is-horizontal">
-            <button id="run-button" class="button is-large is-primary">Executar</button>
-            {% comment %} &nbsp;
-            <button id="copy" class="button is-large">Copiar</button>
-            &nbsp;
-            <button id="colar" class="button is-large">Colar</button> 
-            {% endcomment %}
+        <div class="field">
+            <div class="field has-addons">
+                <p class="control">
+                    <button id="run-button" class="button is-primary is-large">
+                        <span class="icon">
+                            <i class="fa fa-play"></i>
+                        </span>
+                        <span class="is-hidden-mobile">Executar</span>
+                    </button>
+                </p>
+                <p class="control">
+                    <button id="copy-button" class="button is-large" data-clipboard-action="copy" aria-label="Copiar">
+                        <span class="icon">
+                            <i class="fa fa-copy"></i>
+                        </span>
+                        <span class="is-hidden-mobile">Copy</span>
+                    </button>
+                </p>
+            </div>
+
             {% comment %}
             <div class="field-label is-normal">
                 <label class="label">Nome do Arquivo:</label>
@@ -53,6 +66,7 @@
 </section>
 
 {% block js %}
+<script src="{% static 'js/clipboard.min.js' %}"></script>
 <script src="{% static 'codemirror/lib/codemirror.js'%}"></script>
 <link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %} ">
 <link rel="stylesheet" href="{% static 'codemirror/theme/solarized.css' %} ">
