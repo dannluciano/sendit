@@ -48,9 +48,6 @@ class QuestionAdmin(admin.ModelAdmin):
     save_as = True
     save_on_top = True
 
-    class Media:
-        js = ("js/ace.js", "js/admin.js")
-
 
 class SubmissionsAdmin(admin.ModelAdmin):
     list_display = ("id", "uuid", "status", "author",

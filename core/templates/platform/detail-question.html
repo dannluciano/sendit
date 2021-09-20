@@ -38,7 +38,7 @@
     <section>
         <form id="code" action="{% url 'core:submit' question.id %}" method="post">
             {% csrf_token %}
-            {% include "editor.html" %}
+            {% include "core/editor.html" %}
         </form>
     </section>
 </div>

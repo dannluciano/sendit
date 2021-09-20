@@ -1,7 +1,7 @@
 {% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'editor.css' %} ">
+<link rel="stylesheet" href="{% static 'css/editor.css' %} ">
 {% endblock %}
 
 <section class="box full-height">
@@ -66,13 +66,12 @@
 </section>
 
 {% block js %}
-<script src="{% static 'js/clipboard.min.js' %}"></script>
 <script src="{% static 'codemirror/lib/codemirror.js'%}"></script>
 <link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %} ">
 <link rel="stylesheet" href="{% static 'codemirror/theme/solarized.css' %} ">
 <script src="{% static 'codemirror/mode/clike/clike.js'%}"></script>
 <script src="{% static 'codemirror/mode/javascript/javascript.js'%}"></script>
 <script src="{% static 'codemirror/mode/python/python.js'%}"></script>
-<script src="{% static 'runner.js'%}"></script>
-<script src="{% static 'editor.js'%}"></script>
+<script src="{% static 'js/runner.js'%}"></script>
+<script src="{% static 'js/editor.js'%}"></script>
 {% endblock %}
