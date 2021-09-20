@@ -181,7 +181,7 @@ def medal_board(request):
     if current_group != "all":
         users = users.filter(group=current_group)
     
-    groups = Group.objects.filter(~Q(name="Staff"))
+    groups = Group.objects.filter(~Q(name="Staff")).order_by("-name")
 
     return render(
         request, 
