@@ -31,11 +31,11 @@
         </p>
         <br>
         <p>
-            <a href="{% url 'core:home' %}" class="button is-success">Voltar para lista de questões</a>
+            <a href="{% url 'core:home' %}" class="button is-large is-success">Voltar para lista de questões</a>
         </p>
         {% else %}
         <p>
-            <a href="{{submission.question.get_absolute_url}}" class="button is-success">
+            <a href="{{submission.question.get_absolute_url}}" class="button is-large is-success">
                 Tentar Novamente
             </a>
         </p>

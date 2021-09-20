@@ -1,45 +1,14 @@
 {% extends 'platform/base.html' %}
 {% load static %}
 
-{% block css %}
-<link rel="stylesheet" href="{% static 'editor.css' %} ">
-{% endblock %}
-
 {% block content %}
+<div class="container">
     <div class="loader-wrapper">
         <div class="loader is-loading"></div>
     </div>
     {% csrf_token %}
-    <section class="box full-height">
-        <div class="select is-inline-block is-large">
-            <select id="language-select" name="language" class="is-inline-block">
-                <option value="null">Escolha uma Linguagem</option>
-                <option value="c">C</option>
-                <option value="cplusplus">C++</option>
-                <option value="javascript">JavaScript</option>
-                <option value="java">Java</option>
-                <option value="python">Python</option>
-            </select>
-        </div>
-        <div class="is-inline-block">
-            <div class="field is-horizontal">   
-                <button id="run-button" class="button is-large is-primary">Executar</button>
-                {% comment %}
-                <div class="field-label is-normal">
-                    <label class="label">Nome do Arquivo:</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <input class="input is-large" type="text" name="filename">
-                    </div>
-                </div>
-                <button class="button is-large is-success ">Salvar</button>
-                {% endcomment %}
-            </div>
-        </div>
-        <hr>
-        <textarea name="editor" id="editor" rows="2"></textarea>
-    </section>
+
+    {% include "editor.html" %}
 
     <section class="box full-height">
         <div class="columns">
@@ -57,14 +26,5 @@
             </div>
         </div>
     </section>
+</div>
 {% endblock content %}
-
-{% block js %}
-<script src="{% static 'codemirror/lib/codemirror.js'%}"></script>
-<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %} ">
-<link rel="stylesheet" href="{% static 'codemirror/theme/solarized.css' %} ">
-<script src="{% static 'codemirror/mode/clike/clike.js'%}"></script>
-<script src="{% static 'codemirror/mode/javascript/javascript.js'%}"></script>
-<script src="{% static 'codemirror/mode/python/python.js'%}"></script>
-<script src="{% static 'editor.js'%}"></script>
-{% endblock %}
