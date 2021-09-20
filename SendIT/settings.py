@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django_rq",
     "statistics",
     "ckeditor",
-    "explorer",
     "core",
     "editor",
     "miniexplorer",
@@ -199,10 +198,6 @@ LOGGING = {
 
 # Django Degub Toolbar
 INTERNAL_IPS = ["127.0.0.1"]
-
-# Django Query Explorer
-EXPLORER_CONNECTIONS = {"Default": "default"}
-EXPLORER_DEFAULT_CONNECTION = "default"
 
 
 RQ_QUEUES = {
