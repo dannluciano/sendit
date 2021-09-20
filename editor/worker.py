@@ -16,7 +16,7 @@ def run_submission_from_editor(uuid):
         runner_result = SubmissionRunnerManager().exe(
             runner.language, uuid, runner.input, None, runner.code
         )
-        runner.output = runner_result['output']
+        runner.output = runner_result['output'] or ""
         runner.status = runner_result['status']
         runner.log = runner_result['log']
         runner.save()
