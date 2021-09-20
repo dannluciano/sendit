@@ -12,7 +12,6 @@ urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("editor/", include("editor.urls")),
     path("session_security/", include("statistics.urls")),
-    path("explorer/", include("explorer.urls")),
     path('django-rq/', include('django_rq.urls')),
 ]
 
