@@ -112,9 +112,9 @@ def completed_issues(request):
 
     return render(
         request,
-        "platform/completed-questions.html",{
-            "user": user, 
-            "ok_submissions": ok_submissions, 
+        "platform/completed-questions.html", {
+            "user": user,
+            "ok_submissions": ok_submissions,
             "tags": tags,
             "best_users_of_week": get_best_users_of_week
         },
@@ -180,12 +180,12 @@ def medal_board(request):
     current_group = request.GET.get("group", "all")
     if current_group != "all":
         users = users.filter(group=current_group)
-    
+
     groups = Group.objects.filter(~Q(name="Staff")).order_by("-name")
 
     return render(
-        request, 
-        "platform/medal-board.html", 
+        request,
+        "platform/medal-board.html",
         {
             "current_user":  request.user.username,
             "current_group": current_group,
@@ -199,8 +199,11 @@ def medal_board(request):
 def submissions_list(request):
     user = current_user_data(request)
     submissions = Submission.objects.select_related("question").filter(
-        author=request.user
+        author=request.user,
+    ).exclude(
+        status="Waiting"
     )
+
     return render(
         request, "platform/submissions.html", {
             "submissions": submissions, "user": user}
