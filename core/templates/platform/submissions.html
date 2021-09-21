@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="box">
+    <div class="box is-hidden-mobile">
         <h1 class="title has-text-centered">Submissões</h1>
         <table class="table is-bordered is-fullwidth">
             <thead>
@@ -20,18 +20,19 @@
             <tbody>
                 {% for submission in submissions %}
                 <tr>
-                    <td><a href="{{submission.question.get_absolute_url}}">{{submission.question.title}}</a>
+                    <td>
+                        <a href="{{submission.question.get_absolute_url}}">
+                            {{submission.question.title}}
+                        </a>
                     </td>
                     {% get_static_prefix as STATIC_PREFIX %}
                     <td class="has-text-centered">
                         <img src="{{STATIC_PREFIX}}img/languages/{{submission.language}}.svg"
-                            title="{{ submission.language }}" alt="{{ submission.language }}" 
-                            width="30px" />
+                            title="{{ submission.language }}" alt="{{ submission.language }}" width="30px" />
                     </td>
                     <td class="has-text-centered">
-                        <img src="{{STATIC_PREFIX}}img/status/{{submission.status}}.png"
-                            title="{{ submission.status }}" alt="{{ submission.status }}" 
-                            width="30px" />
+                        <img src="{{STATIC_PREFIX}}img/status/{{submission.status}}.png" title="{{ submission.status }}"
+                            alt="{{ submission.status }}" width="30px" />
                     </td>
                     <td class="has-text-centered">
                         {{submission.timestamp}}
@@ -45,6 +46,32 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="is-hidden-tablet">
+        {% for submission in submissions %}
+        <section class="box has-text-centered">
+            <h1 class="title">
+                <a href="{{submission.question.get_absolute_url}}">
+                    {{submission.question.title}}
+                </a>
+            </h1>
+            <p>
+                {{submission.timestamp}}
+            </p>
+            <br>
+            <p>
+                {% get_static_prefix as STATIC_PREFIX %}
+                <img src="{{STATIC_PREFIX}}img/languages/{{submission.language}}.svg" title="{{ submission.language }}"
+                    alt="{{ submission.language }}" width="54px" />
+                <a href="{{submission.get_absolute_url}}" class="button is-info is-large">
+                    Acessar
+                </a>
+                <img src="{{STATIC_PREFIX}}img/status/{{submission.status}}.png" title="{{ submission.status }}"
+                    alt="{{ submission.status }}" width="54px" />
+            </p>
+        </section>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
