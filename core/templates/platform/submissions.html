@@ -10,11 +10,11 @@
         <table class="table is-bordered is-fullwidth">
             <thead>
                 <tr>
-                    <th>Questão</th>
-                    <th>Linguagem</th>
-                    <th>Situação</th>
-                    <th>Data e Hora</th>
-                    <th></th>
+                    <th class="has-text-centered">Questão</th>
+                    <th class="has-text-centered">Linguagem</th>
+                    <th class="has-text-centered">Situação</th>
+                    <th class="has-text-centered">Data e Hora</th>
+                    <th class="has-text-centered"></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,10 +22,25 @@
                 <tr>
                     <td><a href="{{submission.question.get_absolute_url}}">{{submission.question.title}}</a>
                     </td>
-                    <td>{{submission.language}}</td>
-                    <td>{{submission.status}}</td>
-                    <td>{{submission.timestamp}}</td>
-                    <td><a href="{{submission.get_absolute_url}}" class="button is-info">Acessar</a></td>
+                    {% get_static_prefix as STATIC_PREFIX %}
+                    <td class="has-text-centered">
+                        <img src="{{STATIC_PREFIX}}img/languages/{{submission.language}}.svg"
+                            title="{{ submission.language }}" alt="{{ submission.language }}" 
+                            width="30px" />
+                    </td>
+                    <td class="has-text-centered">
+                        <img src="{{STATIC_PREFIX}}img/status/{{submission.status}}.png"
+                            title="{{ submission.status }}" alt="{{ submission.status }}" 
+                            width="30px" />
+                    </td>
+                    <td class="has-text-centered">
+                        {{submission.timestamp}}
+                    </td>
+                    <td class="has-text-centered">
+                        <a href="{{submission.get_absolute_url}}" class="button is-info">
+                            Acessar
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
