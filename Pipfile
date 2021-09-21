@@ -27,4 +27,4 @@ python_version = "3.8"
 
 [scripts]
 start = "forego start -c web=1,worker=1"
-dev = "gunicorn -b 0.0.0.0:5100 -w 8 -t 30 --preload --capture-output --access-logfile - --log-file - SendIT.wsgi --reload"
+dev = "gunicorn -b 0.0.0.0:5000 -w 8 -t 30 --preload --capture-output --access-logfile - --log-file - SendIT.wsgi --reload"
