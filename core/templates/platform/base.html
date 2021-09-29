@@ -58,6 +58,8 @@
                     href="{% url 'core:submissions' %}"><i class="fa fa-rocket"></i>&nbsp; Envios</a>
                 <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %}  link-laranja{% endif %}"
                     href="{% url 'editor:editor' %}"><i class="fa fa-code"></i>&nbsp; Editor</a>
+                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'files' %}  link-laranja{% endif %}"
+                    href="{% url 'editor:file-code-list' %}"><i class="fa fa-file"></i>&nbsp; Arquivos</a>
             </div>
 
             <div class="navbar-end">

@@ -5,63 +5,138 @@
 {% endblock %}
 
 <section class="box full-height">
-    <div class="select is-inline-block is-large">
-        <select id="language-select" name="language" class="is-inline-block">
-            <option {% if last_submission.language == 'null' %}selected{% endif %} value="null">
-                Escolha uma Linguagem
-            </option>
-            <option {% if last_submission.language == 'c' %}selected{% endif %} value="c">
-                C
-            </option>
-            <option {% if last_submission.language == 'cplusplus' %}selected{% endif %} value="cplusplus">
-                C++
-            </option>
-            <option {% if last_submission.language == 'javascript' %}selected{% endif %} value="javascript">
-                JavaScript
-            </option>
-            <option value="java" {% if last_submission.language == 'java' %}selected {% endif %}>
-                Java
-            </option>
-            <option value="python" {% if last_submission.language == 'python' %}selected {% endif %}>
-                Python
-            </option>
-        </select>
-    </div>
-    <div class="is-inline-block">
-        <div class="field">
-            <div class="field has-addons">
-                <p class="control">
-                    <button id="run-button" class="button is-primary is-large">
-                        <span class="icon">
-                            <i class="fa fa-play"></i>
-                        </span>
-                        <span class="is-hidden-mobile">Executar</span>
-                    </button>
-                </p>
-                <p class="control">
-                    <button id="copy-button" class="button is-large" type="button" data-clipboard-action="copy" aria-label="Copiar">
-                        <span class="icon">
-                            <i class="fa fa-copy"></i>
-                        </span>
-                        <span class="is-hidden-mobile">Copy</span>
-                    </button>
-                </p>
-            </div>
-
-            {% comment %}
-            <div class="field-label is-normal">
-                <label class="label">Nome do Arquivo:</label>
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <input class="input is-large" type="text" name="filename">
-                </div>
-            </div>
-            <button class="button is-large is-success ">Salvar</button>
-            {% endcomment %}
+    <section class="is-hidden-mobile">
+        <div class="field has-addons">
+            <p class="control">
+                <span class="select is-large">
+                    <select id="language-select" name="language">
+                        <option {% if last_submission.language == 'null' %}selected{% endif %} value="null">
+                            Escolha uma Linguagem
+                        </option>
+                        <option {% if last_submission.language == 'c' %}selected{% endif %} value="c">
+                            C
+                        </option>
+                        <option {% if last_submission.language == 'cplusplus' %}selected{% endif %} value="cplusplus">
+                            C++
+                        </option>
+                        <option {% if last_submission.language == 'javascript' %}selected{% endif %} value="javascript">
+                            JavaScript
+                        </option>
+                        <option {% if last_submission.language == 'java' %}selected {% endif %} value="java">
+                            Java
+                        </option>
+                        <option {% if last_submission.language == 'python' %}selected {% endif %} value="python">
+                            Python
+                        </option>
+                    </select>
+                </span>
+            </p>
+            <p class="control">
+                <button id="run-button" class="button is-primary is-large">
+                    <span class="icon">
+                        <i class="fa fa-play"></i>
+                    </span>
+                    <span class="is-hidden-mobile">Executar</span>
+                </button>
+            </p>
+            <p class="control">
+                <button id="copy-button" class="button is-large" type="button" data-clipboard-action="copy"
+                    aria-label="Copiar">
+                    <span class="icon">
+                        <i class="fa fa-copy"></i>
+                    </span>
+                    <span class="is-hidden-mobile">Copiar</span>
+                </button>
+            </p>
+            <p class="control is-expanded">
+                <input id="filename" class="input is-large" type="text" placeholder="filename"
+                    value="{{last_submission.name}}">
+            </p>
+            <p class="control">
+                <button id="save-button" class="button is-success is-large" type="button" aria-label="Salvar">
+                    <span class="icon">
+                        <i class="fa fa-save"></i>
+                    </span>
+                    <span class="is-hidden-mobile">Salvar</span>
+                </button>
+            </p>
         </div>
-    </div>
-    <hr>
+        <hr>
+    </section>
+    <section class="is-hidden-tablet">
+        <div class="field">
+            <p class="control is-expanded">
+                <span class="select is-large is-fullwidth">
+                    <select id="language-select" name="language">
+                        <option {% if last_submission.language == 'null' %}selected{% endif %} value="null">
+                            Escolha uma Linguagem
+                        </option>
+                        <option {% if last_submission.language == 'c' %}selected{% endif %} value="c">
+                            C
+                        </option>
+                        <option {% if last_submission.language == 'cplusplus' %}selected{% endif %} value="cplusplus">
+                            C++
+                        </option>
+                        <option {% if last_submission.language == 'javascript' %}selected{% endif %} value="javascript">
+                            JavaScript
+                        </option>
+                        <option {% if last_submission.language == 'java' %}selected {% endif %} value="java">
+                            Java
+                        </option>
+                        <option {% if last_submission.language == 'python' %}selected {% endif %} value="python">
+                            Python
+                        </option>
+                    </select>
+                </span>
+            </p>
+        </div>
+        <div class="field has-addons has-addons-centered">
+            <p class="control">
+                <button id="run-button" class="button is-primary is-large">
+                    <span></span>
+                    <span class="icon">
+                        <i class="fa fa-play"></i>
+                    </span>
+                    <span class="is-hidden-mobile">Executar</span>
+                </button>
+            </p>
+            <p class="control">
+                <button id="copy-button" class="button is-large" type="button" data-clipboard-action="copy"
+                    aria-label="Copiar">
+                    <span></span>
+                    <span class="icon">
+                        <i class="fa fa-copy"></i>
+                    </span>
+                    <span class="is-hidden-mobile">Copiar</span>
+                </button>
+            </p>
+            <p class="control">
+                <button id="undo-button" class="button is-large" type="button"
+                    aria-label="Desfazer">
+                    <span></span>
+                    <span class="icon">
+                        <i class="fa fa-undo"></i>
+                    </span>
+                    <span class="is-hidden-mobile">Desfazer</span>
+                </button>
+            </p>
+        </div>
+        <div class="field has-addons">
+            <p class="control is-expanded">
+                <input id="filename" class="input is-large" type="text" placeholder="filename"
+                    value="{{last_submission.name}}">
+            </p>
+            <p class="control">
+                <button id="save-button" class="button is-success is-large" type="button" aria-label="Salvar">
+                    <span></span>
+                    <span class="icon">
+                        <i class="fa fa-save"></i>
+                    </span>
+                    <span class="is-hidden-mobile">Salvar</span>
+                </button>
+            </p>
+        </div>
+    </section>
     <textarea name="editor" id="editor" rows="2">{% if last_submission %}{{last_submission.code}}{% endif %}</textarea>
 </section>
 

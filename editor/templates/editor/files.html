@@ -1,0 +1,82 @@
+{% extends 'platform/base.html' %}
+{% load static %}
+
+{% block title %}<title>SendIT - Arquivos</title>{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="box is-hidden-mobile">
+        <h1 class="title has-text-centered">Arquivos</h1>
+        <table class="table is-bordered is-fullwidth">
+            <thead>
+                <tr>
+                    <th class="has-text-centered">Nome</th>
+                    <th class="has-text-centered">Linguagem</th>
+                    <th class="has-text-centered">Data e Hora da Última Modificação</th>
+                    <th class="has-text-centered"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for filecode in filecodes %}
+                <tr>
+                    <td>
+                        {{filecode.name}}
+                    </td>
+                    {% get_static_prefix as STATIC_PREFIX %}
+                    <td class="has-text-centered">
+                        <img src="{{STATIC_PREFIX}}img/languages/{{filecode.language}}.svg"
+                            title="{{ filecode.language }}" alt="{{ filecode.language }}" width="30px" />
+                    </td>
+
+                    <td class="has-text-centered">
+                        {{filecode.updated_at}}
+                    </td>
+                    <td class="has-text-centered">
+                        <form action="{% url 'editor:file-code-destroy' filecode.uuid %}" method="POST">
+                            {% csrf_token %}
+                            <a href="{% url 'editor:file-code-detail' filecode.uuid %}" class="button is-info">
+                                Acessar
+                            </a>
+                            <button class="button is-danger">
+                                Apagar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="is-hidden-tablet">
+        {% for filecode in filecodes %}
+        <section class="box has-text-centered">
+            <h1 class="title">
+                <a href="{{filecode.get_absolute_url}}">
+                    {{filecode.name}}
+                </a>
+            </h1>
+            <p>
+                {{filecode.updated_at}}
+            </p>
+            <br>
+            <p>
+                {% get_static_prefix as STATIC_PREFIX %}
+                <img src="{{STATIC_PREFIX}}img/languages/{{filecode.language}}.svg" title="{{ filecode.language }}"
+                    alt="{{ filecode.language }}" width="54px" />
+                <form action="{% url 'editor:file-code-destroy' filecode.uuid %}" method="POST">
+                    {% csrf_token %}
+                    <a href="{% url 'editor:file-code-detail' filecode.uuid %}" class="button is-large is-info">
+                        Acessar
+                    </a>
+                    <button class="button is-large is-danger">
+                        Apagar
+                    </button>
+                </form>
+            </p>
+        </section>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
