@@ -86,4 +86,45 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('Trigger:', e.trigger)
     })
   }
+
+  const undoButton = document.getElementById('undo-button')
+  if (undoButton) {
+    undoButton.addEventListener('click', function (event) {
+      editor.undo()
+    })
+  }
+
+  const saveButton = document.getElementById('save-button')
+  const filenameField = document.getElementById('filename')
+  if (saveButton && filenameField) {
+    saveButton.addEventListener('click', function (event) {
+      const filename = filenameField.value
+      const filesrc = editor.getValue()
+      const language = languageSelector.value
+
+      console.info('Saving ', filename, language)
+      console.info(filesrc)
+
+      const formData = new FormData()
+      formData.append('filename', filename)
+      formData.append('language', language)
+      formData.append('filesrc', filesrc)
+
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      const options = {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        body: formData
+      }
+      fetch('/editor/save/', options)
+        .then(function (response) {
+          response.json().then(function (json) {
+            console.info(json)
+          })
+        })
+    })
+  }
 })
