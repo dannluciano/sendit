@@ -47,13 +47,13 @@
                 <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-laranja{% endif %}"
                     href="{% url 'core:home' %}"><i class="fa fa-home"></i> &nbsp; Home</a>
                 <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'completed-question' %} link-laranja{% endif %}"
-                    href="{% url 'core:completed-question' %}"><i class="fa fa-bolt"></i>&nbsp; Questões
+                    href="{% url 'core:completed-question' %}"><i class="fa fa-bolt"></i>&nbsp;
                     Concluídas</a>
                 <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'get-question' %} link-laranja{% endif %}"
-                    href="{% url 'core:random' %}"><i class="fas fa-random"></i>&nbsp; Questão
+                    href="{% url 'core:random' %}"><i class="fas fa-random"></i>&nbsp;
                     Aleatória</a>
                 <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ranking' %} link-laranja{% endif %}"
-                    href="{% url 'core:ranking' %}"><i class="fas fa-medal"></i>&nbsp; Quadro de Pontos</a>
+                    href="{% url 'core:ranking' %}"><i class="fas fa-medal"></i>&nbsp; Pontuações</a>
                 <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %}  link-laranja{% endif %}"
                     href="{% url 'core:submissions' %}"><i class="fa fa-rocket"></i>&nbsp; Envios</a>
                 <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %}  link-laranja{% endif %}"
@@ -87,7 +87,7 @@
         {% endblock %}
     </section>
 
-    {% comment %} 
+    {% comment %}
     <link rel="stylesheet" href="{% static 'css/snow.css' %}">
     <div id="snow"></div>
     <script src="{% static 'js/snow.js' %}"></script>
@@ -96,8 +96,7 @@
     <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
     <script src="{% static 'js/clipboard.min.js' %}"></script>
     <script src="{% static 'js/bulma.js' %}"></script>
-    <script data-goatcounter="https://dlanalytics.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://dlanalytics.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
     {% include 'session_security/all.html' %}
     {% block js %}
     {% endblock js %}
