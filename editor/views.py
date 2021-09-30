@@ -55,7 +55,6 @@ def runner_details(request, runner_uuid):
 @login_required
 @require_POST
 def file_code_save(request):
-    log.info("File Code Save")
     try:
         owner = request.user
         name = request.POST['filename']
