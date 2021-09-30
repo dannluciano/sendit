@@ -102,6 +102,16 @@ document.addEventListener('DOMContentLoaded', function () {
       const filesrc = editor.getValue()
       const language = languageSelector.value
 
+      if (filename.length === 0) {
+        alert('Nome do Arquivo não pode ser vazio!')
+        return
+      }
+
+      if (filesrc.length === 0) {
+        alert('Conteúdo do Arquivo não pode ser vazio!')
+        return
+      }
+
       console.info('Saving ', filename, language)
       console.info(filesrc)
 
