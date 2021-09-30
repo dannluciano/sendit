@@ -98,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const filenameField = document.getElementById('filename')
   if (saveButton && filenameField) {
     saveButton.addEventListener('click', function (event) {
+      saveButton.classList.add('is-loading')
+      saveButton.classList.add('is-disabled')
       const filename = filenameField.value
       const filesrc = editor.getValue()
       const language = languageSelector.value
@@ -133,6 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function (response) {
           response.json().then(function (json) {
             console.info(json)
+            saveButton.classList.remove('is-loading')
+            saveButton.classList.remove('is-disabled')
           })
         })
     })
