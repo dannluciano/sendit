@@ -1,3 +1,4 @@
+/* eslint-env browser */
 /* global CodeMirror, Clipboard, setupRunner */
 
 document.addEventListener('DOMContentLoaded', function () {
