@@ -10,28 +10,28 @@
             Quadro de Medalhas
         </h1>
 
-        <form class="form">
-            <div class="field has-addons">
-                <p class="control is-expanded">
-                    <span class="select is-large is-fullwidth">
-                        <select name="group" id="group">
-                            <option value="all">Todas</option>
-                            {% for group in groups %}
-                            <option value="{{group.name}}" {% if group.name == current_group%} selected {% endif %}>
-                                {{group.name}}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                </p>
-                <p class="control">
-                    <button type="submit" class="button is-large is-primary">Filtrar</button>
-                </p>
-
-            </div>
-        </form>
-
         <section class="section is-hidden-mobile">
+            <form class="form">
+                <div class="field has-addons">
+                    <p class="control is-expanded">
+                        <span class="select is-large is-fullwidth">
+                            <select name="group" id="group">
+                                <option value="all">Todas</option>
+                                {% for group in groups %}
+                                <option value="{{group.name}}" {% if group.name == current_group%} selected {% endif %}>
+                                    {{group.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </p>
+                    <p class="control">
+                        <button type="submit" class="button is-large is-primary">Filtrar</button>
+                    </p>
+
+                </div>
+            </form>
+            <br>
             <table class="table is-bordered is-fullwidth">
                 <thead>
                     <tr>
