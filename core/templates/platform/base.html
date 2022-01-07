@@ -27,59 +27,56 @@
 </head>
 
 <body>
-    <nav class="nav has-shadow menu-cima navbar theme" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <nav class="nav has-shadow menu-cima navbar theme" role="navigation" aria-label="main navigation">
 
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                <img src="{% static 'img/icon.png' %}">
-            </a>
-
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-                data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-
-        <div class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-laranja{% endif %}"
-                    href="{% url 'core:home' %}"><i class="fa fa-home"></i> &nbsp; Home</a>
-                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'completed-question' %} link-laranja{% endif %}"
-                    href="{% url 'core:completed-question' %}"><i class="fa fa-bolt"></i>&nbsp;
-                    Concluídas</a>
-                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'get-question' %} link-laranja{% endif %}"
-                    href="{% url 'core:random' %}"><i class="fas fa-random"></i>&nbsp;
-                    Aleatória</a>
-                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ranking' %} link-laranja{% endif %}"
-                    href="{% url 'core:ranking' %}"><i class="fas fa-medal"></i>&nbsp; Pontuações</a>
-                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %}  link-laranja{% endif %}"
-                    href="{% url 'core:submissions' %}"><i class="fa fa-rocket"></i>&nbsp; Envios</a>
-                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %}  link-laranja{% endif %}"
-                    href="{% url 'editor:editor' %}"><i class="fa fa-code"></i>&nbsp; Editor</a>
-                <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'files' %}  link-laranja{% endif %}"
-                    href="{% url 'editor:file-code-list' %}"><i class="fa fa-file"></i>&nbsp; Arquivos</a>
-            </div>
-
-            <div class="navbar-end">
-                {% if request.user.is_staff %}
-                <a class="navbar-item is-tab" href="{% url 'admin:index' %}">
-                    <i class="fas fa-user-shield"></i>&nbsp;Administração
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="{% static 'img/icon.png' %}">
                 </a>
-                {% endif %}
-                <div class="navbar-item">
-                    <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
-                </div>
-                <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
-                    {% csrf_token %}
-                    <input type="hidden" name="sair">
-                    <button class="button is-danger botao-sair">Sair</button>
-                </form>
-            </div>
-        </div>
 
-    </nav>
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-laranja{% endif %}"
+                        href="{% url 'core:home' %}"><i class="fa fa-home"></i> &nbsp; Home</a>
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ranking' %} link-laranja{% endif %}"
+                        href="{% url 'core:ranking' %}"><i class="fas fa-medal"></i>&nbsp; Pontuações</a>
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %}  link-laranja{% endif %}"
+                        href="{% url 'core:submissions' %}"><i class="fa fa-rocket"></i>&nbsp; Envios</a>
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %}  link-laranja{% endif %}"
+                        href="{% url 'editor:editor' %}"><i class="fa fa-code"></i>&nbsp; Editor</a>
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'files' %}  link-laranja{% endif %}"
+                        href="{% url 'editor:file-code-list' %}"><i class="fa fa-file"></i>&nbsp; Arquivos</a>
+                </div>
+
+                <div class="navbar-end">
+                    {% if request.user.is_staff %}
+                    <a class="navbar-item is-tab" href="{% url 'admin:index' %}">
+                        <i class="fas fa-user-shield"></i>&nbsp;Administração
+                    </a>
+                    {% endif %}
+                    <div class="navbar-item">
+                        <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
+                    </div>
+                    <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
+                        {% csrf_token %}
+                        <input type="hidden" name="sair">
+                        <button class="button is-danger botao-sair">Sair</button>
+                    </form>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
     <section class="section main background-global">
         {% block content %}
         {% endblock %}
