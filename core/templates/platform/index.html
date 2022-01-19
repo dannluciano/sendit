@@ -22,6 +22,19 @@
                                 <div class="content">
                                     <p class="title has-text-centered">Entrar no SendIT</p>
                                     {% block content %}
+
+                                    {% if form.errors %}
+                                    <article class="message is-danger is-large">
+                                        <div class="message-header">
+                                            Erro de Autenticação
+                                        </div>
+                                        <div class="message-body">
+                                            Nome de Usuário e/ou Senha incorretos!
+                                        </div>
+                                    </article>
+
+                                    {% endif %}
+
                                     <form method="post" action="{% url 'core:index' %}">
                                         {% csrf_token %}
                                         <input type="hidden" name="next" value="/home/">
