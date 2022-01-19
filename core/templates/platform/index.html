@@ -24,6 +24,7 @@
                                     {% block content %}
                                     <form method="post" action="{% url 'core:index' %}">
                                         {% csrf_token %}
+                                        <input type="hidden" name="next" value="/home/">
                                         <div class="field">
                                             <label class="label has-text-centered">Usuário:</label>
                                             <div class="control">
