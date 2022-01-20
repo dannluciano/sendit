@@ -4,17 +4,45 @@
 {% block title %}<title>SendIT - Submissão - {{submission.uuid}}</title>{% endblock %}
 
 {% block css %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
 <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-<link rel="stylesheet" href="{% static 'css/github.css' %}">
+<style>
+    /* for block of numbers */
+    .hljs-ln-numbers {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        text-align: center;
+        color: #ccc;
+        border-right: 1px solid #CCC;
+        vertical-align: top;
+        padding-right: 1px;
+    }
+
+    /* for block of code */
+    .hljs-ln td {
+        padding-right: 1em !important;
+        padding-left: 1em !important;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="box has-text-centered">
-        {% if submission.status != 'OK' %}
+
         <h1 class="title">
-            {{submission.status}}
+            {{submission.question.title}}
         </h1>
+
+        {% if submission.status != 'OK' %}
+        <h2 class="subtitle">
+            {{submission.status}}
+        </h2>
         {% endif %}
 
         <picture id="animate">
@@ -55,8 +83,12 @@
 
         <script>
             var diffHtml = Diff2Html.getPrettyHtml(
-                '{{submission.output|escapejs}}',
-                { inputFormat: 'diff', showFiles: false, matching: 'lines', outputFormat: 'side-by-side' }
+                '{{submission.output|escapejs}}', {
+                    inputFormat: 'diff',
+                    showFiles: false,
+                    matching: 'lines',
+                    outputFormat: 'side-by-side'
+                }
             );
             document.getElementById("diff-container").innerHTML = diffHtml;
         </script>
@@ -95,8 +127,11 @@
 
     animation = animations[randint(10)]
     document.getElementById('animate').classList.add('animated', animation, 'slower')
-
 </script>
-<script src="{% static 'js/highlight.pack.js' %}"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js"></script>
+<script>
+    hljs.highlightAll();
+    hljs.initLineNumbersOnLoad();
+</script>
 {% endblock %}
