@@ -50,7 +50,7 @@ def signup(request):
 
 
 def current_user_data(request):
-    return UserData(request.user.id)
+    return UserData(request.user.id, request.user.username)
 
 
 @login_required

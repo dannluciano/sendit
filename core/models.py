@@ -10,34 +10,46 @@ import uuid
 
 
 class UserData():
-    def __init__(self, _id, *args, **kwargs):
+    def __init__(self, _id, _username, *args, **kwargs):
         self.id = _id
+        self.username = _username
         self.cache = None
         self.setup_cache()
 
     def setup_cache(self):
         SQL = """
-                SELECT auth_user.username as username
+                SELECT t1.*, t2.* FROM
+                (SELECT SUM(check_out - check_in) as time FROM statistics_logrecord WHERE statistics_logrecord.user = 'dannluciano') as t1,
+                (SELECT 
+                	auth_user.username as username
                     , auth_user.first_name as first_name
                     , auth_user.last_name as last_name
                     , coalesce(SUM(core_question.xp) FILTER (WHERE status='OK'), 0) AS xp
                     , LEAST(coalesce(sqrt(SUM(core_question.xp) FILTER (WHERE status='OK')) * 1.5, 0, 74))::int as level
+                    , COUNT(core_question.id) FILTER (WHERE status='OK') AS OK
+                    , COUNT(core_question.id) FILTER (WHERE status!='OK') AS NOT_OK
                 FROM core_submission
                 JOIN core_question ON (core_submission.question_id = core_question.id)
                 RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
-                WHERE auth_user.id = %s
-                GROUP BY auth_user.username, auth_user.first_name, auth_user.last_name
+                WHERE auth_user.id = 1
+                GROUP BY auth_user.username, auth_user.first_name, auth_user.last_name) as t2
         """
-        self.cache = raw_sql(SQL, [self.id])
+        self.cache = raw_sql(SQL, [self.id, self.username])
 
     def username(self):
-        return self.cache[0].username
+        return self.username
 
     def level(self):
         return self.cache[0].level
 
     def xp(self):
         return self.cache[0].xp
+
+    def ok(self):
+        return self.cache[0].ok
+
+    def not_ok(self):
+        return self.cache[0].not_ok
 
     def full_name(self):
         fn = self.cache[0].first_name
@@ -46,13 +58,14 @@ class UserData():
         return f"{fn} {ln}"
 
     def total_time_on(self):
-        SQL = """
-        SELECT SUM(check_out - check_in) as time FROM statistics_logrecord WHERE statistics_logrecord.user = %s
-        """
-        username = self.username()
-        result = raw_sql(SQL, [username])
-        deltatime = result[0].time
-        return deltatime
+        # SQL = """
+        # SELECT SUM(check_out - check_in) as time FROM statistics_logrecord WHERE statistics_logrecord.user = %s
+        # """
+        # username = self.username()
+        # result = raw_sql(SQL, [username])
+        # deltatime = result[0].time
+        # return deltatime
+        return self.cache[0].time
 
     def avatar_url(self):
         level = self.level()
