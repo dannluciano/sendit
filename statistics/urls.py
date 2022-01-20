@@ -1,13 +1,10 @@
-try:
-    from django.conf.urls import url
-except ImportError:
-    from django.conf.urls.defaults import url
+from django.urls import path
 
 from .views import RecordLogPingView
 
 urlpatterns = [
-    url(
-        'ping/$',
+    path(
+        'ping/',
         RecordLogPingView.as_view(),
         name='session_security_ping',
     )
