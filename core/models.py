@@ -45,6 +45,15 @@ class UserData():
 
         return f"{fn} {ln}"
 
+    def total_time_on(self):
+        SQL = """
+        SELECT SUM(check_out - check_in) as time FROM statistics_logrecord WHERE statistics_logrecord.user = %s
+        """
+        username = self.username()
+        result = raw_sql(SQL, [username])
+        deltatime = result[0].time
+        return deltatime
+
     def avatar_url(self):
         level = self.level()
         return f"img/platform/levels/level_{level}.png"

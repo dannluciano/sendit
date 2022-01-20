@@ -120,6 +120,18 @@
         <div class="column is-3">
             <div class="box trending">
                 <p class="trend-title"><span class="title is-5">Estatísticas</span></p>
+                <table>
+                    <tr>
+                        <td>
+                            <strong>
+                                Tempo na Plataforma:
+                            </strong>
+                        </td>
+                        <td>
+                            {{ user.total_time_on }}
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         {% endblock %}
