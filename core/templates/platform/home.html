@@ -123,12 +123,32 @@
                 <table>
                     <tr>
                         <td>
+                            Tempo Total:
+                        </td>
+                        <td class="has-text-centered">
                             <strong>
-                                Tempo na Plataforma:
+                                {{ user.total_time_on }}
                             </strong>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
-                            {{ user.total_time_on }}
+                            Envios OK:
+                        </td>
+                        <td class="has-text-centered">
+                            <strong>
+                                {{ user.ok }}
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Envios Incorretos:
+                        </td>
+                        <td class="has-text-centered">
+                            <strong>
+                                {{ user.not_ok }}
+                            </strong>
                         </td>
                     </tr>
                 </table>
