@@ -28,7 +28,6 @@ class C_SubmissionWithoutExpectedOutputTestCase(TestCase):
         result = C_SubmissionRunner(
             work_dir, input_content, None, source_file_content
         ).run()
-        print(result)
         self.assertEqual(result["status"], "OK")
         self.assertEqual(result["output"], expected_output_content)
 
@@ -76,11 +75,10 @@ class C_SubmissionRunnerTestCase(TestCase):
         source_file_content = """
             #include <stdio.h>
             int main(void) {
-                char* str;
+                char* str = 0;
                 char* nome = *str;
                 printf("Ola, %s", nome);
             }
-            
         """
         result = C_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
