@@ -9,7 +9,11 @@ class CaseTestInline(admin.TabularInline):
     extra = 1
 
     fieldsets = (
-        ("Teste", {"classes": ("collapse",), "fields": ("sample_input", "sample_output")}),)
+        (
+            "Teste",
+            {"classes": ("collapse",), "fields": ("sample_input", "sample_output")},
+        ),
+    )
 
 
 def hide(modeladmin, request, queryset):
@@ -31,8 +35,7 @@ class QuestionAdmin(admin.ModelAdmin):
         (None, {"fields": ("title", "statement", "xp", "tags", "visible")}),
         (
             "Entrada e Saida (Exemplo)",
-            {"classes": ("collapse",), "fields": (
-                "sample_input", "sample_output")},
+            {"classes": ("collapse",), "fields": ("sample_input", "sample_output")},
         ),
     )
 
@@ -40,7 +43,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
     list_display = ("id", "title", "xp", "visible")
     list_display_links = ("id", "title")
-    list_filter = ("tags", )
+    list_filter = ("tags",)
     search_fields = ["title"]
 
     actions = [hide, show]
@@ -50,16 +53,36 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class SubmissionsAdmin(admin.ModelAdmin):
-    list_display = ("id", "uuid", "status", "author",
-                    "question", "language", "timestamp")
+    list_display = (
+        "id",
+        "uuid",
+        "status",
+        "author",
+        "question",
+        "language",
+        "timestamp",
+    )
     list_display_links = ("id", "status")
     list_filter = ("status", "language")
     search_fields = ["author__username", "author__email", "question__title"]
 
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ("username", "first_name", "last_name", "email", "is_staff", "is_superuser", "last_login")
-    search_fields = ("username", "first_name", "last_name", "email", )
+    list_display = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "is_staff",
+        "is_superuser",
+        "last_login",
+    )
+    search_fields = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+    )
     list_filter = BaseUserAdmin.list_filter + ("last_login",)
 
     # def get_xp(self, obj):

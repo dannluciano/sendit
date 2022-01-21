@@ -4,8 +4,8 @@ from .views import RecordLogPingView
 
 urlpatterns = [
     path(
-        'ping/',
+        "ping/",
         RecordLogPingView.as_view(),
-        name='session_security_ping',
+        name="session_security_ping",
     )
 ]

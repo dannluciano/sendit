@@ -6,14 +6,13 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0001_initial'),
+        ("core", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='uuid',
-            field=models.UUIDField(
-                default=uuid.uuid4, editable=False, null=True),
+            model_name="submission",
+            name="uuid",
+            field=models.UUIDField(default=uuid.uuid4, editable=False, null=True),
         ),
     ]

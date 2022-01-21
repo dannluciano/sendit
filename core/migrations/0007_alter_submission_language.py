@@ -6,13 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0006_submission_output'),
+        ("core", "0006_submission_output"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='submission',
-            name='language',
-            field=models.CharField(choices=[('unkwon', 'Unkwon'), ('c', 'C'), ('c++11', 'C++11'), ('javascript', 'JavaScript'), ('java', 'Java'), ('python', 'Python')], default='unkwon', max_length=10),
+            model_name="submission",
+            name="language",
+            field=models.CharField(
+                choices=[
+                    ("unkwon", "Unkwon"),
+                    ("c", "C"),
+                    ("c++11", "C++11"),
+                    ("javascript", "JavaScript"),
+                    ("java", "Java"),
+                    ("python", "Python"),
+                ],
+                default="unkwon",
+                max_length=10,
+            ),
         ),
     ]

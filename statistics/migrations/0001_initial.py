@@ -8,24 +8,27 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='LeaderboardView',
+            name="LeaderboardView",
             fields=[
-                ('position', models.IntegerField(
-                    editable=False, primary_key=True, serialize=False)),
-                ('username', models.CharField(editable=False, max_length=255)),
-                ('xp', models.IntegerField(editable=False)),
+                (
+                    "position",
+                    models.IntegerField(
+                        editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                ("username", models.CharField(editable=False, max_length=255)),
+                ("xp", models.IntegerField(editable=False)),
             ],
             options={
-                'verbose_name': 'Leaderboard',
-                'verbose_name_plural': 'Leaderboard',
-                'db_table': 'leaderboard_view',
-                'managed': False,
+                "verbose_name": "Leaderboard",
+                "verbose_name_plural": "Leaderboard",
+                "db_table": "leaderboard_view",
+                "managed": False,
             },
         ),
-        migrations.RunSQL(LeaderboardView.SQL, LeaderboardView.REVERSE_SQL)
+        migrations.RunSQL(LeaderboardView.SQL, LeaderboardView.REVERSE_SQL),
     ]

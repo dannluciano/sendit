@@ -7,14 +7,13 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0003_populate_uuid_values'),
+        ("core", "0003_populate_uuid_values"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='submission',
-            name='uuid',
-            field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True),
+            model_name="submission",
+            name="uuid",
+            field=models.UUIDField(default=uuid.uuid4, editable=False, unique=True),
         ),
     ]

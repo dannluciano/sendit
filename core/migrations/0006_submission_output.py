@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0005_submission_log'),
+        ("core", "0005_submission_log"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='output',
+            model_name="submission",
+            name="output",
             field=models.TextField(blank=True),
         ),
     ]

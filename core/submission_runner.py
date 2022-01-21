@@ -52,7 +52,7 @@ class SubmissionRunner(object):
         self.input_content = input_content
         self.expected_output_content = expected_output_content
         self.source_file_content = source_file_content
-        self.last_output = ''
+        self.last_output = ""
 
     def create_temp_file(self, dirname, filename, content):
         file_path = f"{dirname}/{filename}"
@@ -81,10 +81,15 @@ class SubmissionRunner(object):
             import shlex
 
             result = subprocess.run(
-                shlex.split(command), shell=False, check=True, timeout=self.timeout,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, input=input_
+                shlex.split(command),
+                shell=False,
+                check=True,
+                timeout=self.timeout,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                input=input_,
             )
-            self.last_output = result.stdout.decode('utf-8')
+            self.last_output = result.stdout.decode("utf-8")
         except subprocess.TimeoutExpired as error:
             self.last_output = error.stdout
             raise SubmissionTimeoutError("TimeoutError")
@@ -94,16 +99,15 @@ class SubmissionRunner(object):
         try:
             self.run_process(self.compiler_command)
         except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout.decode('utf-8')
+            self.last_output = error.stdout.decode("utf-8")
             raise SubmissionSintaxError("SintaxError")
 
     def run_executable(self):
         log.info(f"Executing Program: {self.executable_command}")
         try:
-            self.run_process(self.executable_command,
-                             self.input_content.encode())
+            self.run_process(self.executable_command, self.input_content.encode())
         except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout.decode('utf-8')
+            self.last_output = error.stdout.decode("utf-8")
             raise SubmissionRuntimeError("RuntimeError")
 
     def compare_outputs(self):
@@ -112,7 +116,7 @@ class SubmissionRunner(object):
         try:
             self.run_process(command, self.last_output.encode())
         except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout.decode('utf-8')
+            self.last_output = error.stdout.decode("utf-8")
             raise SubmissionDiffError("DiffError")
 
     def run(self):
@@ -125,15 +129,9 @@ class SubmissionRunner(object):
                 self.compare_outputs()
         except SubmissionError as error:
             log.info(error.message)
-            return {
-                'status': error.message,
-                'output': self.last_output
-            }
+            return {"status": error.message, "output": self.last_output}
         log.info("OK")
-        return {
-            'status': "OK",
-            'output': self.last_output
-        }
+        return {"status": "OK", "output": self.last_output}
 
 
 class C_SubmissionRunner(SubmissionRunner):
@@ -144,7 +142,9 @@ class C_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "main.c"
-        self.compiler_command = f"gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name}"
+        self.compiler_command = (
+            f"gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name}"
+        )
         self.executable_command = f"{self.work_dir}/main"
 
 
@@ -164,10 +164,10 @@ class JavaScript_SubmissionRunner(SubmissionRunner):
     def __init__(
         self, work_dir, input_content, expected_output_content, source_file_content
     ):
-        iof = open('browser_io.js', mode='r')
+        iof = open("browser_io.js", mode="r")
         ioc = iof.read()
         iof.close()
-        source_file_content = f'{ioc}\n{source_file_content}'
+        source_file_content = f"{ioc}\n{source_file_content}"
         super().__init__(
             work_dir, input_content, expected_output_content, source_file_content
         )
@@ -197,7 +197,9 @@ class Python_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "main.py"
-        self.compiler_command = f"python -m py_compile {self.work_dir}/{self.source_file_name}"
+        self.compiler_command = (
+            f"python -m py_compile {self.work_dir}/{self.source_file_name}"
+        )
         self.executable_command = f"python {self.work_dir}/{self.source_file_name}"
 
 
@@ -221,7 +223,7 @@ class SubmissionRunnerManager:
 
         log_contents = log_capture_string.getvalue()
         return {
-            'status': result['status'],
-            'output': result['output'],
-            'log': log_contents,
+            "status": result["status"],
+            "output": result["output"],
+            "log": log_contents,
         }

@@ -7,24 +7,30 @@ from statistics.models import SubmissionSummaryView
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('statistics', '0002_statisticsview'),
+        ("statistics", "0002_statisticsview"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SubmissionSummaryView',
+            name="SubmissionSummaryView",
             fields=[
-                ('status', models.CharField(editable=False,
-                                            max_length=255, primary_key=True, serialize=False)),
-                ('sum', models.IntegerField(editable=False)),
+                (
+                    "status",
+                    models.CharField(
+                        editable=False,
+                        max_length=255,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("sum", models.IntegerField(editable=False)),
             ],
             options={
-                'verbose_name': 'Summary of Submission',
-                'verbose_name_plural': 'Summary of Submissions',
-                'db_table': 'submission_summary_view',
-                'managed': False,
+                "verbose_name": "Summary of Submission",
+                "verbose_name_plural": "Summary of Submissions",
+                "db_table": "submission_summary_view",
+                "managed": False,
             },
         ),
-        migrations.RunSQL(SubmissionSummaryView.SQL,
-                          SubmissionSummaryView.REVERSE_SQL)
+        migrations.RunSQL(SubmissionSummaryView.SQL, SubmissionSummaryView.REVERSE_SQL),
     ]

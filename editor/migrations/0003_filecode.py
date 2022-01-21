@@ -10,21 +10,53 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('editor', '0002_runner_input'),
+        ("editor", "0002_runner_input"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FileCode',
+            name="FileCode",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
-                ('name', models.CharField(max_length=255)),
-                ('code', models.TextField()),
-                ('language', models.CharField(choices=[('unkwon', 'Unkwon'), ('c', 'C'), ('c++11', 'C++11'), ('javascript', 'JavaScript'), ('java', 'Java'), ('python', 'Python')], default='unkwon', max_length=10)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='owner_file_code', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "uuid",
+                    models.UUIDField(default=uuid.uuid4, editable=False, unique=True),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("code", models.TextField()),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[
+                            ("unkwon", "Unkwon"),
+                            ("c", "C"),
+                            ("c++11", "C++11"),
+                            ("javascript", "JavaScript"),
+                            ("java", "Java"),
+                            ("python", "Python"),
+                        ],
+                        default="unkwon",
+                        max_length=10,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="owner_file_code",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

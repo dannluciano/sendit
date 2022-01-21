@@ -7,14 +7,14 @@ from statistics.models import LeaderboardView
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('statistics', '0005_logrecord'),
+        ("statistics", "0005_logrecord"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='LeaderboardView',
-            name='group',
-            field=models.CharField(editable=False, max_length=255)
+            model_name="LeaderboardView",
+            name="group",
+            field=models.CharField(editable=False, max_length=255),
         ),
-        migrations.RunSQL(LeaderboardView.SQL, LeaderboardView.REVERSE_SQL)
+        migrations.RunSQL(LeaderboardView.SQL, LeaderboardView.REVERSE_SQL),
     ]

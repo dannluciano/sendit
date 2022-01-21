@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('editor', '0001_initial'),
+        ("editor", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='runner',
-            name='input',
+            model_name="runner",
+            name="input",
             field=models.TextField(blank=True),
         ),
     ]

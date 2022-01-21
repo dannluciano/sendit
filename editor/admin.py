@@ -11,8 +11,11 @@ class RunnerAdmin(admin.ModelAdmin):
 
 class FileCodeAdmin(admin.ModelAdmin):
     list_display = ("uuid", "name", "owner", "language", "created_at", "updated_at")
-    list_display_links = ("uuid", "name", )
-    list_filter = ("language", )
+    list_display_links = (
+        "uuid",
+        "name",
+    )
+    list_filter = ("language",)
 
 
 admin.site.register(Runner, RunnerAdmin)

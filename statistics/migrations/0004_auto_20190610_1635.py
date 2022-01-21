@@ -6,12 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('statistics', '0003_submissionsummary'),
+        ("statistics", "0003_submissionsummary"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='statisticsview',
-            options={'managed': False, 'verbose_name': 'Statistics', 'verbose_name_plural': 'Statistics'},
+            name="statisticsview",
+            options={
+                "managed": False,
+                "verbose_name": "Statistics",
+                "verbose_name_plural": "Statistics",
+            },
         ),
     ]
