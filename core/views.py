@@ -230,7 +230,7 @@ def submission_detail(request, submission_uuid):
 @login_required
 def submission_status(request, submission_uuid):
     submission = get_object_or_404(Submission, uuid=submission_uuid)
-    if request.is_ajax():
+    if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
         dict = {
             "uuid": submission.uuid,
             "status": submission.status,

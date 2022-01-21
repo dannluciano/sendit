@@ -53,7 +53,7 @@
             {{ submission.get_random_status_phrase }}
         </h2>
 
-        {% ifequal submission.status 'OK' %}
+        {% if submission.status == 'OK' %}
         <p>
             Você ganhou {{ submission.question.xp }} XPs!
         </p>
@@ -67,7 +67,7 @@
                 Tentar Novamente
             </a>
         </p>
-        {% endifequal %}
+        {% endif %}
     </div>
 
     {% if submission.status != 'OK' %}
@@ -75,7 +75,7 @@
         <h2 class="title has-text-centered">
             Saída do Programa
         </h2>
-        {% ifequal submission.status 'DiffError' %}
+        {% if submission.status == 'DiffError' %}
         <div id="diff-container">
         </div>
         <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}">
@@ -94,7 +94,7 @@
         </script>
         {% else %}
         <pre><code>{{submission.output}}</code></pre>
-        {% endifequal %}
+        {% endif %}
     </div>
     {% endif %}
     <div class="box">
