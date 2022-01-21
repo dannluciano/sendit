@@ -29,7 +29,16 @@
                                             Erro de Autenticação
                                         </div>
                                         <div class="message-body">
-                                            Nome de Usuário e/ou Senha incorretos!
+                                            <p>
+                                                Nome de Usuário e/ou Senha incorretos!
+                                            </p>
+                                            <p>
+                                                Esqueceu a senha?
+                                                &nbsp;
+                                                <a href="{% url 'password_reset' %}">
+                                                    Mudar Senha
+                                                </a>
+                                            </p>
                                         </div>
                                     </article>
 
@@ -53,7 +62,7 @@
                                             </div>
                                         </div>
                                         <p class="control has-text-centered">
-                                            <button class="button is-large is-info">Login</button>
+                                            <button class="button is-large is-success is-fullwidth">Login</button>
                                         </p>
                                         <br>
                                         <br>
@@ -62,8 +71,7 @@
                                                 <div class="columns is-vcentered">
                                                     Novo(a) por aqui?
                                                     &nbsp;
-                                                    <a class="button is-success is-light"
-                                                        href="{% url 'core:signup' %}">
+                                                    <a class="button is-info is-light" href="{% url 'core:signup' %}">
                                                         Cadastre-se
                                                     </a>
                                                 </div>
