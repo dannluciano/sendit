@@ -16,58 +16,138 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Question',
+            name="Question",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('statement', ckeditor.fields.RichTextField()),
-                ('sample_input', models.TextField(blank=True)),
-                ('sample_output', models.TextField(blank=True)),
-                ('xp', models.IntegerField(default=100)),
-                ('visible', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("statement", ckeditor.fields.RichTextField()),
+                ("sample_input", models.TextField(blank=True)),
+                ("sample_output", models.TextField(blank=True)),
+                ("xp", models.IntegerField(default=100)),
+                ("visible", models.BooleanField(default=True)),
             ],
             options={
-                'ordering': ['title'],
+                "ordering": ["title"],
             },
         ),
         migrations.CreateModel(
-            name='Tags',
+            name="Tags",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tag', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("tag", models.CharField(max_length=100)),
             ],
             options={
-                'verbose_name': 'Tags',
-                'verbose_name_plural': 'Tags',
+                "verbose_name": "Tags",
+                "verbose_name_plural": "Tags",
             },
         ),
         migrations.CreateModel(
-            name='Submission',
+            name="Submission",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.TextField()),
-                ('status', models.CharField(choices=[('Waiting', 'Esperando ser executada.'), ('SintaxError', 'Erro de sintaxe!'), ('RuntimeError', 'Erro em execução!'), ('TimeoutError', 'Tempo de execução excedido!'), ('DiffError', 'Saída computada diferente da saída esperada!'), ('OK', 'OK')], default='Waiting', max_length=255)),
-                ('timestamp', models.DateTimeField(auto_now=True)),
-                ('language', models.CharField(choices=[('unkwon', 'Unkwon'), ('c', 'C'), ('c++11', 'C++11'), ('javascript', 'JavaScript'), ('java', 'Java'), ('python', 'Python')], default='Waiting', max_length=10)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='author_submission', to=settings.AUTH_USER_MODEL)),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Question')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("code", models.TextField()),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("Waiting", "Esperando ser executada."),
+                            ("SintaxError", "Erro de sintaxe!"),
+                            ("RuntimeError", "Erro em execução!"),
+                            ("TimeoutError", "Tempo de execução excedido!"),
+                            (
+                                "DiffError",
+                                "Saída computada diferente da saída esperada!",
+                            ),
+                            ("OK", "OK"),
+                        ],
+                        default="Waiting",
+                        max_length=255,
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[
+                            ("unkwon", "Unkwon"),
+                            ("c", "C"),
+                            ("c++11", "C++11"),
+                            ("javascript", "JavaScript"),
+                            ("java", "Java"),
+                            ("python", "Python"),
+                        ],
+                        default="Waiting",
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="author_submission",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "question",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="core.Question"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-id'],
+                "ordering": ["-id"],
             },
         ),
         migrations.AddField(
-            model_name='question',
-            name='tags',
-            field=models.ManyToManyField(to='core.Tags'),
+            model_name="question",
+            name="tags",
+            field=models.ManyToManyField(to="core.Tags"),
         ),
         migrations.CreateModel(
-            name='CaseTest',
+            name="CaseTest",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sample_input', models.TextField(blank=True)),
-                ('sample_output', models.TextField(blank=True)),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Question')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("sample_input", models.TextField(blank=True)),
+                ("sample_output", models.TextField(blank=True)),
+                (
+                    "question",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="core.Question"
+                    ),
+                ),
             ],
         ),
     ]

@@ -8,22 +8,62 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('core', '0007_alter_submission_language')
-    ]
+    dependencies = [("core", "0007_alter_submission_language")]
 
     operations = [
         migrations.CreateModel(
-            name='Runner',
+            name="Runner",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
-                ('code', models.TextField()),
-                ('status', models.CharField(choices=[('Waiting', 'Esperando ser executada.'), ('SintaxError', 'Erro de sintaxe!'), ('RuntimeError', 'Erro em execução!'), ('TimeoutError', 'Tempo de execução excedido!'), ('DiffError', 'Saída computada diferente da saída esperada!'), ('OK', 'OK')], default='Waiting', max_length=255)),
-                ('language', models.CharField(choices=[('unkwon', 'Unkwon'), ('c', 'C'), ('c++11', 'C++11'), ('javascript', 'JavaScript'), ('java', 'Java'), ('python', 'Python')], default='unkwon', max_length=10)),
-                ('log', models.TextField(blank=True)),
-                ('output', models.TextField(blank=True)),
-                ('timestamp', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "uuid",
+                    models.UUIDField(default=uuid.uuid4, editable=False, unique=True),
+                ),
+                ("code", models.TextField()),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("Waiting", "Esperando ser executada."),
+                            ("SintaxError", "Erro de sintaxe!"),
+                            ("RuntimeError", "Erro em execução!"),
+                            ("TimeoutError", "Tempo de execução excedido!"),
+                            (
+                                "DiffError",
+                                "Saída computada diferente da saída esperada!",
+                            ),
+                            ("OK", "OK"),
+                        ],
+                        default="Waiting",
+                        max_length=255,
+                    ),
+                ),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[
+                            ("unkwon", "Unkwon"),
+                            ("c", "C"),
+                            ("c++11", "C++11"),
+                            ("javascript", "JavaScript"),
+                            ("java", "Java"),
+                            ("python", "Python"),
+                        ],
+                        default="unkwon",
+                        max_length=10,
+                    ),
+                ),
+                ("log", models.TextField(blank=True)),
+                ("output", models.TextField(blank=True)),
+                ("timestamp", models.DateTimeField(auto_now=True)),
             ],
         ),
     ]

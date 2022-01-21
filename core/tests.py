@@ -7,9 +7,11 @@ from django.contrib.auth.models import User
 from .models import Question, Submission
 
 import logging
+
 logging.disable(logging.CRITICAL)
 
-@tag('unit')
+
+@tag("unit")
 class C_SubmissionWithoutExpectedOutputTestCase(TestCase):
     def test_run_ok_submission(self):
         work_dir = "tests/c/0/1"
@@ -27,11 +29,11 @@ class C_SubmissionWithoutExpectedOutputTestCase(TestCase):
             work_dir, input_content, None, source_file_content
         ).run()
         print(result)
-        self.assertEqual(result['status'], "OK")
-        self.assertEqual(result['output'], expected_output_content)
+        self.assertEqual(result["status"], "OK")
+        self.assertEqual(result["output"], expected_output_content)
 
 
-@tag('c')
+@tag("c")
 class C_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
         work_dir = "tests/c/0/1"
@@ -48,7 +50,7 @@ class C_SubmissionRunnerTestCase(TestCase):
         result = C_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "OK")
+        self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
         work_dir = "tests/c/0/2"
@@ -65,7 +67,7 @@ class C_SubmissionRunnerTestCase(TestCase):
         result = C_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "SintaxError")
+        self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
         work_dir = "tests/c/0/3"
@@ -83,7 +85,7 @@ class C_SubmissionRunnerTestCase(TestCase):
         result = C_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "RuntimeError")
+        self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
         work_dir = "tests/c/0/4"
@@ -102,7 +104,7 @@ class C_SubmissionRunnerTestCase(TestCase):
         result = C_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "TimeoutError")
+        self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
         work_dir = "tests/c/0/5"
@@ -119,12 +121,11 @@ class C_SubmissionRunnerTestCase(TestCase):
         result = C_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "DiffError")
+        self.assertEqual(result["status"], "DiffError")
 
 
-@tag('javascript')
+@tag("javascript")
 class JavaScript_SubmissionRunnerTestCase(TestCase):
-
     def test_run_ok_submission(self):
         work_dir = "tests/js/0/1"
         input_content = """Joao"""
@@ -136,7 +137,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         result = JavaScript_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "OK")
+        self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
         work_dir = "tests/js/0/2"
@@ -149,7 +150,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         result = JavaScript_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "SintaxError")
+        self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
         work_dir = "tests/js/0/3"
@@ -162,7 +163,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         result = JavaScript_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "RuntimeError")
+        self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
         work_dir = "tests/js/0/4"
@@ -176,7 +177,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         result = JavaScript_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "TimeoutError")
+        self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
         work_dir = "tests/js/0/5"
@@ -188,10 +189,10 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         result = JavaScript_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "DiffError")
+        self.assertEqual(result["status"], "DiffError")
 
 
-@tag('java')
+@tag("java")
 class JAVA_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
         work_dir = "tests/java/0/1"
@@ -210,7 +211,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         result = JAVA_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "OK")
+        self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
         work_dir = "tests/java/0/2"
@@ -229,7 +230,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         result = JAVA_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "SintaxError")
+        self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
         work_dir = "tests/java/0/3"
@@ -248,7 +249,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         result = JAVA_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "RuntimeError")
+        self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
         work_dir = "tests/java/0/4"
@@ -269,7 +270,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         result = JAVA_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "TimeoutError")
+        self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
         work_dir = "tests/java/0/5"
@@ -288,10 +289,10 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         result = JAVA_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "DiffError")
+        self.assertEqual(result["status"], "DiffError")
 
 
-@tag('python')
+@tag("python")
 class Python_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
         work_dir = "tests/python/0/1"
@@ -304,7 +305,7 @@ print("Ola,", str)
         result = Python_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "OK")
+        self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
         work_dir = "tests/c/0/2"
@@ -319,7 +320,7 @@ if str {
         result = Python_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "SintaxError")
+        self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
         work_dir = "tests/python/0/3"
@@ -332,7 +333,7 @@ pri.nt("Ola,", str)
         result = Python_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "RuntimeError")
+        self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
         work_dir = "tests/python/0/4"
@@ -346,7 +347,7 @@ while(True):
         result = Python_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "TimeoutError")
+        self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
         work_dir = "tests/c/0/5"
@@ -359,4 +360,4 @@ print("Ola, Maria")
         result = Python_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
-        self.assertEqual(result['status'], "DiffError")
+        self.assertEqual(result["status"], "DiffError")

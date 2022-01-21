@@ -7,20 +7,28 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('statistics', '0004_auto_20190610_1635'),
+        ("statistics", "0004_auto_20190610_1635"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='LogRecord',
+            name="LogRecord",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('user', models.CharField(max_length=255)),
-                ('check_in', models.DateTimeField(auto_now_add=True)),
-                ('check_out', models.DateTimeField(null=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("user", models.CharField(max_length=255)),
+                ("check_in", models.DateTimeField(auto_now_add=True)),
+                ("check_out", models.DateTimeField(null=True)),
             ],
             options={
-                'ordering': ['check_in'],
+                "ordering": ["check_in"],
             },
         ),
     ]

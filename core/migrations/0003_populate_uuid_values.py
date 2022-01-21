@@ -5,16 +5,16 @@ import uuid
 
 
 def gen_uuid(apps, schema_editor):
-    Submission = apps.get_model('core', 'Submission')
+    Submission = apps.get_model("core", "Submission")
     for row in Submission.objects.all():
         row.uuid = uuid.uuid4()
-        row.save(update_fields=['uuid'])
+        row.save(update_fields=["uuid"])
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_submission_uuid'),
+        ("core", "0002_submission_uuid"),
     ]
 
     operations = [

@@ -15,25 +15,36 @@ class ViewAdmin(admin.ModelAdmin):
 
 
 class LogRecordAdmin(ViewAdmin):
-    date_hierarchy = 'check_in'
-    list_display = ('id', 'user', 'check_in', 'check_out', 'duration')
-    list_filter = ('check_in', 'check_out')
-    ordering = ['-check_in']
-    search_fields = ('user', )
+    date_hierarchy = "check_in"
+    list_display = ("id", "user", "check_in", "check_out", "duration")
+    list_filter = ("check_in", "check_out")
+    ordering = ["-check_in"]
+    search_fields = ("user",)
 
 
 class LeaderboardViewAdmin(ViewAdmin):
-    list_display = ('position', 'username', 'xp', 'level', 'group')
-    ordering = ('-xp', )
+    list_display = ("position", "username", "xp", "level", "group")
+    ordering = ("-xp",)
 
 
 class StatisticsViewAdmin(ViewAdmin):
-    list_display = ('username', 'level', 'xp', 'number_of_submissions_ok', 'number_of_submission', 'conclusion_rate',
-                    'sucess_rate', 'sintax_error_rate', 'runtime_error_rate', 'timeout_error_rate', 'diff_error_rate')
+    list_display = (
+        "username",
+        "level",
+        "xp",
+        "number_of_submissions_ok",
+        "number_of_submission",
+        "conclusion_rate",
+        "sucess_rate",
+        "sintax_error_rate",
+        "runtime_error_rate",
+        "timeout_error_rate",
+        "diff_error_rate",
+    )
 
 
 class SubmissionSummaryViewAdmin(ViewAdmin):
-    list_display = ('status', 'sum')
+    list_display = ("status", "sum")
 
 
 admin.site.register(LogRecord, LogRecordAdmin)

@@ -16,8 +16,7 @@ def user_logged_out(sender, request, user, **kwargs):
 
 
 def set_last_activity(username):
-    lr = LogRecord.objects.filter(
-        user=username).last()
+    lr = LogRecord.objects.filter(user=username).last()
     if lr:
         lr.check_out = timezone.now()
         lr.save()

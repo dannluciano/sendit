@@ -6,7 +6,7 @@ def format_time(time):
     s = time.seconds
     hours, remainder = divmod(s, 3600)
     minutes, seconds = divmod(remainder, 60)
-    return '{:02}:{:02}:{:02}'.format(int(hours), int(minutes), int(seconds))
+    return "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
 
 
 class LogRecord(models.Model):
@@ -19,10 +19,10 @@ class LogRecord(models.Model):
     def duration(self):
         if self.check_out:
             return format_time(self.check_out - self.check_in)
-        return '-'
+        return "-"
 
     class Meta:
-        ordering = ['check_in']
+        ordering = ["check_in"]
 
 
 class LeaderboardView(models.Model):
@@ -90,24 +90,27 @@ class StatisticsView(models.Model):
 
     REVERSE_SQL = """DROP VIEW IF EXISTS statistics_view;"""
 
-    username = models.CharField(
-        primary_key=True, max_length=255, editable=False)
+    username = models.CharField(primary_key=True, max_length=255, editable=False)
     level = models.IntegerField(editable=False)
     xp = models.IntegerField(editable=False)
     number_of_submissions_ok = models.IntegerField(editable=False)
     number_of_submission = models.IntegerField(editable=False)
     conclusion_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, editable=False)
-    sucess_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, editable=False)
+        max_digits=5, decimal_places=2, editable=False
+    )
+    sucess_rate = models.DecimalField(max_digits=5, decimal_places=2, editable=False)
     sintax_error_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, editable=False)
+        max_digits=5, decimal_places=2, editable=False
+    )
     runtime_error_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, editable=False)
+        max_digits=5, decimal_places=2, editable=False
+    )
     timeout_error_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, editable=False)
+        max_digits=5, decimal_places=2, editable=False
+    )
     diff_error_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, editable=False)
+        max_digits=5, decimal_places=2, editable=False
+    )
 
     class Meta:
         managed = False

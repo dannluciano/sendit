@@ -74,11 +74,12 @@ def home(request):
 
     return render(
         request,
-        "platform/home.html", {
+        "platform/home.html",
+        {
             "user": user,
             "questions": questions,
             "tags": tags,
-            "best_users_of_week": best_users_of_week
+            "best_users_of_week": best_users_of_week,
         },
     )
 
@@ -112,11 +113,12 @@ def completed_issues(request):
 
     return render(
         request,
-        "platform/completed-questions.html", {
+        "platform/completed-questions.html",
+        {
             "user": user,
             "ok_submissions": ok_submissions,
             "tags": tags,
-            "best_users_of_week": get_best_users_of_week
+            "best_users_of_week": get_best_users_of_week,
         },
     )
 
@@ -162,11 +164,10 @@ def create_submission(request, question_id):
         return HttpResponseRedirect(question.get_absolute_url())
 
     log.info("Does not exist any OK Submission")
-    sub = Submission(author=request.user, question=question,
-                     code=code, language=lang)
+    sub = Submission(author=request.user, question=question, code=code, language=lang)
     sub.save()
 
-    ttl = 60*60*24*7
+    ttl = 60 * 60 * 24 * 7
     django_rq.enqueue(run_submission_runner, sub.id, ttl=ttl, result_ttl=ttl)
     log.info("Submission was to Queue")
 
@@ -187,26 +188,27 @@ def medal_board(request):
         request,
         "platform/medal-board.html",
         {
-            "current_user":  request.user.username,
+            "current_user": request.user.username,
             "current_group": current_group,
             "users": users,
-            "groups": groups
-        }
+            "groups": groups,
+        },
     )
 
 
 @login_required
 def submissions_list(request):
     user = current_user_data(request)
-    submissions = Submission.objects.select_related("question").filter(
-        author=request.user,
-    ).exclude(
-        status="Waiting"
+    submissions = (
+        Submission.objects.select_related("question")
+        .filter(
+            author=request.user,
+        )
+        .exclude(status="Waiting")
     )
 
     return render(
-        request, "platform/submissions.html", {
-            "submissions": submissions, "user": user}
+        request, "platform/submissions.html", {"submissions": submissions, "user": user}
     )
 
 
@@ -220,7 +222,9 @@ def submission_detail(request, submission_uuid):
     if submission.is_waiting:
         return HttpResponseRedirect(submission.get_absolute_url())
 
-    return render(request, "platform/submission-detail.html", {"submission": submission})
+    return render(
+        request, "platform/submission-detail.html", {"submission": submission}
+    )
 
 
 @login_required
@@ -228,10 +232,12 @@ def submission_status(request, submission_uuid):
     submission = get_object_or_404(Submission, uuid=submission_uuid)
     if request.is_ajax():
         dict = {
-            'uuid': submission.uuid,
-            'status': submission.status,
-            'url': submission.get_absolute_url(),
+            "uuid": submission.uuid,
+            "status": submission.status,
+            "url": submission.get_absolute_url(),
         }
         return JsonResponse(dict)
     else:
-        return render(request, "platform/submission-status.html", {"submission": submission})
+        return render(
+            request, "platform/submission-status.html", {"submission": submission}
+        )

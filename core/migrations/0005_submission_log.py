@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0004_remove_uuid_null'),
+        ("core", "0004_remove_uuid_null"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='log',
+            model_name="submission",
+            name="log",
             field=models.TextField(blank=True),
         ),
     ]

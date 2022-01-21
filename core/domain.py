@@ -21,8 +21,9 @@ LIMIT 3;
 
 
 def random_unresolved_question(user):
-    questions_ok = Submission.objects.filter(
-        author=user, status="OK").values_list('question_id')
+    questions_ok = Submission.objects.filter(author=user, status="OK").values_list(
+        "question_id"
+    )
     rand_question = Question.objects.exclude(
         Q(visible=False) | Q(id__in=questions_ok)
     ).order_by("?")[0]
