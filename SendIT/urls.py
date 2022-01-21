@@ -2,21 +2,39 @@ from editor.views import editor
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 admin.site.site_header = "SendIt Administração"
 admin.site.site_title = "SendIt"
 admin.site.index_title = "SendIt"
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", include("core.urls", namespace="core")),
     path("editor/", include("editor.urls")),
     path("session_security/", include("statistics.urls")),
-    path('django-rq/', include('django_rq.urls')),
+    path("django-rq/", include("django_rq.urls")),
+    path("admin/", admin.site.urls),
+    path(
+        "password_reset/", auth_views.PasswordResetView.as_view(), name="password_reset"
+    ),
+    path(
+        "password_reset/done/",
+        auth_views.PasswordResetDoneView.as_view(),
+        name="password_reset_done",
+    ),
+    path(
+        "reset/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(),
+        name="password_reset_confirm",
+    ),
+    path(
+        "reset/done/",
+        auth_views.PasswordResetCompleteView.as_view(),
+        name="password_reset_complete",
+    ),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
 
-    urlpatterns = [
-        path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+    urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns

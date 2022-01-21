@@ -32,12 +32,6 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
     "request",
     "session_security",
     "django_rq",
@@ -47,6 +41,12 @@ INSTALLED_APPS = [
     "editor",
     "miniexplorer",
     "mini_system_monitor",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
@@ -201,18 +201,28 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 
 RQ_QUEUES = {
-    'default': {
-        'HOST': 'dokku-redis-senditdb',
-        'PORT': 6379,
-        'DB': 0,
-        'PASSWORD': '297f44d9666c31d1417444d65b886a8eb200209b44b875785db39298a2db1477',
-        'USER': 'senditdb',
-        'DEFAULT_TIMEOUT': 360,
+    "default": {
+        "HOST": "dokku-redis-senditdb",
+        "PORT": 6379,
+        "DB": 0,
+        "PASSWORD": "297f44d9666c31d1417444d65b886a8eb200209b44b875785db39298a2db1477",
+        "USER": "senditdb",
+        "DEFAULT_TIMEOUT": 360,
     },
 }
 RQ_SHOW_ADMIN_LINK = True
 
-DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.mailgun.org"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "postmaster@mg.dannluciano.com.br"
+EMAIL_HOST_PASSWORD = "28eeed38798d0a48b0f9b071c8465945-77751bfc-3d966b1a"
+EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 10
+DEFAULT_FROM_EMAIL = "dannluciano@ifpi.edu.br"
+
 
 # SETTINGS LOCAL
 try:
