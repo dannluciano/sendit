@@ -16,18 +16,31 @@
         <div class="hero-body">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-4 is-offset-4">
+                    <div class="column is-8 is-offset-2">
                         <div class="card">
                             <div class="card-content">
                                 <div class="content">
                                     <p class="title has-text-centered">Cadastro</p>
                                     <form method="post">
+                                        {% if form.errors %}
+                                        <article class="message is-danger is-large">
+                                            <div class="message-header">
+                                                Erro ao Criar um novo Usuário
+                                            </div>
+                                            <div class="message-body">
+                                                {% for field in form %}
+                                                {% for error in field.errors %}
+                                                <p class="control">
+                                                    {{ error }}
+                                                </p>
+                                                {% endfor %}
+                                                {% endfor %}
+                                            </div>
+                                        </article>
+
+                                        {% endif %}
                                         {% csrf_token %}
-                                        {% for field in form %}
-                                        {% for error in field.errors %}
-                                        <p class="control" style="color: red">{{ error }}</p>
-                                        {% endfor %}
-                                        {% endfor %}
+
                                         <div class="field">
                                             <label class="label has-text-centered">Usuário:</label>
                                             <div class="control">
@@ -66,12 +79,15 @@
                                         <div class="field">
                                             <label class="label has-text-centered">Confirmação de senha:</label>
                                             <div class="control">
-                                                <input class="input is-large" type="password" placeholder="Repita sua senha"
-                                                    name="password2" required>
+                                                <input class="input is-large" type="password"
+                                                    placeholder="Repita sua senha" name="password2" required>
                                             </div>
                                         </div>
                                         <p class="control has-text-centered">
-                                            <button class="button is-large is-info">Cadastrar</button>
+                                            <button class="button is-large is-success is-fullwidth">Cadastrar</button>
+                                        </p>
+                                        <p class="control has-text-centered">
+                                            <a class="button is-large is-info is-fullwidth" href="/">Voltar</a>
                                         </p>
                                         <input type="hidden" name="next" value="{{ next }}">
                                     </form>

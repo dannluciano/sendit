@@ -8,8 +8,10 @@ import math
 import random
 import uuid
 
+User._meta.get_field("email")._unique = True
 
-class UserData():
+
+class UserData:
     def __init__(self, _id, _username, *args, **kwargs):
         self.id = _id
         self.username = _username
@@ -114,7 +116,8 @@ class CaseTest(models.Model):
 class Submission(models.Model):
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="author_submission")
+        User, on_delete=models.CASCADE, related_name="author_submission"
+    )
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     code = models.TextField()
     STATUS_CHOICES = (
@@ -228,8 +231,7 @@ class Submission(models.Model):
         try:
             self._random_status
         except AttributeError:
-            self._random_status = random.choice(
-                self.STATUS_PHRASES[self.status])
+            self._random_status = random.choice(self.STATUS_PHRASES[self.status])
         return self._random_status
 
     def get_random_status_phrase(self):
