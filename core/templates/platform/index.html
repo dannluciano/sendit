@@ -16,7 +16,7 @@
         <div class="hero-body">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-4 is-offset-4">
+                    <div class="column is-8 is-offset-2">
                         <div class="card">
                             <div class="card-content">
                                 <div class="content">
@@ -55,9 +55,31 @@
                                         <p class="control has-text-centered">
                                             <button class="button is-large is-info">Login</button>
                                         </p>
-                                        <p class="control">Novo(a) por aqui? <a
-                                                href="{% url 'core:signup' %}">Cadastre-se</a></p>
-                                        <input type="hidden" name="next" value="{{ next }}">
+                                        <br>
+                                        <br>
+                                        <div class="columns">
+                                            <div class="column">
+                                                <div class="columns is-vcentered">
+                                                    Novo(a) por aqui?
+                                                    &nbsp;
+                                                    <a class="button is-success is-light"
+                                                        href="{% url 'core:signup' %}">
+                                                        Cadastre-se
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="column">
+                                                <div class="columns is-vcentered">
+                                                    Esqueceu a senha?
+                                                    &nbsp;
+                                                    <a class="button is-warning is-light"
+                                                        href="{% url 'password_reset' %}">
+                                                        Mudar Senha
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
                                     </form>
 
                                     {% endblock %}
