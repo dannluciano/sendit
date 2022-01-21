@@ -21,7 +21,7 @@ class UserData:
     def setup_cache(self):
         SQL = """
                 SELECT t1.*, t2.* FROM
-                (SELECT SUM(check_out - check_in) as time FROM statistics_logrecord WHERE statistics_logrecord.user = 'dannluciano') as t1,
+                (SELECT SUM(check_out - check_in) as time FROM statistics_logrecord WHERE statistics_logrecord.user = %s) as t1,
                 (SELECT 
                 	auth_user.username as username
                     , auth_user.first_name as first_name
@@ -33,10 +33,10 @@ class UserData:
                 FROM core_submission
                 JOIN core_question ON (core_submission.question_id = core_question.id)
                 RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
-                WHERE auth_user.id = 1
+                WHERE auth_user.id = %s
                 GROUP BY auth_user.username, auth_user.first_name, auth_user.last_name) as t2
         """
-        self.cache = raw_sql(SQL, [self.id, self.username])
+        self.cache = raw_sql(SQL, [self.username, self.id])
 
     def username(self):
         return self.username
