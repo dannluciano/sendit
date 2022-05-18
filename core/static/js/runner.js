@@ -10,6 +10,7 @@ function setupRunner (editor, languageSelector) {
   const runButton = document.getElementById('run-button')
   if (runButton) {
     runButton.addEventListener('click', function (event) {
+      event.preventDefault()
       console.log('Sending code to Runner...')
       const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 

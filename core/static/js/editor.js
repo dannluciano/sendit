@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         editor.setValue(languagesHelloWorld[language])
       }
       console.log('Changed Language to:' + language + ':' + editor.getOption('mode') +
-        ' Identation: ' + editor.getOption('indentUnit'))
+                ' Identation: ' + editor.getOption('indentUnit'))
     }
   }
 
@@ -70,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   }
 
-  if (setupRunner) {
+  const inputField = document.getElementById('input')
+  if (inputField && setupRunner) {
     setupRunner(editor, languageSelector)
   }
 
@@ -142,4 +143,13 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     })
   }
+
+  const formCode = document.getElementById('code')
+  if (!formCode) { return }
+
+  formCode.addEventListener('submit', function (event) {
+    if (languageSelector.value === 'null') {
+      event.preventDefault()
+    }
+  })
 })
