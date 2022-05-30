@@ -4,7 +4,7 @@ django-cors-headers==3.8.0
 django-debug-toolbar==3.2.1
 django-js-asset==1.2.2
 django-mini-system-monitor==0.3
-django-miniexplorer==0.4.1
+django-miniexplorer==0.4.2
 django-request==1.6.1
 django-rq==2.5.1
 django-session-security==2.6.6
