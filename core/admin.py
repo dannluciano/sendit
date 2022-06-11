@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.shortcuts import render
+
+from core.domain import get_user_profile
 from .models import Question, Submission, CaseTest, Tags
+from django.utils.safestring import mark_safe
+from django.urls import path
 
 
 class CaseTestInline(admin.TabularInline):
@@ -70,6 +75,7 @@ class SubmissionsAdmin(admin.ModelAdmin):
 class UserAdmin(BaseUserAdmin):
     list_display = (
         "username",
+        "profile_link",
         "first_name",
         "last_name",
         "email",
@@ -84,6 +90,23 @@ class UserAdmin(BaseUserAdmin):
         "email",
     )
     list_filter = BaseUserAdmin.list_filter + ("last_login",)
+
+    def profile_link(self, obj):
+        return mark_safe("<a href='/admin/auth/user/profile/%s/'>Profile</a>" % obj.id)
+
+    profile_link.short_description = "Profile"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path("profile/<int:user_id>/", self.profile_view, name="profile_view"),
+        ]
+        return my_urls + urls
+
+    def profile_view(self, request, user_id):
+        profile = get_user_profile(user_id)
+
+        return render(request, "admin/profile.html", {"profile": profile})
 
     # def get_xp(self, obj):
     #     return obj.perfil.xp
