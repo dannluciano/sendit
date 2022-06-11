@@ -1,0 +1,88 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+{% load l10n %}
+{% load humanize %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">
+        {% trans 'Home' %}
+    </a>
+    <a href="javascript:history.back()">
+        {% trans 'Back' %}
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Perfil</h1>
+
+{{profile.user}}
+
+<h2>
+    {% trans 'Submissions' %}
+</h2>
+
+<details>
+    <table>
+        <tr>
+            <th>
+
+            </th>
+        </tr>
+        {% for sub in profile.submissions %}
+        <tr>
+            <td>
+                <a href="{% url 'admin:core_submission_change' sub.id %}">
+                    {{sub.uuid}}
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin:core_question_change' sub.question.id %}">
+                    {{sub.question.title}}
+                </a>
+            </td>
+            <td>
+                {{sub.language}}
+            </td>
+            <td>
+                {{sub.status}}
+            </td>
+            <td>
+                {{sub.created_at}}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</details>
+
+
+<h2>
+    {% trans 'Log Records' %}
+</h2>
+
+<h3>
+    {% trans 'Total Time' %}
+
+    {{ profile.total_time | naturaltime }}
+</h3>
+
+<details>
+    <table>
+
+        <tbody>
+            {% for log in profile.logrecords %}
+            <tr>
+                <td>
+                    {{log.check_in}}
+                </td>
+                <td>
+                    {{log.duration}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</details>
+
+{% endblock content %}

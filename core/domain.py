@@ -1,7 +1,9 @@
-from django.db.models import Q
+from django.db.models import Q, F, Sum
+from django.contrib.auth.models import User
 
 from .utils import raw_sql
 from .models import Submission, Question
+from statistics.models import LogRecord
 
 
 def get_best_users_of_week():
@@ -28,3 +30,19 @@ def random_unresolved_question(user):
         Q(visible=False) | Q(id__in=questions_ok)
     ).order_by("?")[0]
     return rand_question
+
+
+def get_user_profile(user_id):
+    user = User.objects.get(id=user_id)
+    submissions = Submission.objects.filter(author=user).order_by("-timestamp")
+    logrecords = LogRecord.objects.filter(user=user.username)
+    total_time = logrecords.aggregate(total_time=Sum(F("check_out") - F("check_in")))[
+        "total_time"
+    ]
+
+    return {
+        "user": user,
+        "submissions": submissions,
+        "logrecords": logrecords,
+        "total_time": total_time,
+    }
