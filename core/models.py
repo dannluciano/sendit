@@ -60,13 +60,6 @@ class UserData:
         return f"{fn} {ln}"
 
     def total_time_on(self):
-        # SQL = """
-        # SELECT SUM(check_out - check_in) as time FROM statistics_logrecord WHERE statistics_logrecord.user = %s
-        # """
-        # username = self.username()
-        # result = raw_sql(SQL, [username])
-        # deltatime = result[0].time
-        # return deltatime
         return self.cache[0].time
 
     def avatar_url(self):

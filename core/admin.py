@@ -92,7 +92,9 @@ class UserAdmin(BaseUserAdmin):
     list_filter = BaseUserAdmin.list_filter + ("last_login",)
 
     def profile_link(self, obj):
-        return mark_safe("<a href='/admin/auth/user/profile/%s/'>Profile</a>" % obj.id)
+        return mark_safe(
+            "<a class='button' href='/admin/auth/user/profile/%s/'>Profile</a>" % obj.id
+        )
 
     profile_link.short_description = "Profile"
 
@@ -105,8 +107,12 @@ class UserAdmin(BaseUserAdmin):
 
     def profile_view(self, request, user_id):
         profile = get_user_profile(user_id)
+        context = dict(
+            self.admin_site.each_context(request),
+            profile=profile,
+        )
 
-        return render(request, "admin/profile.html", {"profile": profile})
+        return render(request, "admin/profile.html", context)
 
     # def get_xp(self, obj):
     #     return obj.perfil.xp

@@ -3,86 +3,171 @@
 {% load l10n %}
 {% load humanize %}
 
-{% block breadcrumbs %}
-<div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">
-        {% trans 'Home' %}
-    </a>
-    <a href="javascript:history.back()">
-        {% trans 'Back' %}
-    </a>
-</div>
-{% endblock %}
-
 {% block content %}
-<h1>Perfil</h1>
 
-{{profile.user}}
+<h1>Perfil - {{profile.user.username}}</h1>
 
-<h2>
-    {% trans 'Submissions' %}
-</h2>
-
-<details>
-    <table>
-        <tr>
-            <th>
-
-            </th>
-        </tr>
-        {% for sub in profile.submissions %}
-        <tr>
-            <td>
-                <a href="{% url 'admin:core_submission_change' sub.id %}">
-                    {{sub.uuid}}
-                </a>
-            </td>
-            <td>
-                <a href="{% url 'admin:core_question_change' sub.question.id %}">
-                    {{sub.question.title}}
-                </a>
-            </td>
-            <td>
-                {{sub.language}}
-            </td>
-            <td>
-                {{sub.status}}
-            </td>
-            <td>
-                {{sub.created_at}}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-</details>
-
-
-<h2>
-    {% trans 'Log Records' %}
-</h2>
-
-<h3>
-    {% trans 'Total Time' %}
-
-    {{ profile.total_time | naturaltime }}
-</h3>
-
-<details>
-    <table>
-
+<div class="results">
+    <table style="width: 100%;">
+        <thead>
+            <tr>
+                <th>
+                    {% trans "Username" %}
+                </th>
+                <th>
+                    {% trans "Name" %}
+                </th>
+                <th>
+                    {% trans "Level" %}
+                </th>
+                <th>
+                    {% trans "XP" %}
+                </th>
+                <th>
+                    {% trans "Ok" %}
+                </th>
+                <th>
+                    {% trans "Not Ok" %}
+                </th>
+                <th>
+                    {% trans "Total Time On" %}
+                </th>
+                <th>
+                    {% trans "Groups" %}
+                </th>
+            </tr>
+        </thead>
         <tbody>
-            {% for log in profile.logrecords %}
             <tr>
                 <td>
-                    {{log.check_in}}
+                    {{profile.user.username}}
                 </td>
                 <td>
-                    {{log.duration}}
+                    {{profile.user.full_name}}
+                </td>
+                <td>
+                    {{profile.user.level}}
+                </td>
+                <td>
+                    {{profile.user.xp}}
+                </td>
+                <td>
+                    {{profile.user.ok}}
+                </td>
+                <td>
+                    {{profile.user.not_ok}}
+                </td>
+                <td>
+                    {{profile.total_time | naturaltime}}
+                </td>
+                <td>
+                    {{profile.groups}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        {% trans 'Submissions' %}
+    </h2>
+
+    <details>
+        <summary>
+            {% trans "More Info" %}
+        </summary>
+        <table style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>
+                        {% trans "UUID" %}
+                    </th>
+                    <th class="sortable">
+                        {% trans "Title" %}
+                    </th>
+                    <th>
+                        {% trans "Language" %}
+                    </th>
+                    <th>
+                        {% trans "Status" %}
+                    </th>
+                    <th>
+                        {% trans "Created At" %}
+                    </th>
+                </tr>
+            </thead>
+            {% for sub in profile.submissions %}
+            <tr>
+                <td>
+                    <a href="{% url 'admin:core_submission_change' sub.id %}">
+                        {{sub.uuid}}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'admin:core_question_change' sub.question.id %}">
+                        {{sub.question.title}}
+                    </a>
+                </td>
+                <td>
+                    {{sub.language}}
+                </td>
+                <td>
+                    {{sub.status}}
+                </td>
+                <td>
+                    {{sub.timestamp}}
                 </td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-</details>
+        </table>
+    </details>
+
+
+    <h2>
+        {% trans 'Log Records' %}
+    </h2>
+
+    <h3>
+        {% trans 'Total Time' %}
+
+        {{ profile.total_time | naturaltime }}
+    </h3>
+
+    <details>
+        <summary>
+            {% trans "More Info" %}
+        </summary>
+        <table style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>
+                        {% trans "Check In" %}
+                    </th>
+                    <th>
+                        {% trans "Check Out" %}
+                    </th>
+                    <th>
+                        {% trans "Duration" %}
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for log in profile.logrecords %}
+                <tr>
+                    <td>
+                        {{log.check_in}}
+                    </td>
+                    <td>
+                        {{log.check_out}}
+                    </td>
+                    <td>
+                        {{log.duration}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </details>
+</div>
 
 {% endblock content %}
