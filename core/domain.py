@@ -1,8 +1,10 @@
+import humanize
+
 from django.db.models import Q, F, Sum
 from django.contrib.auth.models import User
 
 from .utils import raw_sql
-from .models import Submission, Question
+from .models import Submission, Question, UserData
 from statistics.models import LogRecord
 
 
@@ -32,17 +34,26 @@ def random_unresolved_question(user):
     return rand_question
 
 
+from django.conf import settings
+
+
 def get_user_profile(user_id):
     user = User.objects.get(id=user_id)
+    user_data = UserData(user.id, user.username)
     submissions = Submission.objects.filter(author=user).order_by("-timestamp")
-    logrecords = LogRecord.objects.filter(user=user.username)
-    total_time = logrecords.aggregate(total_time=Sum(F("check_out") - F("check_in")))[
-        "total_time"
-    ]
+    logrecords = LogRecord.objects.filter(user=user.username).order_by("-check_in")
+    groups = user.groups.values_list("name", flat=True)
+
+    # humanize.i18n.activate(
+    #     "pt_BR",
+    # )
+    total_time_str = humanize.precisedelta(user_data.total_time_on())
+    groups_str = "".join([f"{g}, " for g in groups])
 
     return {
-        "user": user,
+        "user": user_data,
         "submissions": submissions,
         "logrecords": logrecords,
-        "total_time": total_time,
+        "total_time": total_time_str,
+        "groups": groups_str,
     }
