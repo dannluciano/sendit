@@ -1,6 +1,6 @@
-from django.utils import timezone
-from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+from django.utils import timezone
 
 from .models import LogRecord
 
