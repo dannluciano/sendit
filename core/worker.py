@@ -1,4 +1,4 @@
-from .models import Submission, CaseTest
+from .models import CaseTest, Submission
 from .submission_runner import SubmissionRunnerManager
 
 

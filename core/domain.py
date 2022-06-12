@@ -1,11 +1,11 @@
-import humanize
-
-from django.db.models import Q, F, Sum
-from django.contrib.auth.models import User
-
-from .utils import raw_sql
-from .models import Submission, Question, UserData
 from statistics.models import LogRecord
+
+import humanize
+from django.contrib.auth.models import User
+from django.db.models import F, Q, Sum
+
+from .models import Question, Submission, UserData
+from .utils import raw_sql
 
 
 def get_best_users_of_week():

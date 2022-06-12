@@ -1,12 +1,14 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.dispatch import receiver
-from django.urls import reverse
-from ckeditor.fields import RichTextField
-from .utils import raw_sql
 import math
 import random
 import uuid
+
+from ckeditor.fields import RichTextField
+from django.contrib.auth.models import User
+from django.db import models
+from django.dispatch import receiver
+from django.urls import reverse
+
+from .utils import raw_sql
 
 User._meta.get_field("email")._unique = True
 
