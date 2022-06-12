@@ -1,0 +1,4 @@
+black
+pylint
+pylint_django
+isort
