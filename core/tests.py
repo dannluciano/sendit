@@ -1,12 +1,12 @@
-from .submission_runner import Python_SubmissionRunner
-from .submission_runner import JAVA_SubmissionRunner
-from .submission_runner import C_SubmissionRunner
-from .submission_runner import JavaScript_SubmissionRunner
-from django.test import TestCase, tag
-from django.contrib.auth.models import User
-from .models import Question, Submission
-
 import logging
+
+from django.contrib.auth.models import User
+from django.test import TestCase, tag
+
+from .models import Question, Submission
+from .submission_runner import (C_SubmissionRunner, JAVA_SubmissionRunner,
+                                JavaScript_SubmissionRunner,
+                                Python_SubmissionRunner)
 
 logging.disable(logging.CRITICAL)
 

@@ -1,5 +1,6 @@
-from django.db import connection
 from collections import namedtuple
+
+from django.db import connection
 
 
 def raw_sql(sql, params=[]):

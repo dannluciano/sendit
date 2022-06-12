@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-from django.utils.safestring import mark_safe
 from django.urls import path
+from django.utils.safestring import mark_safe
 
 from core.domain import get_user_profile
-from core.models import Question, Submission, CaseTest, Tags
+from core.models import CaseTest, Question, Submission, Tags
 
 
 class CaseTestInline(admin.TabularInline):

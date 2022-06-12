@@ -1,24 +1,22 @@
-from django.http import JsonResponse
+import logging
 from datetime import timedelta
+from statistics.models import LeaderboardView
+
+import django_rq
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from django.views.decorators.http import require_POST
-from django.utils import timezone
+from django.contrib.auth.models import Group, User
 from django.db.models import Q
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
+from django.views.decorators.http import require_POST
+
+from .domain import get_best_users_of_week, random_unresolved_question
 from .forms import SignUpForm
 from .models import Question, Submission, Tags, UserData
-from statistics.models import LeaderboardView
 from .worker import run_submission_runner
-import django_rq
-import logging
-
-from .domain import get_best_users_of_week
-from .domain import random_unresolved_question
-
 
 log = logging.getLogger(__name__)
 log.setLevel(20)
