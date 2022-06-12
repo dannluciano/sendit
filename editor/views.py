@@ -1,18 +1,19 @@
-import uuid
-import django_rq
 import json
 import logging
+import uuid
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import get_list_or_404, get_object_or_404, redirect, render
-from django.http import JsonResponse
-from django.forms.models import model_to_dict
+import django_rq
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.core.exceptions import ObjectDoesNotExist
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect,
+                              render)
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
-from .worker import run_submission_from_editor
 from .models import FileCode, Runner
+from .worker import run_submission_from_editor
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)

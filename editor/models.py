@@ -1,8 +1,10 @@
 import uuid
-from django.db import models
+
 from django.contrib.auth.models import User
-from core.models import Submission
+from django.db import models
 from django.urls import reverse
+
+from core.models import Submission
 
 
 class Runner(models.Model):
