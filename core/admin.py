@@ -1,13 +1,13 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
-from core.domain import get_user_profile
-from .models import Question, Submission, CaseTest, Tags
+from django.shortcuts import redirect, render
 from django.utils.safestring import mark_safe
 from django.urls import path
+
+from core.domain import get_user_profile
+from core.models import Question, Submission, CaseTest, Tags
 
 
 class CaseTestInline(admin.TabularInline):
@@ -106,15 +106,16 @@ class UserAdmin(BaseUserAdmin):
         ]
         return my_urls + urls
 
-    @login_required
     def profile_view(self, request, user_id):
-        profile = get_user_profile(user_id)
-        context = dict(
-            self.admin_site.each_context(request),
-            profile=profile,
-        )
+        if request.user.is_staff:
+            profile = get_user_profile(user_id)
+            context = dict(
+                self.admin_site.each_context(request),
+                profile=profile,
+            )
 
-        return render(request, "admin/profile.html", context)
+            return render(request, "admin/profile.html", context)
+        return redirect(settings.LOGIN_URL)
 
 
 admin.site.register(Question, QuestionAdmin)
