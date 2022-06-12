@@ -1,5 +1,6 @@
-from .domain import set_last_activity
 from django.conf import settings
+
+from .domain import set_last_activity
 
 
 class LastActivityMiddleware:

@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import LeaderboardView, StatisticsView, SubmissionSummaryView, LogRecord
+from .models import (LeaderboardView, LogRecord, StatisticsView,
+                     SubmissionSummaryView)
 
 
 class ViewAdmin(admin.ModelAdmin):

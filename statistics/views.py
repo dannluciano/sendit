@@ -1,5 +1,5 @@
-from session_security.views import PingView
 from django.shortcuts import render
+from session_security.views import PingView
 
 from .domain import set_last_activity
 
