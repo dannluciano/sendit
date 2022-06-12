@@ -10,7 +10,7 @@
 
 <section class="section box has-text-centered">
     <h1 class="title animated {{ animacao }}">
-        <a href="{% url 'core:get-question' submission.question.id %}">
+        <a href="{% url 'core:question_detail' submission.question.id %}">
             {{ submission.question.title }}
         </a>
     </h1>
@@ -31,7 +31,7 @@
         <a href="{% url 'core:home' %}"> Voltar para lista de questões</a>
     </p>
     {% else %}
-    <a class="button" href="{% url 'core:get-question' submission.question.id %}">Tentar Novamente</a>
+    <a class="button" href="{% url 'core:question_detail' submission.question.id %}">Tentar Novamente</a>
     {% endifequal %}
 </section>
 
