@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from core.domain import get_user_profile
@@ -105,6 +106,7 @@ class UserAdmin(BaseUserAdmin):
         ]
         return my_urls + urls
 
+    @login_required
     def profile_view(self, request, user_id):
         profile = get_user_profile(user_id)
         context = dict(
@@ -113,17 +115,6 @@ class UserAdmin(BaseUserAdmin):
         )
 
         return render(request, "admin/profile.html", context)
-
-    # def get_xp(self, obj):
-    #     return obj.perfil.xp
-    # get_xp.short_description = 'XP'
-    # get_xp.admin_order_field = 'perfil__xp'
-
-    # def get_groups(self, obj):
-    #     short_name = lambda n: str(n)
-    #     groups = [short_name(group) for group in obj.groups.all()]
-    #     return ', '.join(groups)
-    # get_groups.short_description = 'Groups'
 
 
 admin.site.register(Question, QuestionAdmin)
