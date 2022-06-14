@@ -58,6 +58,23 @@ class QuestionAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
+def compare_submissions(modeladmin, request, queryset):
+    context = dict(
+        modeladmin.admin_site.each_context(request),
+        submissions=queryset,
+        submissions_size=len(queryset),
+    )
+
+    return render(
+        request,
+        "admin/diff.html",
+        context,
+    )
+
+
+compare_submissions.short_description = "Comparar Submissões"
+
+
 class SubmissionsAdmin(admin.ModelAdmin):
     list_display = (
         "id",
@@ -71,6 +88,7 @@ class SubmissionsAdmin(admin.ModelAdmin):
     list_display_links = ("id", "status")
     list_filter = ("status", "language")
     search_fields = ["author__username", "author__email", "question__title"]
+    actions = (compare_submissions,)
 
 
 class UserAdmin(BaseUserAdmin):
@@ -94,10 +112,10 @@ class UserAdmin(BaseUserAdmin):
 
     def profile_link(self, obj):
         return mark_safe(
-            "<a class='button' href='/admin/auth/user/profile/%s/'>Profile</a>" % obj.id
+            "<a class='button' href='/admin/auth/user/profile/%s/'>Perfil</a>" % obj.id
         )
 
-    profile_link.short_description = "Profile"
+    profile_link.short_description = "Perfil"
 
     def get_urls(self):
         urls = super().get_urls()
