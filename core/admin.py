@@ -95,7 +95,8 @@ class SubmissionsAdmin(admin.ModelAdmin):
         "status",
         "language",
         "timestamp",
-        "question__tags"
+        "question__tags",
+        "author__groups",
     )
 
     search_fields = (
