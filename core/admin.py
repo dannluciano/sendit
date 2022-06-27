@@ -76,6 +76,7 @@ compare_submissions.short_description = "Comparar Submissões"
 
 
 class SubmissionsAdmin(admin.ModelAdmin):
+
     list_display = (
         "id",
         "uuid",
@@ -85,10 +86,20 @@ class SubmissionsAdmin(admin.ModelAdmin):
         "language",
         "timestamp",
     )
+
     list_display_links = ("id", "status")
-    list_filter = ("status", "language")
-    search_fields = ["author__username", "author__email", "question__title"]
-    actions = (compare_submissions,)
+
+    list_filter = (
+        "status",
+        "language",
+        "timestamp",
+    )
+
+    search_fields = (
+        "author__username",
+        "author__email",
+        "question__title",
+    )
 
 
 class UserAdmin(BaseUserAdmin):
