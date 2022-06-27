@@ -10,9 +10,21 @@
 
 {% block content %}
 
-<div style="display: flex">
-    {% for i in submissions %}
-    <pre style="display: flex; margin-right: 1em"><code>{{ i.code }}</code></pre>
+<div style="display: flex;">
+    {% for s in submissions %}
+    <div>
+        <p>
+            <a href="/admin/auth/user/profile/{{s.author.id}}/">
+                {{s.author}} "{{s.author.email}}"
+            </a>
+        </p>
+        <div>
+            {{s.timestamp}} - {{s.status}}
+        </div>
+        <div>
+            <pre style="display: flex; margin-right: 1em"><code>{{ s.code }}</code></pre>
+        </div>
+    </div>
     {% endfor %}
 </div>
 
