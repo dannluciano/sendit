@@ -59,6 +59,8 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 def compare_submissions(modeladmin, request, queryset):
+    queryset = queryset.order_by('timestamp')
+    
     context = dict(
         modeladmin.admin_site.each_context(request),
         submissions=queryset,
@@ -100,6 +102,10 @@ class SubmissionsAdmin(admin.ModelAdmin):
         "author__username",
         "author__email",
         "question__title",
+    )
+
+    actions = (
+        compare_submissions,
     )
 
 
