@@ -90,6 +90,22 @@
     <script src="{% static 'js/snow.js' %}"></script>
     {% endcomment %}
 
+    <script>
+        var js = document.createElement("script");
+        js.src = "https://unpkg.com/cursor-effects@latest/dist/browser.js";
+        js.setAttribute("async", "");
+        js.onload = function () {
+            const now = new Date()
+            if (now.getMonth() === 5) {
+                new cursoreffects.rainbowCursor({})
+            }
+            if (now.getMonth() === 11) {
+                new cursoreffects.fairyDustCursor({})
+            }
+        }
+        document.head.appendChild(js);
+    </script>
+
     <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
     <script src="{% static 'js/clipboard.min.js' %}"></script>
     <script src="{% static 'js/bulma.js' %}"></script>
