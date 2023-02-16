@@ -4,8 +4,8 @@
 ```./setup.sh```
 2.  Rode o servidor web
     em modo de desenvolvimento:
-```pipenv run dev```
+```DEBUG=True forego start```
     em modo de produção:
-```pipenv run start```
+```forego start```
 3. Abra o navegador na url 
-```localhost:5100/```
+```localhost:8000/```
