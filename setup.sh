@@ -40,6 +40,10 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         brew list python@3 &>/dev/null || brew install python@3;
         brew list postgresql &>/dev/null || brew install postgresql;
         brew list redis &>/dev/null || brew install redis;
+        brew list forego &>/dev/null || brew install forego;
+        brew services
+        brew services start postgresql
+        brew services start redis
     fi
 
     echo "==> Creating Database if not exists"
@@ -49,11 +53,12 @@ else
     echo "==> Operating System not supported!"
 fi
 
-pipenv --venv &>/dev/null
-if [ $? -eq 1 ]; then
+if [ ! -d "env"  ]; then
     echo "==> Creating Virtualenv"
-    pipenv --python $PYTHON_VERSION
-    pipenv install --dev
+    python3 -m venv --prompt "sendit" env
+    source env/bin/activate
+    python3 -m pip install -r requirements.dev.txt
+    python3 -m pip install -r requirements.txt
 fi
 
 if [ ! -e "SendIT/settings_local.py" ]; then
@@ -62,10 +67,10 @@ if [ ! -e "SendIT/settings_local.py" ]; then
 fi    
 
 echo "==> Running check, migrate, loaddata and collectstatic"
-pipenv run python manage.py check
-pipenv run python manage.py migrate --noinput --skip-checks
-pipenv run python manage.py loaddata db_core --skip-checks
-pipenv run python manage.py collectstatic --noinput
+python manage.py check
+python manage.py migrate --noinput --skip-checks
+python manage.py loaddata db_core --skip-checks
+python manage.py collectstatic --noinput
 
 
 exists_none_users="
@@ -75,13 +80,13 @@ if User.objects.count()==0:
 else:
     exit(1);
 "
-printf "$exists_none_users" | pipenv run python manage.py shell
+printf "$exists_none_users" | python manage.py shell
 
 if [ $? -eq 0 ]; then
     echo "==> Creating Superuser"
-    pipenv run python manage.py createsuperuser --skip-checks
+    python manage.py createsuperuser --skip-checks
 fi
 
 mkdir -p temp
 echo "==> Finished"
-echo "Run 'pipenv run start' to see the magic"
+echo "Run 'forego start' to see the magic"
