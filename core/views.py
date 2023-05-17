@@ -3,10 +3,9 @@ from datetime import timedelta
 from statistics.models import LeaderboardView
 
 import django_rq
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -119,7 +118,7 @@ def completed_issues(request):
             "user": user,
             "ok_submissions": ok_submissions,
             "tags": tags,
-            "best_users_of_week": get_best_users_of_week,
+            "best_users_of_week": best_users_of_week,
         },
     )
 
@@ -217,7 +216,7 @@ def submissions_list(request):
 def submission_detail(request, submission_uuid):
     submission = get_object_or_404(Submission, uuid=submission_uuid)
 
-    if submission.author != request.user and request.user.is_staff == False:
+    if submission.author != request.user and request.user.is_staff is False:
         return HttpResponseRedirect("/home/")
 
     if submission.is_waiting:
