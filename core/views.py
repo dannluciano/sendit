@@ -153,7 +153,7 @@ def create_submission(request, question_id):
     )
     if ok_submission:
         log.info("Already exists OK Submission")
-        return HttpResponseRedirect("/completed-issues/")
+        return HttpResponseRedirect(question.get_absolute_url())
 
     time_threshold = timezone.now() - timedelta(seconds=15)
     last_submissions = Submission.objects.filter(
