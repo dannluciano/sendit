@@ -1,9 +1,7 @@
 import logging
 
-from django.contrib.auth.models import User
 from django.test import TestCase, tag
 
-from .models import Question, Submission
 from .submission_runner import (C_SubmissionRunner, JAVA_SubmissionRunner,
                                 JavaScript_SubmissionRunner,
                                 Python_SubmissionRunner)
@@ -11,7 +9,7 @@ from .submission_runner import (C_SubmissionRunner, JAVA_SubmissionRunner,
 logging.disable(logging.CRITICAL)
 
 
-@tag("unit")
+@tag("c")
 class C_SubmissionWithoutExpectedOutputTestCase(TestCase):
     def test_run_ok_submission(self):
         work_dir = "tests/c/0/1"
