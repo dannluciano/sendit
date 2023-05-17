@@ -85,7 +85,10 @@ def home(request):
 @login_required
 def random_question(request):
     q = random_unresolved_question(request.user)
-    return HttpResponseRedirect(f"/questions/{q.id}")
+    if q:
+        return HttpResponseRedirect(f"/questions/{q.id}")
+    else:
+        return HttpResponseRedirect("/home/")
 
 
 @login_required

@@ -2,7 +2,7 @@ from statistics.models import LogRecord
 
 import humanize
 from django.contrib.auth.models import User
-from django.db.models import F, Q, Sum
+from django.db.models import Q
 
 from .models import Question, Submission, UserData
 from .utils import raw_sql
@@ -28,13 +28,13 @@ def random_unresolved_question(user):
     questions_ok = Submission.objects.filter(author=user, status="OK").values_list(
         "question_id"
     )
-    rand_question = Question.objects.exclude(
+    rand_questions = Question.objects.exclude(
         Q(visible=False) | Q(id__in=questions_ok)
-    ).order_by("?")[0]
-    return rand_question
-
-
-from django.conf import settings
+    ).order_by("?")
+    if rand_questions:
+        return rand_questions[0]
+    else:
+        return None
 
 
 def get_user_profile(user_id):
