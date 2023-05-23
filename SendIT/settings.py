@@ -219,7 +219,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.mailgun.org"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "postmaster@mg.dannluciano.com.br"
-EMAIL_HOST_PASSWORD = "28eeed38798d0a48b0f9b071c8465945-77751bfc-3d966b1a"
+EMAIL_HOST_PASSWORD = "284d8fdc10591b99cce02030c0985206-48d7d97c-40420720"
 EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 10
 DEFAULT_FROM_EMAIL = "dannluciano@ifpi.edu.br"
@@ -228,5 +228,5 @@ DEFAULT_FROM_EMAIL = "dannluciano@ifpi.edu.br"
 # SETTINGS LOCAL
 try:
     exec(open(os.path.join(BASE_DIR, "SendIT/settings_local.py")).read())
-except IOError as e:
+except IOError:
     pass
