@@ -63,7 +63,7 @@ def home(request):
         if tag != "all":
             questions = questions.filter(tags__tag__icontains=tag)
 
-    questions = questions.order_by("xp")[:5]
+    questions = questions.order_by("xp")[:10]
 
     tags = Tags.objects.all()
 
