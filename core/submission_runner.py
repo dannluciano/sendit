@@ -2,7 +2,6 @@ import io
 import logging
 import logging.handlers
 import os
-import shlex
 import subprocess
 
 tmp_dir = "temp"
@@ -46,7 +45,7 @@ class SubmissionRunner(object):
         self.compiler_command = "echo compiler"
         self.executable_command = "echo executable"
         self.source_file_name = "source.txt"
-        self.timeout = 5
+        self.timeout = 1
 
         self.work_dir = f"{tmp_dir}/{work_dir}"
         self.input_content = input_content
@@ -89,9 +88,9 @@ class SubmissionRunner(object):
                 stderr=subprocess.STDOUT,
                 input=input_,
             )
-            self.last_output = result.stdout.decode("utf-8")
+            self.last_output = result.stdout[0:1000].decode("utf-8")
         except subprocess.TimeoutExpired as error:
-            self.last_output = error.stdout
+            self.last_output = error.stdout[0:1000]
             raise SubmissionTimeoutError("TimeoutError")
 
     def run_compiler(self):
