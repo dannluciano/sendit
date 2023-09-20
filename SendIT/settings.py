@@ -91,10 +91,10 @@ WSGI_APPLICATION = "SendIT.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "senditdb",
+        "NAME": "senditdb_15",
         "USER": "postgres",
-        "PASSWORD": "186ea09d63b6036f7de823fbbed929aa",
-        "HOST": "dokku-postgres-senditdb",
+        "PASSWORD": "94aadb0e92d7c45c6d41b1df5c6c272e",
+        "HOST": "dokku-postgres-senditdb-15",
     }
 }
 
