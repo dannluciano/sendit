@@ -27,6 +27,26 @@
 
                 <ul class="card-stats-list">
                     <li class="card-stats-item">
+                        <span class="card-stats-key">Conquistas</span>
+                        <span class="card-stats-val">
+                            {% for achievement in achievements %}
+                            <picture class="is-inline-flex">
+                                <img 
+                                    src="{{achievement.badge.url}}" 
+                                    alt="{{achievement.name}} - {{achievement.xp}}" 
+                                    class="image is-32x32 is-cover is-rounded"
+                                    title="{{achievement}}"
+                                >
+                            </picture>
+                            {% endfor %}    
+                        </span>
+                    </li>
+                
+                    
+                </ul>
+
+                <ul class="card-stats-list">
+                    <li class="card-stats-item">
                         <span class="card-stats-key">Level</span>
                         <span class="card-stats-val">{{ user.level }}</span>
                     </li>

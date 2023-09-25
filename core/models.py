@@ -1,12 +1,10 @@
-import math
 import random
 import uuid
 
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.db import models
-from django.dispatch import receiver
-from django.urls import reverse
+from django.db.models import Sum
 
 from .utils import raw_sql
 
@@ -47,7 +45,8 @@ class UserData:
         return self.cache[0].level
 
     def xp(self):
-        return self.cache[0].xp
+        axp = Achievement.objects.filter(users=self.id).aggregate(Sum("xp"))
+        return self.cache[0].xp + axp["xp__sum"]
 
     def ok(self):
         return self.cache[0].ok
@@ -243,3 +242,28 @@ class Submission(models.Model):
 
     class Meta:
         ordering = ["-id"]
+
+
+class AchievementPicture(models.Model):
+    bytes = models.TextField()
+    filename = models.CharField(max_length=255)
+    mimetype = models.CharField(max_length=50)
+
+
+class Achievement(models.Model):
+    name = models.CharField(
+        max_length=255
+    )
+    badge = models.ImageField(
+        upload_to='core.AchievementPicture/bytes/filename/mimetype'
+    )
+    xp = models.IntegerField(
+        default=100
+    )
+    users = models.ManyToManyField(
+        to=User, 
+        related_name="achievements"
+    )
+
+    def __str__(self):
+        return f"{self.name}: {self.xp} XP"

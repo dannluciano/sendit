@@ -1,8 +1,7 @@
-from editor.views import editor
 from django.conf import settings
-from django.urls import include, path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.urls import include, path
 
 admin.site.site_header = "SendIt Administração"
 admin.site.site_title = "SendIt"
@@ -32,6 +31,7 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path("uploads/", include('db_file_storage.urls')),
 ]
 
 if settings.DEBUG:

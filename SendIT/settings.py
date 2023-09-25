@@ -133,6 +133,12 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
+MEDIA_URL = "/uploads/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+
+DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
+
 LOGIN_URL = "/"
 
 LOGIN_REDIRECT_URL = "/home/"

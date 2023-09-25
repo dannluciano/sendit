@@ -7,7 +7,7 @@ from django.urls import path
 from django.utils.safestring import mark_safe
 
 from core.domain import get_user_profile
-from core.models import CaseTest, Question, Submission, Tags
+from core.models import Achievement, CaseTest, Question, Submission, Tags
 
 
 class CaseTestInline(admin.TabularInline):
@@ -155,8 +155,40 @@ class UserAdmin(BaseUserAdmin):
         return redirect(settings.LOGIN_URL)
 
 
+class AchievementAdmin(admin.ModelAdmin):
+    list_display = (
+        'name', 
+        'badge_tag', 
+        'xp',
+    )
+
+    readonly_fields = (
+        "badge_tag",
+    )
+
+    fieldsets = (
+        (None, {
+            "fields": (
+                "name", 
+                "badge",
+                "badge_tag", 
+                "xp",
+                "users",
+            )}),
+    )
+
+    filter_horizontal = ('users', )
+
+    def badge_tag(self, obj):
+        return mark_safe(
+            "<img class='image' src='%s' width='32px' height='32px'/>" % obj.badge.url
+        )
+
+    badge_tag.short_description = "Badge Image"
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissionsAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Tags)
+admin.site.register(Achievement, AchievementAdmin)
