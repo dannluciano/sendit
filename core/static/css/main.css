@@ -54,6 +54,20 @@
     color: var(--fg);
 }
 
+[data-theme=auto] {
+    --bg: var(--white);
+    --fg: var(--black);
+    --red: var(--red-ligth);
+    --orange: var(--orange-ligth);
+    --yellow: var(--yellow-ligth);
+    --green: var(--green-ligth);
+    --blue: var(--blue-ligth);
+    --purple: var(--purple-ligth);
+    --cyan: var(--cyan-ligth);
+    background-color: var(--bg) !important;
+    color: var(--fg);
+}
+
 html {
     margin: 0;
     font-size: 16px;
