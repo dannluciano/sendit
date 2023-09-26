@@ -16,7 +16,7 @@ function darkxlight () {
       break
   }
   localStorage.setItem('theme', element.dataset.theme)
-  setEditorTheme()
+  // setEditorTheme()
 }
 
 jQuery(document).ready(function ($) {
