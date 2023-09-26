@@ -45,7 +45,7 @@ class UserData:
         return self.cache[0].level
 
     def xp(self):
-        axp = Achievement.objects.filter(users=self.id).aggregate(Sum("xp"))
+        axp = Achievement.objects.filter(users=self.id).aggregate(Sum("xp")) or 0
         return self.cache[0].xp + axp["xp__sum"]
 
     def ok(self):
