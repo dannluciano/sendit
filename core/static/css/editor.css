@@ -32,3 +32,5 @@
 .is-loading {
     position: relative;
 }
+
+.debug {width: .8em;}

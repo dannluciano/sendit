@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     java: 'class Principal {\n    public static void main(String[] args) {\n        System.out.println("Ola Mundo");\n    }\n}',
     javascript: 'console.log("Ola Mundo")',
     python: 'print("Ola Mundo")',
-    pythonwasm: 'print("Hello world")\nname = input()\nprint(name)'
+    pythonwasm: 'print("Ola Mundo")'
   }
 
   const languagesConfig = {
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     theme: 'solarized',
     viewportMargin: Infinity,
     matchBrackets: true,
+    gutters: ["CodeMirror-linenumbers", "debug"]
   })
 
   const debugButton = document.getElementById('debug-button')
@@ -74,7 +75,9 @@ document.addEventListener('DOMContentLoaded', function () {
         debugButton.classList.remove('is-hidden');
       });
     } else {
-      debugButton.classList.add('is-hidden');
+      if (debugButton){
+        debugButton.classList.add('is-hidden');
+      }
     }
   }
 
