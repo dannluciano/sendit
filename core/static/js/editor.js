@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (language === "pythonwasm") {
       setupPyodide().then(function (pyodide) {
         pythonInstance = pyodide;
+        inputField.disabled = true;
       });
     }
   }
