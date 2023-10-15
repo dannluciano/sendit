@@ -1,13 +1,16 @@
 /* eslint-env browser */
 /* global CodeMirror, Clipboard, setupRunner */
 
+let pythonInstance = null;
+
 document.addEventListener('DOMContentLoaded', function () {
   const languagesMode = {
     c: 'text/x-csrc',
     cplusplus: 'text/x-c++src',
     java: 'text/x-java',
     javascript: 'javascript',
-    python: 'python'
+    python: 'python',
+    pythonwasm: 'python',
   }
 
   const languagesHelloWorld = {
@@ -15,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
     cplusplus: '#include <iostream>\nint main() {\n    std::cout << "Ola Mundo" << std::endl;\n    return 0;\n}',
     java: 'class Principal {\n    public static void main(String[] args) {\n        System.out.println("Ola Mundo");\n    }\n}',
     javascript: 'console.log("Ola Mundo")',
-    python: 'print("Ola Mundo")'
+    python: 'print("Ola Mundo")',
+    pythonwasm: 'print("Hello world")\nname = input()\nprint(name)'
   }
 
   const languagesConfig = {
@@ -33,6 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     python: {
       indentUnit: 2
+    },
+    pythonwasm: {
+      indentUnit: 2
     }
   }
 
@@ -43,7 +50,8 @@ document.addEventListener('DOMContentLoaded', function () {
     lineNumbers: true,
     readOnly: true,
     theme: 'solarized',
-    viewportMargin: Infinity
+    viewportMargin: Infinity,
+    matchBrackets: true,
   })
 
   function setupLanguage (language, force = false) {
@@ -56,6 +64,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       console.log('Changed Language to:' + language + ':' + editor.getOption('mode') +
                 ' Identation: ' + editor.getOption('indentUnit'))
+    }
+    if (language === "pythonwasm") {
+      setupPyodide().then(function (pyodide) {
+        pythonInstance = pyodide;
+      });
     }
   }
 
@@ -148,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!formCode) { return }
 
   formCode.addEventListener('submit', function (event) {
-    if (languageSelector.value === 'null') {
+    if (languageSelector.value === 'null' || languageSelector.value === 'pythonwasm') {
       event.preventDefault()
     }
   })

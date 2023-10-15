@@ -28,6 +28,9 @@
                         <option {% if last_submission.language == 'python' %}selected {% endif %} value="python">
                             Python
                         </option>
+                        <option {% if last_submission.language == 'pythonwasm' %}selected {% endif %} value="pythonwasm">
+                            Python WASM
+                        </option>
                     </select>
                 </span>
             </p>
@@ -93,6 +96,7 @@
 <script src="{% static 'codemirror/mode/clike/clike.js'%}"></script>
 <script src="{% static 'codemirror/mode/javascript/javascript.js'%}"></script>
 <script src="{% static 'codemirror/mode/python/python.js'%}"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
 <script src="{% static 'js/runner.js'%}"></script>
 <script src="{% static 'js/editor.js'%}"></script>
 {% endblock %}
