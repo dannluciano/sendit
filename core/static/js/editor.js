@@ -54,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
     matchBrackets: true,
   })
 
+  const debugButton = document.getElementById('debug-button')
+
   function setupLanguage (language, force = false) {
     if (language !== 'null') {
       editor.setOption('mode', languagesMode[language])
@@ -68,8 +70,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (language === "pythonwasm") {
       setupPyodide().then(function (pyodide) {
         pythonInstance = pyodide;
-        inputField.disabled = true;
+        inputField.disabled = true;        
+        debugButton.classList.remove('is-hidden');
       });
+    } else {
+      debugButton.classList.add('is-hidden');
     }
   }
 
