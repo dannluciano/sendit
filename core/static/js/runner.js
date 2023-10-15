@@ -1,13 +1,22 @@
 /* global fetch */
 
 async function setupPyodide() {
+  clearInput();
+  clearOutptut();
+  if (pythonInstance) {
+    return pythonInstance;
+  }
   startLoading();
   let pyodide = await loadPyodide({
     indexURL: "https://cdn.jsdelivr.net/pyodide/v0.20.0/full/",
     stdin: () => {
-      let result = prompt();
-      appendToInput(result);
-      return result;
+      let input = prompt();
+      appendToInput(input);
+      return input;
+    },
+    stdout: (str) => {
+      appendToOutput(str + "\n");
+      return str;
     },
   });
   stopLoading();
@@ -17,12 +26,8 @@ async function setupPyodide() {
 async function evaluatePython(source) {
   let pyodide = pythonInstance;
   try {
-    await pyodide.runPythonAsync(
-      `import sys;import io;sys.stdout = io.StringIO()`
-    );
     await pyodide.runPythonAsync(source);
-    const stdout = await pyodide.runPythonAsync("sys.stdout.getvalue()");
-    return { status: "OK", output: stdout };
+    return { status: "OK", output: "" };
   } catch (err) {
     console.error(err);
     return { status: "RuntimeError", output: err };
@@ -90,9 +95,6 @@ function setupRunner(editor, languageSelector) {
     runButton.addEventListener("click", function (event) {
       event.preventDefault();
       console.log("Sending code to Runner...");
-      const csrftoken = document.querySelector(
-        "[name=csrfmiddlewaretoken]"
-      ).value;
 
       const code = editor.getValue();
       const lang = languageSelector.value;
@@ -105,12 +107,18 @@ function setupRunner(editor, languageSelector) {
       startLoading();
 
       if (lang === "pythonwasm") {
+        clearInput();
+        clearOutptut();
         evaluatePython(code).then(function (runner) {
           updateUI(runner);
           stopLoading();
         });
         return;
       }
+
+      const csrftoken = document.querySelector(
+        "[name=csrfmiddlewaretoken]"
+      ).value;
 
       const options = {
         method: "POST",
