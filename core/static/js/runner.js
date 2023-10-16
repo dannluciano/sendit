@@ -102,8 +102,7 @@ function runPythonWASM(code) {
   clearInput();
   clearOutptut();
   clearVariables();
-  evaluatePython(code).then(function (runner) {
-    updateUI(runner);
+  evaluatePython(code).then(function (_runner) {
     evaluatePythonVars().then(function (map) {
       addToVariables(map);
     });
@@ -259,9 +258,9 @@ function setupInterval(runnerUUID) {
 function updateUI(runner) {
   const output = document.getElementById("output");
   if (runner.status === "TimeoutError") {
-    output.innerText = runner.status;
+    output.value = runner.status;
   } else {
-    output.innerText = runner.output;
+    output.value = runner.output;
   }
 }
 
