@@ -48,7 +48,7 @@ class SubmissionRunner(object):
         self.timeout = 1
 
         self.work_dir = f"{tmp_dir}/{work_dir}"
-        self.input_content = input_content
+        self.input_content = input_content.replace('\r', '')
         self.expected_output_content = expected_output_content
         self.source_file_content = source_file_content
         self.last_output = ""
