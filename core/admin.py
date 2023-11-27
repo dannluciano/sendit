@@ -57,6 +57,11 @@ class QuestionAdmin(admin.ModelAdmin):
     save_as = True
     save_on_top = True
 
+    class Media:
+        css = {
+            'all': ('css/admin.css', )
+        }
+
 
 def compare_submissions(modeladmin, request, queryset):
     queryset = queryset.order_by('timestamp')
