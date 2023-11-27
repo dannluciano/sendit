@@ -491,3 +491,7 @@ a.navbar-item:hover {
     background-color: #fafafa;
     color: var(--orange) !important;
 }
+
+.monospace {
+    font-family: monospace;
+}
