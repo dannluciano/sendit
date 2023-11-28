@@ -84,12 +84,6 @@
         {% endblock %}
     </section>
 
-    {% comment %}
-    <link rel="stylesheet" href="{% static 'css/snow.css' %}">
-    <div id="snow"></div>
-    <script src="{% static 'js/snow.js' %}"></script>
-    {% endcomment %}
-
     <script>
         var js = document.createElement("script");
         js.src = "https://unpkg.com/cursor-effects@latest/dist/browser.js";
@@ -99,7 +93,7 @@
             if (now.getMonth() === 5) {
                 new cursoreffects.rainbowCursor({})
             }
-            if (now.getMonth() === 11) {
+            if (now.getMonth() <= 10) {
                 new cursoreffects.fairyDustCursor({})
             }
         }
@@ -109,6 +103,12 @@
     <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
     <script src="{% static 'js/clipboard.min.js' %}"></script>
     <script src="{% static 'js/bulma.js' %}"></script>
+
+    {% comment %} 
+    <link rel="stylesheet" href="{% static 'css/snow.css' %}">
+    <div id="snow"></div>
+    <script src="{% static 'js/snow.js' %}"></script> 
+    {% endcomment %}
 
     {% include 'session_security/all.html' %}
     {% block js %}
