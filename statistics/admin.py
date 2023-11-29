@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import (LeaderboardView, LogRecord, StatisticsView,
-                     SubmissionSummaryView)
+from .models import LogRecord
 
 
 class ViewAdmin(admin.ModelAdmin):
@@ -22,33 +21,4 @@ class LogRecordAdmin(ViewAdmin):
     ordering = ["-check_in"]
     search_fields = ("user",)
 
-
-class LeaderboardViewAdmin(ViewAdmin):
-    list_display = ("position", "username", "xp", "level", "group")
-    ordering = ("-xp",)
-
-
-class StatisticsViewAdmin(ViewAdmin):
-    list_display = (
-        "username",
-        "level",
-        "xp",
-        "number_of_submissions_ok",
-        "number_of_submission",
-        "conclusion_rate",
-        "sucess_rate",
-        "sintax_error_rate",
-        "runtime_error_rate",
-        "timeout_error_rate",
-        "diff_error_rate",
-    )
-
-
-class SubmissionSummaryViewAdmin(ViewAdmin):
-    list_display = ("status", "sum")
-
-
 admin.site.register(LogRecord, LogRecordAdmin)
-# admin.site.register(LeaderboardView, LeaderboardViewAdmin)
-# admin.site.register(StatisticsView, StatisticsViewAdmin)
-# admin.site.register(SubmissionSummaryView, SubmissionSummaryViewAdmin)
