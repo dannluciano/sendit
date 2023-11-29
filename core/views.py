@@ -1,6 +1,5 @@
 import logging
 from datetime import timedelta
-from statistics.models import LeaderboardView
 
 import django_rq
 from django.contrib.auth import authenticate, login
@@ -12,7 +11,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from .domain import get_best_users_of_week, random_unresolved_question
+from .domain import get_best_users_of_week, get_leaderboard, random_unresolved_question
 from .forms import SignUpForm
 from .models import Achievement, Question, Submission, Tags, UserData
 from .worker import run_submission_runner
@@ -57,9 +56,7 @@ def home(request):
     questions = Question.objects.exclude(submission__in=submissoes_ok)
     questions = questions.exclude(visible=False)
     questions = questions.prefetch_related("tags")
-    achievements = Achievement.objects.filter(
-        users=request.user
-    )
+    achievements = Achievement.objects.filter(users=request.user)
 
     if "tag" in request.GET:
         tag = request.GET.get("tag")
@@ -180,11 +177,11 @@ def create_submission(request, question_id):
 
 @login_required
 def medal_board(request):
-    users = LeaderboardView.objects.order_by("-xp")
+    achievements = Achievement.objects.all()
+
+    users = get_leaderboard()
 
     current_group = request.GET.get("group", "all")
-    if current_group != "all":
-        users = users.filter(group=current_group)
 
     groups = Group.objects.filter(~Q(name="Staff")).order_by("-name")
 
@@ -196,6 +193,7 @@ def medal_board(request):
             "current_group": current_group,
             "users": users,
             "groups": groups,
+            "achievements": achievements,
         },
     )
 

@@ -57,3 +57,51 @@ def get_user_profile(user_id):
         "total_time": total_time_str,
         "groups": groups_str,
     }
+
+def get_leaderboard():
+    SQL = """
+WITH ACHIEVEMENTS AS (
+	SELECT
+		*
+	FROM
+		core_achievement
+		JOIN core_achievement_users ON (core_achievement.id = core_achievement_users.achievement_id)
+),
+DATA AS (
+	SELECT
+		auth_user.username,
+		coalesce(sum(core_question.xp) FILTER (WHERE status = 'OK') + (
+				SELECT
+					sum(ACHIEVEMENTS.xp)
+				FROM ACHIEVEMENTS
+				WHERE
+					user_id = auth_user.id), 0) AS xp,
+	LEAST (coalesce(sqrt(sum(core_question.xp) FILTER (WHERE status = 'OK')) * 1.5, 0, 74))::int AS LEVEL,
+	auth_group.name AS
+GROUP,
+(
+	SELECT
+		array_agg(ACHIEVEMENTS.achievement_id)
+	FROM
+		ACHIEVEMENTS
+	WHERE
+		user_id = auth_user.id) AS achievements
+FROM
+	core_submission
+	JOIN core_question ON (core_submission.question_id = core_question.id)
+		RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
+		JOIN auth_user_groups ON (auth_user.id = auth_user_groups.user_id)
+		JOIN auth_group ON (auth_group.id = auth_user_groups.group_id)
+	GROUP BY
+		auth_user.id,
+		auth_group.name
+	ORDER BY
+		xp DESC
+)
+SELECT
+	row_number() OVER () AS POSITION,
+	*
+FROM
+	DATA;
+        """
+    return raw_sql(SQL)
