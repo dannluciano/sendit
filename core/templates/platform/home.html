@@ -1,5 +1,8 @@
 {% extends 'platform/base.html' %}
 {% load static %}
+{% load l10n %}
+{% load i18n %}
+{% load core %}
 
 {% block title %}<title>SendIT</title>{% endblock %}
 
@@ -31,18 +34,12 @@
                         <span class="card-stats-val">
                             {% for achievement in achievements %}
                             <picture class="is-inline-flex">
-                                <img 
-                                    src="{{achievement.badge.url}}" 
-                                    alt="{{achievement.name}} - {{achievement.xp}}" 
-                                    class="image is-32x32 is-cover is-rounded"
-                                    title="{{achievement}}"
-                                >
+                                <img src="{{achievement.badge.url}}" alt="{{achievement.name}} - {{achievement.xp}}"
+                                    class="image is-32x32 is-cover is-rounded" title="{{achievement}}">
                             </picture>
-                            {% endfor %}    
+                            {% endfor %}
                         </span>
                     </li>
-                
-                    
                 </ul>
 
                 <ul class="card-stats-list">
@@ -55,6 +52,7 @@
                         <span class="card-stats-val">{{ user.xp }}</span>
                     </li>
                 </ul>
+
             </div>
 
             <div class="box">
@@ -90,9 +88,10 @@
         <div class="column is-6">
             <div class="box trending">
                 <div class="tags">
-                    <span class="tag"><a href="{% url 'core:home' %}">Todas</a></span>
+                    <span class="tag is-dark"><a href="{% url 'core:home' %}">Todas</a></span>
                     {% for tag in tags %}
-                    <span class="tag">
+                    {% cycle 'is-primary' 'is-link' 'is-info' 'is-success' 'is-warning' 'is-danger' as color silent %}
+                    <span class="tag {{color}} is-light">
                         <a href="{% url 'core:home' %}?tag={{ tag }}">
                             {{ tag }}
                         </a>
@@ -140,38 +139,30 @@
         <div class="column is-3">
             <div class="box trending">
                 <p class="trend-title"><span class="title is-5">Estatísticas</span></p>
-                <table>
-                    <tr>
-                        <td>
-                            Tempo Total:
-                        </td>
-                        <td class="has-text-centered">
-                            <strong>
-                                {{ user.total_time_on }}
-                            </strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Envios Corretos:
-                        </td>
-                        <td class="has-text-centered">
-                            <strong>
-                                {{ user.ok }}
-                            </strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Envios Incorretos:
-                        </td>
-                        <td class="has-text-centered">
-                            <strong>
-                                {{ user.not_ok }}
-                            </strong>
-                        </td>
-                    </tr>
-                </table>
+                <dl>
+                    <dt>Tempo Total:</dt>
+                    <dd>
+                        <strong>
+                            <time datetime="{{ user.total_time_on|duration:'machine' }}">
+                                {{ user.total_time_on|duration:'phrase' }}
+                            </time>
+                        </strong>
+                    </dd>
+
+                    <dt>Envios Corretos:</dt>
+                    <dd>
+                        <strong>
+                            {{ user.ok }}
+                        </strong>
+                    </dd>
+
+                    <dt>Envios Incorretos:</dt>
+                    <dd>
+                        <strong>
+                            {{ user.not_ok }}
+                        </strong>
+                    </dd>
+                </dl>
             </div>
         </div>
         {% endblock %}

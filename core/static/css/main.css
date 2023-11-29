@@ -440,14 +440,6 @@ ul.card-stats-list {
     border-bottom: #ff8c6b solid 3px;
 }
 
-span.tag a {
-    color: #f95738;
-}
-
-span.tag a:hover {
-    color: #ff8c6b;
-}
-
 .trend-hashtag a {
     color: #f95738;
 }
@@ -466,7 +458,7 @@ span.tag a:hover {
     color: #fff;
 }
 
-.is-primary {
+.is-primary:not(.tag) {
     background-color: var(--orange) !important;
 }
 
@@ -494,4 +486,14 @@ a.navbar-item:hover {
 
 .monospace {
     font-family: monospace;
+}
+
+.tag {
+    color: unset;
+    background-color: unset ;
+}
+
+.tag > a{
+    color: unset;
+    background-color: unset ;
 }
