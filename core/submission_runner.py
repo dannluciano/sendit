@@ -90,7 +90,10 @@ class SubmissionRunner(object):
             )
             self.last_output = result.stdout[0:1000].decode("utf-8")
         except subprocess.TimeoutExpired as error:
-            self.last_output = error.stdout[0:1000]
+            if error.stdout:
+                self.last_output = error.stdout[0:1000]
+            else:
+                self.last_output = ""    
             raise SubmissionTimeoutError("TimeoutError")
 
     def run_compiler(self):
@@ -110,7 +113,7 @@ class SubmissionRunner(object):
             raise SubmissionRuntimeError("RuntimeError")
 
     def compare_outputs(self):
-        command = f"diff -u -E -b -w -B - {self.work_dir}/expected_output.txt"
+        command = f"diff -u -b -w -B - {self.work_dir}/expected_output.txt"
         log.info(f"Executing Diff: {command}")
         try:
             self.run_process(command, self.last_output.encode())
