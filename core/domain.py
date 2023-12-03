@@ -1,27 +1,80 @@
+import datetime
+import logging
 from statistics.models import LogRecord
 
 import humanize
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models import Q
 
-from .models import Question, Submission, UserData
+from .models import Achievement, Question, Submission, UserData
 from .utils import raw_sql
+
+log = logging.getLogger(__name__)
 
 
 def get_best_users_of_week():
     SQL = """
-SELECT username,
-       SUM(xp) AS xp
+SELECT  auth_user.id,
+        username,
+        SUM(xp) AS xp
 FROM core_submission
 JOIN core_question ON (core_submission.question_id = core_question.id)
 RIGHT JOIN auth_user ON (core_submission.author_id=auth_user.id)
 WHERE status = 'OK'
   AND core_submission.timestamp >= NOW() - '7 days'::interval
-GROUP BY username
+GROUP BY auth_user.id, username
 ORDER BY xp DESC
 LIMIT 3;
 """
     return raw_sql(SQL)
+
+
+def compute_bests_of_week():
+    try:
+        now = datetime.datetime.utcnow()
+        week = now.isocalendar().week
+        year = now.isocalendar().year
+
+        log.info(f"Started Compute the Best of Week {week}")
+
+        log.info("Creating Badge Picture")
+
+        achievement_badge_path = (
+            f"{settings.BASE_DIR}/docs/achievements/best_of_week.png"
+        )
+        achievement_badge_file = open(achievement_badge_path, "rb")
+        achievement_badge_bytes = achievement_badge_file.read()
+        achievement_badge_filename = f"Best of Week {week} - {year}"
+
+        achievement_badge = SimpleUploadedFile(achievement_badge_filename, achievement_badge_bytes, content_type="image/png")
+
+        log.info("Creating Achievement")
+
+        achievement, _ = Achievement.objects.get_or_create(
+            name=achievement_badge_filename,
+            defaults={
+                'badge': achievement_badge,
+                'xp': 10,
+                'hidden': True,
+            }
+        )
+
+        bests_of_week = get_best_users_of_week()
+        if len(bests_of_week) > 0:
+            log.info("Attaching Achievement to Users")
+            bests_of_week_ids = map(lambda best_of_week: best_of_week.id, bests_of_week)
+            users = User.objects.filter(id__in=bests_of_week_ids)
+
+            achievement.users.set(users)
+            achievement.save()
+        else:
+            log.info("No User Found")
+        
+        log.info(f"Finished Compute the Best of Week {week}")
+    except Exception as err:
+        log.error(err)
 
 
 def random_unresolved_question(user):
@@ -57,6 +110,7 @@ def get_user_profile(user_id):
         "total_time": total_time_str,
         "groups": groups_str,
     }
+
 
 def get_leaderboard():
     SQL = """
