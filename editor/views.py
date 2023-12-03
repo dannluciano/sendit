@@ -1,14 +1,12 @@
 import json
 import logging
-import uuid
 
 import django_rq
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
-from django.shortcuts import (get_list_or_404, get_object_or_404, redirect,
-                              render)
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
@@ -21,7 +19,7 @@ log.setLevel(logging.INFO)
 
 @login_required
 def editor(request):
-    return render(request, "editor/editor.html")
+    return render(request, "editor/runner.html")
 
 
 @login_required
@@ -87,7 +85,7 @@ def file_code_list(request):
 @login_required
 def file_code_detail(request, file_code_uuid):
     file_code = get_object_or_404(FileCode, uuid=file_code_uuid)
-    return render(request, "editor/editor.html", context={"last_submission": file_code})
+    return render(request, "editor/runner.html", context={"last_submission": file_code})
 
 
 @login_required
