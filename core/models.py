@@ -69,6 +69,7 @@ class UserData:
         level = self.level()
         return f"img/platform/levels/level_{level}.png"
 
+
 class Tags(models.Model):
     tag = models.CharField(max_length=100)
 
@@ -253,11 +254,16 @@ class AchievementPicture(models.Model):
 
 class Achievement(models.Model):
     name = models.CharField(max_length=255)
+
     badge = models.ImageField(
         upload_to="core.AchievementPicture/bytes/filename/mimetype"
     )
+
     xp = models.IntegerField(default=100)
+
     users = models.ManyToManyField(to=User, related_name="achievements")
+
+    hidden = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name}: {self.xp} XP"
