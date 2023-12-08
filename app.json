@@ -9,7 +9,7 @@
     "scripts": {
         "dokku": {
             "predeploy": "echo 'Deploy Started' && python manage.py migrate --noinput",
-            "postdeploy": "echo 'Deploy Ended'"
+            "postdeploy": "python manage.py download_docker_images && echo 'Deploy Ended'"
         }
     },
     "env": {

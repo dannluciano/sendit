@@ -2,9 +2,13 @@ import logging
 
 from django.test import TestCase, tag
 
-from .submission_runner import (C_SubmissionRunner, JAVA_SubmissionRunner,
-                                JavaScript_SubmissionRunner,
-                                Python_SubmissionRunner)
+from .submission_runner import (
+    C_SubmissionRunner,
+    Cplusplus_SubmissionRunner,
+    JAVA_SubmissionRunner,
+    JavaScript_SubmissionRunner,
+    Python_SubmissionRunner,
+)
 
 logging.disable(logging.CRITICAL)
 
@@ -115,6 +119,123 @@ class C_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = C_SubmissionRunner(
+            work_dir, input_content, expected_output_content, source_file_content
+        ).run()
+        self.assertEqual(result["status"], "DiffError")
+
+
+@tag("cplusplus")
+class CPlusPlus_SubmissionWithoutExpectedOutputTestCase(TestCase):
+    def test_run_ok_submission(self):
+        work_dir = "tests/cpp/0/1"
+        input_content = """Joao"""
+        expected_output_content = "Ola, Joao"
+        source_file_content = """
+            #include <iostream>
+            using namespace std;
+            int main(void) {
+                string str;
+                cin >> str;
+                cout << "Ola, " << str;
+            }
+        """
+        result = Cplusplus_SubmissionRunner(
+            work_dir, input_content, None, source_file_content
+        ).run()
+        self.assertEqual(result["status"], "OK")
+        self.assertEqual(result["output"], expected_output_content)
+
+
+@tag("cplusplus")
+class CPlusPlus_SubmissionRunnerTestCase(TestCase):
+    def test_run_ok_submission(self):
+        work_dir = "tests/cpp/0/1"
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <iostream>
+            using namespace std;
+            int main(void) {
+                string str;
+                cin >> str;
+                cout << "Ola, " << str;
+            }
+        """
+        result = Cplusplus_SubmissionRunner(
+            work_dir, input_content, expected_output_content, source_file_content
+        ).run()
+        self.assertEqual(result["status"], "OK")
+
+    def test_run_sintax_error_submission(self):
+        work_dir = "tests/cpp/0/2"
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <iostream>
+            using namespace std
+            int main(void) {
+                string str
+                cin >> str
+                cout << "Ola, " << str
+            }
+        """
+        result = Cplusplus_SubmissionRunner(
+            work_dir, input_content, expected_output_content, source_file_content
+        ).run()
+        self.assertEqual(result["status"], "SintaxError")
+
+    def test_run_runtime_error_submission(self):
+        work_dir = "tests/cpp/0/3"
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <iostream>
+            using namespace std;
+            int main(void) {
+                string str = NULL;
+                cin >> str;
+                cout << "Ola, " << str;
+            }
+        """
+        result = Cplusplus_SubmissionRunner(
+            work_dir, input_content, expected_output_content, source_file_content
+        ).run()
+        self.assertEqual(result["status"], "RuntimeError")
+
+    def test_run_timeout_error_submission(self):
+        work_dir = "tests/cpp/0/4"
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <iostream>
+            using namespace std;
+            int main(void) {
+                string str;
+                cin >> str;
+                while(true){
+                    cout << "Ola, " << str;
+                }
+            }
+        """
+        result = Cplusplus_SubmissionRunner(
+            work_dir, input_content, expected_output_content, source_file_content
+        ).run()
+        self.assertEqual(result["status"], "TimeoutError")
+
+    def test_run_diff_error_submission(self):
+        work_dir = "tests/cpp/0/5"
+        input_content = """Joao"""
+        expected_output_content = """Ola, Joao"""
+        source_file_content = """
+            #include <iostream>
+            using namespace std;
+            int main(void) {
+                string str;
+                cin >> str;
+                cout << "Ola, " << "Maria";
+            }
+        """
+        result = Cplusplus_SubmissionRunner(
             work_dir, input_content, expected_output_content, source_file_content
         ).run()
         self.assertEqual(result["status"], "DiffError")
