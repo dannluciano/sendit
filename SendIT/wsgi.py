@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/1.11/howto/deployment/wsgi/
 
 import logging
 import os
-import subprocess
 
 from django.db.backends.signals import connection_created
 from django.dispatch import receiver
@@ -31,26 +30,6 @@ def setup_postgres(connection, **kwargs):
         """
         )
 
-
-def create_virtual_env():
-    if not os.path.exists("worker_env"):
-        try:
-            result = subprocess.run(
-                ["python", "-m", "venv", "worker_env"],
-                shell=False,
-                check=True,
-                timeout=5,
-            )
-            
-            if result:
-                log.info("Virtual Env Created")
-        except subprocess.TimeoutExpired:
-            log.error("TimeOut! Virtual Env isn't created!!!")
-        except subprocess.CalledProcessError:
-            pass
-
-
-create_virtual_env()
 
 from django.core.wsgi import get_wsgi_application
 

@@ -2,7 +2,9 @@ import io
 import logging
 import logging.handlers
 import os
+import shlex
 import subprocess
+import uuid
 
 from django.conf import settings
 
@@ -41,18 +43,20 @@ class SubmissionDiffError(SubmissionError):
 
 class SubmissionRunner(object):
     def __init__(
-        self, work_dir, input_content, expected_output_content, source_file_content
+        self, work_dir_name, input_content, expected_output_content, source_file_content
     ):
         self.compiler_command = "echo compiler"
         self.executable_command = "echo executable"
         self.source_file_name = "source.txt"
-        self.timeout = 1
+        self.timeout = 4
 
-        self.work_dir = f"{tmp_dir}/{work_dir}"
+        self.work_dir = f"{tmp_dir}/{work_dir_name}"
         self.input_content = input_content.replace("\r", "")
         self.expected_output_content = expected_output_content
         self.source_file_content = source_file_content
         self.last_output = ""
+        self.docker_start_command = f"docker run -i --rm --cpus=1 --memory 512MB --name $NAME$ -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app"
+        self.docker_stop_command = "docker kill $NAME$"
 
     def create_temp_file(self, dirname, filename, content):
         file_path = f"{dirname}/{filename}"
@@ -78,11 +82,13 @@ class SubmissionRunner(object):
 
     def run_process(self, command, input_=None):
         try:
-            import shlex
+            container_name = str(uuid.uuid4())
+            command = command.replace("$NAME$", container_name)
+
+            log.info(f"RUNNING: {command}")
 
             result = subprocess.run(
                 shlex.split(command),
-                env={"PATH": "/usr/bin/"},
                 shell=False,
                 check=True,
                 timeout=self.timeout,
@@ -92,6 +98,13 @@ class SubmissionRunner(object):
             )
             self.last_output = result.stdout[0:1000].decode("utf-8")
         except subprocess.TimeoutExpired as error:
+            command = self.docker_stop_command.replace("$NAME$", container_name)
+            result = subprocess.run(
+                shlex.split(command),
+                shell=False,
+                check=True,
+            )
+
             if error.stdout:
                 self.last_output = error.stdout[0:1000]
             else:
@@ -133,7 +146,10 @@ class SubmissionRunner(object):
                 self.compare_outputs()
         except SubmissionError as error:
             log.info(error.message)
-            return {"status": error.message, "output": self.last_output}
+            return {
+                "status": error.message,
+                "output": str(self.last_output) + "\n" + error.message,
+            }
         log.info("OK")
         return {"status": "OK", "output": self.last_output}
 
@@ -147,21 +163,21 @@ class C_SubmissionRunner(SubmissionRunner):
         )
         self.source_file_name = "main.c"
         self.compiler_command = (
-            f"gcc -o {self.work_dir}/main {self.work_dir}/{self.source_file_name}"
+            f"{self.docker_start_command} gcc:12 gcc -o main {self.source_file_name}"
         )
-        self.executable_command = f"{self.work_dir}/main"
+        self.executable_command = f"{self.docker_start_command} gcc:12 ./main"
 
 
-class Cplusplus11_SubmissionRunner(SubmissionRunner):
+class Cplusplus_SubmissionRunner(SubmissionRunner):
     def __init__(
         self, work_dir, input_content, expected_output_content, source_file_content
     ):
         super().__init__(
             work_dir, input_content, expected_output_content, source_file_content
         )
-        self.source_file_name = "main.c"
-        self.compiler_command = f"g++ --std=c++11 -o {self.work_dir}/main {self.work_dir}/{self.source_file_name}"
-        self.executable_command = f"{self.work_dir}/main"
+        self.source_file_name = "main.cpp"
+        self.compiler_command = f"{self.docker_start_command} gcc:12 g++ --std=c++11 -o main {self.source_file_name}"
+        self.executable_command = f"{self.docker_start_command} gcc:12 ./main"
 
 
 class JavaScript_SubmissionRunner(SubmissionRunner):
@@ -176,8 +192,8 @@ class JavaScript_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "index.js"
-        self.compiler_command = f"nodejs -c {self.work_dir}/{self.source_file_name}"
-        self.executable_command = f"nodejs {self.work_dir}/{self.source_file_name}"
+        self.compiler_command = f"{self.docker_start_command} node:20.10.0-alpine node -c {self.source_file_name}"
+        self.executable_command = f"{self.docker_start_command} node:20.10.0-alpine node {self.source_file_name}"
 
 
 class JAVA_SubmissionRunner(SubmissionRunner):
@@ -188,8 +204,10 @@ class JAVA_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "Principal.java"
-        self.compiler_command = f"javac {self.work_dir}/{self.source_file_name}"
-        self.executable_command = f"java -cp {self.work_dir} Principal"
+        self.compiler_command = f"{self.docker_start_command} eclipse-temurin:11 javac {self.source_file_name}"
+        self.executable_command = (
+            f"{self.docker_start_command} eclipse-temurin:11 java -cp . Principal"
+        )
         self.timeout = 5
 
 
@@ -201,8 +219,10 @@ class Python_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "main.py"
-        self.compiler_command = f"docker run -i --rm -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app python:alpine python -m py_compile {self.source_file_name}"
-        self.executable_command = f"docker run -i --rm -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app python:alpine python {self.source_file_name}"
+        self.compiler_command = f"{self.docker_start_command} python:alpine python -m py_compile {self.source_file_name}"
+        self.executable_command = (
+            f"{self.docker_start_command} python:alpine python {self.source_file_name}"
+        )
         self.worker_env = "./worker_env"
 
 
@@ -213,8 +233,8 @@ class SubmissionRunnerManager:
     ):
         runners = {
             "c": C_SubmissionRunner,
-            "c++11": Cplusplus11_SubmissionRunner,
-            "cplusplus": Cplusplus11_SubmissionRunner,
+            "c++11": Cplusplus_SubmissionRunner,
+            "cplusplus": Cplusplus_SubmissionRunner,
             "javascript": JavaScript_SubmissionRunner,
             "java": JAVA_SubmissionRunner,
             "python": Python_SubmissionRunner,
