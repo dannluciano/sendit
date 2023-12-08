@@ -5,6 +5,7 @@ set -e
 export DB=senditdb
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    export ARCH=$(uname -m)
     if [ -z "$(find -H /var/lib/apt/lists -maxdepth 0 -mtime -7)" ]; then
         echo "==> Install Linux Packages"
         sudo apt-get update
@@ -12,23 +13,25 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         sudo apt-get install -qq \
             python3 \
             postgresql \
-            redis
+            libpq-dev \
+            redis \
+            wget \
+            git \
+            python3-dev \
+            python3-venv
         sudo apt-get install -qq $(grep -vE "^\s*#" apt-packages | tr "\n" " ")
     fi
 
     PYTHON_VERSION=$(python3 -c 'import platform; print(platform.python_version())')
     echo "Global Python Version $PYTHON_VERSION"
 
-    if ! [ -x "$(command -v pipenv)" ]; then
-        echo "==> Instaling Pipenv"
-        pip3 install --user -U pipenv
-    fi
-
-    if ! [ -x "$(command -v forego)" ]; then
+    if ! [ -x "$(command -v hivemind)" ]; then
         echo "==> Instaling Forego"
-        wget https://bin.equinox.io/c/ekMN3bCZFUn/forego-stable-linux-amd64.tgz
-        tar xvf forego-stable-linux-amd64.tgz -C /usr/local/bin
-        rm -f forego-stable-linux-amd64.tgz
+        wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-linux-arm64.gz"
+        gunzip hivemind-v1.1.0-linux-arm64.gz
+        rm -f hivemind-v1.1.0-linux-arm64.gz
+        sudo mv hivemind-v1.1.0-linux-arm64 /usr/local/bin/hivemind
+        sudo chmod +x /usr/local/bin/hivemind
     fi
     
     echo "==> Creating Database if not exists"
@@ -53,10 +56,10 @@ else
     echo "==> Operating System not supported!"
 fi
 
-if [ ! -d "env"  ]; then
+if [ ! -d "env_vm"  ]; then
     echo "==> Creating Virtualenv"
-    python3 -m venv --prompt "sendit" env
-    source env/bin/activate
+    python3 -m venv --prompt "sendit" env_vm
+    source env_vm/bin/activate
     python3 -m pip install -r requirements.dev.txt
     python3 -m pip install -r requirements.txt
 fi
@@ -89,4 +92,4 @@ fi
 
 mkdir -p temp
 echo "==> Finished"
-echo "Run 'forego start' to see the magic"
+echo "Run 'hivemind start' to see the magic"
