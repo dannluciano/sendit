@@ -4,6 +4,8 @@ import logging.handlers
 import os
 import subprocess
 
+from django.conf import settings
+
 log = logging.getLogger("SubmissionRunner")
 log.setLevel(logging.INFO)
 
@@ -80,7 +82,7 @@ class SubmissionRunner(object):
 
             result = subprocess.run(
                 shlex.split(command),
-                env={"PATH": "/usr/bin/:./worker_env/bin/"},
+                env={"PATH": "/usr/bin/"},
                 shell=False,
                 check=True,
                 timeout=self.timeout,
@@ -199,10 +201,8 @@ class Python_SubmissionRunner(SubmissionRunner):
             work_dir, input_content, expected_output_content, source_file_content
         )
         self.source_file_name = "main.py"
-        self.compiler_command = (
-            f"python -m py_compile {self.work_dir}/{self.source_file_name}"
-        )
-        self.executable_command = f"python {self.work_dir}/{self.source_file_name}"
+        self.compiler_command = f"docker run -i --rm -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app python:alpine python -m py_compile {self.source_file_name}"
+        self.executable_command = f"docker run -i --rm -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app python:alpine python {self.source_file_name}"
         self.worker_env = "./worker_env"
 
 
