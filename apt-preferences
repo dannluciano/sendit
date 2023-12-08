@@ -1,1 +1,1 @@
-APT::Get::AllowUnauthenticated "true";
+APT{Ignore {"gpg-pubkey"; }};
