@@ -1,6 +1,1 @@
-APT {
-  Install-Recommends "false";
-  Get {
-    AllowUnauthenticated "true";
-  }
-}
+APT::Get::AllowUnauthenticated "true";
