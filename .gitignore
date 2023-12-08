@@ -113,3 +113,5 @@ settings_local.py
 .vscode/settings.json
 
 dokku.ssh.priv_key
+env_vm/
+worker_env/
