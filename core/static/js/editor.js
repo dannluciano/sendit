@@ -64,7 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setupLanguage(language, force = false) {
     if (language !== "null") {
-      outputField.value = "";
+      if (outputField) {
+        outputField.value = "";
+      }
       editor.setOption("mode", languagesMode[language]);
       editor.setOption("readOnly", false);
       editor.setOption("indentUnit", languagesConfig[language].indentUnit);
@@ -88,9 +90,13 @@ document.addEventListener("DOMContentLoaded", function () {
         variablesSection.classList.remove("is-hidden");
       });
     } else {
-      inputField.disabled = false;
-      variables.disabled = true;
-      variablesSection.classList.add("is-hidden");
+      if (inputField) {
+        inputField.disabled = false;
+      }
+      if (variables && variablesSection) {
+        variables.disabled = true;
+        variablesSection.classList.add("is-hidden");
+      }
     }
   }
 
