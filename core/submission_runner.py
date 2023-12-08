@@ -4,6 +4,12 @@ import logging.handlers
 import os
 import subprocess
 
+log = logging.getLogger("SubmissionRunner")
+log.setLevel(logging.INFO)
+
+log_capture_string = io.StringIO()
+log.addHandler(logging.StreamHandler(log_capture_string))
+
 tmp_dir = "temp"
 
 if not os.path.exists(tmp_dir):
@@ -31,13 +37,6 @@ class SubmissionDiffError(SubmissionError):
     pass
 
 
-log = logging.getLogger("SubmissionRunner")
-log.setLevel(logging.INFO)
-
-log_capture_string = io.StringIO()
-log.addHandler(logging.StreamHandler(log_capture_string))
-
-
 class SubmissionRunner(object):
     def __init__(
         self, work_dir, input_content, expected_output_content, source_file_content
@@ -48,7 +47,7 @@ class SubmissionRunner(object):
         self.timeout = 1
 
         self.work_dir = f"{tmp_dir}/{work_dir}"
-        self.input_content = input_content.replace('\r', '')
+        self.input_content = input_content.replace("\r", "")
         self.expected_output_content = expected_output_content
         self.source_file_content = source_file_content
         self.last_output = ""
@@ -81,6 +80,7 @@ class SubmissionRunner(object):
 
             result = subprocess.run(
                 shlex.split(command),
+                env={"PATH": "/usr/bin/:./worker_env/bin/"},
                 shell=False,
                 check=True,
                 timeout=self.timeout,
@@ -93,7 +93,7 @@ class SubmissionRunner(object):
             if error.stdout:
                 self.last_output = error.stdout[0:1000]
             else:
-                self.last_output = ""    
+                self.last_output = ""
             raise SubmissionTimeoutError("TimeoutError")
 
     def run_compiler(self):
@@ -203,6 +203,7 @@ class Python_SubmissionRunner(SubmissionRunner):
             f"python -m py_compile {self.work_dir}/{self.source_file_name}"
         )
         self.executable_command = f"python {self.work_dir}/{self.source_file_name}"
+        self.worker_env = "./worker_env"
 
 
 class SubmissionRunnerManager:
