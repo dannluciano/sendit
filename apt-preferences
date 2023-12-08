@@ -1,3 +1,6 @@
 APT {
   Install-Recommends "false";
+  Get {
+    AllowUnauthenticated "true";
+  }
 }
