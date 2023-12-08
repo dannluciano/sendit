@@ -1,8 +1,4 @@
 ca-certificates
 curl
 gnupg
-docker-ce
-docker-ce-cli
-containerd.io
-docker-buildx-plugin
-docker-compose-plugin
+docker
