@@ -18,6 +18,9 @@ def duration(value, mode=""):
     seconds = 0
     microseconds = 0
 
+    if not remainder:
+        return "" 
+
     if remainder.days > 0:
         days = remainder.days
         remainder -= datetime.timedelta(days=remainder.days)
