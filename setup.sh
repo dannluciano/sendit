@@ -62,6 +62,8 @@ if [ ! -d "env_vm"  ]; then
     source env_vm/bin/activate
     python3 -m pip install -r requirements.dev.txt
     python3 -m pip install -r requirements.txt
+else
+    source env_vm/bin/activate
 fi
 
 if [ ! -e "SendIT/settings_local.py" ]; then
@@ -92,4 +94,4 @@ fi
 
 mkdir -p temp
 echo "==> Finished"
-echo "Run 'hivemind start' to see the magic"
+echo "Run './run.sh' to see the magic"
