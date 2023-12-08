@@ -1,1 +1,1 @@
-APT{Ignore {"gpg-pubkey"; }};
+APT { Get { AllowUnauthenticated "1"; }};
