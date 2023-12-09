@@ -1,4 +1,5 @@
 ca-certificates
 curl
 gnupg
+packagekit
 software-properties-common
