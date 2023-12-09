@@ -1,1 +1,1 @@
-deb [arch=amd64] https://packages.ubuntu.com focal stable
+deb http://archive.ubuntu.com/ubuntu/ focal stable
