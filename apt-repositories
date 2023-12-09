@@ -1,1 +1,1 @@
-deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+deb [arch=amd64] http://download.docker.com/linux/ubuntu focal stable
