@@ -1,6 +1,7 @@
 ca-certificates
 curl
 gnupg
-iptables
-libdevmapper1.02.1
+libxtables
+libdevmapper
+libdevmapper
 dbus-user-session
