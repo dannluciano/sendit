@@ -1,0 +1,3 @@
+ambassador-per-db: docker run --rm -ti --link dokku.postgres.senditdb-15 -p 5432:5432 dokku/ambassador
+ambassador-men-db: docker run --rm -ti --link dokku.redis.senditdb -p 6379:6379 dokku/ambassador
+worker: python -u manage.py rqworker default
