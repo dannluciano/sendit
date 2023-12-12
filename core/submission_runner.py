@@ -55,7 +55,7 @@ class SubmissionRunner(object):
         self.expected_output_content = expected_output_content
         self.source_file_content = source_file_content
         self.last_output = ""
-        self.docker_start_command = f"docker run -i --rm --cpus=1 --memory 512MB --name $NAME$ -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app"
+        self.docker_start_command = f"docker run -i --rm --cpus=2 --memory 512MB --name $NAME$ -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app"
         self.docker_stop_command = "docker kill $NAME$"
 
     def create_temp_file(self, dirname, filename, content):
