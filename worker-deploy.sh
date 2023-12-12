@@ -2,18 +2,32 @@
 
 set -e
 
-git pull
+if [ "$(id -u)" -ne 0 ]; then echo "Please run as root." >&2; exit 1; fi
+
+if [ ! -d "/var/www/sendit-worker"  ]; then
+    echo "==> Creating Dir /var/www/sendit-worker"
+    mkdir -p "/var/www/sendit-worker"
+    cd "/var/www/sendit-worker"
+    echo "==> Clonning Git"
+    git clone --bare /home/dokku/sendittwo
+else
+    echo "==> Pulling Git"
+    cd "/var/www/sendit-worker"
+    git pull
+fi
 
 if [ ! -d "worker_env"  ]; then
     echo "==> Creating Virtualenv"
     python3 -m venv --prompt "sendit_worker" worker_env
 fi
 
+echo "==> Installings Python Deps"
 source ./worker_env/bin/activate
 python -m pip install -r requirements.txt
 
 python manage.py download_docker_images
 
+echo "==> Installings SystemD Services"
 cp ./systemd/rqscheduler.service /etc/systemd/system
 cp ./systemd/rqworker@.service   /etc/systemd/system
 
