@@ -48,7 +48,7 @@ class SubmissionRunner(object):
         self.compiler_command = "echo compiler"
         self.executable_command = "echo executable"
         self.source_file_name = "source.txt"
-        self.timeout = 4
+        self.timeout = 6
 
         self.work_dir = f"{tmp_dir}/{work_dir_name}"
         self.input_content = input_content.replace("\r", "")
@@ -99,11 +99,15 @@ class SubmissionRunner(object):
             self.last_output = result.stdout[0:1000].decode("utf-8")
         except subprocess.TimeoutExpired as error:
             command = self.docker_stop_command.replace("$NAME$", container_name)
-            result = subprocess.run(
-                shlex.split(command),
-                shell=False,
-                check=True,
-            )
+            try:
+
+                result = subprocess.run(
+                    shlex.split(command),
+                    shell=False,
+                    check=True,
+                )
+            except subprocess.CalledProcessError:
+                log.info(f"Docker Container {container_name} not exists")
 
             if error.stdout:
                 self.last_output = error.stdout[0:1000]
@@ -116,7 +120,10 @@ class SubmissionRunner(object):
         try:
             self.run_process(self.compiler_command)
         except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout.decode("utf-8")
+            if error.stdout:
+                self.last_output = error.stdout.decode("utf-8")
+            else:
+                self.last_output = ""
             raise SubmissionSintaxError("SintaxError")
 
     def run_executable(self):
@@ -208,7 +215,7 @@ class JAVA_SubmissionRunner(SubmissionRunner):
         self.executable_command = (
             f"{self.docker_start_command} eclipse-temurin:11 java -cp . Principal"
         )
-        self.timeout = 5
+        self.timeout = 8
 
 
 class Python_SubmissionRunner(SubmissionRunner):
