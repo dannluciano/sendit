@@ -14,7 +14,12 @@ class LastActivityMiddleware:
         path_is_not_static = not request.path.startswith(settings.STATIC_URL)
         user_is_authenticated = request.user.is_authenticated
 
+        ip = request.META.get("REMOTE_ADDR", "127.0.0.1")
+
+        if "HTTP_X_FORWARDED_FOR" in request.META:
+            ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+
         if status_200 and path_is_not_static and user_is_authenticated:
-            set_last_activity(request.user.username)
+            set_last_activity(request.user.username, ip)
 
         return response
