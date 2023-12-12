@@ -16,9 +16,22 @@ class ViewAdmin(admin.ModelAdmin):
 
 class LogRecordAdmin(ViewAdmin):
     date_hierarchy = "check_in"
-    list_display = ("id", "user", "check_in", "check_out", "duration")
-    list_filter = ("check_in", "check_out")
+    list_display = (
+        "user",
+        "ip",
+        "check_in",
+        "check_out",
+        "duration",
+    )
+    list_filter = (
+        "check_in",
+        "check_out",
+    )
     ordering = ["-check_in"]
-    search_fields = ("user",)
+    search_fields = (
+        "user",
+        "ip",
+    )
+
 
 admin.site.register(LogRecord, LogRecordAdmin)

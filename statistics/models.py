@@ -15,6 +15,7 @@ class LogRecord(models.Model):
     user = models.CharField(max_length=255)
     check_in = models.DateTimeField(auto_now_add=True)
     check_out = models.DateTimeField(null=True)
+    ip = models.GenericIPAddressField(unpack_ipv4=True, default="127.0.0.1")
 
     @property
     def duration(self):
@@ -27,7 +28,6 @@ class LogRecord(models.Model):
 
 
 class LeaderboardView(models.Model):
-
     SQL = """
     CREATE OR REPLACE VIEW leaderboard_view AS
     WITH DATA AS
@@ -65,7 +65,6 @@ class LeaderboardView(models.Model):
 
 
 class StatisticsView(models.Model):
-
     SQL = """
     CREATE OR REPLACE VIEW statistics_view AS
     SELECT

@@ -1,18 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.http import HttpResponse
 from django.urls import include, path
 
 admin.site.site_header = "SendIt Administração"
 admin.site.site_title = "SendIt"
 admin.site.index_title = "SendIt"
-
-
-def debug_view(request):
-    for key in request.META:
-        print(key, ":", request.META[key])
-    return HttpResponse("IP Logged")
 
 
 urlpatterns = [
@@ -40,7 +33,6 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("uploads/", include("db_file_storage.urls")),
-    path("ipdebug/", debug_view, name="debug"),
 ]
 
 if settings.DEBUG:
