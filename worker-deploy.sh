@@ -28,18 +28,35 @@ python -m pip install -r requirements.txt
 python manage.py download_docker_images
 
 echo "==> Installings SystemD Services"
-cp ./systemd/rqscheduler.service /etc/systemd/system
-cp ./systemd/rqworker@.service   /etc/systemd/system
 
+cp ./systemd/sendit-rqscheduler.service /etc/systemd/system
+cp ./systemd/sendit-mem-db.service      /etc/systemd/system
+cp ./systemd/sendit-per-db.service      /etc/systemd/system
+cp ./systemd/sendit-rqworker@.service   /etc/systemd/system
+
+echo "==> Reload SystemD Daemons"
 systemctl daemon-reload
-systemctl enable rqscheduler.service
-systemctl enable rqworker@1.service
-systemctl enable rqworker@2.service
-systemctl enable rqworker@3.service
-systemctl enable rqworker@4.service
 
-systemctl start rqscheduler.service
-systemctl start rqworker@1.service
-systemctl start rqworker@2.service
-systemctl start rqworker@3.service
-systemctl start rqworker@4.service
+echo "==> Enabling Services"
+systemctl enable sendit-mem-db.service
+systemctl enable sendit-per-db.service
+
+systemctl enable sendit-rqscheduler.service
+systemctl enable sendit-rqworker@1.service
+systemctl enable sendit-rqworker@2.service
+systemctl enable sendit-rqworker@3.service
+systemctl enable sendit-rqworker@4.service
+
+echo "==> Starting Services"
+
+systemctl start sendit-mem-db.service
+systemctl start sendit-per-db.service
+
+systemctl start sendit-rqscheduler.service
+
+systemctl start sendit-rqworker@1.service
+systemctl start sendit-rqworker@2.service
+systemctl start sendit-rqworker@3.service
+systemctl start sendit-rqworker@4.service
+
+echo "==> Done"
