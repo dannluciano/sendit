@@ -12,7 +12,11 @@ def user_logged_in(sender, request, user, **kwargs):
 
 @receiver(user_logged_out)
 def user_logged_out(sender, request, user, **kwargs):
-    set_last_activity(user.username)
+    ip = request.META.get("REMOTE_ADDR", "127.0.0.1")
+
+    if "HTTP_X_FORWARDED_FOR" in request.META:
+        ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+    set_last_activity(user.username, ip)
 
 
 def set_last_activity(username, ip):
