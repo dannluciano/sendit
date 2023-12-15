@@ -1,6 +1,6 @@
 [Unit]
 Description=RQ Worker Cron Scheduler
-After=network.target
+After=network.target sendit-per-db.service sendit-mem-db.service
 
 [Service]
 Type=simple
