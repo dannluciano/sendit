@@ -9,7 +9,7 @@ django-request==1.6.1
 django-rq==2.8.1
 django-session-security==2.6.7
 gunicorn==21.2.0
-psycopg2==2.9.7
+psycopg2-binary==2.9.7
 whitenoise==6.5.0
 humanize==4.8.0
 Pillow==10.0.1
