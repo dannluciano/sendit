@@ -115,47 +115,71 @@ def get_user_profile(user_id):
 def get_leaderboard():
     SQL = """
 WITH ACHIEVEMENTS AS (
-	SELECT
-		*
-	FROM
-		core_achievement
-		JOIN core_achievement_users ON (core_achievement.id = core_achievement_users.achievement_id)
+  SELECT
+    auth_user.id AS user_id,
+    core_achievement_users.achievement_id,
+    core_achievement.xp
+  FROM
+    auth_user
+    LEFT JOIN core_achievement_users ON (auth_user.id = core_achievement_users.user_id)
+    LEFT JOIN core_achievement ON (
+      core_achievement_users.achievement_id = core_achievement.id
+    )
 ),
 DATA AS (
-	SELECT
-		auth_user.username,
-		coalesce(sum(core_question.xp) FILTER (WHERE status = 'OK') + (
-				SELECT
-					sum(ACHIEVEMENTS.xp)
-				FROM ACHIEVEMENTS
-				WHERE
-					user_id = auth_user.id), 0) AS xp,
-	LEAST (coalesce(sqrt(sum(core_question.xp) FILTER (WHERE status = 'OK')) * 1.5, 0, 74))::int AS LEVEL,
-	auth_group.name AS
-GROUP,
-(
-	SELECT
-		array_agg(ACHIEVEMENTS.achievement_id)
-	FROM
-		ACHIEVEMENTS
-	WHERE
-		user_id = auth_user.id) AS achievements
-FROM
-	core_submission
-	JOIN core_question ON (core_submission.question_id = core_question.id)
-		RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
-		JOIN auth_user_groups ON (auth_user.id = auth_user_groups.user_id)
-		JOIN auth_group ON (auth_group.id = auth_user_groups.group_id)
-	GROUP BY
-		auth_user.id,
-		auth_group.name
-	ORDER BY
-		xp DESC
+  SELECT
+    auth_user.username,
+    coalesce(
+      sum(core_question.xp) FILTER (
+        WHERE
+          status = 'OK'
+      ),
+      0
+    ) + (
+      SELECT
+        coalesce(sum(ACHIEVEMENTS.xp), 0)
+      FROM
+        ACHIEVEMENTS
+      WHERE
+        user_id = auth_user.id
+    ) AS xp,
+    LEAST (
+      coalesce(
+        sqrt(
+          sum(core_question.xp) FILTER (
+            WHERE
+              status = 'OK'
+          )
+        ) * 1.5,
+        0,
+        74
+      )
+    ):: int AS LEVEL,
+    auth_group.name AS GROUP,
+    (
+      SELECT
+        array_agg(ACHIEVEMENTS.achievement_id)
+      FROM
+        ACHIEVEMENTS
+      WHERE
+        user_id = auth_user.id
+    ) AS achievements
+  FROM
+    auth_user
+    LEFT JOIN auth_user_groups ON (auth_user.id = auth_user_groups.user_id)
+    LEFT JOIN auth_group ON (auth_group.id = auth_user_groups.group_id)
+    LEFT JOIN core_submission ON (core_submission.author_id = auth_user.id)
+    JOIN core_question ON (core_submission.question_id = core_question.id)
+  GROUP BY
+    auth_user.id,
+    auth_group.name
+  ORDER BY
+    xp DESC
 )
 SELECT
-	row_number() OVER () AS POSITION,
-	*
+  row_number() OVER () AS POSITION,
+  *
 FROM
-	DATA;
-        """
+  DATA;        
+"""
     return raw_sql(SQL)
