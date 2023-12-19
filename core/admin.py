@@ -98,8 +98,6 @@ def download_submissions(modeladmin, request, queryset):
 
     temp_dir_path = mkdtemp()
 
-    print(temp_dir_path)
-
     for submission in queryset:
         author = submission.author
         question = submission.question
