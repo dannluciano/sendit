@@ -1,7 +1,12 @@
+import tarfile
+from datetime import datetime
+from tempfile import mkdtemp
+
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
+from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.urls import path
 from django.utils.safestring import mark_safe
@@ -58,14 +63,12 @@ class QuestionAdmin(admin.ModelAdmin):
     save_on_top = True
 
     class Media:
-        css = {
-            'all': ('css/admin.css', )
-        }
+        css = {"all": ("css/admin.css",)}
 
 
 def compare_submissions(modeladmin, request, queryset):
-    queryset = queryset.order_by('timestamp')
-    
+    queryset = queryset.order_by("timestamp")
+
     context = dict(
         modeladmin.admin_site.each_context(request),
         submissions=queryset,
@@ -82,8 +85,44 @@ def compare_submissions(modeladmin, request, queryset):
 compare_submissions.short_description = "Comparar Submissões"
 
 
-class SubmissionsAdmin(admin.ModelAdmin):
+def download_submissions(modeladmin, request, queryset):
+    unix_timestamp = (datetime.now() - datetime(1970, 1, 1)).total_seconds()
 
+    extension_dict = {
+        "c": "c",
+        "cplusplus": "cpp",
+        "javascript": "js",
+        "java": "java",
+        "python": "py",
+    }
+
+    temp_dir_path = mkdtemp()
+
+    print(temp_dir_path)
+
+    for submission in queryset:
+        author = submission.author
+        question = submission.question
+        submission_id = submission.uuid
+        extension = extension_dict[submission.language]
+        file_name = f"{author}-{question}-{submission_id}.{extension}"
+        file_path = f"{temp_dir_path}/{file_name}"
+        with open(file_path, "w", encoding="utf-8") as file:
+            file.write(submission.code)
+
+    tarfile_name = f"{temp_dir_path}/{unix_timestamp}.tar"
+
+    with tarfile.open(tarfile_name, "a:") as tar:
+        tar.add(temp_dir_path, arcname="submissões")
+
+    response = FileResponse(open(tarfile_name, "rb"), filename=f"{unix_timestamp}.tar")
+    return response
+
+
+download_submissions.short_description = "Baixar Submissões"
+
+
+class SubmissionsAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "uuid",
@@ -110,9 +149,7 @@ class SubmissionsAdmin(admin.ModelAdmin):
         "question__title",
     )
 
-    actions = (
-        compare_submissions,
-    )
+    actions = (compare_submissions, download_submissions)
 
 
 class UserAdmin(BaseUserAdmin):
@@ -162,35 +199,37 @@ class UserAdmin(BaseUserAdmin):
 
 class AchievementAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 
-        'badge_tag', 
-        'xp',
+        "name",
+        "badge_tag",
+        "xp",
     )
 
-    readonly_fields = (
-        "badge_tag",
-    )
+    readonly_fields = ("badge_tag",)
 
     fieldsets = (
-        (None, {
-            "fields": (
-                "name", 
-                "badge",
-                "badge_tag", 
-                "xp",
-                "users",
-            )}),
+        (
+            None,
+            {
+                "fields": (
+                    "name",
+                    "badge",
+                    "badge_tag",
+                    "xp",
+                    "users",
+                )
+            },
+        ),
     )
 
-    filter_horizontal = ('users', )
+    filter_horizontal = ("users",)
 
-    list_filter = ('hidden', )
+    list_filter = ("hidden",)
 
-    ordering = ('hidden', )
+    ordering = ("hidden",)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if 'hidden__exact=1' in request.META['QUERY_STRING']:
+        if "hidden__exact=1" in request.META["QUERY_STRING"]:
             return qs
         return qs.filter(hidden=False)
 
@@ -200,6 +239,7 @@ class AchievementAdmin(admin.ModelAdmin):
         )
 
     badge_tag.short_description = "Badge Image"
+
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissionsAdmin)
