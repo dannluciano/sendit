@@ -1,11 +1,12 @@
 import json
 import logging
+from tempfile import mkstemp
 
 import django_rq
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms.models import model_to_dict
-from django.http import JsonResponse
+from django.http import FileResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -86,6 +87,28 @@ def file_code_list(request):
 def file_code_detail(request, file_code_uuid):
     file_code = get_object_or_404(FileCode, uuid=file_code_uuid)
     return render(request, "editor/runner.html", context={"last_submission": file_code})
+
+
+@login_required
+def file_code_downloadl(request, file_code_uuid):
+    extension_dict = {
+        "c": "c",
+        "cplusplus": "cpp",
+        "javascript": "js",
+        "java": "java",
+        "python": "py",
+        "pythonwasm": "py",
+    }
+
+    file_code = get_object_or_404(FileCode, uuid=file_code_uuid)
+    extension = extension_dict[file_code.language]
+    file_name = f"{file_code.name}.{extension}"
+    fd, temp_file_path = mkstemp()
+
+    with open(temp_file_path, "w", encoding="utf-8") as file:
+        file.write(file_code.code)
+
+    return FileResponse(open(temp_file_path, "rb"), filename=file_name)
 
 
 @login_required

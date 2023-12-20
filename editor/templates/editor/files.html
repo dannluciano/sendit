@@ -21,7 +21,9 @@
                 {% for filecode in filecodes %}
                 <tr>
                     <td>
-                        {{filecode.name}}
+                        <a href="{% url 'editor:file-code-detail' filecode.uuid %}">
+                            {{filecode.name}}
+                        </a>
                     </td>
                     {% get_static_prefix as STATIC_PREFIX %}
                     <td class="has-text-centered">
@@ -35,8 +37,8 @@
                     <td class="has-text-centered">
                         <form action="{% url 'editor:file-code-destroy' filecode.uuid %}" method="POST">
                             {% csrf_token %}
-                            <a href="{% url 'editor:file-code-detail' filecode.uuid %}" class="button is-info">
-                                Acessar
+                            <a href="{% url 'editor:file-code-download' filecode.uuid %}" class="button is-success">
+                                Baixar
                             </a>
                             <button class="button is-danger">
                                 Apagar
@@ -67,8 +69,8 @@
                     alt="{{ filecode.language }}" width="54px" />
                 <form action="{% url 'editor:file-code-destroy' filecode.uuid %}" method="POST">
                     {% csrf_token %}
-                    <a href="{% url 'editor:file-code-detail' filecode.uuid %}" class="button is-large is-info">
-                        Acessar
+                    <a href="{% url 'editor:file-code-download' filecode.uuid %}" class="button is-large is-success">
+                        Baixar
                     </a>
                     <button class="button is-large is-danger">
                         Apagar

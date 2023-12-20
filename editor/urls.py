@@ -12,6 +12,11 @@ urlpatterns = [
         "files/<str:file_code_uuid>/", views.file_code_detail, name="file-code-detail"
     ),
     path(
+        "files/download/<str:file_code_uuid>/",
+        views.file_code_downloadl,
+        name="file-code-download",
+    ),
+    path(
         "files/<str:file_code_uuid>/destroy/",
         views.file_code_destroy,
         name="file-code-destroy",
