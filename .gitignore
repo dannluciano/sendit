@@ -115,3 +115,5 @@ settings_local.py
 dokku.ssh.priv_key
 env_vm/
 worker_env/
+
+jstoolchain/node_modules
