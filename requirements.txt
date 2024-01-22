@@ -12,6 +12,6 @@ gunicorn==21.2.0
 psycopg2-binary==2.9.7
 whitenoise==6.5.0
 humanize==4.8.0
-Pillow==10.0.1
+Pillow==10.2.0
 rq-scheduler==0.13.1
 git+https://github.com/dannluciano/db_file_storage.git
