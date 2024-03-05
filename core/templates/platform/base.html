@@ -18,7 +18,8 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/sendit-bulma-dracula.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gochi+Hand">
     <link rel="stylesheet" href=" {% static 'css/fontawesome.css' %}">
@@ -63,9 +64,11 @@
                         <i class="fas fa-user-shield"></i>&nbsp;Administração
                     </a>
                     {% endif %}
-                    <div class="navbar-item">
-                        <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
-                    </div>
+                    {% comment %} 
+                        <div class="navbar-item">
+                            <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
+                        </div> 
+                    {% endcomment %}
                     <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
                         {% csrf_token %}
                         <input type="hidden" name="sair">

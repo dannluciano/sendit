@@ -1,0 +1,18 @@
+{
+  "name": "jstoolchain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sass/main.scss",
+  "scripts": {
+    "css-build": "node-sass --omit-source-map-url sass/main.scss ../core/static/css/sendit-bulma-dracula.css",
+    "css-watch": "npm run css-build -- --watch",
+    "start": "npm run css-watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bulma": "^0.9.4",
+    "node-sass": "^9.0.0"
+  }
+}

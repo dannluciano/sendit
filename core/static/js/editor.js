@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const editor = CodeMirror.fromTextArea(editorTextArea, {
     lineNumbers: true,
     readOnly: true,
-    theme: "solarized",
+    theme: "dracula",
     viewportMargin: Infinity,
     matchBrackets: true,
     gutters: ["CodeMirror-linenumbers"],
