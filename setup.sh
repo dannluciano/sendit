@@ -43,7 +43,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         brew list python@3 &>/dev/null || brew install python@3;
         brew list postgresql &>/dev/null || brew install postgresql;
         brew list redis &>/dev/null || brew install redis;
-        brew list forego &>/dev/null || brew install forego;
+        brew list hivemind &>/dev/null || brew install hivemind;
         brew services
         brew services start postgresql
         brew services start redis

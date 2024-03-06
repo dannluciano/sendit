@@ -4,4 +4,4 @@ set -e
 
 source env_vm/bin/activate
 
-DEBUG=True hivemind
+DEBUG=True HIVEMIND_PROCFILE=Procfile.local hivemind
