@@ -90,7 +90,7 @@
                 <div class="tags">
                     <span class="tag is-dark"><a href="{% url 'core:home' %}">Todas</a></span>
                     {% for tag in tags %}
-                    {% cycle 'is-primary' 'is-link' 'is-info' 'is-success' 'is-warning' 'is-danger' as color silent %}
+                    {% cycle 'is-primary' 'is-link' 'is-info' 'is-warning' 'is-danger' as color silent %}
                     <span class="tag {{color}} is-light">
                         <a href="{% url 'core:home' %}?tag={{ tag }}">
                             {{ tag }}

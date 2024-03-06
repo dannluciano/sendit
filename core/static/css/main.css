@@ -134,6 +134,10 @@ body {
     color: var(--fg) !important;
 }
 
+.subtitle strong {
+    color: var(--accentColor) !important;
+}
+
 .table {
     background-color: var(--bg) !important;
     color: var(--fg) !important;
@@ -156,7 +160,8 @@ strong {
     color: var(--accentColor);
 }
 
-.box, .card {
+.box,
+.card {
     background-color: var(--blackSecondary) !important;
     color: var(--white) !important;
 }
@@ -170,8 +175,13 @@ strong {
     color: var(--black) !important;
 }
 
+.navbar-menu {
+    background-color: var(--bg) !important;
+}
+
 .navbar-item {
     color: var(--accentColor) !important;
+    background: var(--bg) !important;
 }
 
 .textarea {
@@ -182,6 +192,14 @@ strong {
 
 .tag {
     margin-right: 5px;
+}
+
+pre {
+    background-color: var(--bg) !important;
+}
+
+code {
+    color: var(--fg) !important;
 }
 
 #nome-projeto {
