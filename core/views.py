@@ -43,8 +43,15 @@ def signup(request):
         else:
             return render(request, "platform/signup.html", {"form": form})
     else:
-        form = SignUpForm()
-    return render(request, "platform/signup.html", {"form": form})
+        form = SignUpForm(
+            initial={
+                "username": "",
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+            }
+        )
+        return render(request, "platform/signup.html", {"form": form})
 
 
 def current_user_data(request):
