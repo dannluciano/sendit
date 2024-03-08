@@ -194,10 +194,6 @@ strong {
     margin-right: 5px;
 }
 
-pre {
-    background-color: var(--bg) !important;
-}
-
 code {
     color: var(--fg) !important;
 }
