@@ -568,3 +568,29 @@ a.navbar-item:hover {
     color: unset;
     background-color: unset;
 }
+
+.d2h-file-header {
+    background-color: unset !important;
+}
+
+.d2h-info,
+.d2h-code-line-prefix {
+    display: none !important;
+}
+
+.d2h-del {
+    background-color: var(--redSecondary) !important;
+    border-color: var(--red) !important;
+}
+
+.d2h-ins {
+    background-color: var(--greenSecondary) !important;
+    border-color: var(--green) !important;
+}
+
+.d2h-diff-table {
+    font-size: 18px !important;
+    color: #454158 !important;
+    font-family: monospace;
+    font-weight: bold;
+}
