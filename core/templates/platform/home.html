@@ -112,9 +112,9 @@
                         </div>
                         <nav class="level">
                             <div class="level-left">
-                                <small class="tag is-orange">XP: {{ question.xp }}</small>
+                                <small class="tag is-link">XP: {{ question.xp }}</small>
                                 {% for tag in question.tags.all %}
-                                <small class="tag">{{ tag.tag }}</small>
+                                <small class="tag is-dark">{{ tag.tag }}</small>
                                 {% endfor %}
                             </div>
                         </nav>

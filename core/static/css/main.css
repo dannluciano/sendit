@@ -408,10 +408,9 @@ a.link-laranja:hover {
 }
 
 .card-avatar-img {
-    border: 2px solid #fff;
+    border: 2px solid var(--accentColor);
     border-radius: 7px;
     box-sizing: border-box;
-    color: #fff;
     height: 200px;
     width: auto;
 }
@@ -579,4 +578,21 @@ a.navbar-item:hover {
 .output {
     background-color: var(--bg);
     color: var(--fg);
+}
+
+textarea {
+    background-color: var(--bg) !important;
+    color: var(--accentColor) !important;
+}
+
+input, select, input::placeholder, select::selection, .select, textarea {
+    background-color: var(--bg) !important;
+    color: var(--accentColor) !important;
+    border-color: var(--bg) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    background-color: var(--bg) !important;
+    color: var(--accentColor) !important;
+    border-color: var(--accentColor) !important;
 }
