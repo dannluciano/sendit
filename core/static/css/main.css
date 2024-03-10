@@ -565,59 +565,18 @@ a.navbar-item:hover {
     background-color: unset;
 }
 
-.d2h-file-header {
-    background-color: unset !important;
-}
-
-.d2h-info,
-.d2h-code-line-prefix {
-    display: none !important;
-}
-
-.d2h-del {
-    background-color: var(--redSecondary) !important;
-    border-color: var(--redLight) !important;
-    color: var(--black) !important;
-}
-
-.d2h-del del {
-    background: var(--red) !important;
-    color: var(--white);
-}
-
-.d2h-ins {
-    background-color: var(--greenSecondary) !important;
-    border-color: var(--greenLight) !important;
-    color: var(--black) !important;
-}
-
-.d2h-ins ins {
-    background-color: var(--green) !important;
-    color: var(--black) !important;
+.d2h-file-list-wrapper {
+    display: none;
 }
 
 .d2h-diff-table {
     font-size: 18px !important;
-    color: #454158 !important;
     font-family: monospace;
     font-weight: bold;
 }
 
-.d2h-code-side-linenumber {
-    background: var(--bg);
-    color: var(--fg);
-}
-
-.d2h-cntx {
-    background: var(--bg) !important;
-    color: var(--fg) !important;
-}
-
-.d2h-code-line-ctn {
-    color: var(--blackSecondary) !important;
-}
 
 .output {
-    background: var(--bg) !important;
-    color: var(--fg) !important;
+    background-color: var(--bg);
+    color: var(--fg);
 }

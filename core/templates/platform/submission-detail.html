@@ -55,15 +55,15 @@
         <div id="diff-container">
         </div>
         <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}">
-        <script src="{% static 'js/diff2html.min.js' %}"></script>
-
+        <script type="text/javascript" src="{% static '/js/diff2html.min.js' %}"></script>
         <script>
-            var diffHtml = Diff2Html.getPrettyHtml(
+            var diffHtml = Diff2Html.html(
                 '{{submission.output|escapejs}}', {
                     inputFormat: 'diff',
                     showFiles: false,
                     matching: 'lines',
-                    outputFormat: 'side-by-side'
+                    outputFormat: 'side-by-side',
+                    colorScheme: 'dark'
                 }
             );
             document.getElementById("diff-container").innerHTML = diffHtml;
