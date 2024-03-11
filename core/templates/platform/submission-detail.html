@@ -55,7 +55,7 @@
         <div id="diff-container">
         </div>
         <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}">
-        <script type="text/javascript" src="{% static '/js/diff2html.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/diff2html.min.js' %}"></script>
         <script>
             var diffHtml = Diff2Html.html(
                 '{{submission.output|escapejs}}', {
