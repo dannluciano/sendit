@@ -1,6 +1,4 @@
 @charset "utf-8";
-@import "../node_modules/bulma/bulma.sass";
-
 
 $black: #22212C;
 $white-ter: #22212C; // background
@@ -15,3 +13,9 @@ $cyan: #80FFEA;
 $blue: #F8F8F2;
 $purple: #9580FF;
 $red: #FF9580;
+
+@use "bulma/sass" with (
+  $primary: $purple,
+);
+
+@forward "bulma/sass/themes";

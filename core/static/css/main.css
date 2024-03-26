@@ -95,10 +95,6 @@ html {
     color: var(--accentColor);
 }
 
-html a {
-    color: var(--fg);
-}
-
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     height: 100%;
@@ -123,14 +119,6 @@ body {
 
 .box {
     background-color: var(--bg) !important;
-    color: var(--fg) !important;
-}
-
-.title {
-    color: var(--fg) !important;
-}
-
-.subtitle {
     color: var(--fg) !important;
 }
 
@@ -554,9 +542,8 @@ a.navbar-item:hover {
     font-family: monospace;
 }
 
-.tag {
-    color: unset;
-    background-color: unset;
+td {
+    color: var(--fg) !important;
 }
 
 .tag>a {

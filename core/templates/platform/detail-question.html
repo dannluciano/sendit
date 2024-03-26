@@ -6,17 +6,17 @@
 {% block content %}
 <div class="container">
     <section class="box">
-        <h1 class="title has-text-centered">
+        <h1 class="title has-text-centered has-text-primary">
             {{ question.title }}
         </h1>
-        <div>
+        <div class="content">
             {{ question.statement|safe|escape }}
         </div>
         <br />
         {% if question.sample_input or question.sample_output %}
         <div class="columns entrada-saida">
             <div class="column">
-                <h2 class="subtitle">
+                <h2 class="subtitle has-text-primary">
                     Exemplo de Entrada:
                 </h2>
                 <div class="monospace">
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="column saida">
-                <h2 class="subtitle">
+                <h2 class="subtitle has-text-primary">
                     Exemplo de Saída:
                 </h2>
                 <div class="monospace">

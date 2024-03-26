@@ -11,12 +11,12 @@
 <div class="container">
     <div class="box has-text-centered">
 
-        <h1 class="title">
+        <h1 class="title has-text-primary">
             {{submission.question.title}}
         </h1>
 
         {% if submission.status != 'OK' %}
-        <h2 class="subtitle">
+        <h2 class="subtitle has-text-primary">
             {{submission.status}}
         </h2>
         {% endif %}
@@ -25,7 +25,7 @@
             <img src="{% static submission.get_random_status_image %}" width="256" alt="">
         </picture>
 
-        <h2 class="subtitle">
+        <h2 class="subtitle has-text-primary">
             {{ submission.get_random_status_phrase }}
         </h2>
 
@@ -48,7 +48,7 @@
 
     {% if submission.status != 'OK' %}
     <div class="box">
-        <h2 class="title has-text-centered">
+        <h2 class="title has-text-centered has-text-primary">
             Saída do Programa
         </h2>
         {% if submission.status == 'DiffError' %}
@@ -74,7 +74,7 @@
     </div>
     {% endif %}
     <div class="box">
-        <h2 class="title has-text-centered">
+        <h2 class="title has-text-centered has-text-primary">
             Código Enviado
         </h2>
         <textarea name="" id="submission_code"></textarea>
