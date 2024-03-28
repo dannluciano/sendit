@@ -1,23 +1,20 @@
-{% extends 'platform/base.html' %}
-{% load static %}
-
-{% block title %}<title>SendIT - Submissão - {{submission.uuid}} - Status</title>{% endblock %}
-
-{% block content %}
+{% extends 'platform/base.html' %} {% load static %} {% block title %}<title>
+    SendIT - Submissão - {{submission.uuid}} - Status</title
+>{% endblock %} {% block content %}
 <div class="container">
     <div class="box has-text-centered">
         <h1 class="title has-text-primary">Executando</h1>
         <div class="columns">
-            <div class="column is-half is-offset-one-quarter ">
-                <progress class="progress is-medium is-dark" max="100">50%</progress>
+            <div class="column is-half is-offset-one-quarter">
+                <progress class="progress is-medium is-primary" max="100">
+                    50%
+                </progress>
             </div>
         </div>
 
         <h2 class="subtitle">Espere um Pouco!</h2>
     </div>
 </div>
-{% endblock %}
-
-{% block js %}
+{% endblock %} {% block js %}
 <script src="{% static 'js/submission.js' %}"></script>
 {% endblock %}
