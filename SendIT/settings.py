@@ -137,7 +137,7 @@ MEDIA_URL = "/uploads/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 
-DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
+DEFAULT_FILE_STORAGE = "db_file_storage.storage.DatabaseFileStorage"
 
 LOGIN_URL = "/"
 
@@ -196,12 +196,26 @@ SESSION_SECURITY_WARN_AFTER = SESSION_SECURITY_EXPIRE_AFTER - 60
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "formatters": {
+        "rq_console": {
+            "format": "%(asctime)s %(message)s",
+            "datefmt": "%H:%M:%S",
+        },
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+        "rq_console": {
+            "level": "INFO",
+            "class": "rq.logutils.ColorizingStreamHandler",
+            "formatter": "rq_console",
+            "exclude": ["%(asctime)s"],
+        },
+    },
     "loggers": {
-        "": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "INFO")}
+        "": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "INFO")},
+        "rq.worker": {"handlers": ["rq_console"], "level": "INFO"},
     },
 }
-
 
 # Django Degub Toolbar
 INTERNAL_IPS = ["127.0.0.1"]

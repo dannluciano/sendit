@@ -31,6 +31,12 @@ LIMIT 3;
     return raw_sql(SQL)
 
 
+def ping():
+    now = datetime.datetime.utcnow()
+    log.info(f"PING {now}")
+    print("--> PING", now)
+
+
 def compute_bests_of_week():
     try:
         now = datetime.datetime.utcnow()
@@ -48,17 +54,21 @@ def compute_bests_of_week():
         achievement_badge_bytes = achievement_badge_file.read()
         achievement_badge_filename = f"Best of Week {week} - {year}"
 
-        achievement_badge = SimpleUploadedFile(achievement_badge_filename, achievement_badge_bytes, content_type="image/png")
+        achievement_badge = SimpleUploadedFile(
+            achievement_badge_filename,
+            achievement_badge_bytes,
+            content_type="image/png",
+        )
 
         log.info("Creating Achievement")
 
         achievement, _ = Achievement.objects.get_or_create(
             name=achievement_badge_filename,
             defaults={
-                'badge': achievement_badge,
-                'xp': 10,
-                'hidden': True,
-            }
+                "badge": achievement_badge,
+                "xp": 10,
+                "hidden": True,
+            },
         )
 
         bests_of_week = get_best_users_of_week()
@@ -71,7 +81,7 @@ def compute_bests_of_week():
             achievement.save()
         else:
             log.info("No User Found")
-        
+
         log.info(f"Finished Compute the Best of Week {week}")
     except Exception as err:
         log.error(err)
