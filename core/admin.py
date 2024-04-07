@@ -225,12 +225,6 @@ class AchievementAdmin(admin.ModelAdmin):
 
     ordering = ("hidden",)
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if "hidden__exact=1" in request.META["QUERY_STRING"]:
-            return qs
-        return qs.filter(hidden=False)
-
     def badge_tag(self, obj):
         return mark_safe(
             "<img class='image' src='%s' width='32px' height='32px'/>" % obj.badge.url
