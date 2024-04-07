@@ -18,12 +18,16 @@ def get_best_users_of_week():
     SQL = """
 SELECT  auth_user.id,
         username,
-        SUM(xp) AS xp
+        SUM(xp) AS xp,
+        EXTRACT('week' FROM NOW()) -1 AS WEEK,
+        date_trunc('week', NOW() - '1 week'::interval) AS START,
+        date_trunc('week', NOW() - '0 week'::interval) AS END
 FROM core_submission
 JOIN core_question ON (core_submission.question_id = core_question.id)
 RIGHT JOIN auth_user ON (core_submission.author_id=auth_user.id)
 WHERE status = 'OK'
-  AND EXTRACT('week' FROM core_submission.timestamp) = EXTRACT('week' FROM NOW())
+  AND core_submission.timestamp >= date_trunc('week', NOW() - '1 week'::interval)
+  AND core_submission.timestamp <= date_trunc('week', NOW() - '0 week'::interval)
 GROUP BY auth_user.id, username
 ORDER BY xp DESC
 LIMIT 3;
