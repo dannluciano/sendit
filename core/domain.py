@@ -23,7 +23,7 @@ FROM core_submission
 JOIN core_question ON (core_submission.question_id = core_question.id)
 RIGHT JOIN auth_user ON (core_submission.author_id=auth_user.id)
 WHERE status = 'OK'
-  AND core_submission.timestamp >= NOW() - '7 days'::interval
+  AND EXTRACT('week' FROM core_submission.timestamp) = EXTRACT('week' FROM NOW())
 GROUP BY auth_user.id, username
 ORDER BY xp DESC
 LIMIT 3;
