@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from .domain import get_best_users_of_week, get_leaderboard, random_unresolved_question
@@ -251,4 +252,30 @@ def submission_status(request, submission_uuid):
     else:
         return render(
             request, "platform/submission-status.html", {"submission": submission}
+        )
+
+
+@csrf_exempt
+@require_POST
+def auth(request):
+    username = request.POST["username"]
+    password = request.POST["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return JsonResponse(
+            {
+                "user": {
+                    "id": user.pk,
+                    "username": user.get_username(),
+                    "email": getattr(user, user.get_email_field_name()),
+                },
+            }
+        )
+    else:
+        return JsonResponse(
+            {
+                "msg": "Error: username or password wrong!",
+            },
+            status=403,
         )
