@@ -6,31 +6,53 @@ export DB=senditdb
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     export ARCH=$(uname -m)
-    if [ -z "$(find -H /var/lib/apt/lists -maxdepth 0 -mtime -7)" ]; then
-        echo "==> Install Linux Packages"
-        sudo apt-get update
-        sudo apt-get upgrade -y
-        sudo apt-get install -qq \
-            python3 \
-            postgresql \
-            libpq-dev \
-            redis \
-            wget \
-            git \
-            python3-dev \
-            python3-venv
-        sudo apt-get install -qq $(grep -vE "^\s*#" apt-packages | tr "\n" " ")
-    fi
+    #if [ -z "$(find -H /var/lib/apt/lists -maxdepth 0 -mtime -7)" ]; then
+    echo "==> Install Docker Packages"
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl -qq
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+    echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -qq
+    sudo docker run hello-world
+
+    echo "==> Install Linux Packages"
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    sudo apt-get install -qq \
+        python3 \
+        postgresql \
+        libpq-dev \
+        redis \
+        wget \
+        git \
+        python3-dev \
+        python3-venv 
+    # sudo apt-get install -qq $(grep -vE "^\s*#" apt-packages | tr "\n" " ")
+    #fi
 
     PYTHON_VERSION=$(python3 -c 'import platform; print(platform.python_version())')
     echo "Global Python Version $PYTHON_VERSION"
 
     if ! [ -x "$(command -v hivemind)" ]; then
-        echo "==> Instaling Forego"
-        wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-linux-arm64.gz"
-        gunzip hivemind-v1.1.0-linux-arm64.gz
-        rm -f hivemind-v1.1.0-linux-arm64.gz
-        sudo mv hivemind-v1.1.0-linux-arm64 /usr/local/bin/hivemind
+        echo "==> Instaling hivemind"
+        if [ $ARCH == "aarch64" ]; then
+            wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-linux-arm64.gz"
+            gunzip hivemind-v1.1.0-linux-arm64.gz
+            rm -f hivemind-v1.1.0-linux-arm64.gz
+            sudo mv hivemind-v1.1.0-linux-arm64 /usr/local/bin/hivemind
+        else
+            wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-linux-amd64.gz"
+            gunzip hivemind-v1.1.0-linux-amd64.gz
+            rm -f hivemind-v1.1.0-linux-amd64.gz
+            sudo mv hivemind-v1.1.0-linux-amd64 /usr/local/bin/hivemind
+        fi
         sudo chmod +x /usr/local/bin/hivemind
     fi
     
