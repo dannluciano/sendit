@@ -117,3 +117,4 @@ env_vm/
 worker_env/
 
 jstoolchain/node_modules
+assets/
