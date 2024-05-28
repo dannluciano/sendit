@@ -46,27 +46,27 @@
 
             <div class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-laranja{% endif %}"
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-accent{% endif %}"
                         href="{% url 'core:home' %}">
                         <ion-icon name="home"></ion-icon>
                         &nbsp; Home
                     </a>
-                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ranking' %} link-laranja{% endif %}"
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ranking' %} link-accent{% endif %}"
                         href="{% url 'core:ranking' %}">
                         <ion-icon name="medal"></ion-icon>
                         &nbsp; Pontuações
                     </a>
-                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %}  link-laranja{% endif %}"
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %}  link-accent{% endif %}"
                         href="{% url 'core:submissions' %}">
                         <ion-icon name="send"></ion-icon>
                         &nbsp; Envios
                     </a>
-                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %}  link-laranja{% endif %}"
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %}  link-accent{% endif %}"
                         href="{% url 'editor:editor' %}">
                         <ion-icon name="code"></ion-icon>
                         &nbsp; Editor
                     </a>
-                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'file-code-list' %}  link-laranja{% endif %}"
+                    <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'file-code-list' %}  link-accent{% endif %}"
                         href="{% url 'editor:file-code-list' %}">
                         <ion-icon name="document"></ion-icon>
                         &nbsp; Arquivos
@@ -80,10 +80,11 @@
                         &nbsp;Administração
                     </a>
                     {% endif %}
+                    
                     {% comment %} 
-                        <div class="navbar-item">
-                            <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
-                        </div> 
+                    <div class="navbar-item">
+                        <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
+                    </div> 
                     {% endcomment %}
                     <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
                         {% csrf_token %}

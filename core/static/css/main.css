@@ -79,20 +79,29 @@
 
     --accentColor: var(--purple);
 
+
     --bg: var(--black);
+    --bgSecondary: var(--blackSecondary);
     --fg: var(--white);
 
     --comment: #7970a9;
     --selection: #454158;
 }
 
+
+
 html {
     margin: 0;
     font-size: 18px;
     overflow-x: hidden;
     height: 100%;
-    background-color: var(--bg) !important;
+
     color: var(--accentColor);
+}
+
+[data-theme="light"] {
+    --bg: var(--blackSecondary);
+    --fg: var(--black);
 }
 
 body {
@@ -100,6 +109,7 @@ body {
         Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
     height: 100%;
+    background-color: var(--bg);
 }
 
 .main {
@@ -117,11 +127,6 @@ body {
 
 .navbar.has-shadow {
     box-shadow: 0 2px 0 0 var(--bg) !important;
-}
-
-.box {
-    background-color: var(--bg) !important;
-    color: var(--fg) !important;
 }
 
 .subtitle strong {
@@ -150,10 +155,15 @@ strong {
     color: var(--accentColor);
 }
 
+
+.has-text-primary {
+    color: var(--accentColor) !important;
+}
+
 .box,
 .card {
-    background-color: var(--blackSecondary) !important;
-    color: var(--white) !important;
+    background-color: var(--bgSecondary) !important;
+    color: var(--fg) !important;
 }
 
 .label {
@@ -226,22 +236,23 @@ code {
     color: var(--accentColor);
 }
 
-a.link-laranja {
+a.link-accent {
     color: var(--accentColor);
     border-bottom: 3px solid var(--accentColor);
+}
+
+a.link-accent:hover {
+    color: var(--purpleSecondary) !important;
+    border-bottom: 3px solid var(--purpleSecondary) !important;
 }
 
 a.is-tab:hover {
     border-bottom: 1px solid var(--accentColor);
 }
 
-a.link-laranja:hover {
-    color: #ff8c6b;
-    border-bottom: 3px solid #ff8c6b;
-}
-
 .links-questao:hover {
-    color: #ff8c6b;
+    color: var(--purpleSecondary);
+
 }
 
 .entrada-saida {
@@ -481,12 +492,12 @@ ul.card-stats-list {
     border-bottom: var(--accentColor) 1px solid;
 }
 
-.container a.link-laranja {
+.container a.link-accent {
     color: var(--accentColor);
     border-bottom: var(--accentColor) solid 3px;
 }
 
-.container a.link-laranja:hover {
+.container a.link-accent:hover {
     color: var(--accentColor);
     border-bottom: #ff8c6b solid 3px;
 }
@@ -543,7 +554,7 @@ td {
     color: var(--fg) !important;
 }
 
-.tag > a {
+.tag>a {
     color: unset;
     background-color: unset;
 }
