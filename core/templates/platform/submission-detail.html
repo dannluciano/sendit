@@ -1,123 +1,97 @@
 {% extends 'platform/base.html' %}
 {% load static %}
 
-{% block title %}<title>SendIT - Submissão - {{submission.uuid}}</title>{% endblock %}
+{% block title %}
+  <title>SendIT - Submissão - {{ submission.uuid }}</title>
+{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %} " />
+  <link rel="stylesheet" href="{% static 'vendor/codemirror/theme/dracula.css' %} " />
 {% endblock %}
 
 {% block content %}
-<div class="container">
+  <div class="container">
     <div class="box has-text-centered">
+      <h1 class="title has-text-primary">{{ submission.question.title }}</h1>
 
-        <h1 class="title has-text-primary">
-            {{submission.question.title}}
-        </h1>
+      {% if submission.status != 'OK' %}
+        <h2 class="subtitle has-text-primary">{{ submission.status }}</h2>
+      {% endif %}
 
-        {% if submission.status != 'OK' %}
-        <h2 class="subtitle has-text-primary">
-            {{submission.status}}
-        </h2>
-        {% endif %}
+      <picture id="animate">
+        <img src="{% static submission.get_random_status_image %}" width="256" alt="" />
+      </picture>
 
-        <picture id="animate">
-            <img src="{% static submission.get_random_status_image %}" width="256" alt="">
-        </picture>
+      <h2 class="subtitle has-text-primary">{{ submission.get_random_status_phrase }}</h2>
 
-        <h2 class="subtitle has-text-primary">
-            {{ submission.get_random_status_phrase }}
-        </h2>
-
-        {% if submission.status == 'OK' %}
+      {% if submission.status == 'OK' %}
+        <p>Você ganhou {{ submission.question.xp }} XPs!</p>
+        <br />
         <p>
-            Você ganhou {{ submission.question.xp }} XPs!
+          <a href="{% url 'core:home' %}" class="button is-large is-success">Voltar para lista de questões</a>
         </p>
-        <br>
+      {% else %}
         <p>
-            <a href="{% url 'core:home' %}" class="button is-large is-success">Voltar para lista de questões</a>
+          <a href="{{ submission.question.get_absolute_url }}" class="button is-large is-success">Tentar Novamente</a>
         </p>
-        {% else %}
-        <p>
-            <a href="{{submission.question.get_absolute_url}}" class="button is-large is-success">
-                Tentar Novamente
-            </a>
-        </p>
-        {% endif %}
+      {% endif %}
     </div>
 
     {% if submission.status != 'OK' %}
-    <div class="box">
-        <h2 class="title has-text-centered has-text-primary">
-            Saída do Programa
-        </h2>
+      <div class="box">
+        <h2 class="title has-text-centered has-text-primary">Saída do Programa</h2>
         {% if submission.status == 'DiffError' %}
-        <div id="diff-container">
-        </div>
-        <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}">
-        <script type="text/javascript" src="{% static 'js/diff2html.min.js' %}"></script>
-        <script>
-            var diffHtml = Diff2Html.html(
-                '{{submission.output|escapejs}}', {
-                    inputFormat: 'diff',
-                    showFiles: false,
-                    matching: 'lines',
-                    outputFormat: 'side-by-side',
-                    colorScheme: 'dark'
-                }
-            );
-            document.getElementById("diff-container").innerHTML = diffHtml;
-        </script>
+          <div id="diff-container"></div>
+          <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}" />
+          <script type="text/javascript" src="{% static 'js/diff2html.min.js' %}"></script>
+          <script>
+            var diffHtml = Diff2Html.html('{{submission.output|escapejs}}', {
+              inputFormat: 'diff',
+              showFiles: false,
+              matching: 'lines',
+              outputFormat: 'side-by-side',
+              colorScheme: 'dark'
+            })
+            document.getElementById('diff-container').innerHTML = diffHtml
+          </script>
         {% else %}
-        <pre class="output"><code>{{submission.output}}</code></pre>
+          <pre class="output">
+            <code>{{ submission.output }}</code>
+          </pre>
         {% endif %}
-    </div>
+      </div>
     {% endif %}
     <div class="box">
-        <h2 class="title has-text-centered has-text-primary">
-            Código Enviado
-        </h2>
-        <textarea name="" id="submission_code"></textarea>
+      <h2 class="title has-text-centered has-text-primary">Código Enviado</h2>
+      <textarea name="" id="submission_code"></textarea>
     </div>
-</div>
+  </div>
 {% endblock %}
 
 {% block js %}
-<script src="{% static 'codemirror/lib/codemirror.js'%}"></script>
-<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %} ">
-<link rel="stylesheet" href="{% static 'codemirror/theme/dracula.css' %} ">
-<script src="{% static 'codemirror/mode/clike/clike.js'%}"></script>
-<script src="{% static 'codemirror/mode/javascript/javascript.js'%}"></script>
-<script src="{% static 'codemirror/mode/python/python.js'%}"></script>
-<script>
+  <script src="{% static 'vendor/codemirror/lib/codemirror.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/clike/clike.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/JavaScript/JavaScript.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/Python/Python.js' %}"></script>
+  <script>
     function randint(max) {
-        return Math.floor(Math.random() * Math.floor(max));
+      return Math.floor(Math.random() * Math.floor(max))
     }
-    animations = [
-        "bounce",
-        "bounceIn",
-        "bounceInDown",
-        "bounceInRight",
-        "bounceInLeft",
-        "bounceInUp",
-        "flash",
-        "fadeInDown",
-        "zoomIn",
-        "jackInTheBox",
-        "rollIn",
-    ]
-
+    animations = ['bounce', 'bounceIn', 'bounceInDown', 'bounceInRight', 'bounceInLeft', 'bounceInUp', 'flash', 'fadeInDown', 'zoomIn', 'jackInTheBox', 'rollIn']
+    
     animation = animations[randint(10)]
     document.getElementById('animate').classList.add('animated', animation, 'slower')
     const editorTextArea = document.getElementById('submission_code')
     const editor = CodeMirror.fromTextArea(editorTextArea, {
-        lineNumbers: true,
-        readOnly: true,
-        theme: "dracula",
-        viewportMargin: Infinity,
-        gutters: ["CodeMirror-linenumbers"],
-        mode: `{{ submission.language }}`
-      });
-      editor.setValue(`{% autoescape off %}{{ submission.code }}{% endautoescape %}`)
-</script>
+      lineNumbers: true,
+      readOnly: true,
+      theme: 'dracula',
+      viewportMargin: Infinity,
+      gutters: ['CodeMirror-linenumbers'],
+      mode: `{{ submission.language }}`
+    })
+    editor.setValue(`{% autoescape off %}{{ submission.code }}{% endautoescape %}`)
+  </script>
 {% endblock %}
