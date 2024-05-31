@@ -72,10 +72,6 @@ class SubmissionRunner(object):
     def create_temp_dirs_and_files(self):
         self.create_temp_dir(self.work_dir)
         self.create_temp_file(self.work_dir, "input.txt", self.input_content)
-        if self.expected_output_content:
-            self.create_temp_file(
-                self.work_dir, "expected_output.txt", self.expected_output_content
-            )
         self.create_temp_file(
             self.work_dir, self.source_file_name, self.source_file_content
         )
@@ -100,7 +96,6 @@ class SubmissionRunner(object):
         except subprocess.TimeoutExpired as error:
             command = self.docker_stop_command.replace("$NAME$", container_name)
             try:
-
                 result = subprocess.run(
                     shlex.split(command),
                     shell=False,
@@ -135,6 +130,9 @@ class SubmissionRunner(object):
             raise SubmissionRuntimeError("RuntimeError")
 
     def compare_outputs(self):
+        self.create_temp_file(
+            self.work_dir, "expected_output.txt", self.expected_output_content
+        )
         command = f"diff -u -b -w -B - {self.work_dir}/expected_output.txt"
         log.info(f"Executing Diff: {command}")
         try:
