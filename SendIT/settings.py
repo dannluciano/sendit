@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "core",
     "editor",
+    "evaluation",
     "miniexplorer",
     "mini_system_monitor",
     "django.contrib.humanize",

@@ -12,7 +12,13 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from .domain import get_best_users_of_week, get_leaderboard, random_unresolved_question
+from evaluation.models import Assessment
+
+from .domain import (
+    get_best_users_of_week,
+    get_leaderboard,
+    random_unresolved_question,
+)
 from .forms import SignUpForm
 from .models import Achievement, Question, Submission, Tags, UserData
 from .worker import run_submission_runner
@@ -61,12 +67,20 @@ def current_user_data(request):
 
 @login_required
 def home(request):
+    now = timezone.now()
     user = current_user_data(request)
-    submissoes_ok = Submission.objects.filter(author=request.user, status="OK")
+    submissoes_ok = Submission.objects.filter(
+        author=request.user, status="OK"
+    )
     questions = Question.objects.exclude(submission__in=submissoes_ok)
     questions = questions.exclude(visible=False)
     questions = questions.prefetch_related("tags")
     achievements = Achievement.objects.filter(users=request.user)
+    assessments = Assessment.objects.filter(
+        groups__in=request.user.groups.all(),
+        date_start__lt=now,
+        date_end__gt=now,
+    )
 
     if "tag" in request.GET:
         tag = request.GET.get("tag")
@@ -88,6 +102,7 @@ def home(request):
             "tags": tags,
             "best_users_of_week": best_users_of_week,
             "achievements": achievements,
+            "assessments": assessments,
         },
     )
 
@@ -107,9 +122,9 @@ def completed_issues(request):
     ok_submissions = Submission.objects.filter(
         author=request.user, status="OK"
     ).prefetch_related("question")
-    questions = Question.objects.filter(submission__in=ok_submissions).prefetch_related(
-        "tags"
-    )
+    questions = Question.objects.filter(
+        submission__in=ok_submissions
+    ).prefetch_related("tags")
 
     tags = Tags.objects.distinct().filter(question__in=questions)
 
@@ -175,7 +190,9 @@ def create_submission(request, question_id):
         return HttpResponseRedirect(question.get_absolute_url())
 
     log.info("Does not exist any OK Submission")
-    sub = Submission(author=request.user, question=question, code=code, language=lang)
+    sub = Submission(
+        author=request.user, question=question, code=code, language=lang
+    )
     sub.save()
 
     ttl = 60 * 60 * 24 * 7
@@ -220,7 +237,9 @@ def submissions_list(request):
     )
 
     return render(
-        request, "platform/submissions.html", {"submissions": submissions, "user": user}
+        request,
+        "platform/submissions.html",
+        {"submissions": submissions, "user": user},
     )
 
 
@@ -251,7 +270,9 @@ def submission_status(request, submission_uuid):
         return JsonResponse(dict)
     else:
         return render(
-            request, "platform/submission-status.html", {"submission": submission}
+            request,
+            "platform/submission-status.html",
+            {"submission": submission},
         )
 
 
