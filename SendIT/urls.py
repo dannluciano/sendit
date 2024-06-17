@@ -10,6 +10,7 @@ admin.site.index_title = "SendIt"
 
 urlpatterns = [
     path("", include("core.urls", namespace="core")),
+    path("", include("evaluation.urls", namespace="evaluation")),
     path("editor/", include("editor.urls")),
     path("session_security/", include("statistics.urls")),
     path("django-rq/", include("django_rq.urls")),

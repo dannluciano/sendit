@@ -54,7 +54,10 @@ class QuestionAdmin(admin.ModelAdmin):
 
     list_display = ("id", "title", "xp", "visible")
     list_display_links = ("id", "title")
-    list_filter = ("tags",)
+    list_filter = (
+        "tags",
+        "visible",
+    )
     search_fields = ["title"]
 
     actions = [hide, show]
