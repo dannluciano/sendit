@@ -12,7 +12,15 @@ from django.urls import path
 from django.utils.safestring import mark_safe
 
 from core.domain import get_user_profile
-from core.models import Achievement, CaseTest, Question, Submission, Tags
+from core.models import (
+    Achievement,
+    Assessment,
+    CaseTest,
+    Question,
+    QuestionInfo,
+    Submission,
+    Tags,
+)
 
 
 class CaseTestInline(admin.TabularInline):
@@ -54,7 +62,10 @@ class QuestionAdmin(admin.ModelAdmin):
 
     list_display = ("id", "title", "xp", "visible")
     list_display_links = ("id", "title")
-    list_filter = ("tags",)
+    list_filter = (
+        "tags",
+        "visible",
+    )
     search_fields = ["title"]
 
     actions = [hide, show]
@@ -233,9 +244,21 @@ class AchievementAdmin(admin.ModelAdmin):
     badge_tag.short_description = "Badge Image"
 
 
+class QuestionInfoInline(admin.TabularInline):
+    model = QuestionInfo
+    raw_id_fields = ("question",)
+
+
+class AssessmentAdmin(admin.ModelAdmin):
+    inlines = [
+        QuestionInfoInline,
+    ]
+
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Submission, SubmissionsAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Tags)
 admin.site.register(Achievement, AchievementAdmin)
+admin.site.register(Assessment, AssessmentAdmin)

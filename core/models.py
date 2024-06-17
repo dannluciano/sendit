@@ -5,6 +5,7 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
+from django.urls import reverse
 
 from .utils import raw_sql
 
@@ -267,3 +268,56 @@ class Achievement(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.xp} XP"
+
+
+class Assessment(models.Model):
+    uuid = models.UUIDField(
+        "uuid",
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+    )
+
+    name = models.CharField("Nome", max_length=255)
+
+    group = models.ForeignKey(
+        "auth.Group", verbose_name="Grupo", on_delete=models.CASCADE
+    )
+
+    date_start = models.DateTimeField(
+        "Data de Início", auto_now=False, auto_now_add=False
+    )
+
+    date_end = models.DateTimeField("Data de Fim", auto_now=False, auto_now_add=False)
+
+    description = RichTextField("Descrição")
+
+    questions = models.ManyToManyField(
+        Question, verbose_name="Questões", through="QuestionInfo"
+    )
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse("assessment_detail", kwargs={"uuid": self.uuid})
+
+    @property
+    def total_of_points(self):
+        sum = 0
+        for q in self.questioninfo_set.all():
+            sum += q.point
+        return sum
+
+    class Meta:
+        verbose_name = "Avaliações"
+
+
+class QuestionInfo(models.Model):
+    question = models.ForeignKey(
+        Question, verbose_name="Questão", on_delete=models.CASCADE
+    )
+    assessment = models.ForeignKey(
+        Assessment, verbose_name="Avaliação", on_delete=models.CASCADE
+    )
+    point = models.PositiveIntegerField(verbose_name="Pontuação")

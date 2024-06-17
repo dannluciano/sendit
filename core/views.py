@@ -14,7 +14,7 @@ from django.views.decorators.http import require_POST
 
 from .domain import get_best_users_of_week, get_leaderboard, random_unresolved_question
 from .forms import SignUpForm
-from .models import Achievement, Question, Submission, Tags, UserData
+from .models import Achievement, Assessment, Question, Submission, Tags, UserData
 from .worker import run_submission_runner
 
 log = logging.getLogger(__name__)
@@ -67,6 +67,7 @@ def home(request):
     questions = questions.exclude(visible=False)
     questions = questions.prefetch_related("tags")
     achievements = Achievement.objects.filter(users=request.user)
+    assessments = Assessment.objects.filter(group=request.user.groups.first())
 
     if "tag" in request.GET:
         tag = request.GET.get("tag")
@@ -88,6 +89,7 @@ def home(request):
             "tags": tags,
             "best_users_of_week": best_users_of_week,
             "achievements": achievements,
+            "assessments": assessments,
         },
     )
 
