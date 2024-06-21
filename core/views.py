@@ -12,9 +12,11 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+from evaluation.models import Assessment
+
 from .domain import get_best_users_of_week, get_leaderboard, random_unresolved_question
 from .forms import SignUpForm
-from .models import Achievement, Assessment, Question, Submission, Tags, UserData
+from .models import Achievement, Question, Submission, Tags, UserData
 from .worker import run_submission_runner
 
 log = logging.getLogger(__name__)
@@ -67,7 +69,7 @@ def home(request):
     questions = questions.exclude(visible=False)
     questions = questions.prefetch_related("tags")
     achievements = Achievement.objects.filter(users=request.user)
-    assessments = Assessment.objects.filter(group=request.user.groups.first())
+    assessments = Assessment.objects.filter(groups__in=request.user.groups.all())
 
     if "tag" in request.GET:
         tag = request.GET.get("tag")

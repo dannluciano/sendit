@@ -1,0 +1,46 @@
+{% extends 'platform/base.html' %}
+{% load static %}
+
+{% block title %}
+  <title>SendIT - Avaliação - {{ assessment.name }}</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <article class="box has-text-centered">
+      <header>
+        <h1 class="title has-text-primary">{{ assessment.name }}</h1>
+      </header>
+
+      <hr class="is-small" style="background-color: var(--blackTernary);" />
+
+      <section>
+        <p>
+          Número de Questões: <strong>{{ assessment.number_of_questions }}</strong>
+        </p>
+        <p>
+          Total de Pontos: <strong>{{ assessment.total_of_points }}</strong>
+        </p>
+        <p>
+          Inícia em: <strong>{{ assessment.date_start }}</strong>
+        </p>
+        <p>
+          Finaliza em: <strong>{{ assessment.date_end }}</strong>
+        </p>
+      </section>
+
+      <hr style="background-color: var(--blackTernary);" />
+
+      <section class="content is-large">
+        <br />
+        {{ assessment.description|safe }}
+        <br />
+      </section>
+
+      <hr style="background-color: var(--blackTernary);" />
+      <footer>
+        <a class="button is-large is-primary is-fullwidth" href="#">Iniciar</a>
+      </footer>
+    </article>
+  </div>
+{% endblock %}
