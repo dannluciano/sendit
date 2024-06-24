@@ -39,7 +39,11 @@
 
       <hr style="background-color: var(--blackTernary);" />
       <footer>
-        <a class="button is-large is-primary is-fullwidth" href="{% url 'evaluation:assessment-start' assessment.uuid %}">Iniciar</a>
+        {% if assessment_submission %}
+          <a class="button is-large is-primary is-fullwidth" href="{% url 'evaluation:assement-submission-detail' assessment_submission.uuid %}">Acessar</a>
+        {% else %}
+          <a class="button is-large is-primary is-fullwidth" href="{% url 'evaluation:assessment-start' assessment.uuid %}">Iniciar</a>
+        {% endif %}
       </footer>
     </article>
   </div>

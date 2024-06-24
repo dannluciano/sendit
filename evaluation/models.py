@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from core.models import Question, Submission
 
@@ -34,6 +35,13 @@ class Assessment(models.Model):
     questions = models.ManyToManyField(
         Question, verbose_name="Questões", through="QuestionInfo"
     )
+
+    def is_available(self):
+        now = timezone.now()
+        return self.date_start < now and now < self.date_end
+
+    is_available.boolean = True
+    is_available.short_description = "Disponível?"
 
     def __str__(self):
         return f"{self.name}"
@@ -117,6 +125,9 @@ class AssessmentSubmission(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Atulizado em"
     )
+
+    def __str__(self) -> str:
+        return f"{self.assessment} de {self.author.first_name} {self.author.last_name} ({self.author})"
 
     def clean(self):
         validate_submission_datetime(self)
