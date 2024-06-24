@@ -3,7 +3,6 @@ from django.contrib import admin
 from evaluation.models import (
     Assessment,
     AssessmentSubmission,
-    AssessmentSubmissionQuestionAnswer,
     QuestionInfo,
 )
 
@@ -15,14 +14,21 @@ class QuestionInfoInline(admin.TabularInline):
 
 @admin.register(Assessment)
 class AssessmentAdmin(admin.ModelAdmin):
+    list_display = ("name", "total_of_points", "date_start", "date_end")
+
     autocomplete_fields = ["groups"]
     inlines = [
         QuestionInfoInline,
     ]
 
 
-class AssessmentSubmissionQuestionAnswerInline(admin.StackedInline):
-    model = AssessmentSubmissionQuestionAnswer
+def compute_score(modeladmin, request, queryset):
+    objs = queryset.all()
+    for obj in objs:
+        obj.compute_score()
+
+
+compute_score.short_description = "Calcular Nota"
 
 
 @admin.register(AssessmentSubmission)
@@ -30,10 +36,13 @@ class AssessmentSubmissionAdmin(admin.ModelAdmin):
     list_display = (
         "assessment",
         "author",
+        "score",
         "created_at",
         "updated_at",
     )
 
-    inlines = [
-        AssessmentSubmissionQuestionAnswerInline,
+    list_filter = ("assessment",)
+
+    actions = [
+        compute_score,
     ]

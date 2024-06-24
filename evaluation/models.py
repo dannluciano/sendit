@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 
-from core.models import Question
+from core.models import Question, Submission
 
 
 class Assessment(models.Model):
@@ -25,7 +25,9 @@ class Assessment(models.Model):
         "Data de Início", auto_now=False, auto_now_add=False
     )
 
-    date_end = models.DateTimeField("Data de Fim", auto_now=False, auto_now_add=False)
+    date_end = models.DateTimeField(
+        "Data de Fim", auto_now=False, auto_now_add=False
+    )
 
     description = RichTextField("Descrição")
 
@@ -37,14 +39,18 @@ class Assessment(models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        return reverse("assessment_detail", kwargs={"uuid": self.uuid})
+        return reverse(
+            "evaluation:assessment-detail",
+            kwargs={"assessment_uuid": self.uuid},
+        )
 
-    @property
     def total_of_points(self):
         sum = 0
         for q in self.questioninfo_set.all():
             sum += q.point
         return sum
+
+    total_of_points.short_description = "Total de Pontos"
 
     class Meta:
         verbose_name = "Avaliação"
@@ -58,7 +64,9 @@ class QuestionInfo(models.Model):
     assessment = models.ForeignKey(
         Assessment, verbose_name="Avaliação", on_delete=models.CASCADE
     )
-    point = models.PositiveIntegerField(verbose_name="Pontuação")
+    point = models.DecimalField(
+        max_digits=5, decimal_places=2, verbose_name="Pontuação"
+    )
 
 
 class DateTimeRangeError(ValidationError):
@@ -98,37 +106,49 @@ class AssessmentSubmission(models.Model):
         on_delete=models.CASCADE,
     )
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Criado em")
+    score = models.DecimalField(
+        max_digits=5, decimal_places=2, verbose_name="Nota"
+    )
 
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Atulizado em")
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Criado em"
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Atulizado em"
+    )
 
     def clean(self):
         validate_submission_datetime(self)
 
+    def compute_score(self):
+        questions = self.assessment.questions.all()
+
+        submissions = Submission.objects.filter(
+            author=self.author,
+            status="OK",
+            question__in=questions,
+            timestamp__gt=self.assessment.date_start,
+            timestamp__lt=self.assessment.date_end,
+        )
+
+        questions_id_with_submission_ok = list(
+            submissions.values_list("question_id", flat=True)
+        )
+
+        questions_info_ok = self.assessment.questioninfo_set.filter(
+            question_id__in=questions_id_with_submission_ok
+        )
+
+        points = 0
+        for question_info in questions_info_ok:
+            points += question_info.point
+
+        self.score = points
+        self.save()
+
+        return points
+
     class Meta:
         verbose_name = "Avaliação do Aluno"
         verbose_name_plural = "Avaliações dos Alunos"
-
-
-class AssessmentSubmissionQuestionAnswer(models.Model):
-    uuid = models.UUIDField(
-        "uuid",
-        default=uuid.uuid4,
-        unique=True,
-        editable=False,
-    )
-
-    assessment_submission = models.ForeignKey(
-        AssessmentSubmission, verbose_name="Avaliação", on_delete=models.CASCADE
-    )
-
-    question_info = models.ForeignKey(
-        QuestionInfo, verbose_name="Questão", on_delete=models.CASCADE
-    )
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Criado em")
-
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Atulizado em")
-
-    class Meta:
-        verbose_name = "Avaliações dos Alunos: Resposta"
