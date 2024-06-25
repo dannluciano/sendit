@@ -181,8 +181,8 @@ def get_question_by_uuid(request, question_uuid):
 
 @require_POST
 @login_required
-def create_submission(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
+def create_submission(request, question_uuid):
+    question = get_object_or_404(Question, uuid=question_uuid)
     code = request.POST["editor"]
     lang = request.POST["language"]
 

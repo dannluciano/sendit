@@ -26,7 +26,7 @@ urlpatterns = [
         name="completed-question",
     ),
     path(
-        "questions/<int:question_id>/submit/",
+        "questions/<str:question_uuid>/submit/",
         views.create_submission,
         name="submit",
     ),

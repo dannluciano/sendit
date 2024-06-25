@@ -5,6 +5,7 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
+from django.urls import reverse
 
 from .utils import raw_sql
 
@@ -97,7 +98,12 @@ class Question(models.Model):
     )
 
     def get_absolute_url(self):
-        return f"/questions/{self.pk}/"
+        return reverse(
+            "core:question_detail_by_uuid",
+            args=[
+                self.uuid,
+            ],
+        )
 
     def __str__(self):
         return f"{self.title}"
