@@ -72,9 +72,11 @@ class QuestionInfo(models.Model):
     question = models.ForeignKey(
         Question, verbose_name="Questão", on_delete=models.CASCADE
     )
+
     assessment = models.ForeignKey(
         Assessment, verbose_name="Avaliação", on_delete=models.CASCADE
     )
+
     point = models.DecimalField(
         max_digits=5, decimal_places=2, verbose_name="Pontuação"
     )
