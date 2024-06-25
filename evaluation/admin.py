@@ -8,8 +8,9 @@ from evaluation.models import (
 )
 
 
-class QuestionInfoInline(admin.TabularInline):
+class QuestionInfoInline(admin.StackedInline):
     model = QuestionInfo
+    extra = 1
     autocomplete_fields = ["question"]
 
 

@@ -15,12 +15,26 @@ urlpatterns = [
         ),
         name="index",
     ),
-    path("logout/", auth_views.LogoutView.as_view(next_page="/"), name="logout"),
+    path(
+        "logout/", auth_views.LogoutView.as_view(next_page="/"), name="logout"
+    ),
     path("home/", views.home, name="home"),
     path("questions/random/", views.random_question, name="random"),
-    path("questions/completed/", views.completed_issues, name="completed-question"),
-    path("questions/<int:question_id>/submit/", views.create_submission, name="submit"),
-    path("questions/<int:question_id>/", views.get_question, name="question_detail"),
+    path(
+        "questions/completed/",
+        views.completed_issues,
+        name="completed-question",
+    ),
+    path(
+        "questions/<int:question_id>/submit/",
+        views.create_submission,
+        name="submit",
+    ),
+    path(
+        "questions/<int:question_id>/",
+        views.get_question,
+        name="question_detail",
+    ),
     path("signup/", views.signup, name="signup"),
     path("ranking/", views.medal_board, name="ranking"),
     path("submissions/", views.submissions_list, name="submissions"),

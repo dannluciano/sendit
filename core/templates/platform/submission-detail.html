@@ -30,7 +30,7 @@
         <p>Você ganhou {{ submission.question.xp }} XPs!</p>
         <br />
         <p>
-          <a href="{% url 'core:home' %}" class="button is-large is-success">Voltar para lista de questões</a>
+          <a href="javascript:window.history.back()" class="button is-large is-success">Voltar para lista de questões</a>
         </p>
       {% else %}
         <p>

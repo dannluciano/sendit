@@ -8,7 +8,7 @@
 {% block content %}
   <div class="container">
     <article class="has-text-centered">
-      <header>
+      <header class="box">
         <hgroup>
           <h1 class="title has-text-primary">{{ assessment.name }}</h1>
           <h2 class="subtitle">
@@ -29,11 +29,18 @@
                   <a href="{% url 'core:question_detail' question_info.question.id %}" class="links-questao" target="_blank">
                     {{ question_info.question.title }}
                     <small class="tag is-link">{{ question_info.point }} Ponto{{ question_info.point|pluralize }}</small>
-                    {% if question_info in questions_info_ok %}
-                      <small class="tag is-success">OK</small>
-                    {% endif %}
                   </a>
                 </h2>
+                {% if question_info in questions_info_ok %}
+                  {% for submission in submissions_ok %}
+                    {% if submission.question == question_info.question %}
+                      <a class="button is-success" href="{% url 'core:submissions-detail' submission.uuid %}">
+                        <ion-icon name="checkmark-circle"></ion-icon>
+                        <span>Acessar</span>
+                      </a>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
               </div>
             </div>
           </article>

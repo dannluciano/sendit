@@ -9,9 +9,11 @@ from evaluation.models import Assessment, AssessmentSubmission, QuestionInfo
 @login_required
 def assessment_detail(request, assessment_uuid):
     assessment = get_object_or_404(Assessment, uuid=assessment_uuid)
+
     assessment_submission = AssessmentSubmission.objects.filter(
         assessment=assessment, author=request.user
     ).first()
+
     context = {
         "assessment": assessment,
         "assessment_submission": assessment_submission,
@@ -25,6 +27,7 @@ def assessment_detail(request, assessment_uuid):
 @login_required
 def assessment_start(request, assessment_uuid):
     assessment = get_object_or_404(Assessment, uuid=assessment_uuid)
+
     assessment_submission, _ = AssessmentSubmission.objects.get_or_create(
         assessment=assessment, author=request.user, defaults={"score": 0}
     )
@@ -51,7 +54,7 @@ def assessment_submission_detail(request, assessment_submission_uuid):
 
     questions = assessment.questions.all()
 
-    submissions = Submission.objects.filter(
+    submissions_ok = Submission.objects.filter(
         author=request.user,
         status="OK",
         question__in=questions,
@@ -60,7 +63,7 @@ def assessment_submission_detail(request, assessment_submission_uuid):
     )
 
     questions_id_with_submission_ok = list(
-        submissions.values_list("question_id", flat=True)
+        submissions_ok.values_list("question_id", flat=True)
     )
 
     questions_info_ok = assessment.questioninfo_set.filter(
@@ -72,9 +75,8 @@ def assessment_submission_detail(request, assessment_submission_uuid):
         "assessment_submission": assessment_submission,
         "questions_info": questions_info,
         "questions_info_ok": questions_info_ok,
+        "submissions_ok": submissions_ok,
     }
-
-    print(context)
 
     return render(
         request, "evaluation/assessment-questions-list.html", context=context

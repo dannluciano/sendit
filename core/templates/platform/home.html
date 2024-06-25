@@ -143,12 +143,12 @@
             </p>
 
             {% for assessment in assessments %}
-              <details>
+              <details open>
                 <summary>{{ assessment.name }}</summary>
-                <p>Total de Pontos: {{ assessment.total_of_points }}</p>
-                <p>Início: {{ assessment.date_start }}</p>
-                <p>Fim: {{ assessment.date_end }}</p>
-                <a class="button is-info" href="{% url 'evaluation:assessment-detail' assessment.uuid %}">Acessar</a>
+                <p>
+                  Total de Pontos: <strong>{{ assessment.total_of_points }}</strong>
+                </p>
+                <a class="button is-success" href="{% url 'evaluation:assessment-detail' assessment.uuid %}">Acessar</a>
               </details>
             {% empty %}
               Nenhuma Avaliação Disponível

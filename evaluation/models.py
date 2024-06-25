@@ -58,6 +58,9 @@ class Assessment(models.Model):
             sum += q.point
         return sum
 
+    def number_of_questions(self):
+        return len(self.questions.all())
+
     total_of_points.short_description = "Total de Pontos"
 
     class Meta:
@@ -75,6 +78,13 @@ class QuestionInfo(models.Model):
     point = models.DecimalField(
         max_digits=5, decimal_places=2, verbose_name="Pontuação"
     )
+
+    def __str__(self) -> str:
+        return f"{self.assessment} - {self.question} - {self.point}"
+
+    class Meta:
+        verbose_name = "Questão da Avaliação"
+        verbose_name_plural = "Questões da Avaliação"
 
 
 class DateTimeRangeError(ValidationError):
