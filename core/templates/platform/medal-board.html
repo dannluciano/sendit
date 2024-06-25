@@ -64,7 +64,13 @@
                     <td>
                         {{user.username}}
                     </td>
-                    <td>{{user.group}}</td>
+                    <td>
+                        {% if user.group != "None" %}
+                            {{user.group}}
+                        {% else %}
+                            "Sem grupo"
+                        {% endif %}
+                    </td>
                     <td class="has-text-centered">{{user.xp}}</td>
                     <td class="has-text-centered">{{user.level}}</td>
                     <td class="has-text-centered">
