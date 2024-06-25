@@ -130,14 +130,11 @@ def get_leaderboard():
     SQL = """
 WITH ACHIEVEMENTS AS (
   SELECT
-    auth_user.id AS user_id,
-    core_achievement_users.achievement_id,
-    core_achievement.xp
+    *
   FROM
-    auth_user
-    LEFT JOIN core_achievement_users ON (auth_user.id = core_achievement_users.user_id)
-    LEFT JOIN core_achievement ON (
-      core_achievement_users.achievement_id = core_achievement.id
+    core_achievement
+    JOIN core_achievement_users ON (
+      core_achievement.id = core_achievement_users.achievement_id
     )
 ),
 DATA AS (
@@ -149,13 +146,16 @@ DATA AS (
           status = 'OK'
       ),
       0
-    ) + (
-      SELECT
-        coalesce(sum(ACHIEVEMENTS.xp), 0)
-      FROM
-        ACHIEVEMENTS
-      WHERE
-        user_id = auth_user.id
+    ) + COALESCE (
+      (
+        SELECT
+          sum(ACHIEVEMENTS.xp)
+        FROM
+          ACHIEVEMENTS
+        WHERE
+          user_id = auth_user.id
+      ),
+      0
     ) AS xp,
     LEAST (
       coalesce(
@@ -179,11 +179,13 @@ DATA AS (
         user_id = auth_user.id
     ) AS achievements
   FROM
-    auth_user
-    LEFT JOIN auth_user_groups ON (auth_user.id = auth_user_groups.user_id)
-    LEFT JOIN auth_group ON (auth_group.id = auth_user_groups.group_id)
-    LEFT JOIN core_submission ON (core_submission.author_id = auth_user.id)
+    core_submission
     JOIN core_question ON (core_submission.question_id = core_question.id)
+    RIGHT JOIN auth_user ON (core_submission.author_id = auth_user.id)
+    JOIN auth_user_groups ON (auth_user.id = auth_user_groups.user_id)
+    JOIN auth_group ON (auth_group.id = auth_user_groups.group_id)
+  WHERE
+    auth_group.name <> 'Staff'
   GROUP BY
     auth_user.id,
     auth_group.name
@@ -194,6 +196,6 @@ SELECT
   row_number() OVER () AS POSITION,
   *
 FROM
-  DATA;        
+  DATA;
 """
     return raw_sql(SQL)
