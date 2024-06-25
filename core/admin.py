@@ -22,7 +22,10 @@ class CaseTestInline(admin.TabularInline):
     fieldsets = (
         (
             "Teste",
-            {"classes": ("collapse",), "fields": ("sample_input", "sample_output")},
+            {
+                "classes": ("collapse",),
+                "fields": ("sample_input", "sample_output"),
+            },
         ),
     )
 
@@ -43,10 +46,25 @@ show.short_description = "Exibir Questões"
 
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {"fields": ("title", "statement", "xp", "tags", "visible")}),
+        (
+            None,
+            {
+                "fields": (
+                    "uuid",
+                    "title",
+                    "statement",
+                    "xp",
+                    "tags",
+                    "visible",
+                )
+            },
+        ),
         (
             "Entrada e Saida (Exemplo)",
-            {"classes": ("collapse",), "fields": ("sample_input", "sample_output")},
+            {
+                "classes": ("collapse",),
+                "fields": ("sample_input", "sample_output"),
+            },
         ),
     )
 
@@ -59,6 +77,8 @@ class QuestionAdmin(admin.ModelAdmin):
         "visible",
     )
     search_fields = ["title"]
+
+    readonly_fields = ("uuid",)
 
     actions = [hide, show]
 
@@ -116,7 +136,9 @@ def download_submissions(modeladmin, request, queryset):
     with tarfile.open(tarfile_name, "a:") as tar:
         tar.add(temp_dir_path, arcname="submissões")
 
-    response = FileResponse(open(tarfile_name, "rb"), filename=f"{unix_timestamp}.tar")
+    response = FileResponse(
+        open(tarfile_name, "rb"), filename=f"{unix_timestamp}.tar"
+    )
     return response
 
 
@@ -174,7 +196,8 @@ class UserAdmin(BaseUserAdmin):
 
     def profile_link(self, obj):
         return mark_safe(
-            "<a class='button' href='/admin/auth/user/profile/%s/'>Perfil</a>" % obj.id
+            "<a class='button' href='/admin/auth/user/profile/%s/'>Perfil</a>"
+            % obj.id
         )
 
     profile_link.short_description = "Perfil"
@@ -182,7 +205,11 @@ class UserAdmin(BaseUserAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path("profile/<int:user_id>/", self.profile_view, name="profile_view"),
+            path(
+                "profile/<int:user_id>/",
+                self.profile_view,
+                name="profile_view",
+            ),
         ]
         return my_urls + urls
 
@@ -230,7 +257,8 @@ class AchievementAdmin(admin.ModelAdmin):
 
     def badge_tag(self, obj):
         return mark_safe(
-            "<img class='image' src='%s' width='32px' height='32px'/>" % obj.badge.url
+            "<img class='image' src='%s' width='32px' height='32px'/>"
+            % obj.badge.url
         )
 
     badge_tag.short_description = "Badge Image"

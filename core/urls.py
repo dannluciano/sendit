@@ -35,6 +35,11 @@ urlpatterns = [
         views.get_question,
         name="question_detail",
     ),
+    path(
+        "questions/<str:question_uuid>/",
+        views.get_question_by_uuid,
+        name="question_detail_by_uuid",
+    ),
     path("signup/", views.signup, name="signup"),
     path("ranking/", views.medal_board, name="ranking"),
     path("submissions/", views.submissions_list, name="submissions"),
