@@ -1,82 +1,66 @@
 {% extends 'platform/base.html' %}
 {% load static %}
 
-{% block title %}<title>SendIT - Envios</title>{% endblock %}
+{% block title %}
+  <title>SendIT - Envios</title>
+{% endblock %}
 
 {% block content %}
-<div class="container">
+  <div class="container">
     <div class="box is-hidden-mobile">
-        <h1 class="title has-text-centered">
-            Submissões
-        </h1>
-        <table class="table is-bordered is-fullwidth">
-            <thead>
-                <tr>
-                    <th class="has-text-centered">Questão</th>
-                    <th class="has-text-centered">Linguagem</th>
-                    <th class="has-text-centered">Situação</th>
-                    <th class="has-text-centered">Data e Hora</th>
-                    <th class="has-text-centered"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for submission in submissions %}
-                <tr>
-                    <td>
-                        <a href="{{submission.question.get_absolute_url}}" class="has-text-primary">
-                            {{submission.question.title}}
-                        </a>
-                    </td>
-                    {% get_static_prefix as STATIC_PREFIX %}
-                    <td class="has-text-centered">
-                        <img src="{{STATIC_PREFIX}}img/languages/{{submission.language}}.svg"
-                            title="{{ submission.language }}" alt="{{ submission.language }}" width="30px" />
-                    </td>
-                    <td class="has-text-centered">
-                        <img src="{{STATIC_PREFIX}}img/status/{{submission.status}}.png" title="{{ submission.status }}"
-                            alt="{{ submission.status }}" width="30px" />
-                    </td>
-                    <td class="has-text-centered">
-                        {{submission.timestamp}}
-                    </td>
-                    <td class="has-text-centered">
-                        <a href="{{submission.get_absolute_url}}" class="button is-info">
-                            Submissão
-                        </a>
-                        <a href="{{submission.question.get_absolute_url}}" class="button is-primary">
-                            Questão
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <h1 class="title has-text-centered">Envios</h1>
+      <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th class="has-text-centered">Questão</th>
+            <th class="has-text-centered">Linguagem</th>
+            <th class="has-text-centered">Situação</th>
+            <th class="has-text-centered">Data e Hora</th>
+            <th class="has-text-centered"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for submission in submissions %}
+            <tr>
+              <td>{{ submission.question.title }}</td>
+              {% get_static_prefix as STATIC_PREFIX %}
+              <td class="has-text-centered">
+                <img src="{{ STATIC_PREFIX }}img/languages/{{ submission.language }}.svg" title="{{ submission.language }}" alt="{{ submission.language }}" width="30px" />
+              </td>
+              <td class="has-text-centered">
+                <img src="{{ STATIC_PREFIX }}img/status/{{ submission.status }}.png" title="{{ submission.status }}" alt="{{ submission.status }}" width="30px" />
+              </td>
+              <td class="has-text-centered">{{ submission.timestamp }}</td>
+              <td>
+                <div class="buttons is-justify-content-center">
+                  <a href="{{ submission.get_absolute_url }}" class="button is-info is-flex-grow-1">Acessar</a>
+                  <a href="{{ submission.question.get_absolute_url }}" class="button is-primary is-flex-grow-1">Questão</a>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
     <div class="is-hidden-tablet">
-        {% for submission in submissions %}
+      {% for submission in submissions %}
         <section class="box has-text-centered">
-            <h1 class="title">
-                <a href="{{submission.question.get_absolute_url}}">
-                    {{submission.question.title}}
-                </a>
-            </h1>
-            <p>
-                {{submission.timestamp}}
-            </p>
-            <br>
-            <p>
-                {% get_static_prefix as STATIC_PREFIX %}
-                <img src="{{STATIC_PREFIX}}img/languages/{{submission.language}}.svg" title="{{ submission.language }}"
-                    alt="{{ submission.language }}" width="54px" />
-                <a href="{{submission.get_absolute_url}}" class="button is-info is-large">
-                    Submissão
-                </a>
-                <img src="{{STATIC_PREFIX}}img/status/{{submission.status}}.png" title="{{ submission.status }}"
-                    alt="{{ submission.status }}" width="54px" />
-            </p>
+          <h1 class="title">{{ submission.question.title }}</h1>
+          <p>{{ submission.timestamp }}</p>
+          <br />
+          <p>
+            {% get_static_prefix as STATIC_PREFIX %}
+            <img src="{{ STATIC_PREFIX }}img/languages/{{ submission.language }}.svg" title="{{ submission.language }}" alt="{{ submission.language }}" width="54px" />
+            <img src="{{ STATIC_PREFIX }}img/status/{{ submission.status }}.png" title="{{ submission.status }}" alt="{{ submission.status }}" width="54px" />
+          </p>
+          <br />
+          <div class="buttons is-justify-content-center">
+            <a href="{{ submission.get_absolute_url }}" class="button is-info is-flex-grow-1">Acessar</a>
+            <a href="{{ submission.question.get_absolute_url }}" class="button is-primary is-flex-grow-1">Questão</a>
+          </div>
         </section>
-        {% endfor %}
+      {% endfor %}
     </div>
-</div>
+  </div>
 {% endblock %}

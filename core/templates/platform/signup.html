@@ -1,108 +1,104 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="{% static 'vendor/bulma/css/bulma.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <title>Cadastro de usuário</title>
-</head>
+  </head>
 
-<body>
-    <section class="hero is-fullheight bg-color-laranja">
-        <div class="hero-body">
-            <div class="container">
-                <div class="columns">
-                    <div class="column is-8 is-offset-2">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="content">
-                                    <p class="title has-text-centered">Cadastro</p>
-                                    <form method="post">
-                                        {% if form.errors %}
-                                        <article class="message is-danger is-large">
-                                            <div class="message-header">
-                                                Erro ao Criar um novo Usuário
-                                            </div>
-                                            <div class="message-body">
-                                                {% for field in form %}
-                                                {% for error in field.errors %}
-                                                <p class="control">
-                                                    {{ error }}
-                                                </p>
-                                                {% endfor %}
-                                                {% endfor %}
-                                            </div>
-                                        </article>
-
-                                        {% endif %}
-                                        {% csrf_token %}
-
-                                        <div class="field">
-                                            <label class="label has-text-centered">Usuário:</label>
-                                            <div class="control">
-                                                <input class="input is-large" type="text" placeholder="Seu nome de usuário"
-                                                    name="username" value="{{form.username.value}}" required>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label class="label has-text-centered">Nome:</label>
-                                            <div class="control">
-                                                <input class="input is-large" maxlength="30" type="text"
-                                                    placeholder="Seu nome" name="first_name"
-                                                    value="{{form.first_name.value}}" required>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label class="label has-text-centered">Sobrenome:</label>
-                                            <div class="control">
-                                                <input class="input is-large" maxlength="30" type="text"
-                                                    placeholder="Seu sobrenome" name="last_name"
-                                                    value="{{form.last_name.value}}" required>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label class="label has-text-centered">Email:</label>
-                                            <div class="control">
-                                                <input class="input is-large" maxlength="254" type="email"
-                                                    placeholder="Seu e-mail" name="email"
-                                                    value="{{form.email.value}}" required>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label class="label has-text-centered">Senha:</label>
-                                            <div class="control">
-                                                <input class="input is-large" type="password" placeholder="Sua senha"
-                                                    name="password1" required>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label class="label has-text-centered">Confirmação de senha:</label>
-                                            <div class="control">
-                                                <input class="input is-large" type="password"
-                                                    placeholder="Repita sua senha" name="password2" required>
-                                            </div>
-                                        </div>
-                                        <p class="control has-text-centered">
-                                            <button class="button is-large is-success is-fullwidth">Cadastrar</button>
-                                        </p>
-                                        <p class="control has-text-centered">
-                                            <a class="button is-large is-info is-fullwidth" href="/">Voltar</a>
-                                        </p>
-                                        <input type="hidden" name="next" value="{{ next }}">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <body>
+    <header>
+      <nav class="nav has-shadow menu-cima navbar theme" role="navigation" aria-label="main navigation">
+        <div class="navbar-menu">
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
             </div>
+          </div>
         </div>
-    </section>
-    <script data-goatcounter="https://dlanalytics.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-</body>
+      </nav>
+    </header>
+    <section class="hero is-fullheight">
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns">
+            <div class="column is-8 is-offset-2">
+              <div class="card">
+                <div class="card-content">
+                  <div class="content">
+                    <p class="title has-text-centered">Cadastro</p>
+                    <form method="post">
+                      {% if form.errors %}
+                        <article class="message is-danger is-large">
+                          <div class="message-header">Erro ao Criar um novo Usuário</div>
+                          <div class="message-body">
+                            {% for field in form %}
+                              {% for error in field.errors %}
+                                <p class="control">{{ error }}</p>
+                              {% endfor %}
+                            {% endfor %}
+                          </div>
+                        </article>
+                      {% endif %}
+                      {% csrf_token %}
 
+                      <div class="field">
+                        <label class="label has-text-centered">Usuário:</label>
+                        <div class="control">
+                          <input class="input is-large" type="text" placeholder="Seu nome de usuário" name="username" value="{{ form.username.value }}" required />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label has-text-centered">Nome:</label>
+                        <div class="control">
+                          <input class="input is-large" maxlength="30" type="text" placeholder="Seu nome" name="first_name" value="{{ form.first_name.value }}" required />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label has-text-centered">Sobrenome:</label>
+                        <div class="control">
+                          <input class="input is-large" maxlength="30" type="text" placeholder="Seu sobrenome" name="last_name" value="{{ form.last_name.value }}" required />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label has-text-centered">Email:</label>
+                        <div class="control">
+                          <input class="input is-large" maxlength="254" type="email" placeholder="Seu e-mail" name="email" value="{{ form.email.value }}" required />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label has-text-centered">Senha:</label>
+                        <div class="control">
+                          <input class="input is-large" type="password" placeholder="Sua senha" name="password1" required />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label has-text-centered">Confirmação de senha:</label>
+                        <div class="control">
+                          <input class="input is-large" type="password" placeholder="Repita sua senha" name="password2" required />
+                        </div>
+                      </div>
+                      <p class="control has-text-centered">
+                        <button class="button is-large is-success is-fullwidth">Cadastrar</button>
+                      </p>
+                      <p class="control has-text-centered">
+                        <a class="button is-large is-info is-fullwidth" href="/">Voltar</a>
+                      </p>
+                      <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+    <script src="{% static 'js/bulma.js' %}"></script>
+  </body>
 </html>

@@ -1,5 +1,8 @@
 {% extends 'platform/base.html' %}
 {% load static %}
+{% load l10n %}
+{% load i18n %}
+{% load core %}
 
 {% block title %}
   <title>Questões Concluídas | SendIT</title>
@@ -9,31 +12,58 @@
   <div class="container">
     <div class="columns">
       <div class="column is-3">
-        <div class="box">
-          <figure class="image has-text-centered is-256x256">
-            <a href="#"><img class="card-avatar-img" src="{% static user.avatar_url %}" /></a>
-          </figure>
-
-          <div class="card-user">
-            <div class="card-user-name">
-              {% if user.full_name %}
-                <a>{{ user.full_name|upper }}</a>
-              {% else %}
-                <a>{{ user.username|upper }}</a>
-              {% endif %}
-            </div>
+        <div class="card">
+          <div class="card-image">
+            <figure class="image has-text-centered is-256x256">
+              <img class="card-avatar-img" src="{% static user.avatar_url %}" />
+            </figure>
           </div>
 
-          <ul class="card-stats-list">
-            <li class="card-stats-item">
-              <span class="card-stats-key">Level</span>
-              <span class="card-stats-val">{{ user.level }}</span>
-            </li>
-            <li class="card-stats-item">
-              <span class="card-stats-key">XP</span>
-              <span class="card-stats-val">{{ user.xp }}</span>
-            </li>
-          </ul>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">
+                  {% if user.full_name %}
+                    {{ user.full_name|upper }}
+                  {% else %}
+                    {{ user.username|upper }}
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+
+            <section>
+              <p class="has-text-centered">
+                <strong>Conquistas:</strong>
+              </p>
+              <nav class="level-left is-flex-wrap-wrap">
+                {% for achievement in achievements %}
+                  <div class="level-item">
+                    <picture>
+                      <img src="{{ achievement.badge.url }}" alt="{{ achievement.name }} - {{ achievement.xp }}" class="image is-24x24 is-cover is-rounded" title="{{ achievement }}" />
+                    </picture>
+                  </div>
+                {% endfor %}
+              </nav>
+            </section>
+            <br />
+            <section>
+              <nav class="level">
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">Level</p>
+                    <p class="title">{{ user.level }}</p>
+                  </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">XP</p>
+                    <p class="title">{{ user.xp }}</p>
+                  </div>
+                </div>
+              </nav>
+            </section>
+          </div>
         </div>
 
         <div class="box trending">
@@ -54,10 +84,10 @@
         <div class="column is-6">
           <div class="box trending">
             <div class="tags">
-              <span class="tag is-dark"><a href="{% url 'core:home' %}">Todas</a></span>
+              <span class="tag"><a href="{% url 'core:completed-question' %}">Todas</a></span>
               {% for tag in tags %}
-                {% cycle 'is-primary' 'is-link' 'is-info' 'is-success' 'is-warning' 'is-danger' as color silent %}
-                <span class="tag {{ color }} is-light"><a href="{% url 'core:home' %}?tag={{ tag }}">{{ tag }}</a></span>
+                {% cycle 'is-primary' 'is-link' 'is-info' 'is-warning' 'is-danger' as color silent %}
+                <a href="{% url 'core:completed-question' %}?tag={{ tag }}"><span class="tag {{ color }} is-light">{{ tag }}</span></a>
               {% endfor %}
             </div>
           </div>
@@ -66,17 +96,17 @@
               <article class="media">
                 <div class="media-content">
                   <div class="content">
-                    <h2 class="subtitle"><a href="{% url 'core:question_detail_by_uuid' submission.question.uuid %}" class="links-questao">{{ submission.question.title }}</a></h2>
-                    <a href="{% url 'core:submissions-detail' submission.uuid %}" class="button is-info">Ver Submissão</a>
+                    <h2 class="subtitle"><a href="{% url 'core:question_detail_by_uuid' submission.question.uuid %}" class="">{{ submission.question.title }}</a></h2>
                   </div>
                   <nav class="level">
                     <div class="level-left">
-                      <small class="tag is-orange">XP: {{ submission.question.xp }}</small>
+                      <small class="tag is-link">XP: {{ submission.question.xp }}</small>
                       {% for tag in submission.question.tags.all %}
-                        <small class="tag">{{ tag.tag }}</small>
+                        <small class="tag is-dark">{{ tag.tag }}</small>
                       {% endfor %}
                     </div>
                   </nav>
+                  <a href="{% url 'core:submissions-detail' submission.uuid %}" class="button is-info">Acessar Envio</a>
                 </div>
               </article>
             </div>
@@ -97,6 +127,41 @@
           {% endfor %}
         </div>
       {% endblock %}
+
+      <div class="column is-3">
+        <div class="box trending">
+          <p class="trend-title">
+            <span class="title is-5">Estatísticas</span>
+          </p>
+          <dl>
+            <dt>Tempo Total:</dt>
+            <dd><strong><time datetime="{{ user.total_time_on|duration:'machine' }}">{{ user.total_time_on|duration:'phrase' }}</time></strong></dd>
+
+            <dt>Envios Corretos:</dt>
+            <dd><strong>{{ user.ok }}</strong></dd>
+
+            <dt>Envios Incorretos:</dt>
+            <dd><strong>{{ user.not_ok }}</strong></dd>
+          </dl>
+        </div>
+        <div class="box assessments">
+          <p class="trend-title">
+            <span class="title is-5">Avaliações</span>
+          </p>
+
+          {% for assessment in assessments %}
+            <details open>
+              <summary>{{ assessment.name }}</summary>
+              <p>
+                Total de Pontos: <strong>{{ assessment.total_of_points }}</strong>
+              </p>
+              <a class="button is-success" href="{% url 'evaluation:assessment-detail' assessment.uuid %}">Acessar</a>
+            </details>
+          {% empty %}
+            Nenhuma Avaliação Disponível
+          {% endfor %}
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}

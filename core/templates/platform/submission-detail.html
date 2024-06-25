@@ -14,47 +14,49 @@
 {% block content %}
   <div class="container">
     <div class="box has-text-centered">
-      <h1 class="title has-text-primary">{{ submission.question.title }}</h1>
+      <h1 class="title">{{ submission.question.title }}</h1>
 
       {% if submission.status != 'OK' %}
-        <h2 class="subtitle has-text-primary">{{ submission.status }}</h2>
+        <h2 class="subtitle">{{ submission.status }}</h2>
       {% endif %}
 
       <picture id="animate">
         <img src="{% static submission.get_random_status_image %}" width="256" alt="" />
       </picture>
 
-      <h2 class="subtitle has-text-primary">{{ submission.get_random_status_phrase }}</h2>
+      <h2 class="subtitle">{{ submission.get_random_status_phrase }}</h2>
 
       {% if submission.status == 'OK' %}
         <p>Você ganhou {{ submission.question.xp }} XPs!</p>
         <br />
-        <p>
-          <a href="javascript:window.history.back()" class="button is-large is-success">Voltar para lista de questões</a>
-        </p>
-      {% else %}
-        <p>
-          <a href="javascript:window.history.back()" class="button is-large is-success">Tentar Novamente</a>
-        </p>
       {% endif %}
+
+      <p>
+        <a href="javascript:window.history.back()" class="button is-large is-success">Tentar Novamente</a>
+      </p>
     </div>
 
     {% if submission.status != 'OK' %}
       <div class="box">
-        <h2 class="title has-text-centered has-text-primary">Saída do Programa</h2>
+        <h2 class="title has-text-centered">Saída do Programa</h2>
         {% if submission.status == 'DiffError' %}
           <div id="diff-container"></div>
           <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}" />
           <script type="text/javascript" src="{% static 'js/diff2html.min.js' %}"></script>
           <script>
-            var diffHtml = Diff2Html.html('{{submission.output|escapejs}}', {
-              inputFormat: 'diff',
-              showFiles: false,
-              matching: 'lines',
-              outputFormat: 'side-by-side',
-              colorScheme: 'dark'
-            })
-            document.getElementById('diff-container').innerHTML = diffHtml
+            setTimeout(function () {
+              function getTheme() {
+                return document.body.dataset.theme || 'light'
+              }
+              var diffHtml = Diff2Html.html('{{submission.output|escapejs}}', {
+                inputFormat: 'diff',
+                showFiles: false,
+                matching: 'lines',
+                outputFormat: 'side-by-side',
+                colorScheme: getTheme()
+              })
+              document.getElementById('diff-container').innerHTML = diffHtml
+            }, 100)
           </script>
         {% else %}
           <pre class="output">
@@ -64,7 +66,7 @@
       </div>
     {% endif %}
     <div class="box">
-      <h2 class="title has-text-centered has-text-primary">Código Enviado</h2>
+      <h2 class="title has-text-centered">Código Enviado</h2>
       <textarea name="" id="submission_code"></textarea>
     </div>
   </div>

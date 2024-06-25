@@ -118,6 +118,8 @@ def random_question(request):
 
 @login_required
 def completed_issues(request):
+    now = timezone.now()
+
     user = current_user_data(request)
     ok_submissions = Submission.objects.filter(
         author=request.user, status="OK"
@@ -125,6 +127,12 @@ def completed_issues(request):
     questions = Question.objects.filter(
         submission__in=ok_submissions
     ).prefetch_related("tags")
+    achievements = Achievement.objects.filter(users=request.user)
+    assessments = Assessment.objects.filter(
+        groups__in=request.user.groups.all(),
+        date_start__lt=now,
+        date_end__gt=now,
+    )
 
     tags = Tags.objects.distinct().filter(question__in=questions)
 
@@ -145,6 +153,8 @@ def completed_issues(request):
             "ok_submissions": ok_submissions,
             "tags": tags,
             "best_users_of_week": best_users_of_week,
+            "achievements": achievements,
+            "assessments": assessments,
         },
     )
 

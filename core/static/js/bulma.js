@@ -30,7 +30,7 @@ jQuery(document).ready(($) => {
 	});
 
 	$(".modal-button").click(function () {
-		var target = $(this).data("target");
+		const target = $(this).data("target");
 		$("html").addClass("is-clipped");
 		$(target).addClass("is-active");
 	});
@@ -52,12 +52,12 @@ jQuery(document).ready(($) => {
 		}
 	});
 
-	var $highlights = $(".highlight");
+	const $highlights = $(".highlight");
 
 	$highlights.each(function () {
-		var $el = $(this);
-		var copy = '<button class="copy">Copy</button>';
-		var expand = '<button class="expand">Expand</button>';
+		const $el = $(this);
+		const copy = '<button class="copy">Copy</button>';
+		const expand = '<button class="expand">Expand</button>';
 		$el.append(copy);
 
 		if ($el.find("pre code").innerHeight() > 600) {
@@ -65,7 +65,7 @@ jQuery(document).ready(($) => {
 		}
 	});
 
-	var $highlightButtons = $(".highlight .copy, .highlight .expand");
+	const $highlightButtons = $(".highlight .copy, .highlight .expand");
 
 	$highlightButtons.hover(
 		function () {
@@ -80,7 +80,9 @@ jQuery(document).ready(($) => {
 		$(this).parent().children("pre").css("max-height", "none");
 	});
 
-	new Clipboard(".copy", {
-		target: (trigger) => trigger.previousSibling,
-	});
+	if (Clipboard in window) {
+		const _cb = new Clipboard(".copy", {
+			target: (trigger) => trigger.previousSibling,
+		});
+	}
 });
