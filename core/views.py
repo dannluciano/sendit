@@ -164,6 +164,21 @@ def get_question(request, question_id):
     )
 
 
+@login_required
+def get_question_by_uuid(request, question_uuid):
+    question = get_object_or_404(Question, uuid=question_uuid)
+
+    last_submission = Submission.objects.filter(
+        author=request.user, question_id=question.id
+    ).first()
+
+    return render(
+        request,
+        "platform/detail-question.html",
+        {"question": question, "last_submission": last_submission},
+    )
+
+
 @require_POST
 @login_required
 def create_submission(request, question_id):

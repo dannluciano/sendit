@@ -89,6 +89,12 @@ class Question(models.Model):
     xp = models.IntegerField(default=100)
     tags = models.ManyToManyField(Tags)
     visible = models.BooleanField(default=True)
+    uuid = models.UUIDField(
+        "uuid",
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+    )
 
     def get_absolute_url(self):
         return f"/questions/{self.pk}/"
@@ -138,7 +144,9 @@ class Submission(models.Model):
         ("python", "Python"),
     )
     language = models.CharField(
-        choices=LANGUAGE_CHOICES, max_length=10, default=LANGUAGE_CHOICES[0][0]
+        choices=LANGUAGE_CHOICES,
+        max_length=10,
+        default=LANGUAGE_CHOICES[0][0],
     )
 
     log = models.TextField(blank=True)
@@ -188,10 +196,16 @@ class Submission(models.Model):
                 "Sabe a piadinha de navagadores? Seu código está abaixo do IE kkkkkkk",
                 "img/tempoexecucao3.png",
             ),
-            ("Até o Rubinho faria em um tempo melhor", "img/tempoexecucao4.png"),
+            (
+                "Até o Rubinho faria em um tempo melhor",
+                "img/tempoexecucao4.png",
+            ),
         ],
         "DiffError": [
-            ("Saída computada diferente da saída esperada!", "img/differror1.png"),
+            (
+                "Saída computada diferente da saída esperada!",
+                "img/differror1.png",
+            ),
             ("Essa foi por Pouco!", "img/differror2.png"),
             (
                 "Ops, esse código não era bem o que eu estava esperando!",
@@ -204,9 +218,15 @@ class Submission(models.Model):
         ],
         "OK": [
             ("Uau! Bem na mosca.", "img/ok1.png"),
-            ("Você não tem bola de cristal aí não né? Acertou tudo!", "img/ok2.png"),
+            (
+                "Você não tem bola de cristal aí não né? Acertou tudo!",
+                "img/ok2.png",
+            ),
             ("Estou fascinado com essa solução. Parabéns", "img/ok3.png"),
-            ("Que coisa linda de se ver! Continue sempre assim.", "img/ok4.png"),
+            (
+                "Que coisa linda de se ver! Continue sempre assim.",
+                "img/ok4.png",
+            ),
             (
                 "Que ideia brilhante, estou orgulhoso de você. Acertou a questão.",
                 "img/ok5.png",
@@ -227,7 +247,9 @@ class Submission(models.Model):
         try:
             self._random_status
         except AttributeError:
-            self._random_status = random.choice(self.STATUS_PHRASES[self.status])
+            self._random_status = random.choice(
+                self.STATUS_PHRASES[self.status]
+            )
         return self._random_status
 
     def get_random_status_phrase(self):

@@ -26,7 +26,7 @@
             <div class="media-content">
               <div class="content">
                 <h2 class="subtitle">
-                  <a href="{% url 'core:question_detail' question_info.question.id %}" class="links-questao" target="_blank">
+                  <a href="{% url 'core:question_detail_by_uuid' question_info.question.uuid %}" target="_blank">
                     {{ question_info.question.title }}
                     <small class="tag is-link">{{ question_info.point }} Ponto{{ question_info.point|pluralize }}</small>
                   </a>
