@@ -47,22 +47,12 @@
             <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-accent{% endif %}" href="{% url 'core:home' %}"><ion-icon name="home"></ion-icon>&nbsp; Home</a>
             <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ranking' %} link-accent{% endif %}" href="{% url 'core:ranking' %}"><ion-icon name="medal"></ion-icon>&nbsp; Pontuações</a>
             <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %} link-accent{% endif %}" href="{% url 'core:submissions' %}"><ion-icon name="send"></ion-icon>&nbsp; Envios</a>
-            <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %} link-accent{% endif %}" href="{% url 'editor:editor' %}"><ion-icon name="code"></ion-icon>&nbsp; Editor</a>
+            <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %} link-accent{% endif %}" href="{% url 'editor:editor' %}"><ion-icon name="code-slash"></ion-icon>&nbsp; Editor</a>
             <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'file-code-list' %} link-accent{% endif %}" href="{% url 'editor:file-code-list' %}"><ion-icon name="document"></ion-icon>&nbsp; Arquivos</a>
           </div>
 
           <div class="navbar-end">
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">SendIT-Verso</a>
-
-              <div class="navbar-dropdown">
-                <a class="navbar-item" href="https://www.youtube.com/c/dannluciano">Canal no Youtube&nbsp;&nbsp;<ion-icon name="logo-youtube"></ion-icon></a>
-                <hr class="navbar-divider" />
-                <a class="navbar-item" href="{% url 'shell:home' %}">SendIT-Shell&nbsp;&nbsp;<ion-icon name="terminal"></ion-icon></a>
-                <a class="navbar-item" href="#">SendIT-DB</a>
-                <a class="navbar-item" href="#">SendIT-IDE</a>
-              </div>
-            </div>
+            {% include 'core/sendit-verse.html' %}
 
             {% if request.user.is_staff %}
               <a class="navbar-item is-tab" href="{% url 'admin:index' %}"><ion-icon name="storefront"></ion-icon>&nbsp;Administração</a>
@@ -75,7 +65,7 @@
             <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
               {% csrf_token %}
               <input type="hidden" name="sair" />
-              <button class="button is-danger botao-sair">Sair</button>
+              <button class="button is-danger is-outlined">Sair</button>
             </form>
           </div>
         </div>
@@ -86,8 +76,6 @@
 
     <section class="section main">
       {% block content %}
-
-      {% endblock %} {% block menu_direita %}
 
       {% endblock %}
     </section>
@@ -117,7 +105,11 @@
     <link rel="stylesheet" href="{% static 'css/snow.css' %}" />
     <div id="snow"></div>
     <script src="{% static 'js/snow.js' %}"></script>
-    {% endcomment %} {% include 'session_security/all.html' %} {% block js %}
+    {% endcomment %}
+
+    {% include 'session_security/all.html' %}
+
+    {% block js %}
 
     {% endblock %}
   </body>

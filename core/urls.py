@@ -53,5 +53,4 @@ urlpatterns = [
         views.submission_status,
         name="submissions-status",
     ),
-    path("api/auth/", views.auth, name="auth"),
 ]

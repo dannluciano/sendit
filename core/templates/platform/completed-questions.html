@@ -36,15 +36,13 @@
               <p class="has-text-centered">
                 <strong>Conquistas:</strong>
               </p>
-              <nav class="level-left is-flex-wrap-wrap">
+              <section class="has-text-centered">
                 {% for achievement in achievements %}
-                  <div class="level-item">
-                    <picture>
-                      <img src="{{ achievement.badge.url }}" alt="{{ achievement.name }} - {{ achievement.xp }}" class="image is-24x24 is-cover is-rounded" title="{{ achievement }}" />
-                    </picture>
-                  </div>
+                  <picture>
+                    <img src="{{ achievement.badge.url }}" alt="{{ achievement.name }} - {{ achievement.xp }}" class="is-inline image is-32x32 is-cover is-rounded" title="{{ achievement }}" />
+                  </picture>
                 {% endfor %}
-              </nav>
+              </section>
             </section>
             <br />
             <section>
@@ -65,20 +63,6 @@
             </section>
           </div>
         </div>
-
-        <div class="box trending">
-          <p class="trend-title">
-            <span class="title is-5">Melhores da Semana</span>
-          </p>
-          {% if best_users_of_week %}
-            {% for user in best_users_of_week %}
-              <p class="trend-hashtag">
-                <img src="{% static 'img/platform/podium/1.png' %}" alt="1º" width="24" />
-                <a href="#">{{ user.username }}</a> - {{ user.xp }} XPs
-              </p>
-            {% endfor %}
-          {% endif %}
-        </div>
       </div>
       {% block info %}
         <div class="column is-6">
@@ -98,14 +82,13 @@
                   <div class="content">
                     <h2 class="subtitle"><a href="{% url 'core:question_detail_by_uuid' submission.question.uuid %}" class="">{{ submission.question.title }}</a></h2>
                   </div>
-                  <nav class="level">
-                    <div class="level-left">
-                      <small class="tag is-link">XP: {{ submission.question.xp }}</small>
-                      {% for tag in submission.question.tags.all %}
-                        <small class="tag is-dark">{{ tag.tag }}</small>
-                      {% endfor %}
-                    </div>
-                  </nav>
+                  <div class="tags">
+                    <small class="tag is-link">XP: {{ submission.question.xp }}</small>
+                    {% for tag in submission.question.tags.all %}
+                      <small class="tag is-dark">{{ tag.tag }}</small>
+                    {% endfor %}
+                  </div>
+
                   <a href="{% url 'core:submissions-detail' submission.uuid %}" class="button is-info">Acessar Envio</a>
                 </div>
               </article>
@@ -160,6 +143,19 @@
           {% empty %}
             Nenhuma Avaliação Disponível
           {% endfor %}
+        </div>
+        <div class="box trending">
+          <p class="trend-title">
+            <span class="title is-5">Melhores da Semana</span>
+          </p>
+          {% if best_users_of_week %}
+            {% for user in best_users_of_week %}
+              <p class="trend-hashtag">
+                <img src="{% static 'img/platform/podium/1.png' %}" alt="1º" width="24" />
+                <a href="#">{{ user.username }}</a> - {{ user.xp }} XPs
+              </p>
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
     </div>

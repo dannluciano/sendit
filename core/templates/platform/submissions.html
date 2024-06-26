@@ -22,7 +22,7 @@
         <tbody>
           {% for submission in submissions %}
             <tr>
-              <td>{{ submission.question.title }}</td>
+              <td>{{ submission.question.title|truncatechars:50 }}</td>
               {% get_static_prefix as STATIC_PREFIX %}
               <td class="has-text-centered">
                 <img src="{{ STATIC_PREFIX }}img/languages/{{ submission.language }}.svg" title="{{ submission.language }}" alt="{{ submission.language }}" width="30px" />

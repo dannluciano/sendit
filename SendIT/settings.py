@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "editor",
     "evaluation",
     "shell",
+    "projects",
     "miniexplorer",
     "mini_system_monitor",
     "django.contrib.humanize",
@@ -257,7 +258,6 @@ EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 10
 DEFAULT_FROM_EMAIL = "dannluciano@ifpi.edu.br"
 
-SESSION_COOKIE_DOMAIN = ".sendit.dannluciano.com.br"
 
 # SETTINGS LOCAL
 try:

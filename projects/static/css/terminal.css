@@ -1,0 +1,29 @@
+#terminal-section {
+  height: var(--terminal-height);
+}
+
+#terminal-buttons {
+  display: none;
+}
+
+#terminal {
+  width: 100%;
+  height: calc(100%);
+}
+
+@media (max-width: 991px) {
+  #terminal-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    border-bottom: 1px solid #282a36;
+    align-items: center;
+    justify-content: center;
+    margin: 0.25em 0;
+  }
+
+  #terminal {
+    width: 100%;
+    height: calc(100% - 2em);
+  }
+}

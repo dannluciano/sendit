@@ -76,20 +76,6 @@
             </a>
           </div>
         </div>
-
-        <div class="box trending">
-          <p class="trend-title">
-            <span class="title is-5">Melhores da Semana</span>
-          </p>
-          {% if best_users_of_week %}
-            {% for user in best_users_of_week %}
-              <p class="trend-hashtag">
-                <img src="{% static 'img/platform/podium/1.png' %}" alt="1º" width="24" />
-                <a href="#">{{ user.username }}</a> - {{ user.xp }} XPs
-              </p>
-            {% endfor %}
-          {% endif %}
-        </div>
       </div>
       {% block info %}
         <div class="column is-6">
@@ -163,6 +149,20 @@
             {% empty %}
               Nenhuma Avaliação Disponível
             {% endfor %}
+          </div>
+
+          <div class="box trending">
+            <p class="trend-title">
+              <span class="title is-5">Melhores da Semana</span>
+            </p>
+            {% if best_users_of_week %}
+              {% for user in best_users_of_week %}
+                <p class="trend-hashtag">
+                  <img src="{% static 'img/platform/podium/1.png' %}" alt="1º" width="24" />
+                  <a href="#">{{ user.username }}</a> - {{ user.xp }} XPs
+                </p>
+              {% endfor %}
+            {% endif %}
           </div>
         </div>
       {% endblock %}
