@@ -257,7 +257,6 @@ EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 10
 DEFAULT_FROM_EMAIL = "dannluciano@ifpi.edu.br"
 
-SESSION_COOKIE_DOMAIN = ".sendit.dannluciano.com.br"
 
 # SETTINGS LOCAL
 try:
