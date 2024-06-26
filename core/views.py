@@ -27,13 +27,6 @@ log = logging.getLogger(__name__)
 log.setLevel(20)
 
 
-def index(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect("/home/")
-
-    return render(request, "platform/index.html")
-
-
 def signup(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect("/home/")

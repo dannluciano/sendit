@@ -9,7 +9,7 @@ urlpatterns = [
     path(
         "",
         auth_views.LoginView.as_view(
-            template_name="platform/index.html",
+            template_name="platform/login.html",
             redirect_authenticated_user=True,
             redirect_field_name="next",
         ),
