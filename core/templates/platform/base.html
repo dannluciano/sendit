@@ -52,6 +52,18 @@
           </div>
 
           <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">SendIT-Verso</a>
+
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="https://www.youtube.com/c/dannluciano">Canal no Youtube&nbsp;&nbsp;<ion-icon name="logo-youtube"></ion-icon></a>
+                <hr class="navbar-divider" />
+                <a class="navbar-item" href="{% url 'shell:home' %}">SendIT-Shell&nbsp;&nbsp;<ion-icon name="terminal"></ion-icon></a>
+                <a class="navbar-item" href="#">SendIT-DB</a>
+                <a class="navbar-item" href="#">SendIT-IDE</a>
+              </div>
+            </div>
+
             {% if request.user.is_staff %}
               <a class="navbar-item is-tab" href="{% url 'admin:index' %}"><ion-icon name="storefront"></ion-icon>&nbsp;Administração</a>
             {% endif %}

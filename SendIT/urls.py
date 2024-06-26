@@ -12,11 +12,14 @@ urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("", include("evaluation.urls", namespace="evaluation")),
     path("editor/", include("editor.urls")),
+    path("sh/", include("shell.urls")),
     path("session_security/", include("statistics.urls")),
     path("django-rq/", include("django_rq.urls")),
     path("admin/", admin.site.urls),
     path(
-        "password_reset/", auth_views.PasswordResetView.as_view(), name="password_reset"
+        "password_reset/",
+        auth_views.PasswordResetView.as_view(),
+        name="password_reset",
     ),
     path(
         "password_reset/done/",
@@ -39,4 +42,6 @@ urlpatterns = [
 if settings.DEBUG:
     import debug_toolbar
 
-    urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls))
+    ] + urlpatterns
