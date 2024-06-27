@@ -1,0 +1,26 @@
+{% extends 'ide/base.html' %}
+{% load static %}
+
+{% block content %}
+  <article>
+    <section class="box">
+      <header class="has-text-centered">
+        <h1 class="title">Novo Projeto</h1>
+      </header>
+      <form action="{% url 'projects:project-new' %}" method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label class="label">Nome:</label>
+          <div class="control">
+            <input class="input is-large" type="text" placeholder="webserver bolado" name="name" value="{{ form.name.value }}" />
+          </div>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button class="button is-success is-large">Criar novo Projeto</button>
+          </p>
+        </div>
+      </form>
+    </section>
+  </article>
+{% endblock %}
