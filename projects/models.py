@@ -21,8 +21,19 @@ class Project(models.Model):
     def __str__(self) -> str:
         return f"{self.owner} - {self.name}"
 
+    @property
     def get_temp_dir(self):
         return f"{self.uuid}"
+
+    def to_dict(self):
+        return {
+            "uuid": str(self.uuid),
+            "name": self.name,
+            "owner_id": self.owner_id,
+            "temp_dir": self.get_temp_dir,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
 
 
 def create_project(name, owner):

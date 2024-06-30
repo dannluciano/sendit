@@ -8,14 +8,12 @@ const filesystemSection = document.getElementById("filesystem");
 const editorTermSection = document.getElementById("editor-term-section");
 const filenameDialog = document.getElementById("filename-dialog");
 const loadingDialog = document.getElementById("loading-dialog");
-const projectId = currentURL.pathname.replace("/ide/", "");
 const apiURL =
 	host === "localhost:8000"
 		? "localhost:8001"
 		: "ide.sendit.dannluciano.com.br";
+
 let containerId;
-let tempDirPath;
-let ownerUUID;
 let editor;
 let apiSocket;
 let containerSocket;
@@ -461,9 +459,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		false,
 	);
 
-	fetch(`${hProtocol}//${apiURL}/api/container/create/${projectId}`, {
+	fetch(`${hProtocol}//${apiURL}/api/container/create/`, {
 		method: "POST",
-		body: settingsJSONString,
+		body: `{ "project": ${projectString}, "settings": ${settingsJSONString}}`,
 	})
 		.then((res) => res.json())
 		.then((data) => afterContainerCreation(data))
@@ -587,7 +585,7 @@ function connectToApiWS() {
 }
 
 function duplicateProject() {
-	fetch(`/api/project/duplicate/${projectId}`, {
+	fetch(`/api/project/duplicate/${project.uuid}`, {
 		method: "POST",
 	})
 		.then((res) => res.json())
@@ -598,7 +596,7 @@ function duplicateProject() {
 }
 
 function downloadProject() {
-	fetch(`/public/project/download/${projectId}`, {
+	fetch(`/public/project/download/${project.uuid}`, {
 		method: "POST",
 	})
 		.then((res) => res.blob())
@@ -682,14 +680,13 @@ function renderFilesTabs() {
 		closeSpan.onclick = closeTab;
 		closeSpan.style = "";
 
-		const p = document.createElement("div");
+		const p = document.createElement("a");
 		p.appendChild(extensionIcon);
 		p.appendChild(filenameSpan);
 		p.appendChild(closeSpan);
 
 		const li = document.createElement("li");
 		li.appendChild(p);
-		li.classList.add("active-tab");
 		li.classList.add("is-active");
 		tabs.appendChild(li);
 
@@ -721,7 +718,7 @@ function renderFilesTabs() {
 		closeSpan.dataset.fileindex = fileindex;
 		closeSpan.style = "";
 
-		const p = document.createElement("div");
+		const p = document.createElement("a");
 		p.appendChild(extensionIcon);
 		p.appendChild(filenameSpan);
 		p.appendChild(closeSpan);
@@ -731,7 +728,7 @@ function renderFilesTabs() {
 		li.onclick = setOpenFile;
 		li.dataset.filepath = file.filepath;
 		if (currentOpenTab === fileindex) {
-			li.classList.add("active-tab");
+			li.classList.add("is-active");
 		}
 		tabs.appendChild(li);
 		fileindex++;
@@ -1010,7 +1007,7 @@ server.listen(8080, '0.0.0.0', () => {
 		filepath: `${tempDirPath}/package.json`,
 		changed: false,
 		doc: new CodeMirror.Doc(`{
-  "name": "${projectId}",
+  "name": "${project.name}",
   "version": "1.0.0",
   "description": "",
   "main": "index.mjs",

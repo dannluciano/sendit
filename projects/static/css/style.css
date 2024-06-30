@@ -7,6 +7,26 @@
   --editor-height: 60vh;
   --terminal-width: calc(var(--workbench-width) - var(--actions-width) - var(--filesystem-width));
   --terminal-height: calc(100%);
+
+  --red: var(--bulma-danger);
+  --orange: var(--bulma-danger-light);
+  --yellow: var(--bulma-warning);
+  --green: var(--bulma-success);
+  --blue: var(--bulma-info);
+}
+
+[data-theme=light],
+.theme-light {
+  --black: var(--bulma-scheme-main);
+  --white: var(--bulma-black);
+  --bulma-code: var(--purple) !important
+}
+
+[data-theme=dark],
+.theme-dark {
+  --black: var(--bulma-scheme-main);
+  --white: var(--bulma-white);
+  --bulma-code: var(--purple) !important
 }
 
 ::-webkit-scrollbar {
@@ -35,6 +55,10 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+hr {
+  background-color: unset;
 }
 
 body {

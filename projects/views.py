@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -29,4 +31,6 @@ def project_new(request):
 @login_required
 def project_detail(request, project_name):
     project = get_object_or_404(Project, name=project_name)
-    return render(request, "ide/project-detail.html", {"project": project})
+    project_json = json.dumps(project.to_dict())
+    context = {"project": project, "project_json": project_json}
+    return render(request, "ide/project-detail.html", context)

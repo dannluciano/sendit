@@ -3,7 +3,7 @@
   padding: 0 0;
 
   padding-top: 0.5em;
-  border-right: 1px solid #282a36;
+  border-right: 1px solid var(--black);
 }
 
 #file-system-tree__section {
@@ -22,6 +22,14 @@ summary::-webkit-details-marker {
 
 summary {
   list-style-type: none;
+}
+
+details {
+  margin-left: 1rem;
+}
+
+.file-item {
+  margin-left: 1rem;
 }
 
 summary div {
