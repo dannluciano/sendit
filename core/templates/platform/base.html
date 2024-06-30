@@ -53,20 +53,6 @@
 
           <div class="navbar-end">
             {% include 'core/sendit-verse.html' %}
-
-            {% if request.user.is_staff %}
-              <a class="navbar-item is-tab" href="{% url 'admin:index' %}"><ion-icon name="storefront"></ion-icon>&nbsp;Administração</a>
-            {% endif %}
-
-            <div class="navbar-item">
-              <button class="button" onclick="darkxlight()">🌓 Dark/Light</button>
-            </div>
-
-            <form action="{% url 'core:logout' %}" method="post" class="navbar-item">
-              {% csrf_token %}
-              <input type="hidden" name="sair" />
-              <button class="button is-danger is-outlined">Sair</button>
-            </form>
           </div>
         </div>
       </nav>
