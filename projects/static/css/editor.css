@@ -1,0 +1,47 @@
+#editor-section {
+  height: var(--editor-height);
+  overflow-y: auto;
+  background-color: #282a36;
+  flex-shrink: 0;
+}
+
+#tabs {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  overflow-y: auto;
+}
+
+#tabs li div {
+  padding: 0 auto;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+#tabs li div span:last-child {
+  margin-left: 0.5rem;
+  padding-top: 0.1rem;
+}
+
+#tabs li {
+  color: var(--white);
+  margin-right: 0.5rem !important;
+}
+
+.active-tab div,
+.active-tab span {
+  color: var(--green);
+  background-color: #282a36;
+}
+
+.cm-wrap {
+  height: 100%;
+}
+
+.cm-scroller {
+  overflow: auto;
+}

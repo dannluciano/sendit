@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from projects.forms import ProjectForm
@@ -24,3 +24,9 @@ def project_new(request):
     else:
         form = ProjectForm(initial={"name": ""})
         return render(request, "ide/project-new.html", {"form": form})
+
+
+@login_required
+def project_detail(request, project_name):
+    project = get_object_or_404(Project, name=project_name)
+    return render(request, "ide/project-detail.html", {"project": project})

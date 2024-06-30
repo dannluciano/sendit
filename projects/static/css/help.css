@@ -1,0 +1,10 @@
+#help li {
+    font-size: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+#help li p {
+    margin: 0;
+}

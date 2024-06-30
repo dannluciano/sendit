@@ -7,6 +7,10 @@
     <title>SendIT - Projects</title>
     <link rel="stylesheet" href="{% static 'vendor/bulma/css/bulma.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+
+    {% block css %}
+
+    {% endblock %}
   </head>
 
   <body>
@@ -23,6 +27,12 @@
           </a>
         </div>
         <div class="navbar-menu">
+          <div class="navbar-start">
+            <div class="navbar-item">
+              <a class="navbar-item" href="{% url 'projects:home' %}"><ion-icon name="build"></ion-icon>&nbsp; Projetos</a>
+            </div>
+          </div>
+
           <div class="navbar-end">
             {% include 'core/sendit-verse.html' %}
 
@@ -33,16 +43,14 @@
         </div>
       </nav>
     </header>
-    <main>
-      <br />
-      <div class="container">
-        {% block content %}
+    {% block content %}
 
-        {% endblock %}
-      </div>
-    </main>
+    {% endblock %}
     <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
     <script src="{% static 'js/bulma.js' %}"></script>
     <script src="{% static 'vendor/ionicons/ionicons.js' %}"></script>
+    {% block js %}
+
+    {% endblock %}
   </body>
 </html>

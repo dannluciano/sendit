@@ -2,27 +2,32 @@
 {% load static %}
 
 {% block content %}
-  <article>
-    <header class="box has-text-centered">
-      <h1 class="title">Projetos</h1>
-      <a href="{% url 'projects:project-new' %}" class="button is-success is-large">Novo Projeto</a>
-    </header>
-    <section>
-      <ul>
-        {% for project in projects %}
-          <li class="block">
-            <section class="box">
-              <header class="has-text-centered">
-                <h2 class="subtitle">{{ project.name }}</h2>
-              </header>
-              <br />
-              <div class="has-text-centered">
-                <a href="" class="button is-info">Acessar</a>
-              </div>
-            </section>
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
-  </article>
+  <main>
+    <br />
+    <div class="container">
+      <article>
+        <header class="box has-text-centered">
+          <h1 class="title">Projetos</h1>
+          <a href="{% url 'projects:project-new' %}" class="button is-success is-large">Novo Projeto</a>
+        </header>
+        <section>
+          <ul>
+            {% for project in projects %}
+              <li class="block">
+                <section class="box">
+                  <header class="has-text-centered">
+                    <h2 class="subtitle">{{ project.name }}</h2>
+                  </header>
+                  <br />
+                  <div class="has-text-centered">
+                    <a href="{% url 'projects:project-detail' project.name %}" class="button is-info">Acessar</a>
+                  </div>
+                </section>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      </article>
+    </div>
+  </main>
 {% endblock %}
