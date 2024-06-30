@@ -30,7 +30,9 @@ def project_new(request):
 
 @login_required
 def project_detail(request, project_name):
-    project = get_object_or_404(Project, name=project_name)
+    project = get_object_or_404(
+        Project, name=project_name, owner=request.user
+    )
     project_json = json.dumps(project.to_dict())
     context = {"project": project, "project_json": project_json}
     return render(request, "ide/project-detail.html", context)
