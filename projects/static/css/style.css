@@ -1,7 +1,7 @@
 :root {
   --workbench-width: 100%;
   --workbench-height: calc(100vh - 63px);
-  --actions-width: 50px;
+  --actions-width: 56px;
   --filesystem-width: 30vw;
   --editor-width: calc(var(--workbench-width) - var(--actions-width) - var(--filesystem-width));
   --editor-height: 60vh;
@@ -88,10 +88,6 @@ dialog {
   width: calc(100% - 2em);
   margin: 0.5em 1em;
   background-color: var(--blackSecondary);
-}
-
-.hidden {
-  visibility: hidden;
 }
 
 .inline {
@@ -191,7 +187,7 @@ dialog {
   :root {
     --workbench-width: 100%;
     --workbench-height: calc(100vh - 63px);
-    --actions-width: 40px;
+    --actions-width: 56px;
     --filesystem-width: 80vw;
     --editor-width: calc(var(--workbench-width) - var(--actions-width) - var(--filesystem-width));
     --editor-height: 50vh;

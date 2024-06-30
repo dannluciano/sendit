@@ -1,8 +1,12 @@
 #editor-section {
-  height: var(--editor-height);
   overflow-y: auto;
   flex-shrink: 0;
   background-color: #282A36;
+}
+
+.CodeMirror {
+  /* max-height: calc(100vh - 300px); */
+  min-height: calc(100vh - 500px);
 }
 
 .cm-wrap {

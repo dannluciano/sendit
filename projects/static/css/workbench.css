@@ -13,3 +13,9 @@
   width: var(--editor-width);
   height: var(--editor-height);
 }
+
+@media (max-width: 991px) {
+  #editor-term-section {
+    width: 100%;
+  }
+}

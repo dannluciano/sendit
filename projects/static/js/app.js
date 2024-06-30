@@ -4,7 +4,7 @@ const sProtocol = hProtocol === "http:" ? "" : "s";
 const currentURL = new URL(document.location);
 const debugIsActive = currentURL.searchParams.has("debug");
 const testIsActive = currentURL.searchParams.has("test");
-const filesystemSection = document.getElementById("filesystem");
+const filesystemSection = document.getElementById("filesystem-section");
 const editorTermSection = document.getElementById("editor-term-section");
 const filenameDialog = document.getElementById("filename-dialog");
 const loadingDialog = document.getElementById("loading-dialog");
@@ -29,7 +29,7 @@ if (currentURL.searchParams.has("command")) {
 }
 
 if (isOnMobile()) {
-	editorTermSection.classList.add("hidden");
+	editorTermSection.classList.add("is-hidden");
 }
 
 function debug(...args) {
@@ -1115,26 +1115,27 @@ function toggleFolderIcon(element) {
 }
 
 function toggleFilesystemSidebar() {
-	const filesystem = document.querySelector("#filesystem-section");
-
 	const fileTrayIcon = document.getElementById("file-tray-icon");
 
-	if (filesystem.classList.contains("hidden")) {
-		if (!isOnMobile()) {
-			document.documentElement.style.setProperty("--filesystem-width", "30vw");
-		} else {
-			document.documentElement.style.setProperty("--filesystem-width", "80vw");
-		}
-
-		filesystem.classList.toggle("hidden");
-		fileTrayIcon.name = "file-tray";
-	} else {
-		document.documentElement.style.setProperty("--filesystem-width", "0vw");
-		filesystem.classList.toggle("hidden");
-		fileTrayIcon.name = "file-tray-full";
-	}
 	if (isOnMobile()) {
-		editorTermSection.classList.toggle("hidden");
+		document.documentElement.style.setProperty("--filesystem-width", "80vw");
+		filesystemSection.classList.toggle("is-hidden");
+		editorTermSection.classList.toggle("is-hidden");
+		if (filesystemSection.classList.contains("is-hidden")) {
+			fileTrayIcon.name = "file-tray-full";
+		} else {
+			fileTrayIcon.name = "file-tray";
+		}
+	} else {
+		if (filesystemSection.classList.contains("is-hidden")) {
+			document.documentElement.style.setProperty("--filesystem-width", "30vw");
+			filesystemSection.classList.toggle("is-hidden");
+			fileTrayIcon.name = "file-tray-full";
+		} else {
+			document.documentElement.style.setProperty("--filesystem-width", "0vw");
+			filesystemSection.classList.toggle("is-hidden");
+			fileTrayIcon.name = "file-tray";
+		}
 	}
 	terminalResize();
 }
