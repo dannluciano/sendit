@@ -9,8 +9,8 @@
   --terminal-height: calc(100%);
 
   --red: var(--bulma-danger);
-  --orange: var(--bulma-danger-light);
   --yellow: var(--bulma-warning);
+  --green-light: var(--bulma-primary);
   --green: var(--bulma-success);
   --blue: var(--bulma-info);
 }
