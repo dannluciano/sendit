@@ -2,32 +2,7 @@
   height: var(--editor-height);
   overflow-y: auto;
   flex-shrink: 0;
-}
-
-#tabs {
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-}
-
-#tabs li div {
-  padding: 0 auto;
-  margin: 0;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-}
-
-#tabs li div span:last-child {
-  margin-left: 0.5rem;
-  padding-top: 0.1rem;
-}
-
-#tabs li {
-  color: var(--white);
-  margin-right: 0.5rem !important;
+  background-color: #282A36;
 }
 
 .cm-wrap {
