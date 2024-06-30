@@ -1,0 +1,291 @@
+{% extends 'ide/base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/actions.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/workbench.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/filesystem.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/editor.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/terminal.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/help.css' %}" />
+
+  <link rel="stylesheet" href="{% static 'vendor/xterm/xterm.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/codemirror/theme/dracula.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <main id="workbench">
+    <div id="actions-options-section">
+      <button title="Mostar/Esconder Sistema de Arquivo" data-toggle="tooltip" aria-label="show-hidden-filesystem" aria-description="Mostar/Esconder Sistema de Arquivo" style="color: var(--purple)"><ion-icon onclick="toggleFilesystemSidebar(this)" name="file-tray" id="file-tray-icon"></ion-icon></button>
+
+      <hr />
+
+      <button id="new-folder-button" title="Criar Nova Pasta" data-toggle="tooltip" aria-label="new-folder" aria-description="Nova Pasta" style="color: var(--red)" class="hidden-on-mobile-landscape"><ion-icon name="folder-open"></ion-icon></button>
+      <button id="new-file-button" title="Criar Novo Arquivo" data-toggle="tooltip" aria-label="new-file" aria-description="Novo Arquivo" style="color: var(--yellow)" class="hidden-on-mobile-landscape"><ion-icon name="document"></ion-icon></button>
+
+      <hr class="hidden-on-mobile-landscape" />
+
+      <button id="save-button" title="Salvar Arquivo" data-toggle="tooltip" aria-label="save" aria-description="Salvar" style="color: var(--green-light)"><ion-icon name="save"></ion-icon></button>
+
+      <hr class="hidden-on-mobile-landscape" />
+
+      <button id="run-button" title="Executar Arquivo" data-toggle="tooltip" aria-label="run" aria-description="Executar"><ion-icon name="play"></ion-icon></button>
+
+      <hr class="hidden-on-mobile-landscape" />
+
+      <button title="Abrir Servidor Web em Outra Aba" data-toggle="tooltip" aria-label="open-other-tab" aria-description="Abrir em Outra Aba"><a id="open-new-tab" href="#" target="_blank" rel="noopener noreferrer"><ion-icon name="enter"></ion-icon></a></button>
+
+      <hr class="hidden-on-mobile-landscape" />
+
+      <button id="duplicate-button" title="Duplicar Projeto" data-toggle="tooltip" aria-label="duplicate" aria-description="Duplicar Projeto" style="color: var(--cyan)" class="is-hidden"><ion-icon name="duplicate"></ion-icon></button>
+      <button id="download-button" title="Baixar Projeto" data-toggle="tooltip" aria-label="download" aria-description="Baixar Projeto" style="color: var(--cyanSecondary)" class="is-hidden"><ion-icon name="cloud-download"></ion-icon></button>
+
+      <hr class="hidden-on-mobile-landscape" />
+
+      <button id="settings-button" title="Configurações" data-toggle="tooltip" aria-label="settings" aria-description="Configurações" style="color: var(--white)"><ion-icon name="settings"></ion-icon></button>
+    </div>
+
+    <div id="filesystem-section">
+      <div id="file-system-tree__section" class="drac-text-white" open="">
+        <ul class="tree">
+          <li>
+            <div class="drac-text drac-text-green">
+              <ion-icon class="filesystem-folder-icon" name="folder-open"></ion-icon>
+              <span>home (~)</span>
+            </div>
+          </li>
+          <li>
+            <ul id="file-system-tree"></ul>
+          </li>
+        </ul>
+      </div>
+      <section id="help" class="drac-text-white">
+        <ul>
+          <li>
+            <p>Clonar um repositótio do Git</p>
+            <p>Acesse a barra de endereços do navegador:</p>
+            <div>
+              <a href="https://sendit.dannluciano.com.br/ide/c/https://github.com/dannluciano/ROT13/"><code>sendit.da...no.com.br/ide/c/https://github.com/dannluciano/ROT13/</code></a>
+            </div>
+          </li>
+        </ul>
+        <ul style="border-top: 1px solid var(--blackSecondary)">
+          <li>
+            <p>Salvar um Arquivo</p>
+            <div>
+              <code>Control + S</code>
+              <code>Command + S</code>
+            </div>
+          </li>
+          <li>
+            <p>Executar um Arquivo</p>
+            <div>
+              <code>Control + R</code>
+
+              <code>Command + R</code>
+            </div>
+          </li>
+          <li>
+            <p>Interromper um Processo</p>
+            <div>
+              <code>Control + C</code>
+            </div>
+          </li>
+          <li>
+            <p>Suspender um Processo</p>
+            <div>
+              <code>Control + Z</code>
+            </div>
+          </li>
+          <li>
+            <p>Limpar Terminal</p>
+            <div>
+              <code>Control + L</code>
+            </div>
+          </li>
+        </ul>
+        <ul style="border-top: 1px solid var(--blackSecondary)">
+          <li style="margin-top: 1rem">
+            <p>Exibir Pasta Atual</p>
+            <div>
+              <code class="block">~# pwd</code>
+            </div>
+          </li>
+          <li>
+            <p>Mudar Pasta Atual</p>
+            <div>
+              <code class="block">~# cd nome_da_pasta</code>
+            </div>
+          </li>
+          <li>
+            <p>Criar um Arquivo</p>
+            <div>
+              <code class="block">~# touch nome_do_arquivo</code>
+            </div>
+          </li>
+          <li>
+            <p>Criar uma Pasta</p>
+            <div>
+              <code class="block">~# mkdir nome_da_pasta</code>
+            </div>
+          </li>
+          <li>
+            <p>Criar uma Estrutura de Pastas</p>
+            <div>
+              <code class="block">~# mkdir -p pasta_a/pasta_b/pasta_c</code>
+            </div>
+          </li>
+          <li>
+            <p>Remover um Arquivo</p>
+            <div>
+              <code class="block">~# rm nome_do_arquivo</code>
+            </div>
+          </li>
+          <li>
+            <p>Remover uma Pasta</p>
+            <div>
+              <code class="block">~# rm -rf nome_da_pasta</code>
+            </div>
+          </li>
+          <li>
+            <p>Mover um Arquivo ou uma Pasta</p>
+            <div>
+              <code class="block">~# mv arquivo_origem arquivo_destino</code>
+            </div>
+          </li>
+          <li>
+            <p>Copiar um Arquivo</p>
+            <div>
+              <code class="block">~# cp arquivo_origem arquivo_destino</code>
+            </div>
+          </li>
+          <li>
+            <p>Copiar uma Pasta</p>
+            <div>
+              <code class="block">~# cp -r pasta_origem pasta_destino</code>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+    <section id="editor-term-section">
+      <div id="editor-section">
+        <nav id="file-title-bar">
+          <div class="tabs is-toggle" onWheel="this.scrollLeft+=event.deltaY>0?100:-100">
+            <ul id="tabs">
+              <li class="is-active" id="filename-tab" data-filepath="">
+                <a>scratch</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div id="editor-wrapper" style="position: relative">
+          <textarea name="editor" id="editor" cols="30" rows="10"></textarea>
+        </div>
+      </div>
+      <div id="terminal-section">
+        <div id="terminal-buttons">
+          <button id="tab" class="button is-small" data-key="Tab" onclick="sendTab(this)">Tab</button>
+          <button id="control-c" class="button is-small" data-key="C" onclick="sendControl(this)">^+C</button>
+          <button id="control-c" class="button is-small" data-key="D" onclick="sendControl(this)">^+D</button>
+          <button id="control-l" class="button is-small" data-key="L" onclick="sendControl(this)">^+L</button>
+          <button id="control-z" class="button is-small" data-key="Z" onclick="sendControl(this)">^+Z</button>
+        </div>
+        <div id="terminal"></div>
+      </div>
+    </section>
+
+    <dialog id="filename-dialog">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+      <div class="box">
+        <input class="input" type="text" id="input-filename" />
+      </div>
+    </dialog>
+
+    <dialog id="settings-dialog">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+
+      <div class="box">
+        <h1 class="title">Configurações</h1>
+        <form id="settings-form" class="form">
+          <fieldset>
+            <legend class="subtitle">
+              <ion-icon name="person"></ion-icon>Pessoal
+            </legend>
+            <div class="field">
+              <label class="drac-text drac-text-white" for="name">Nome:</label>
+              <input class="input" name="name" id="name" />
+            </div>
+            <br />
+            <div class="field">
+              <label class="drac-text drac-text-white" for="email">E-Mail:</label>
+              <input class="input" name="email" id="email" />
+            </div>
+          </fieldset>
+          <br />
+          <fieldset>
+            <legend class="subtitle">
+              <ion-icon name="logo-github"></ion-icon>GitHub
+            </legend>
+            <div class="field">
+              <label class="drac-text drac-text-white" for="github-username">GitHub Username:</label>
+              <input class="input" name="github-username" id="github-username" />
+            </div>
+            <br />
+            <div class="field">
+              <label class="drac-text drac-text-white" for="github-auth-token">GitHub Auth Token:</label>
+              <input class="input" type="password" name="github-auth-token" id="github-auth-token" />
+              <small id="github-auth-token-help" class="form-text drac-text-pink">
+                Crie uma <strong>Personal Access Token</strong> e cole aqui. Para mais informações
+                <a href="https://docs.github.com/pt/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">clique aqui</a>
+              </small>
+            </div>
+          </fieldset>
+
+          <hr />
+
+          <button id="cancel-settings-button" class="button is-danger" type="button">Cancelar<ion-icon name="close-circle"></ion-icon></button>
+
+          <button id="save-settings-button" class="button is-success" type="submit">Salvar<ion-icon name="save"></ion-icon></button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="messages-dialog">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+
+      <button class="button" onclick="closeDialog(this)">Fechar<ion-icon name="close-circle"></ion-icon></button>
+      <div class="box"></div>
+    </dialog>
+
+    <dialog id="loading-dialog" open="">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+      <div class="box">
+        <div id="loader-container">
+          <span class="loader"></span>
+        </div>
+      </div>
+    </dialog>
+  </main>
+{% endblock %}
+
+{% block js %}
+  <script src="{% static 'vendor/xterm/xterm.js' %}"></script>
+  <script src="{% static 'vendor/xterm/xterm-addon-attach.js' %}"></script>
+  <script src="{% static 'vendor/xterm/xterm-addon-fit.js' %}"></script>
+
+  <script src="{% static 'vendor/codemirror/lib/codemirror.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/addon/mode/simple.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/dockerfile/dockerfile.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/properties/properties.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/addons/loadmode.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/meta.js' %}"></script>
+  <script src="{% static 'js/term.js' %}"></script>
+  <script>
+    const projectString = '{{ project_json|safe }}'
+    const project = JSON.parse(projectString)
+  </script>
+  <script src="{% static 'js/app.js' %}"></script>
+{% endblock %}

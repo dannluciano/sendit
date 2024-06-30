@@ -13,6 +13,7 @@ urlpatterns = [
     path("", include("evaluation.urls", namespace="evaluation")),
     path("editor/", include("editor.urls")),
     path("sh/", include("shell.urls")),
+    path("ide/", include("projects.urls")),
     path("session_security/", include("statistics.urls")),
     path("django-rq/", include("django_rq.urls")),
     path("admin/", admin.site.urls),

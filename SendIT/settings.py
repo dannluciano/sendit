@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "editor",
     "evaluation",
     "shell",
+    "projects",
     "miniexplorer",
     "mini_system_monitor",
     "django.contrib.humanize",
