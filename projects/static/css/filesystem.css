@@ -1,9 +1,8 @@
 #filesystem-section {
   width: var(--filesystem-width);
   padding: 0 0;
-
   padding-top: 0.5em;
-  border-right: 1px solid var(--black);
+  border-right: 1px solid #282a36;
 }
 
 #file-system-tree__section {

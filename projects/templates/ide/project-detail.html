@@ -256,8 +256,11 @@
     <dialog id="messages-dialog">
       <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
 
-      <button class="button" onclick="closeDialog(this)">Fechar<ion-icon name="close-circle"></ion-icon></button>
-      <div class="box"></div>
+      <div class="box">
+        <section id="messages-section"></section>
+        <br />
+        <button class="button is-success" onclick="window.location.reload()">Tentar Novamente</button>
+      </div>
     </dialog>
 
     <dialog id="loading-dialog" open="">

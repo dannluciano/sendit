@@ -468,6 +468,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		.catch((error) => {
 			console.error(error);
 			const messagesDialog = document.getElementById("messages-dialog");
+			const messagesDialogSection = document.getElementById("messages-section");
+			messagesDialogSection.innerHTML = `<p>Erro: Falha na Conexão com o Servidor</p>`
+			if (loadingDialog.open) {
+				loadingDialog.close()
+			}
 			messagesDialog.showModal();
 		});
 	renderFilesTabs();
