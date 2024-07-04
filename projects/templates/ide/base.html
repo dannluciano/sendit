@@ -4,6 +4,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=overlays-content" />
+
+    {% include 'core/favicon-pwa.html' %}
+
     <title>SendIT - Projects</title>
     <link rel="stylesheet" href="{% static 'vendor/bulma/css/bulma.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
@@ -43,6 +46,7 @@
 
     {% endblock %}
     <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+    <script src="{% static 'js/clipboard.min.js' %}"></script>
     <script src="{% static 'js/bulma.js' %}"></script>
     <script src="{% static 'vendor/ionicons/ionicons.js' %}"></script>
     {% block js %}
