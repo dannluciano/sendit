@@ -1,7 +1,24 @@
 /* eslint-env browser, jquery */
 
+const lightThemeName = "light";
+const darkThemeName = "dark";
+
 function init() {
-	const theme = localStorage.getItem("theme") || "ligth";
+	const theme = getTheme();
+
+	applayTheme(theme);
+	setTheme(theme);
+}
+
+function setTheme(theme) {
+	localStorage.setItem("theme", theme);
+}
+
+function getTheme() {
+	return localStorage.getItem("theme") || lightThemeName;
+}
+
+function applayTheme(theme) {
 	document.body.dataset.theme = theme;
 }
 
@@ -10,15 +27,15 @@ function darkxlight() {
 	const fromTheme = element.dataset.theme;
 	let toTheme = fromTheme;
 
-	if (fromTheme === "light") {
-		toTheme = "dark";
+	if (fromTheme === lightThemeName) {
+		toTheme = darkThemeName;
 	} else {
-		toTheme = "light";
+		toTheme = lightThemeName;
 	}
 
 	console.info("Change Theme from: ", fromTheme, "to:", toTheme);
-	element.dataset.theme = toTheme;
-	localStorage.setItem("theme", toTheme);
+	applayTheme(toTheme);
+	setTheme(toTheme);
 	// setEditorTheme()
 }
 
@@ -46,7 +63,7 @@ jQuery(document).ready(($) => {
 	});
 
 	$(document).on("keyup", (e) => {
-		if (e.keyCode == 27) {
+		if (e.keyCode === 27) {
 			$("html").removeClass("is-clipped");
 			$(".modal").removeClass("is-active");
 		}
@@ -80,7 +97,7 @@ jQuery(document).ready(($) => {
 		$(this).parent().children("pre").css("max-height", "none");
 	});
 
-	if (Clipboard in window) {
+	if ("Clipboard" in window) {
 		const _cb = new Clipboard(".copy", {
 			target: (trigger) => trigger.previousSibling,
 		});
