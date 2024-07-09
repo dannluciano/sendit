@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Project(models.Model):
-    name = models.CharField("Nome", max_length=100, unique=True)
+    name = models.CharField("Nome", max_length=100, unique=False)
 
     owner = models.ForeignKey(
         "auth.User", verbose_name="Dono", on_delete=models.CASCADE
@@ -35,6 +35,7 @@ class Project(models.Model):
             "updated_at": self.updated_at.isoformat(),
         }
 
-
-def create_project(name, owner):
-    return Project.objects.create(name=name, owner=owner)
+    class Meta:
+        constraints = [
+             models.UniqueConstraint(fields=['name', 'owner'], name='unique_project_name_by_owner'),
+        ]
