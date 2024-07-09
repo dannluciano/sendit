@@ -19,8 +19,10 @@ def project_new(request):
     if request.POST:
         form = ProjectForm(request.POST)
         if form.is_valid():
-            create_project(form.cleaned_data["name"], request.user)
-            return redirect(reverse("projects:home"))
+            name = form.cleaned_data['name']
+            owner = request.user
+            project, created = Project.objects.get_or_create(name=name, owner=owner)
+            return redirect(reverse("projects:project-detail", args=[project.name]))
         else:
             return render(request, "ide/project-new.html", {"form": form})
     else:
