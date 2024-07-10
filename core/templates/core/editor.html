@@ -2,6 +2,9 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/editor.css' %} ">
+<link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %} ">
+<link rel="stylesheet" href="{% static 'vendor/catppuccin/mocha.css' %} " />
+<link rel="stylesheet" href="{% static 'vendor/catppuccin/latte.css' %} " />
 {% endblock %}
 
 <section class="box full-height">
@@ -93,8 +96,6 @@
 
 {% block js %}
 <script src="{% static 'vendor/codemirror/lib/codemirror.js'%}"></script>
-<link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %} ">
-<link rel="stylesheet" href="{% static 'vendor/codemirror/theme/dracula.css' %} ">
 <script src="{% static 'vendor/codemirror/mode/clike/clike.js'%}"></script>
 <script src="{% static 'vendor/codemirror/mode/JavaScript/JavaScript.js'%}"></script>
 <script src="{% static 'vendor/codemirror/mode/Python/Python.js'%}"></script>

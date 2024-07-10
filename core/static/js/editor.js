@@ -4,6 +4,13 @@
 let pythonInstance = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+	const getThemeName = () => {
+		return (document.body.dataset.theme || localStorage.getItem("theme")) ===
+			"dark"
+			? "ctp-mocha"
+			: "ctp-latte";
+	};
+
 	const languagesMode = {
 		c: "text/x-csrc",
 		cplusplus: "text/x-c++src",
@@ -52,10 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	const editor = CodeMirror.fromTextArea(editorTextArea, {
 		lineNumbers: true,
 		readOnly: true,
-		theme: "dracula",
+		theme: getThemeName(),
 		viewportMargin: Number.POSITIVE_INFINITY,
 		matchBrackets: true,
 		gutters: ["CodeMirror-linenumbers"],
+	});
+
+	document.addEventListener("theme-changed", () => {
+		editor.setOption("theme", getThemeName());
 	});
 
 	const variablesSection = document.getElementById("variables-section");

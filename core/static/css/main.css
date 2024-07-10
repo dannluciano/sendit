@@ -1,20 +1,6 @@
 :root {
-    --bg-color: #22212c;
-    --fg-color: #f8f8f2;
-    --comment: #7970a9;
-    --selection: #454158;
-    --gray: #7970a9;
-    --black: #002635;
-    --white: #f8f8f2;
-    --blue: #80ffea;
-    --green: #8aff80;
-    --orange: #ffca80;
-    --pink: #ff80bf;
-    --purple: #9580ff;
-    --red: #ff9580;
-    --yellow: #ffff80;
-
-    --accentColor: var(--purple);
+    --black: #11111b;
+    --white: #dce0e8;
 }
 
 [data-theme="light"] {

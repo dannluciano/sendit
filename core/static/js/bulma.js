@@ -20,6 +20,7 @@ function getTheme() {
 
 function applayTheme(theme) {
 	document.body.dataset.theme = theme;
+	document.dispatchEvent(new Event("theme-changed"));
 }
 
 function darkxlight() {
@@ -36,7 +37,6 @@ function darkxlight() {
 	console.info("Change Theme from: ", fromTheme, "to:", toTheme);
 	applayTheme(toTheme);
 	setTheme(toTheme);
-	// setEditorTheme()
 }
 
 jQuery(document).ready(($) => {
