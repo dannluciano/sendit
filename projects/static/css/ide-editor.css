@@ -1,7 +1,11 @@
 #editor-section {
   overflow-y: auto;
   flex-shrink: 0;
-  background-color: #282A36;
+  background-color: var(--black);
+}
+
+#editor-section nav {
+  border-bottom: 1px solid;
 }
 
 .CodeMirror {

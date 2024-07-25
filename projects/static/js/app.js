@@ -24,6 +24,13 @@ let newFileOrNewFolder;
 let initialCommand = "";
 let settings = {};
 
+const getThemeName = () => {
+	return (document.body.dataset.theme || localStorage.getItem("theme")) ===
+		"dark"
+		? "ctp-mocha"
+		: "ctp-latte";
+};
+
 if (currentURL.searchParams.has("command")) {
 	initialCommand = currentURL.searchParams.get("command");
 }
@@ -139,7 +146,7 @@ function getFileExtension(fileNameOrPath) {
 
 function getEditorConfigsAndModeWithFileExtension(fileExtention) {
 	const defaultOptions = {
-		theme: "dracula",
+		theme: getThemeName(),
 		lineNumbers: true,
 		indentUnit: 4,
 		matchBrackets: true,
@@ -366,6 +373,9 @@ function createNewFileOrFolder(event) {
 document.addEventListener("DOMContentLoaded", () => {
 	loadSettings();
 	editor = CodeMirror.fromTextArea(document.querySelector("#editor"));
+	document.addEventListener("theme-changed", () => {
+		editor.setOption("theme", getThemeName());
+	});
 	// editor.setSize("280px", "100%");
 	editor.setOption("extraKeys", {
 		"Ctrl-S": (cm) => {
@@ -469,9 +479,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			console.error(error);
 			const messagesDialog = document.getElementById("messages-dialog");
 			const messagesDialogSection = document.getElementById("messages-section");
-			messagesDialogSection.innerHTML = `<p>Erro: Falha na Conexão com o Servidor</p>`
+			messagesDialogSection.innerHTML = `<p>Erro: Falha na Conexão com o Servidor</p>`;
 			if (loadingDialog.open) {
-				loadingDialog.close()
+				loadingDialog.close();
 			}
 			messagesDialog.showModal();
 		});
