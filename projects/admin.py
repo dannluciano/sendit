@@ -8,6 +8,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "owner",
+        "uuid",
         "created_at",
         "updated_at",
     )
@@ -25,3 +26,11 @@ class ProjectAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
+
+    search_fields = (
+        "name",
+        "owner",
+        "uuid",
+    )
+
+    date_hierarchy = "created_at"
