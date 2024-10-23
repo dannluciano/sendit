@@ -4,4 +4,6 @@ set -e
 
 source env_vm/bin/activate
 
-PORT=8002 DEBUG=False HIVEMIND_PROCFILE=Procfile.local hivemind
+./manage.py download_docker_images
+
+PORT=8000 DEBUG=False HIVEMIND_PROCFILE=Procfile.local hivemind
