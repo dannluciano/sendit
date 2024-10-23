@@ -49,7 +49,10 @@ class C_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = C_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "OK")
 
@@ -66,7 +69,10 @@ class C_SubmissionRunnerTestCase(TestCase):
             
         """
         result = C_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "SintaxError")
 
@@ -83,7 +89,10 @@ class C_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = C_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "RuntimeError")
 
@@ -102,7 +111,10 @@ class C_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = C_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "TimeoutError")
 
@@ -119,7 +131,10 @@ class C_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = C_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "DiffError")
 
@@ -162,7 +177,10 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = Cplusplus_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "OK")
 
@@ -180,7 +198,10 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = Cplusplus_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "SintaxError")
 
@@ -198,7 +219,10 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = Cplusplus_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "RuntimeError")
 
@@ -218,7 +242,10 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = Cplusplus_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "TimeoutError")
 
@@ -236,7 +263,10 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = Cplusplus_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "DiffError")
 
@@ -252,7 +282,10 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
             alert('Ola, ' + name)
         """
         result = JavaScript_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "OK")
 
@@ -265,7 +298,10 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
             alert('Ola, '  name)
         """
         result = JavaScript_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "SintaxError")
 
@@ -278,7 +314,10 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
             alert(name.joao)
         """
         result = JavaScript_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "RuntimeError")
 
@@ -292,7 +331,10 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = JavaScript_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "TimeoutError")
 
@@ -304,7 +346,10 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
             alert("Ola, Maria")
         """
         result = JavaScript_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "DiffError")
 
@@ -326,7 +371,10 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = JAVA_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "OK")
 
@@ -345,7 +393,10 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
             
         """
         result = JAVA_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "SintaxError")
 
@@ -364,7 +415,10 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = JAVA_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "RuntimeError")
 
@@ -385,7 +439,10 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = JAVA_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "TimeoutError")
 
@@ -404,7 +461,10 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
             }
         """
         result = JAVA_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "DiffError")
 
@@ -420,7 +480,10 @@ str = input()
 print("Ola,", str)
 """
         result = Python_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "OK")
 
@@ -435,7 +498,10 @@ if str {
 }
 """
         result = Python_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "SintaxError")
 
@@ -448,7 +514,10 @@ str = input()
 pri.nt("Ola,", str)
 """
         result = Python_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "RuntimeError")
 
@@ -462,7 +531,10 @@ while(True):
     print("Ola,", str)
 """
         result = Python_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "TimeoutError")
 
@@ -475,6 +547,9 @@ str = input()
 print("Ola, Maria")
 """
         result = Python_SubmissionRunner(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
         self.assertEqual(result["status"], "DiffError")
