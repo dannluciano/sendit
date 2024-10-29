@@ -1,11 +1,11 @@
 import random
 import uuid
 
-from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 from django.urls import reverse
+from django_ckeditor_5.fields import CKEditor5Field
 
 from .utils import raw_sql
 
@@ -84,7 +84,7 @@ class Tags(models.Model):
 
 class Question(models.Model):
     title = models.CharField(max_length=255)
-    statement = RichTextField()
+    statement = CKEditor5Field(config_name="extends")
     sample_input = models.TextField(blank=True)
     sample_output = models.TextField(blank=True)
     xp = models.IntegerField(default=100)

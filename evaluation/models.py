@@ -1,11 +1,11 @@
 import uuid
 
-from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django_ckeditor_5.fields import CKEditor5Field
 
 from core.models import Question, Submission
 
@@ -30,7 +30,7 @@ class Assessment(models.Model):
         "Data de Fim", auto_now=False, auto_now_add=False
     )
 
-    description = RichTextField("Descrição")
+    description = CKEditor5Field("Descrição", config_name="extends")
 
     questions = models.ManyToManyField(
         Question, verbose_name="Questões", through="QuestionInfo"
