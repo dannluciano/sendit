@@ -29,11 +29,16 @@
       {% if submission.status == 'OK' %}
         <p>Você ganhou {{ submission.question.xp }} XPs!</p>
         <br />
+        <div class="buttons is-centered">
+          <a href="javascript:window.history.back()" class="button is-large is-warning">Voltar</a>
+          <a href="{% url 'core:home' %}" class="button is-large is-success">Lista de Questões</a>
+        </div>
+      {% else %}
+        <p>
+          <a href="javascript:window.history.back()" class="button is-large is-success">Tentar Novamente</a>
+          <a href="{% url 'core:home' %}" class="button is-large is-info">Lista de Questões</a>
+        </p>
       {% endif %}
-
-      <p>
-        <a href="javascript:window.history.back()" class="button is-large is-success">Tentar Novamente</a>
-      </p>
     </div>
 
     {% if submission.status != 'OK' %}

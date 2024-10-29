@@ -29,6 +29,7 @@
                     {{ user.username|upper }}
                   {% endif %}
                 </p>
+                <p class="title is-6 has-text-centered">@{{ user.username }}</p>
               </div>
             </div>
 
@@ -120,8 +121,9 @@
         <div class="column is-3">
           <div class="box trending">
             <p class="trend-title">
-              <span class="title is-5">Estatísticas</span>
+              <span class="title is-5">Estatísticas:</span>
             </p>
+
             <dl>
               <dt>Tempo Total:</dt>
               <dd><strong><time datetime="{{ user.total_time_on|duration:'machine' }}">{{ user.total_time_on|duration:'phrase' }}</time></strong></dd>
