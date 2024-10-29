@@ -146,7 +146,15 @@ MEDIA_URL = "/uploads/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 
-DEFAULT_FILE_STORAGE = "db_file_storage.storage.DatabaseFileStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "db_file_storage.storage.DatabaseFileStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
 
 LOGIN_URL = "/"
 
@@ -164,7 +172,7 @@ customColorPalette = [
 ]
 
 # CKEDITOR_5_CUSTOM_CSS = "path_to.css"  # optional
-# CKEDITOR_5_FILE_STORAGE = "path_to_storage.CustomStorage"  # optional
+CKEDITOR_5_FILE_STORAGE = "db_file_storage.storage.DatabaseFileStorage"
 CKEDITOR_5_CONFIGS = {
     "default": {
         "toolbar": [

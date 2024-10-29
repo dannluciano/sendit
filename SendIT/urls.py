@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
@@ -39,11 +38,8 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("uploads/", include("db_file_storage.urls")),
-]
-
-urlpatterns += [
     path("ckeditor5/", include("django_ckeditor_5.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 if settings.DEBUG:
     import debug_toolbar
