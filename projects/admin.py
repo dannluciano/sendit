@@ -29,7 +29,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
     search_fields = (
         "name",
-        "owner",
+        "owner__username",
         "uuid",
     )
 
