@@ -19,8 +19,12 @@
                     <h2 class="subtitle">{{ project.name }}</h2>
                   </header>
                   <br />
-                  <div class="has-text-centered">
+                  <div class="buttons is-centered">
                     <a href="{% url 'projects:project-detail' project.name %}" class="button is-info">Acessar</a>
+                    <form action="{% url 'projects:project-delete' project.name %}" method="post" onsubmit="return confirm('Você tem certeza?')">
+                      {% csrf_token %}
+                      <button class="button is-danger">Remover</button>
+                    </form>
                   </div>
                 </section>
               </li>
