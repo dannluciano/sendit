@@ -144,7 +144,7 @@ class Submission(models.Model):
     LANGUAGE_CHOICES = (
         ("unkwon", "Unkwon"),
         ("c", "C"),
-        ("c++11", "C++11"),
+        ("cplusplus", "C++"),
         ("javascript", "JavaScript"),
         ("java", "Java"),
         ("python", "Python"),
