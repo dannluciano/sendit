@@ -114,6 +114,8 @@ class AssessmentSubmissionAdmin(admin.ModelAdmin):
     list_display = (
         "assessment",
         "author",
+        "author__first_name",
+        "author__last_name",
         "score",
         "created_at",
         "updated_at",
