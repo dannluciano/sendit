@@ -113,9 +113,7 @@ compute_score.short_description = "Calcular Nota"
 class AssessmentSubmissionAdmin(admin.ModelAdmin):
     list_display = (
         "assessment",
-        "author",
-        "author__first_name",
-        "author__last_name",
+        "full_name",
         "score",
         "created_at",
         "updated_at",
@@ -135,3 +133,9 @@ class AssessmentSubmissionAdmin(admin.ModelAdmin):
     actions = [
         compute_score,
     ]
+
+    @admin.display(description="Nome Completo")
+    def full_name(self, obj):
+        name = f"{obj.author.first_name} {obj.author.last_name}".upper()
+        username = obj.author.username
+        return f"{name} - @{username}"
