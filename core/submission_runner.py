@@ -43,12 +43,16 @@ class SubmissionDiffError(SubmissionError):
 
 class SubmissionRunner(object):
     def __init__(
-        self, work_dir_name, input_content, expected_output_content, source_file_content
+        self,
+        work_dir_name,
+        input_content,
+        expected_output_content,
+        source_file_content,
     ):
         self.compiler_command = "echo compiler"
         self.executable_command = "echo executable"
         self.source_file_name = "source.txt"
-        self.timeout = 6
+        self.timeout = 8
 
         self.work_dir = f"{tmp_dir}/{work_dir_name}"
         self.input_content = input_content.replace("\r", "")
@@ -91,15 +95,24 @@ class SubmissionRunner(object):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 input=input_,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
             )
-            self.last_output = result.stdout[0:1000].decode("utf-8")
+            self.last_output = result.stdout[0:1000]
+
         except subprocess.TimeoutExpired as error:
-            command = self.docker_stop_command.replace("$NAME$", container_name)
+            command = self.docker_stop_command.replace(
+                "$NAME$", container_name
+            )
             try:
                 result = subprocess.run(
                     shlex.split(command),
                     shell=False,
                     check=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
                 )
             except subprocess.CalledProcessError:
                 log.info(f"Docker Container {container_name} not exists")
@@ -116,7 +129,7 @@ class SubmissionRunner(object):
             self.run_process(self.compiler_command)
         except subprocess.CalledProcessError as error:
             if error.stdout:
-                self.last_output = error.stdout.decode("utf-8")
+                self.last_output = error.stdout
             else:
                 self.last_output = ""
             raise SubmissionSintaxError("SintaxError")
@@ -124,9 +137,9 @@ class SubmissionRunner(object):
     def run_executable(self):
         log.info(f"Executing Program: {self.executable_command}")
         try:
-            self.run_process(self.executable_command, self.input_content.encode())
+            self.run_process(self.executable_command, self.input_content)
         except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout.decode("utf-8")
+            self.last_output = error.stdout
             raise SubmissionRuntimeError("RuntimeError")
 
     def compare_outputs(self):
@@ -138,7 +151,7 @@ class SubmissionRunner(object):
         try:
             self.run_process(command, self.last_output.encode())
         except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout.decode("utf-8")
+            self.last_output = error.stdout
             raise SubmissionDiffError("DiffError")
 
     def run(self):
@@ -161,24 +174,36 @@ class SubmissionRunner(object):
 
 class C_SubmissionRunner(SubmissionRunner):
     def __init__(
-        self, work_dir, input_content, expected_output_content, source_file_content
+        self,
+        work_dir,
+        input_content,
+        expected_output_content,
+        source_file_content,
     ):
         super().__init__(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         )
         self.source_file_name = "main.c"
-        self.compiler_command = (
-            f"{self.docker_start_command} gcc:12 gcc -o main {self.source_file_name}"
-        )
+        self.compiler_command = f"{self.docker_start_command} gcc:12 gcc -o main {self.source_file_name}"
         self.executable_command = f"{self.docker_start_command} gcc:12 ./main"
 
 
 class Cplusplus_SubmissionRunner(SubmissionRunner):
     def __init__(
-        self, work_dir, input_content, expected_output_content, source_file_content
+        self,
+        work_dir,
+        input_content,
+        expected_output_content,
+        source_file_content,
     ):
         super().__init__(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         )
         self.source_file_name = "main.cpp"
         self.compiler_command = f"{self.docker_start_command} gcc:12 g++ --std=c++11 -o main {self.source_file_name}"
@@ -187,14 +212,21 @@ class Cplusplus_SubmissionRunner(SubmissionRunner):
 
 class JavaScript_SubmissionRunner(SubmissionRunner):
     def __init__(
-        self, work_dir, input_content, expected_output_content, source_file_content
+        self,
+        work_dir,
+        input_content,
+        expected_output_content,
+        source_file_content,
     ):
         iof = open("browser_io.js", mode="r")
         ioc = iof.read()
         iof.close()
         source_file_content = f"{ioc}\n{source_file_content}"
         super().__init__(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         )
         self.source_file_name = "index.js"
         self.compiler_command = f"{self.docker_start_command} node:20.10.0-alpine node -c {self.source_file_name}"
@@ -203,38 +235,52 @@ class JavaScript_SubmissionRunner(SubmissionRunner):
 
 class JAVA_SubmissionRunner(SubmissionRunner):
     def __init__(
-        self, work_dir, input_content, expected_output_content, source_file_content
+        self,
+        work_dir,
+        input_content,
+        expected_output_content,
+        source_file_content,
     ):
         super().__init__(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         )
         self.source_file_name = "Principal.java"
         self.compiler_command = f"{self.docker_start_command} eclipse-temurin:11 javac {self.source_file_name}"
-        self.executable_command = (
-            f"{self.docker_start_command} eclipse-temurin:11 java -cp . Principal"
-        )
-        self.timeout = 8
+        self.executable_command = f"{self.docker_start_command} eclipse-temurin:11 java -cp . Principal"
+        self.timeout = self.timeout + 2
 
 
 class Python_SubmissionRunner(SubmissionRunner):
     def __init__(
-        self, work_dir, input_content, expected_output_content, source_file_content
+        self,
+        work_dir,
+        input_content,
+        expected_output_content,
+        source_file_content,
     ):
         super().__init__(
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         )
         self.source_file_name = "main.py"
         self.compiler_command = f"{self.docker_start_command} python:alpine python -m py_compile {self.source_file_name}"
-        self.executable_command = (
-            f"{self.docker_start_command} python:alpine python {self.source_file_name}"
-        )
+        self.executable_command = f"{self.docker_start_command} python:alpine python {self.source_file_name}"
         self.worker_env = "./worker_env"
 
 
 class SubmissionRunnerManager:
     @staticmethod
     def exe(
-        lang, work_dir, input_content, expected_output_content, source_file_content
+        lang,
+        work_dir,
+        input_content,
+        expected_output_content,
+        source_file_content,
     ):
         runners = {
             "c": C_SubmissionRunner,
@@ -246,7 +292,10 @@ class SubmissionRunnerManager:
         }
 
         result = runners[lang](
-            work_dir, input_content, expected_output_content, source_file_content
+            work_dir,
+            input_content,
+            expected_output_content,
+            source_file_content,
         ).run()
 
         log_contents = log_capture_string.getvalue()
