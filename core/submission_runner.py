@@ -149,7 +149,7 @@ class SubmissionRunner(object):
         command = f"diff -u -b -w -B - {self.work_dir}/expected_output.txt"
         log.info(f"Executing Diff: {command}")
         try:
-            self.run_process(command, self.last_output.encode())
+            self.run_process(command, self.last_output)
         except subprocess.CalledProcessError as error:
             self.last_output = error.stdout
             raise SubmissionDiffError("DiffError")
