@@ -28,6 +28,10 @@ body {
     background-color: var(--bg);
 }
 
+strong {
+    color: unset;
+}
+
 .main {
     min-height: 100vh;
     background-color: var(--bg);
