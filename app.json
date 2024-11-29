@@ -6,12 +6,6 @@
 	"repository": "https://github.com/dannluciano/sendit/",
 	"logo": "",
 	"success_url": "/",
-	"scripts": {
-		"dokku": {
-			"predeploy": "echo 'Deploy Started'",
-			"postdeploy": "echo 'Deploy Ended'"
-		}
-	},
 	"env": {
 		"WEB_CONCURRENCY": {
 			"description": "The number of processes to run.",
