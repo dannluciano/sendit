@@ -70,6 +70,9 @@
         if (now.getMonth() >= 10) {
           new cursoreffects.fairyDustCursor({})
         }
+        if (now.getMonth() == 11 && now.getDate() >= 15) {
+          new cursoreffects.emojiCursor({ emoji: ['🎁', '🎄', '❤️‍🔥', '🎅', '🎆', '❄️'] })
+        }
       }
       document.head.appendChild(js)
     </script>
