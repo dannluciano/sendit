@@ -234,7 +234,7 @@ class AchievementAdmin(admin.ModelAdmin):
 
     readonly_fields = ("badge_tag",)
 
-    fieldsets = (
+    fieldsets = [
         (
             None,
             {
@@ -247,7 +247,16 @@ class AchievementAdmin(admin.ModelAdmin):
                 )
             },
         ),
-    )
+        (
+            "Mais Opções",
+            {
+                "classes": ["collapse"],
+                "fields": [
+                    "hidden",
+                ],
+            },
+        ),
+    ]
 
     filter_horizontal = ("users",)
 
@@ -261,7 +270,7 @@ class AchievementAdmin(admin.ModelAdmin):
             % obj.badge.url
         )
 
-    badge_tag.short_description = "Badge Image"
+    badge_tag.short_description = "Imagem da Medalha"
 
 
 admin.site.register(Question, QuestionAdmin)

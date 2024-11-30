@@ -281,17 +281,24 @@ class AchievementPicture(models.Model):
 
 
 class Achievement(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Nome")
 
     badge = models.ImageField(
-        upload_to="core.AchievementPicture/bytes/filename/mimetype"
+        upload_to="core.AchievementPicture/bytes/filename/mimetype",
+        verbose_name="Imagem da Medalha",
     )
 
-    xp = models.IntegerField(default=100)
+    xp = models.IntegerField(default=100, verbose_name="Experiência")
 
-    users = models.ManyToManyField(to=User, related_name="achievements")
+    users = models.ManyToManyField(
+        to=User, related_name="achievements", verbose_name="Usuário"
+    )
 
-    hidden = models.BooleanField(default=False)
+    hidden = models.BooleanField(default=False, verbose_name="Escondida?")
 
     def __str__(self):
         return f"{self.name}: {self.xp} XP"
+
+    class Meta:
+        verbose_name = "Medalha"
+        verbose_name_plural = "Medalhas"
