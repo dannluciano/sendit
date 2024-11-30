@@ -11,9 +11,12 @@ log = logging.getLogger(__name__)
 
 def clear_scheduled_jobs():
     # Delete any existing jobs in the scheduler when the app starts up
-    for job in scheduler.get_jobs():
-        log.debug("Deleting scheduled job %s", job)
-        job.delete()
+    try:
+        for job in scheduler.get_jobs():
+            log.debug("Deleting scheduled job %s", job)
+            job.delete()
+    except Exception:
+        pass
 
 
 def register_scheduled_jobs():
@@ -45,5 +48,5 @@ class Command(rqscheduler.Command):
             exit(0)
         clear_scheduled_jobs()
         register_scheduled_jobs()
-        
+
         super(Command, self).handle(*args, **kwargs)
