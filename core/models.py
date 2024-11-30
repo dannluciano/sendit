@@ -302,3 +302,4 @@ class Achievement(models.Model):
     class Meta:
         verbose_name = "Medalha"
         verbose_name_plural = "Medalhas"
+        ordering = ("name",)
