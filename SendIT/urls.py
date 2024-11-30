@@ -8,6 +8,15 @@ admin.site.site_title = "SendIt"
 admin.site.index_title = "SendIt"
 
 
+def get_app_list(self, request, app_label=None):
+    app_dict = self._build_app_dict(request, app_label)
+    if not app_dict:
+        return
+    return list(app_dict.values())
+
+
+admin.AdminSite.get_app_list = get_app_list
+
 urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("", include("evaluation.urls", namespace="evaluation")),
