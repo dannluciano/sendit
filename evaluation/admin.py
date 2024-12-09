@@ -49,9 +49,15 @@ class AssessmentAdmin(admin.ModelAdmin):
     )
 
     autocomplete_fields = ["groups"]
+
     inlines = [
         QuestionInfoInline,
     ]
+
+    save_as = True
+    save_on_top = True
+
+    search_fields = ("name",)
 
 
 class ScoreListFilter(admin.SimpleListFilter):
@@ -134,7 +140,12 @@ class AssessmentSubmissionAdmin(admin.ModelAdmin):
         compute_score,
     ]
 
-    @admin.display(description="Nome Completo")
+    search_fields = ("author__first_name", "author__last_name")
+
+    @admin.display(
+        description="Nome Completo",
+        ordering="author__first_name",
+    )
     def full_name(self, obj):
         name = f"{obj.author.first_name} {obj.author.last_name}".upper()
         username = obj.author.username
