@@ -563,7 +563,7 @@ function connectToApiWS() {
 				const shareLink = document.getElementById("open-new-tab");
 				const hostName = host.startsWith("localhost")
 					? "localhost"
-					: "62.72.9.104";
+					: "code.dannluciano.com.br";
 				shareLink.href = `http://${hostName}:${hostPort}`;
 			}
 			if (type === "open") {
