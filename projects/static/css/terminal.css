@@ -1,6 +1,6 @@
 #terminal-section {
   height: var(--terminal-height);
-  border-top: 1px solid;
+  border-top: 1px solid #282a36;
 }
 
 #terminal-buttons {
