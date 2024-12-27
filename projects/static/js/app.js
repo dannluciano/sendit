@@ -213,6 +213,10 @@ function getEditorConfigsAndModeWithFileExtension(fileExtention) {
 			...defaultOptions,
 			readOnly: true,
 		},
+		sqlite3: {
+			...defaultOptions,
+			readOnly: true,
+		},
 		txt: {
 			...defaultOptions,
 		},
