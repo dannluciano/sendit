@@ -340,6 +340,10 @@ function getRunCommandsWithFileExtensionAndFilepath(fileExtention, filepath) {
 
 function runCurrentOpenedFile() {
 	const file = openedFiles[currentOpenTab];
+	if (!file) {
+		return;
+	}
+
 	const extension = getFileExtension(file.filename);
 
 	saveFile();
