@@ -115,6 +115,16 @@ def compute_score(modeladmin, request, queryset):
 compute_score.short_description = "Calcular Nota"
 
 
+def reset_score(modeladmin, request, queryset):
+    objs = queryset.all()
+    for obj in objs:
+        obj.score = 0
+        obj.save()
+
+
+reset_score.short_description = "Zerar Nota"
+
+
 @admin.register(AssessmentSubmission)
 class AssessmentSubmissionAdmin(admin.ModelAdmin):
     list_display = (
@@ -138,6 +148,7 @@ class AssessmentSubmissionAdmin(admin.ModelAdmin):
 
     actions = [
         compute_score,
+        reset_score,
     ]
 
     search_fields = ("author__first_name", "author__last_name")
