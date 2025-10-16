@@ -101,6 +101,7 @@ function getExtensionIcon(filename, style) {
 		sql: "server",
 		scratch: "document",
 		sqlite: "file-tray-stacked",
+		sqlite3: "file-tray-stacked",
 		Dockerfile: "logo-docker",
 		dockerignore: "logo-docker",
 		Makefile: "construct",
@@ -119,7 +120,7 @@ function getExtensionIcon(filename, style) {
 		if (filename === "docker-compose.yml") {
 			iconName = "logo-docker";
 		}
-	} catch (error) {
+	} catch (_error) {
 		const iconName = "bug";
 		return `<ion-icon ${
 			style ? iconFileStylePattern : null
@@ -295,7 +296,7 @@ function getRunCommandsWithFileExtensionAndFilepath(fileExtention, filepath) {
 		java: [`java ${filepath}\n`],
 		cpp: [`g++ -o main ${filepath}\n`, "./main"],
 		c: [`g++ -o main ${filepath}\n`, "./main"],
-		sql: [`cat ${filepath} | sqlite3 db.sqlite \n`],
+		sql: [`cat ${filepath} | sqlite3 db.sqlite3 \n`],
 		scratch: [],
 		txt: [],
 		html: ["python3 -m http.server -b $HOST $PORT \n"],
