@@ -387,16 +387,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	// editor.setSize("280px", "100%");
 	editor.setOption("extraKeys", {
-		"Ctrl-S": (cm) => {
+		"Ctrl-S": (_cm) => {
 			saveFile();
 		},
-		"Cmd-S": (cm) => {
+		"Cmd-S": (_cm) => {
 			saveFile();
 		},
-		"Ctrl-R": (cm) => {
+		"Ctrl-R": (_cm) => {
 			runCurrentOpenedFile();
 		},
-		"Cmd-R": (cm) => {
+		"Cmd-R": (_cm) => {
 			runCurrentOpenedFile();
 		},
 	});
@@ -760,7 +760,7 @@ function renderFilesTabs() {
 }
 
 function changeCurrentOpenedTab(event) {
-	const tabindex = Number.parseInt(event.target.dataset.fileindex);
+	const tabindex = Number.parseInt(event.target.dataset.fileindex, 10);
 	const file = openedFiles[tabindex];
 	const filepath = file.filepath;
 
@@ -787,7 +787,10 @@ function closeTab(event) {
 		setActionFileStyle(element.textContent, true);
 	}
 
-	const tabindex = Number.parseInt(event.target.parentNode.dataset.fileindex);
+	const tabindex = Number.parseInt(
+		event.target.parentNode.dataset.fileindex,
+		10,
+	);
 	openedFiles.splice(tabindex, 1);
 	if (openedFiles.length === 0) {
 		currentOpenTab = -1;
@@ -862,6 +865,7 @@ function renderFile(child) {
 	return li;
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 function logOut(event) {
 	event.preventDefault();
 	fetch("/logout", {
@@ -981,6 +985,7 @@ function loaded() {
 	);
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 function sendControl(element) {
 	const mapKey = {
 		C: 67,
@@ -996,7 +1001,8 @@ function sendControl(element) {
 	debug(`CTRL${mapKey[key]}`);
 }
 
-function sendTab(element) {
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
+function sendTab() {
 	containerSocket.send("\t");
 	debug("TAB");
 }
@@ -1119,10 +1125,12 @@ function formDataToForm(form, data) {
 	}
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 function closeDialog(element) {
 	element.parentNode.close();
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 function toggleFolderIcon(element) {
 	const icon = element.querySelector(".filesystem-folder-icon");
 	const foldername =
