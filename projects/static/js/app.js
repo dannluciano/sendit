@@ -572,8 +572,8 @@ function connectToApiWS() {
 				const shareLink = document.getElementById("open-new-tab");
 				const hostName = host.startsWith("localhost")
 					? "localhost"
-					: "proxy.dannluciano.com.br";
-				shareLink.href = `http://${hostName}/${hostPort}`;
+					: "senditapp.dannluciano.com.br";
+				shareLink.href = `http://${project.name}-${hostPort}.${hostName}/`;
 			}
 			if (type === "open") {
 				const { filename, filepath, content } = params;
