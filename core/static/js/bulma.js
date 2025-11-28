@@ -39,7 +39,7 @@ function darkxlight() {
 	setTheme(toTheme);
 }
 
-jQuery(document).ready(($) => {
+jQuery(($) => {
 	init();
 	$(".navbar-burger").click(() => {
 		$(".navbar-burger").toggleClass("is-active");
@@ -97,7 +97,7 @@ jQuery(document).ready(($) => {
 		$(this).parent().children("pre").css("max-height", "none");
 	});
 
-	if ("Clipboard" in window) {
+	if ("Clipboard" in window && document.querySelectorAll(".copy").length) {
 		const _cb = new Clipboard(".copy", {
 			target: (trigger) => trigger.previousSibling,
 		});
