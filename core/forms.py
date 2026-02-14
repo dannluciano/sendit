@@ -1,3 +1,4 @@
+import re
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -30,3 +31,22 @@ class SignUpForm(UserCreationForm):
             "password1",
             "password2",
         )
+
+
+class QuestionSearchForm(forms.Form):
+    q = forms.CharField(
+        label="",
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Título ou enunciado",
+                "class": "input",
+                "type": "search",
+            }
+        ),
+    )
+
+    def clean_q(self):
+        data = self.cleaned_data["q"]
+        return re.sub(r"[^a-zA-Z0-9\s]", "", data)

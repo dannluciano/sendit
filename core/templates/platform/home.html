@@ -88,6 +88,16 @@
                 <a class="is-inline" href="{% url 'core:home' %}?tag={{ tag }}"><span class="tag {{ color }} is-light">{{ tag }}</span></a>
               {% endfor %}
             </div>
+            <div id="search">
+              <form action="">
+                <div class="field has-addons">
+                  <div class="control is-expanded">{{ questions_search_form.q }}</div>
+                  <div class="control">
+                    <button class="button is-info"><ion-icon name="search-outline"></ion-icon>&nbsp;Procurar</button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
           {% for question in questions %}
             <div class="box">

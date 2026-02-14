@@ -18,7 +18,7 @@ from .domain import (
     get_leaderboard,
     random_unresolved_question,
 )
-from .forms import SignUpForm
+from .forms import QuestionSearchForm, SignUpForm
 from .models import Achievement, Question, Submission, Tags, UserData
 from .worker import run_submission_runner
 
@@ -74,6 +74,14 @@ def home(request):
         date_end__gt=now,
     )
 
+    questions_search_form = QuestionSearchForm(request.GET)
+    if questions_search_form.is_valid():
+        q = questions_search_form.cleaned_data["q"]
+        if q:
+            questions = questions.filter(
+                Q(title__icontains=q) | Q(statement__icontains=q)
+            )
+
     if "tag" in request.GET:
         tag = request.GET.get("tag")
         if tag != "all":
@@ -95,6 +103,7 @@ def home(request):
             "best_users_of_week": best_users_of_week,
             "achievements": achievements,
             "assessments": assessments,
+            "questions_search_form": questions_search_form,
         },
     )
 
