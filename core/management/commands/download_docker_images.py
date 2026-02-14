@@ -4,7 +4,12 @@ from django.core.management.base import BaseCommand
 
 
 def download_docker_images(self):
-    images = ["gcc:12", "node:20.10.0-alpine", "eclipse-temurin:11", "python:alpine"]
+    images = [
+        "gcc:15",
+        "node:24.13.1-alpine",
+        "eclipse-temurin:21",
+        "python:3.14-alpine",
+    ]
     for img in images:
         try:
             result = subprocess.run(
@@ -13,7 +18,9 @@ def download_docker_images(self):
                 check=True,
             )
             if result:
-                self.stdout.write(self.style.SUCCESS(f"Image {img} Downloaded"))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Image {img} Downloaded")
+                )
         except subprocess.CalledProcessError:
             self.stdout.write(self.style.ERROR("Error!!!"))
 

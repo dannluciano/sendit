@@ -187,8 +187,8 @@ class C_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.c"
-        self.compiler_command = f"{self.docker_start_command} gcc:12 gcc -o main {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} gcc:12 ./main"
+        self.compiler_command = f"{self.docker_start_command} gcc:15 gcc -o main {self.source_file_name}"
+        self.executable_command = f"{self.docker_start_command} gcc:15 ./main"
 
 
 class Cplusplus_SubmissionRunner(SubmissionRunner):
@@ -206,8 +206,8 @@ class Cplusplus_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.cpp"
-        self.compiler_command = f"{self.docker_start_command} gcc:12 g++ --std=c++11 -o main {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} gcc:12 ./main"
+        self.compiler_command = f"{self.docker_start_command} gcc:15 g++ --std=c++11 -o main {self.source_file_name}"
+        self.executable_command = f"{self.docker_start_command} gcc:15 ./main"
 
 
 class JavaScript_SubmissionRunner(SubmissionRunner):
@@ -229,8 +229,8 @@ class JavaScript_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "index.js"
-        self.compiler_command = f"{self.docker_start_command} node:20.10.0-alpine node -c {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} node:20.10.0-alpine node {self.source_file_name}"
+        self.compiler_command = f"{self.docker_start_command} node:24.13.1-alpine node -c {self.source_file_name}"
+        self.executable_command = f"{self.docker_start_command} node:24.13.1-alpine node {self.source_file_name}"
 
 
 class JAVA_SubmissionRunner(SubmissionRunner):
@@ -248,8 +248,8 @@ class JAVA_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "Principal.java"
-        self.compiler_command = f"{self.docker_start_command} eclipse-temurin:11 javac {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} eclipse-temurin:11 java -cp . Principal"
+        self.compiler_command = f"{self.docker_start_command} eclipse-temurin:21 javac {self.source_file_name}"
+        self.executable_command = f"{self.docker_start_command} eclipse-temurin:21 java -cp . Principal"
         self.timeout = self.timeout + 2
 
 
@@ -268,8 +268,8 @@ class Python_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.py"
-        self.compiler_command = f"{self.docker_start_command} python:alpine python -m py_compile {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} python:alpine python {self.source_file_name}"
+        self.compiler_command = f"{self.docker_start_command} python:3.14-alpine python -m py_compile {self.source_file_name}"
+        self.executable_command = f"{self.docker_start_command} python:3.14-alpine python {self.source_file_name}"
         self.worker_env = "./worker_env"
 
 
@@ -284,7 +284,6 @@ class SubmissionRunnerManager:
     ):
         runners = {
             "c": C_SubmissionRunner,
-            "c++11": Cplusplus_SubmissionRunner,
             "cplusplus": Cplusplus_SubmissionRunner,
             "javascript": JavaScript_SubmissionRunner,
             "java": JAVA_SubmissionRunner,
