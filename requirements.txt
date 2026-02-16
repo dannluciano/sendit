@@ -14,4 +14,5 @@ whitenoise==6.11.0
 humanize==4.15.0
 Pillow==12.1.1
 rq-scheduler==0.14.0
+docker==7.1.0
 git+https://github.com/dannluciano/db_file_storage.git

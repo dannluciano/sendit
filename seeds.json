@@ -1,0 +1,20 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$150000$RyrWHTHKvYiG$daC6fyYzPVCJmcXBc3u9wC8Mtiws84tkTjU9gl4o3Bg=",
+      "last_login": "2019-04-05T12:35:12.036Z",
+      "is_superuser": true,
+      "username": "dannluciano",
+      "first_name": "",
+      "last_name": "",
+      "email": "dannluciano@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-11-22T23:53:58.987Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

@@ -1,0 +1,107 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    environment:
+      - POSTGRES_DB=senditdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  memdb:
+    image: redis
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # command: -m gunicorn -c gunicorn.conf.py --reload
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP=web
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      memdb:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: python -u manage.py rqworker default
+    volumes:
+      - .:/app
+      - temp:/temp
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - APP=worker
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: python -u manage.py cronrqscheduler
+    volumes:
+      - .:/app
+    environment:
+      - APP=scheduler
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  mail:
+    image: axllent/mailpit
+    restart: unless-stopped
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  devcontainer:
+    profiles:
+      - devcontainer
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace:cached
+    command: sleep infinity
+    environment:
+      - APP=devcontainer
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - minio
+
+volumes:
+  data:
+  temp:
+    external: true

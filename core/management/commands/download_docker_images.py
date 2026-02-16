@@ -1,9 +1,9 @@
-import subprocess
-
+import docker
 from django.core.management.base import BaseCommand
 
 
 def download_docker_images(self):
+    dockercli = docker.from_env()
     images = [
         "gcc:15",
         "node:24.13.1-alpine",
@@ -12,17 +12,13 @@ def download_docker_images(self):
     ]
     for img in images:
         try:
-            result = subprocess.run(
-                ["docker", "pull", img],
-                shell=False,
-                check=True,
+            dockercli.images.pull(img)
+            self.stdout.write(self.style.SUCCESS(f"Image {img} Downloaded"))
+
+        except Exception as e:
+            self.stdout.write(
+                self.style.ERROR(f"Error downloading image {img}: {e}")
             )
-            if result:
-                self.stdout.write(
-                    self.style.SUCCESS(f"Image {img} Downloaded")
-                )
-        except subprocess.CalledProcessError:
-            self.stdout.write(self.style.ERROR("Error!!!"))
 
 
 class Command(BaseCommand):

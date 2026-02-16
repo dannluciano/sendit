@@ -2,11 +2,9 @@ import io
 import logging
 import logging.handlers
 import os
-import shlex
-import subprocess
 import uuid
 
-from django.conf import settings
+import docker
 
 log = logging.getLogger("SubmissionRunner")
 log.setLevel(logging.INFO)
@@ -14,7 +12,7 @@ log.setLevel(logging.INFO)
 log_capture_string = io.StringIO()
 log.addHandler(logging.StreamHandler(log_capture_string))
 
-tmp_dir = "temp"
+tmp_dir = "/temp"
 
 if not os.path.exists(tmp_dir):
     os.makedirs(tmp_dir)
@@ -54,13 +52,13 @@ class SubmissionRunner(object):
         self.source_file_name = "source.txt"
         self.timeout = 8
 
-        self.work_dir = f"{tmp_dir}/{work_dir_name}"
+        self.work_dir_name = work_dir_name
+        self.work_dir = f"{tmp_dir}/{self.work_dir_name}"
         self.input_content = input_content.replace("\r", "")
         self.expected_output_content = expected_output_content
         self.source_file_content = source_file_content
         self.last_output = ""
-        self.docker_start_command = f"docker run -i --rm --cpus=2 --memory 512MB --name $NAME$ -v {settings.BASE_DIR}/{self.work_dir}:/app -w /app"
-        self.docker_stop_command = "docker kill $NAME$"
+        self.client = docker.from_env()
 
     def create_temp_file(self, dirname, filename, content):
         file_path = f"{dirname}/{filename}"
@@ -80,66 +78,70 @@ class SubmissionRunner(object):
             self.work_dir, self.source_file_name, self.source_file_content
         )
 
-    def run_process(self, command, input_=None):
+    def create_container(self):
+        pass
+
+    def destroy_container(self):
+        pass
+
+    def run_process(self, image, command, input_=None):
+        container_name = str(uuid.uuid4())
+
         try:
-            container_name = str(uuid.uuid4())
-            command = command.replace("$NAME$", container_name)
-
-            log.info(f"RUNNING: {command}")
-
-            result = subprocess.run(
-                shlex.split(command),
-                shell=False,
-                check=True,
-                timeout=self.timeout,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                input=input_,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
+            container = self.client.containers.run(
+                image=image,
+                name=container_name,
+                command=command,
+                volumes={
+                    "temp": {
+                        "bind": "/app",
+                        "mode": "rw",
+                    }
+                },
+                working_dir=f"/app/{self.work_dir_name}",
+                stdin_open=True,
+                mem_limit="512m",
+                nano_cpus=2_000_000_000,
+                network_mode="none",
+                pids_limit=64,
+                # security_opt=["no-new-privileges"],
+                # read_only=True,
+                # cap_drop=["ALL"],
+                detach=True,
             )
-            self.last_output = result.stdout[0:1000]
 
-        except subprocess.TimeoutExpired as error:
-            command = self.docker_stop_command.replace(
-                "$NAME$", container_name
-            )
-            try:
-                result = subprocess.run(
-                    shlex.split(command),
-                    shell=False,
-                    check=True,
-                    text=True,
-                    encoding="utf-8",
-                    errors="replace",
-                )
-            except subprocess.CalledProcessError:
-                log.info(f"Docker Container {container_name} not exists")
+            result = container.wait(timeout=self.timeout)
+            logs = container.logs(stdout=True, stderr=True)
 
-            if error.stdout:
-                self.last_output = error.stdout[0:1000]
-            else:
-                self.last_output = ""
+            self.last_output = logs.decode("utf-8")[:1000]
+
+            exit_code = result["StatusCode"]
+
+            container.remove(force=True)
+
+            if exit_code != 0:
+                raise SubmissionRuntimeError("Execution failed")
+
+        except docker.errors.APIError as e:
+            raise SubmissionRuntimeError(f"Docker API Error: {str(e)}")
+
+        except Exception as e:
+            log.error(e)
             raise SubmissionTimeoutError("TimeoutError")
 
     def run_compiler(self):
-        log.info(f"Executing Compiler: {self.compiler_command}")
         try:
-            self.run_process(self.compiler_command)
-        except subprocess.CalledProcessError as error:
-            if error.stdout:
-                self.last_output = error.stdout
-            else:
-                self.last_output = ""
+            self.run_process(self.compiler_image, self.compiler_cmd)
+        except Exception as e:
+            log.error(e)
             raise SubmissionSintaxError("SintaxError")
 
     def run_executable(self):
-        log.info(f"Executing Program: {self.executable_command}")
         try:
-            self.run_process(self.executable_command, self.input_content)
-        except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout
+            self.run_process(
+                self.executable_image, self.executable_cmd, self.input_content
+            )
+        except Exception:
             raise SubmissionRuntimeError("RuntimeError")
 
     def compare_outputs(self):
@@ -156,6 +158,7 @@ class SubmissionRunner(object):
 
     def run(self):
         log.info("-" * 80)
+        self.create_container()
         self.create_temp_dirs_and_files()
         try:
             self.run_compiler()
@@ -168,6 +171,8 @@ class SubmissionRunner(object):
                 "status": error.message,
                 "output": str(self.last_output) + "\n" + error.message,
             }
+        finally:
+            self.destroy_container()
         log.info("OK")
         return {"status": "OK", "output": self.last_output}
 
@@ -187,8 +192,10 @@ class C_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.c"
-        self.compiler_command = f"{self.docker_start_command} gcc:15 gcc -o main {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} gcc:15 ./main"
+        self.compiler_image = "gcc:15"
+        self.compiler_cmd = f"gcc -o main {self.source_file_name}"
+        self.executable_image = "gcc:15"
+        self.executable_cmd = "./main"
 
 
 class Cplusplus_SubmissionRunner(SubmissionRunner):
@@ -268,9 +275,10 @@ class Python_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.py"
-        self.compiler_command = f"{self.docker_start_command} python:3.14-alpine python -m py_compile {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} python:3.14-alpine python {self.source_file_name}"
-        self.worker_env = "./worker_env"
+        self.compiler_image = "python:3.14-alpine"
+        self.compiler_cmd = f"python -m py_compile {self.source_file_name}"
+        self.executable_image = "python:3.14-alpine"
+        self.executable_cmd = f"python {self.source_file_name}"
 
 
 class SubmissionRunnerManager:
