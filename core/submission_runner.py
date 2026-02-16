@@ -193,7 +193,7 @@ class SubmissionRunner(object):
         )
 
         if diff:
-            self.last_output = "\n".join(diff)
+            self.last_output = "\n".join(diff) if diff else ""
             raise SubmissionDiffError("DiffError")
 
     def run(self):
@@ -207,9 +207,16 @@ class SubmissionRunner(object):
                 self.compare_outputs()
         except SubmissionError as error:
             log.info(error.message)
+            output_text = str(self.last_output) if self.last_output else ""
             return {
                 "status": error.message,
-                "output": f"{self.last_output}\n{error.message}",
+                "output": output_text + "\n" + error.message,
+            }
+
+        except Exception as e:
+            return {
+                "status": "InternalError",
+                "output": str(e),
             }
         finally:
             self.destroy_temp_dir(self.work_dir)
