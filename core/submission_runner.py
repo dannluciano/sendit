@@ -119,9 +119,9 @@ class SubmissionRunner(object):
                 nano_cpus=2_000_000_000,
                 network_mode="none",
                 pids_limit=64,
-                # security_opt=["no-new-privileges"],
-                # read_only=True,
-                # cap_drop=["ALL"],
+                security_opt=["no-new-privileges"],
+                read_only=True,
+                cap_drop=["ALL"],
                 detach=True,
             )
 
