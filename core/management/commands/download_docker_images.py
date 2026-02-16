@@ -1,24 +1,24 @@
+import multiprocessing
+
 import docker
 from django.core.management.base import BaseCommand
 
+from core.submission_runner import IMAGE_VERSION_DICT
+
 
 def download_docker_images(self):
-    dockercli = docker.from_env()
-    images = [
-        "gcc:15",
-        "node:24.13.1-alpine",
-        "eclipse-temurin:21",
-        "python:3.14-alpine",
-    ]
-    for img in images:
-        try:
-            dockercli.images.pull(img)
-            self.stdout.write(self.style.SUCCESS(f"Image {img} Downloaded"))
+    images = IMAGE_VERSION_DICT.values()
 
-        except Exception as e:
-            self.stdout.write(
-                self.style.ERROR(f"Error downloading image {img}: {e}")
-            )
+    with multiprocessing.Pool(processes=len(images)) as pool:
+        pool.map(pull_image, images)
+
+
+def pull_image(image_name):
+    try:
+        dockercli = docker.from_env()
+        dockercli.images.pull(image_name)
+    except Exception as e:
+        print(f"Error pulling image {image_name}: {e}")
 
 
 class Command(BaseCommand):

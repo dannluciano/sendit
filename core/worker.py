@@ -2,14 +2,14 @@ from .models import CaseTest, Submission
 from .submission_runner import SubmissionRunnerManager
 
 
-def run_submission_runner(submission_id):
-    submission = Submission.objects.get(id=submission_id)
+def run_submission_runner(submission_uuid):
+    submission = Submission.objects.get(uuid=submission_uuid)
     test_cases = CaseTest.objects.filter(question_id=submission.question_id)
     last_status = submission.status
     last_log = ""
     last_output = ""
     for ct in test_cases:
-        work_dir = f"{submission.id}/{ct.id}"
+        work_dir = f"{submission.uuid}--{ct.id}"
         submission_result = SubmissionRunnerManager().exe(
             submission.language,
             work_dir,

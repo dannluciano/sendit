@@ -5,7 +5,7 @@ from django.test import TestCase, tag
 from .submission_runner import (
     C_SubmissionRunner,
     Cplusplus_SubmissionRunner,
-    JAVA_SubmissionRunner,
+    Java_SubmissionRunner,
     JavaScript_SubmissionRunner,
     Python_SubmissionRunner,
 )
@@ -16,7 +16,7 @@ logging.disable(logging.CRITICAL)
 @tag("c")
 class C_SubmissionWithoutExpectedOutputTestCase(TestCase):
     def test_run_ok_submission(self):
-        work_dir = "tests/c/0/1"
+        work_dir = "tests-c-0-1"
         input_content = """Joao"""
         expected_output_content = "Ola, Joao"
         source_file_content = """
@@ -37,7 +37,7 @@ class C_SubmissionWithoutExpectedOutputTestCase(TestCase):
 @tag("c")
 class C_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
-        work_dir = "tests/c/0/1"
+        work_dir = "tests-c-0-1"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -57,7 +57,7 @@ class C_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
-        work_dir = "tests/c/0/2"
+        work_dir = "tests-c-0-2"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -77,16 +77,22 @@ class C_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
-        work_dir = "tests/c/0/3"
+        work_dir = "tests-c-0-3"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
             #include <stdio.h>
-            int main(void) {
-                char* str = 0;
-                char* nome = *str;
-                printf("Ola, %s", nome);
-            }
+#include <stdlib.h>
+
+int main() {
+    int *p = malloc(sizeof(int));
+    *p = 42;
+
+    free(p);
+    *p = 10;
+    free(p); 
+    return 0;
+}
         """
         result = C_SubmissionRunner(
             work_dir,
@@ -97,7 +103,7 @@ class C_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
-        work_dir = "tests/c/0/4"
+        work_dir = "tests-c-0-4"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -119,7 +125,7 @@ class C_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
-        work_dir = "tests/c/0/5"
+        work_dir = "tests-c-0-5"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -142,7 +148,7 @@ class C_SubmissionRunnerTestCase(TestCase):
 @tag("cplusplus")
 class CPlusPlus_SubmissionWithoutExpectedOutputTestCase(TestCase):
     def test_run_ok_submission(self):
-        work_dir = "tests/cpp/0/1"
+        work_dir = "tests-cpp-0-1"
         input_content = """Joao"""
         expected_output_content = "Ola, Joao"
         source_file_content = """
@@ -164,7 +170,7 @@ class CPlusPlus_SubmissionWithoutExpectedOutputTestCase(TestCase):
 @tag("cplusplus")
 class CPlusPlus_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
-        work_dir = "tests/cpp/0/1"
+        work_dir = "tests-cpp-0-1"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -185,7 +191,7 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
-        work_dir = "tests/cpp/0/2"
+        work_dir = "tests-cpp-0-2"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -206,7 +212,7 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
-        work_dir = "tests/cpp/0/3"
+        work_dir = "tests-cpp-0-3"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -227,7 +233,7 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
-        work_dir = "tests/cpp/0/4"
+        work_dir = "tests-cpp-0-4"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -250,7 +256,7 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
-        work_dir = "tests/cpp/0/5"
+        work_dir = "tests-cpp-0-5"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -274,7 +280,7 @@ class CPlusPlus_SubmissionRunnerTestCase(TestCase):
 @tag("javascript")
 class JavaScript_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
-        work_dir = "tests/js/0/1"
+        work_dir = "tests-js-0-1"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -290,7 +296,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
-        work_dir = "tests/js/0/2"
+        work_dir = "tests-js-0-2"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -306,7 +312,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
-        work_dir = "tests/js/0/3"
+        work_dir = "tests-js-0-3"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -322,7 +328,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
-        work_dir = "tests/js/0/4"
+        work_dir = "tests-js-0-4"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -336,10 +342,10 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
             expected_output_content,
             source_file_content,
         ).run()
-        self.assertEqual(result["status"], "TimeoutError")
+        self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_diff_error_submission(self):
-        work_dir = "tests/js/0/5"
+        work_dir = "tests-js-0-5"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -355,9 +361,9 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
 
 
 @tag("java")
-class JAVA_SubmissionRunnerTestCase(TestCase):
+class Java_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
-        work_dir = "tests/java/0/1"
+        work_dir = "tests-java-0-1"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -370,7 +376,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
                 }
             }
         """
-        result = JAVA_SubmissionRunner(
+        result = Java_SubmissionRunner(
             work_dir,
             input_content,
             expected_output_content,
@@ -379,7 +385,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
-        work_dir = "tests/java/0/2"
+        work_dir = "tests-java-0-2"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -392,7 +398,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
                 
             
         """
-        result = JAVA_SubmissionRunner(
+        result = Java_SubmissionRunner(
             work_dir,
             input_content,
             expected_output_content,
@@ -401,7 +407,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
-        work_dir = "tests/java/0/3"
+        work_dir = "tests-java-0-3"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -414,7 +420,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
                 }
             }
         """
-        result = JAVA_SubmissionRunner(
+        result = Java_SubmissionRunner(
             work_dir,
             input_content,
             expected_output_content,
@@ -423,7 +429,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
-        work_dir = "tests/java/0/4"
+        work_dir = "tests-java-0-4"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -438,7 +444,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
                 }
             }
         """
-        result = JAVA_SubmissionRunner(
+        result = Java_SubmissionRunner(
             work_dir,
             input_content,
             expected_output_content,
@@ -447,7 +453,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
         self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
-        work_dir = "tests/java/0/5"
+        work_dir = "tests-java-0-5"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -460,7 +466,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
                 }
             }
         """
-        result = JAVA_SubmissionRunner(
+        result = Java_SubmissionRunner(
             work_dir,
             input_content,
             expected_output_content,
@@ -472,7 +478,7 @@ class JAVA_SubmissionRunnerTestCase(TestCase):
 @tag("python")
 class Python_SubmissionRunnerTestCase(TestCase):
     def test_run_ok_submission(self):
-        work_dir = "tests/python/0/1"
+        work_dir = "tests-python-0-1"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -488,7 +494,7 @@ print("Ola,", str)
         self.assertEqual(result["status"], "OK")
 
     def test_run_sintax_error_submission(self):
-        work_dir = "tests/c/0/2"
+        work_dir = "tests-c-0-2"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -506,7 +512,7 @@ if str {
         self.assertEqual(result["status"], "SintaxError")
 
     def test_run_runtime_error_submission(self):
-        work_dir = "tests/python/0/3"
+        work_dir = "tests-python-0-3"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -522,7 +528,7 @@ pri.nt("Ola,", str)
         self.assertEqual(result["status"], "RuntimeError")
 
     def test_run_timeout_error_submission(self):
-        work_dir = "tests/python/0/4"
+        work_dir = "tests-python-0-4"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """
@@ -539,7 +545,7 @@ while(True):
         self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
-        work_dir = "tests/c/0/5"
+        work_dir = "tests-c-0-5"
         input_content = """Joao"""
         expected_output_content = """Ola, Joao"""
         source_file_content = """

@@ -1,10 +1,21 @@
+import difflib
 import io
 import logging
 import logging.handlers
 import os
-import uuid
+import shutil
 
 import docker
+from requests.exceptions import ReadTimeout
+from urllib3.exceptions import ReadTimeoutError
+
+IMAGE_VERSION_DICT = {
+    "c": "gcc:15",
+    "cplusplus": "gcc:15",
+    "javascript": "node:24.13.1-alpine",
+    "java": "eclipse-temurin:21",
+    "python": "python:3.14-alpine",
+}
 
 log = logging.getLogger("SubmissionRunner")
 log.setLevel(logging.INFO)
@@ -47,10 +58,11 @@ class SubmissionRunner(object):
         expected_output_content,
         source_file_content,
     ):
+        self.image_name = "hello-world"
         self.compiler_command = "echo compiler"
         self.executable_command = "echo executable"
         self.source_file_name = "source.txt"
-        self.timeout = 8
+        self.timeout = 4
 
         self.work_dir_name = work_dir_name
         self.work_dir = f"{tmp_dir}/{self.work_dir_name}"
@@ -71,6 +83,10 @@ class SubmissionRunner(object):
         os.makedirs(dirname, exist_ok=True)
         log.info(f"Created Temporary Directory: {dirname}")
 
+    def destroy_temp_dir(self, path):
+        shutil.rmtree(path, ignore_errors=True)
+        log.info(f"Destroyed Temporary Directory: {path}")
+
     def create_temp_dirs_and_files(self):
         self.create_temp_dir(self.work_dir)
         self.create_temp_file(self.work_dir, "input.txt", self.input_content)
@@ -85,8 +101,8 @@ class SubmissionRunner(object):
         pass
 
     def run_process(self, image, command, input_=None):
-        container_name = str(uuid.uuid4())
-
+        container_name = f"c_{self.work_dir_name}"
+        container = None
         try:
             container = self.client.containers.run(
                 image=image,
@@ -99,7 +115,6 @@ class SubmissionRunner(object):
                     }
                 },
                 working_dir=f"/app/{self.work_dir_name}",
-                stdin_open=True,
                 mem_limit="512m",
                 nano_cpus=2_000_000_000,
                 network_mode="none",
@@ -110,28 +125,46 @@ class SubmissionRunner(object):
                 detach=True,
             )
 
-            result = container.wait(timeout=self.timeout)
-            logs = container.logs(stdout=True, stderr=True)
+            try:
+                result = container.wait(timeout=self.timeout)
+            except (ReadTimeout, ReadTimeoutError):
+                container.kill()
+                raise SubmissionTimeoutError("TimeoutError")
 
-            self.last_output = logs.decode("utf-8")[:1000]
+            except Exception as e:
+                if "Read timed out" in str(e):
+                    container.kill()
+                    raise SubmissionTimeoutError("TimeoutError")
+                else:
+                    raise
 
             exit_code = result["StatusCode"]
 
-            container.remove(force=True)
+            logs = container.logs(stdout=True, stderr=True)
+            self.last_output = logs.decode("utf-8")[:10000]
 
             if exit_code != 0:
-                raise SubmissionRuntimeError("Execution failed")
+                raise SubmissionRuntimeError("RuntimeError")
 
         except docker.errors.APIError as e:
             raise SubmissionRuntimeError(f"Docker API Error: {str(e)}")
 
+        except SubmissionError:
+            raise
+
         except Exception as e:
-            log.error(e)
-            raise SubmissionTimeoutError("TimeoutError")
+            raise SubmissionRuntimeError(f"UnexpectedError: {str(e)}")
+
+        finally:
+            if container:
+                try:
+                    container.remove(force=True)
+                except:
+                    pass
 
     def run_compiler(self):
         try:
-            self.run_process(self.compiler_image, self.compiler_cmd)
+            self.run_process(self.image_name, self.compiler_command)
         except Exception as e:
             log.error(e)
             raise SubmissionSintaxError("SintaxError")
@@ -139,21 +172,28 @@ class SubmissionRunner(object):
     def run_executable(self):
         try:
             self.run_process(
-                self.executable_image, self.executable_cmd, self.input_content
+                self.image_name,
+                self.executable_command,
+                self.input_content,
             )
-        except Exception:
-            raise SubmissionRuntimeError("RuntimeError")
+
+        except Exception as e:
+            log.error(e)
+            raise
 
     def compare_outputs(self):
-        self.create_temp_file(
-            self.work_dir, "expected_output.txt", self.expected_output_content
+        diff = list(
+            difflib.unified_diff(
+                self.expected_output_content.splitlines(),
+                self.last_output.splitlines(),
+                fromfile="expected",
+                tofile="actual",
+                lineterm="",
+            )
         )
-        command = f"diff -u -b -w -B - {self.work_dir}/expected_output.txt"
-        log.info(f"Executing Diff: {command}")
-        try:
-            self.run_process(command, self.last_output)
-        except subprocess.CalledProcessError as error:
-            self.last_output = error.stdout
+
+        if diff:
+            self.last_output = "\n".join(diff)
             raise SubmissionDiffError("DiffError")
 
     def run(self):
@@ -169,9 +209,10 @@ class SubmissionRunner(object):
             log.info(error.message)
             return {
                 "status": error.message,
-                "output": str(self.last_output) + "\n" + error.message,
+                "output": f"{self.last_output}\n{error.message}",
             }
         finally:
+            self.destroy_temp_dir(self.work_dir)
             self.destroy_container()
         log.info("OK")
         return {"status": "OK", "output": self.last_output}
@@ -192,10 +233,9 @@ class C_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.c"
-        self.compiler_image = "gcc:15"
-        self.compiler_cmd = f"gcc -o main {self.source_file_name}"
-        self.executable_image = "gcc:15"
-        self.executable_cmd = "./main"
+        self.image_name = IMAGE_VERSION_DICT["c"]
+        self.compiler_command = f"gcc -o main {self.source_file_name}"
+        self.executable_command = "sh -c './main < input.txt'"
 
 
 class Cplusplus_SubmissionRunner(SubmissionRunner):
@@ -213,8 +253,9 @@ class Cplusplus_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.cpp"
-        self.compiler_command = f"{self.docker_start_command} gcc:15 g++ --std=c++11 -o main {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} gcc:15 ./main"
+        self.image_name = IMAGE_VERSION_DICT["cplusplus"]
+        self.compiler_command = f"g++ -o main {self.source_file_name}"
+        self.executable_command = "sh -c './main < input.txt'"
 
 
 class JavaScript_SubmissionRunner(SubmissionRunner):
@@ -236,11 +277,14 @@ class JavaScript_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "index.js"
-        self.compiler_command = f"{self.docker_start_command} node:24.13.1-alpine node -c {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} node:24.13.1-alpine node {self.source_file_name}"
+        self.image_name = IMAGE_VERSION_DICT["javascript"]
+        self.compiler_command = f"node -c {self.source_file_name}"
+        self.executable_command = (
+            f"sh -c 'node {self.source_file_name} < input.txt'"
+        )
 
 
-class JAVA_SubmissionRunner(SubmissionRunner):
+class Java_SubmissionRunner(SubmissionRunner):
     def __init__(
         self,
         work_dir,
@@ -255,8 +299,10 @@ class JAVA_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "Principal.java"
-        self.compiler_command = f"{self.docker_start_command} eclipse-temurin:21 javac {self.source_file_name}"
-        self.executable_command = f"{self.docker_start_command} eclipse-temurin:21 java -cp . Principal"
+        self.image_name = IMAGE_VERSION_DICT["java"]
+        self.compiler_command = f"javac {self.source_file_name}"
+        self.executable_command = "sh -c 'java -cp . Principal < input.txt'"
+
         self.timeout = self.timeout + 2
 
 
@@ -275,10 +321,13 @@ class Python_SubmissionRunner(SubmissionRunner):
             source_file_content,
         )
         self.source_file_name = "main.py"
-        self.compiler_image = "python:3.14-alpine"
-        self.compiler_cmd = f"python -m py_compile {self.source_file_name}"
-        self.executable_image = "python:3.14-alpine"
-        self.executable_cmd = f"python {self.source_file_name}"
+        self.image_name = IMAGE_VERSION_DICT["python"]
+        self.compiler_command = (
+            f"python -m py_compile {self.source_file_name}"
+        )
+        self.executable_command = (
+            f"sh -c 'python {self.source_file_name} < input.txt'"
+        )
 
 
 class SubmissionRunnerManager:
@@ -294,7 +343,7 @@ class SubmissionRunnerManager:
             "c": C_SubmissionRunner,
             "cplusplus": Cplusplus_SubmissionRunner,
             "javascript": JavaScript_SubmissionRunner,
-            "java": JAVA_SubmissionRunner,
+            "java": Java_SubmissionRunner,
             "python": Python_SubmissionRunner,
         }
 

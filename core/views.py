@@ -222,7 +222,9 @@ def create_submission(request, question_uuid):
     sub.save()
 
     ttl = 60 * 60 * 24 * 7
-    django_rq.enqueue(run_submission_runner, sub.id, ttl=ttl, result_ttl=ttl)
+    django_rq.enqueue(
+        run_submission_runner, sub.uuid, ttl=ttl, result_ttl=ttl
+    )
     log.info("Submission was to Queue")
 
     return HttpResponseRedirect(sub.get_absolute_url())
