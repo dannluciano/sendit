@@ -1,0 +1,37 @@
+{
+    "name": "Dev Container",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "devcontainer",
+    "runServices": [
+        "devcontainer",
+        "web",
+        "worker",
+        "scheduler",
+        "mail"
+    ],
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-azuretools.vscode-docker",
+                "astral-sh.ty",
+                "charliermarsh.ruff",
+                "batisteo.vscode-django",
+                "junstyle.vscode-django-support",
+                "shamanu4.django-intellisense"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.analysis.typeCheckingMode": "basic"
+            }
+        }
+    },
+    "postCreateCommand": "",
+    "remoteUser": "root"
+}

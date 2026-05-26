@@ -1,0 +1,109 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/editor.css' %} ">
+<link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %} ">
+<link rel="stylesheet" href="{% static 'vendor/catppuccin/mocha.css' %} " />
+<link rel="stylesheet" href="{% static 'vendor/catppuccin/latte.css' %} " />
+{% endblock %}
+
+<section class="box full-height">
+    <div class="columns">
+        <div class="column">
+            <p class="control">
+                <span class="select is-large is-fullwidth">
+                    <select id="language-select" name="language">
+                        <option {% if last_submission.language == 'null' %}selected{% endif %} value="null">
+                            Escolha uma Linguagem
+                        </option>
+                        <option {% if last_submission.language == 'c' %}selected{% endif %} value="c">
+                            C
+                        </option>
+                        <option {% if last_submission.language == 'cplusplus' %}selected{% endif %} value="cplusplus">
+                            C++
+                        </option>
+                        <option {% if last_submission.language == 'javascript' %}selected{% endif %} value="javascript">
+                            JavaScript
+                        </option>
+                        <option {% if last_submission.language == 'java' %}selected {% endif %} value="java">
+                            Java
+                        </option>
+                        <option {% if last_submission.language == 'python' %}selected {% endif %} value="python">
+                            Python
+                        </option>
+                        {% if not question %}
+                        <option {% if last_submission.language == 'pythonwasm' %}selected {% endif %} value="pythonwasm">
+                            Python WASM
+                        </option>
+                        {% endif %}
+                    </select>
+                </span>
+            </p>
+        </div>
+        <div class="column">
+            <div class="field has-addons has-addons-centered">
+                <p class="control">
+                    <button id="run-button" class="button is-link is-large">
+                        <span></span>
+                        <span class="icon">
+                            <ion-icon name="play"></ion-icon>
+                        </span>
+                        <span></span>
+                    </button>
+                </p>
+                <p class="control">
+                    <button id="copy-button" class="button is-large" type="button" data-clipboard-action="copy"
+                        aria-label="Copiar">
+                        <span></span>
+                        <span class="icon">
+                            <ion-icon name="copy"></ion-icon>
+                        </span>
+                        <span></span>
+                    </button>
+                </p>
+                <p class="control">
+                    <button id="undo-button" class="button is-large" type="button" aria-label="Desfazer">
+                        <span></span>
+                        <span class="icon">
+                            <ion-icon name="arrow-undo"></ion-icon>
+                        </span>
+                        <span></span>
+                    </button>
+                </p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="field has-addons">
+                <p class="control is-expanded">
+                    <input id="filename" class="input is-large" type="text" placeholder="filename"
+                        value="{{last_submission.name}}">
+                </p>
+                <p class="control">
+                    <button id="save-button" class="button is-success is-large" type="button" aria-label="Salvar">
+                        <span></span>
+                        <span class="icon">
+                            <ion-icon name="save"></ion-icon>
+                        </span>
+                        <span class="is-hidden-mobile">Salvar</span>
+                    </button>
+                </p>
+            </div>
+        </div>
+        <hr class="is-hidden-mobile">
+    </div>
+    <input type="hidden" name="last-submission-timestamp" value="{{ last_submission_timestamp }}" > 
+    <div id="submission-notification" class="notification is-danger is-light is-hidden">
+    </div>
+    <textarea name="editor" id="editor" rows="2">{% if last_submission %}{{last_submission.code}}{% endif %}</textarea>
+</section>
+
+{% block js %}
+<script src="{% static 'vendor/codemirror/lib/codemirror.js'%}"></script>
+<script src="{% static 'vendor/codemirror/mode/clike/clike.js'%}"></script>
+<script src="{% static 'vendor/codemirror/mode/JavaScript/JavaScript.js'%}"></script>
+<script src="{% static 'vendor/codemirror/mode/Python/Python.js'%}"></script>
+<script src="{% static 'vendor/codemirror/addon/selection/active-line.js'%}"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+<script src="{% static 'js/runner.js'%}"></script>
+<script src="{% static 'js/editor.js'%}"></script>
+{% endblock %}

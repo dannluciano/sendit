@@ -1,0 +1,36 @@
+{% extends 'platform/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="loader-wrapper">
+        <div class="loader is-loading"></div>
+    </div>
+    {% csrf_token %}
+
+    {% include "core/editor.html" %}
+
+    <section class="box full-height">
+        <div class="columns">
+            <div class="column">
+                <h1 class="title">
+                    Entrada:
+                </h1>
+                <textarea name="input" id="input" class="textarea has-fixed-size"></textarea>
+            </div>
+            <div class="column">
+                <h1 class="title">
+                    Saída:
+                </h1>
+                <textarea name="output" id="output" class="textarea has-fixed-size" readonly></textarea>
+            </div>
+            <div id="variables-section" class="column">
+                <h1 class="title">
+                    Variáveis:
+                </h1>
+                <textarea name="variables" id="variables" class="textarea has-fixed-size" readonly></textarea>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}

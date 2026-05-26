@@ -1,0 +1,45 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/dark.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div style="display: flex;">
+    {% for s in submissions %}
+    <div>
+        <p>
+            <a href="/admin/auth/user/profile/{{s.author.id}}/">
+                {{s.author}} "{{s.author.email}}"
+            </a>
+        </p>
+        <div>
+            {{s.timestamp}} - {{s.status}}
+        </div>
+        <div>
+            <pre style="display: flex; margin-right: 1em"><code>{{ s.code }}</code></pre>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<hr>
+<br>
+
+<div>
+    <a class="button" style="padding: 10px 15px;" href="javascript:history.back()">
+        {% trans "Voltar" %}
+    </a>
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+<script>
+    hljs.highlightAll();
+</script>
+
+{% endblock content %}

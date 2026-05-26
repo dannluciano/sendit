@@ -1,0 +1,57 @@
+#filesystem-section {
+  width: var(--filesystem-width);
+  padding: 0 0;
+  padding-top: 0.5em;
+  border-right: 2px solid var(--bulma-background);
+  overflow-y: auto;
+}
+
+#file-system-tree__section {
+  padding-left: 1em;
+  min-height: 60vh;
+  overflow-y: auto;
+}
+
+.tree {
+  padding-left: 0;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary {
+  list-style-type: none;
+}
+
+details {
+  margin-left: 1rem;
+}
+
+.file-item {
+  margin-left: 1rem;
+}
+
+summary div {
+  display: flex;
+  align-items: center;
+}
+
+ul li div {
+  display: flex;
+  align-items: center;
+}
+
+summary span {
+  margin-left: 0.5rem;
+}
+
+ul li span {
+  margin-left: 0.5rem;
+}
+
+.file-open {
+  color: var(--green);
+  background-color: var(--grey);
+  border-radius: 5px;
+}

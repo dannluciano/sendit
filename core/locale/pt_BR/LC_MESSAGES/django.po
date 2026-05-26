@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-12 16:15-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: templates/admin/profile.html:15
+msgid "Username"
+msgstr "Usuário"
+
+#: templates/admin/profile.html:18
+msgid "Name"
+msgstr "Nome"
+
+#: templates/admin/profile.html:21
+msgid "Level"
+msgstr "Nível"
+
+#: templates/admin/profile.html:24
+msgid "XP"
+msgstr "Pontos de Experiência"
+
+#: templates/admin/profile.html:27
+msgid "Ok"
+msgstr "Submissões Corretas"
+
+#: templates/admin/profile.html:30
+msgid "Not Ok"
+msgstr "Submissões Erradas"
+
+#: templates/admin/profile.html:33
+msgid "Total Time On"
+msgstr "Tempo na Plataforma"
+
+#: templates/admin/profile.html:36
+msgid "Groups"
+msgstr "Turmas"
+
+#: templates/admin/profile.html:71
+msgid "Submissions"
+msgstr "Submissões"
+
+#: templates/admin/profile.html:76 templates/admin/profile.html:137
+msgid "More Info"
+msgstr "Mais Informações"
+
+#: templates/admin/profile.html:82
+msgid "UUID"
+msgstr "Identificador"
+
+#: templates/admin/profile.html:85
+msgid "Title"
+msgstr "Título"
+
+#: templates/admin/profile.html:88
+msgid "Language"
+msgstr "Linguagem"
+
+#: templates/admin/profile.html:91
+msgid "Status"
+msgstr "Situação"
+
+#: templates/admin/profile.html:94
+msgid "Created At"
+msgstr "Criada Em"
+
+#: templates/admin/profile.html:126
+msgid "Log Records"
+msgstr "Registros de Entrada"
+
+#: templates/admin/profile.html:130
+msgid "Total Time"
+msgstr "Tempo Total"
+
+#: templates/admin/profile.html:143
+msgid "Check In"
+msgstr "Entrou"
+
+#: templates/admin/profile.html:146
+msgid "Check Out"
+msgstr "Saiu"
+
+#: templates/admin/profile.html:149
+msgid "Duration"
+msgstr "Duração"

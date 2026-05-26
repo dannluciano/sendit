@@ -1,0 +1,168 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    environment:
+      - POSTGRES_DB=senditdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db-data:/data
+
+  memdb:
+    image: redis
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  minio:
+    image: minio/minio
+    restart: always
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=sendit
+      - MINIO_ROOT_PASSWORD=senditpassword
+    volumes:
+      - minio-data:/data
+
+  minio-init:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 sendit senditpassword; do
+        sleep 2;
+      done;
+      mc mb --ignore-existing local/sendit;
+      mc anonymous set download local/sendit;
+      "
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # command: -m gunicorn -c gunicorn.conf.py --reload
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP=web
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      memdb:
+        condition: service_healthy
+      minio:
+        condition: service_started
+      minio-init:
+        condition: service_completed_successfully
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: python -u manage.py rqworker default
+    volumes:
+      - .:/app
+      - temp:/temp
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - APP=worker
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_started
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: python -u manage.py cronrqscheduler
+    volumes:
+      - .:/app
+    environment:
+      - APP=scheduler
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_started
+
+  vm:
+    container_name: vm
+    build: ./projects-api/docker/vm
+
+  api:
+    container_name: projects-api
+    build:
+      context: ./projects-api/
+      dockerfile: Dockerfile.dev
+    environment:
+      - PORT=8001
+    ports:
+      - 8001:8001
+    volumes:
+      - ./projects-api/api:/app/api
+      - /var/run/docker.sock:/var/run/docker.sock
+      - temp:/home/sendit
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    develop:
+      watch:
+        - action: rebuild
+          path: Dockerfile
+        - action: rebuild
+          path: package.json
+    command: npm run dev
+
+  mail:
+    image: axllent/mailpit
+    restart: unless-stopped
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  devcontainer:
+    profiles:
+      - devcontainer
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/workspace:cached
+    command: sleep infinity
+    environment:
+      - APP=devcontainer
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+volumes:
+  temp:
+    external: true
+  minio-data:
+  db-data:

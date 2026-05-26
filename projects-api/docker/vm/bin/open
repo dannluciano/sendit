@@ -1,0 +1,32 @@
+#! /bin/bash
+
+if [ -d "$1" ]; then
+  echo "Cannot Open Folder only Text Files"
+  exit 1
+fi
+
+dirpath=$(echo "$PWD" | sed  "s/\/root\///g")
+if [ "$dirpath" == "/root" ]; then
+    dirpath=""
+else
+    dirpath="${dirpath}"
+fi
+
+domain=https://ide.sendit.dannluciano.com.br
+
+if [ $SENDIT_IDE_ENV == "development" ]; then
+  domain=http://host.docker.internal:8001
+fi
+
+filepath="${dirpath}/$1"
+pathencoded=$(echo -n $filepath | basenc --base64url)
+
+hostname=$(uname -n)
+
+url="${domain}/fs/file/open/${hostname}/${pathencoded}"
+
+if [ $SENDIT_IDE_ENV == "development" ]; then
+  echo $url
+fi
+
+curl $url 2> /dev/null > /dev/null

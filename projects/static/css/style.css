@@ -1,0 +1,207 @@
+:root {
+  --workbench-width: 100%;
+  --workbench-height: calc(100vh - 63px);
+  --actions-width: 64px;
+  --filesystem-width: 30vw;
+  --editor-width: calc(var(--workbench-width) - var(--actions-width) - var(--filesystem-width));
+  --editor-height: var(--workbench-height);
+  --terminal-width: calc(var(--workbench-width) - var(--actions-width) - var(--filesystem-width));
+  --terminal-height: var(--workbench-height);
+  --browser-height: var(--workbench-height);
+
+  --red: var(--bulma-danger);
+  --yellow: var(--bulma-warning);
+  --green-light: var(--bulma-primary);
+  --green: var(--bulma-success);
+  --blue: var(--bulma-info);
+  --purple: var(--bulma-link);
+}
+
+[data-theme=light],
+.theme-light {
+  --black: var(--bulma-scheme-main);
+  --white: var(--bulma-black);
+  --bulma-code: var(--purple)
+}
+
+[data-theme=dark],
+.theme-dark {
+  --black: var(--bulma-scheme-main);
+  --white: var(--bulma-white);
+  --bulma-code: var(--purple)
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  background-color: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--blackSecondary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--blackSecondary);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--black);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+hr {
+  background-color: unset;
+}
+
+body {
+  overflow: hidden;
+  max-height: 100vh;
+  min-height: 100vh;
+  height: 100vh;
+}
+
+li {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+dialog {
+  margin: 0 auto;
+  margin-top: 2em;
+  width: 90vw;
+  background-color: transparent;
+  border-radius: var(--bulma-radius-large);
+  border: 1px solid var(--white);
+}
+
+#workbench {
+  background-color: var(--black);
+}
+
+#input-filename {
+  width: calc(100% - 2em);
+  margin: 0.5em 1em;
+  background-color: var(--blackSecondary);
+}
+
+.inline {
+  display: inline;
+}
+
+.block {
+  display: block;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: #f4f4f4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c2d8e8;
+}
+
+.drac-textarea {
+  background: var(--blackSecondary);
+  border: .3rem solid transparent;
+  border-radius: var(--rounded-lg);
+  box-sizing: border-box;
+  outline: none;
+  transition: all .3s ease-in-out;
+  width: 100%;
+  padding: 0 var(--spacing-4);
+  height: var(--spacing-32);
+  font-size: var(--font-md);
+}
+
+.drac-textarea:focus {
+  border-color: var(--white);
+}
+
+.drac-textarea::placeholder {
+  color: var(--blackTernary);
+}
+
+.drac-textarea-outline {
+  background: transparent;
+  border-color: var(--blackTernary);
+}
+
+.close-dialog {
+  position: absolute;
+  top: 2px;
+  right: 0.125em;
+  color: var(--white);
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#loading-dialog {
+  z-index: 1;
+}
+
+#loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+.loader {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 32px 0 #fff, -32px 0 #fff;
+  position: relative;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: #FFF2;
+    box-shadow: 32px 0 #FFF2, -32px 0 #FFF;
+  }
+
+  50% {
+    background-color: #FFF;
+    box-shadow: 32px 0 #FFF2, -32px 0 #FFF2;
+  }
+
+  100% {
+    background-color: #FFF2;
+    box-shadow: 32px 0 #FFF, -32px 0 #FFF2;
+  }
+}
+
+@media (max-width: 991px) {
+
+  :root {
+    --workbench-width: 100%;
+    --workbench-height: calc(100vh - 63px);
+    --actions-width: 64px;
+    --filesystem-width: 90vw;
+    --editor-width: calc(var(--workbench-width) - var(--actions-width) - var(--filesystem-width));
+    --editor-height: var(--workbench-height);
+    --terminal-width: calc(var(--workbench-width) - var(--actions-width) - var(--filesystem-width));
+    --terminal-height: var(--workbench-height);
+    --browser-height: var(--workbench-height);
+  }
+
+}

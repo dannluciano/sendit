@@ -1,0 +1,117 @@
+{% extends 'platform/base.html' %}
+{% load static %}
+
+{% block title %}
+  <title>SendIT - Submissão - {{ submission.uuid }}</title>
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %} " />
+  <link rel="stylesheet" href="{% static 'vendor/codemirror/theme/dracula.css' %} " />
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="box has-text-centered">
+      <h1 class="title">{{ submission.question.title }}</h1>
+
+      {% if submission.status != 'OK' %}
+        <h2 class="subtitle">{{ submission.status }}</h2>
+      {% endif %}
+
+      <picture id="animate">
+        <img src="{% static submission.get_random_status_image %}" width="256" alt="" />
+      </picture>
+
+      <h2 class="subtitle">{{ submission.get_random_status_phrase }}</h2>
+
+      {% if submission.status == 'OK' %}
+        <p>Você ganhou {{ submission.question.xp }} XPs!</p>
+        <br />
+        <div class="buttons is-centered">
+          <a href="javascript:window.history.back()" class="button is-large is-warning">Voltar</a>
+          <a href="{% url 'core:home' %}" class="button is-large is-success">Lista de Questões</a>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            confetti()
+          })
+        </script>
+      {% else %}
+        <p>
+          <a href="{% url 'core:question_detail_by_uuid' submission.question.uuid %}" class="button is-large is-success">Tentar Novamente</a>
+          <a href="{% url 'core:home' %}" class="button is-large is-info">Lista de Questões</a>
+        </p>
+      {% endif %}
+    </div>
+
+    {% if submission.status != 'OK' %}
+      <div class="box">
+        <h2 class="title has-text-centered">Saída do Programa</h2>
+        {% if submission.status == 'DiffError' %}
+          <div id="diff-container"></div>
+          <link rel="stylesheet" href="{% static 'css/diff2html.min.css' %}" />
+          <script type="text/javascript" src="{% static 'js/diff2html.min.js' %}"></script>
+          <script>
+            setTimeout(function () {
+              function getTheme() {
+                return document.body.dataset.theme || 'light'
+              }
+              var diffHtml = Diff2Html.html('{{submission.output|escapejs}}', {
+                inputFormat: 'diff',
+                showFiles: false,
+                matching: 'lines',
+                outputFormat: 'side-by-side',
+                colorScheme: getTheme()
+              })
+              document.getElementById('diff-container').innerHTML = diffHtml
+            }, 100)
+          </script>
+        {% else %}
+          <pre class="output">
+            <code>{{ submission.output }}</code>
+          </pre>
+        {% endif %}
+      </div>
+    {% endif %}
+    <div class="box">
+      <h2 class="title has-text-centered">Código Enviado</h2>
+      <textarea name="" id="submission_code"></textarea>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="{% static 'vendor/codemirror/lib/codemirror.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/clike/clike.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/JavaScript/JavaScript.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/Python/Python.js' %}"></script>
+  <script src="{% static 'js/confetti.min.js' %}"></script>
+  <script>
+    function randint(max) {
+      return Math.floor(Math.random() * Math.floor(max))
+    }
+    animations = ['bounce', 'bounceIn', 'bounceInDown', 'bounceInRight', 'bounceInLeft', 'bounceInUp', 'flash', 'fadeInDown', 'zoomIn', 'jackInTheBox', 'rollIn']
+    
+    animation = animations[randint(10)]
+    document.getElementById('animate').classList.add('animated', animation, 'slower')
+    const editorTextArea = document.getElementById('submission_code')
+    modeDict = {
+      python: 'python',
+      javascript: 'javascript',
+      java: 'text/x-java',
+      cplusplus: 'text/x-c++src',
+      c: 'text/x-csrc'
+    }
+    const editor = CodeMirror.fromTextArea(editorTextArea, {
+      lineNumbers: true,
+      readOnly: true,
+      theme: 'dracula',
+      viewportMargin: Infinity,
+      gutters: ['CodeMirror-linenumbers'],
+      mode: modeDict['{{ submission.language }}']
+    })
+    editor.setValue(`{% autoescape off %}{{ submission.code }}{% endautoescape %}`)
+  </script>
+{% endblock %}

@@ -1,0 +1,36 @@
+#terminal-dialog {
+  margin: 0 auto;
+  margin-top: 2em;
+  width: 98vw;
+  background-color: transparent;
+  border-radius: var(--bulma-radius-large);
+  border: 1px solid var(--white);
+}
+
+#terminal-section {
+  height: var(--terminal-height);
+}
+
+#terminal-buttons {
+  display: none;
+}
+
+#terminal {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 991px) {
+  #terminal-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+    padding: 0.25em 0;
+  }
+
+  #terminal {
+    width: 100%;
+    height: calc(100% - 2em);
+  }
+}

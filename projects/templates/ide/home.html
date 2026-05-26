@@ -1,0 +1,36 @@
+{% extends 'ide/base.html' %}
+{% load static %}
+
+{% block navbarstartextra %}
+  <div class="navbar-item">
+    <a href="{% url 'projects:project-new' %}" class="button is-success">Novo Projeto</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <main>
+    <br />
+      <article class="container" style="background: var(--bg);">
+        <ul class="section">
+          {% for project in projects %}
+            <li class="block">
+              <section class="box">
+                <header class="has-text-centered">
+                  <h1 class="title">{{ project.name }}</h1>
+                </header>
+                <br />
+                <div class="buttons is-centered">
+                  <a class="button is-info" href="{% url 'projects:project-detail' project.name %}">Acessar</a>
+                  <form action="{% url 'projects:project-delete' project.name %}" method="post" onsubmit="return confirm('Você tem certeza?')">
+                    {% csrf_token %}
+                    <button class="button is-danger">Remover</button>
+                  </form>
+                </div>
+              </section>
+            </li>
+          {% endfor %}
+        </ul>
+      </article>
+    </div>
+  </main>
+{% endblock %}

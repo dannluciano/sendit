@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=overlays-content" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    {% include 'core/favicon-pwa.html' %}
+
+    <title>SendIT-IDE</title>
+    <link rel="stylesheet" href="{% static 'vendor/bulma/css/bulma.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+
+    {% block css %}
+
+    {% endblock %}
+  </head>
+
+  <body>
+    <header>
+      <nav class="nav has-shadow menu-cima navbar theme" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          {% block actions %}
+            <a class="navbar-item" href="{% url 'projects:home' %}"><img src="{% static 'img/icon.png' %}" /></a>
+            <div class="navbar-item">SendIT-IDE</div>
+          {% endblock %}
+
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <div class="navbar-item">
+              <a class="navbar-item" href="{% url 'projects:home' %}"><ion-icon name="hammer"></ion-icon>&nbsp; Projetos</a>
+            </div>
+            {% block navbarstartextra %}
+
+            {% endblock %}
+          </div>
+
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <button id="settings-button" title="Configurações" data-toggle="tooltip" aria-label="settings" aria-description="Configurações" style="color: var(--white)"><ion-icon name="settings"></ion-icon>&nbsp;Configurações</button>
+            </div>
+            {% include 'core/sendit-verse.html' %}
+          </div>
+        </div>
+      </nav>
+    </header>
+    {% block content %}
+
+    {% endblock %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/clipboard.min.js' %}"></script>
+    <script src="{% static 'js/bulma.js' %}"></script>
+    <script src="{% static 'vendor/ionicons/ionicons.js' %}"></script>
+    {% block js %}
+
+    {% endblock %}
+  </body>
+</html>

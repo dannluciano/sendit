@@ -1,0 +1,29 @@
+#browser-dialog {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 2em;
+    width: 98vw;
+    height: var(--browser-height);
+    background-color: transparent;
+    border-radius: var(--bulma-radius-large);
+    border: 1px solid var(--white);
+    overflow-y: hidden;
+}
+
+#browser-section {
+    height: var(--browser-height);
+    display: flex;
+    flex-direction: column;
+}
+
+#browser-display {
+    flex: 1;
+    min-height: 0;
+}
+
+#browser-display-iframe {
+    width: 100%;
+    height: calc(100% - var(--bulma-box-padding));
+    display: block;
+    margin-top: var(--bulma-box-padding);
+}

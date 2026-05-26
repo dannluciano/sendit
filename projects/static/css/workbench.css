@@ -1,0 +1,21 @@
+#workbench {
+  width: var(--workbench-width);
+  height: var(--workbench-height);
+  display: flex;
+  flex-direction: row;
+  align-items: top;
+  font-family: "Fira Code", monospace;
+}
+
+#editor-term-section {
+  display: flex;
+  flex-direction: column;
+  width: var(--editor-width);
+  height: var(--editor-height);
+}
+
+@media (max-width: 991px) {
+  #editor-term-section {
+    width: 100%;
+  }
+}

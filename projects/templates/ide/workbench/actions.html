@@ -1,0 +1,13 @@
+<button id="new-folder-button" title="Criar Nova Pasta" data-toggle="tooltip" aria-label="new-folder" aria-description="Nova Pasta" style="color: var(--red)" onclick="openNewFolderDialog()"><ion-icon name="folder-open"></ion-icon></button>
+
+<button id="new-file-button" title="Criar Novo Arquivo" data-toggle="tooltip" aria-label="new-file" aria-description="Novo Arquivo" style="color: var(--yellow)" onclick="openNewFileDialog()"><ion-icon name="document"></ion-icon></button>
+
+<button id="save-button" title="Salvar Arquivo" data-toggle="tooltip" aria-label="save" aria-description="Salvar" style="color: var(--green-light)" onclick="saveFile()"><ion-icon name="save"></ion-icon></button>
+
+<hr />
+
+<button id="run-button" title="Executar Arquivo" data-toggle="tooltip" aria-label="run" aria-description="Executar" style="color: var(--green)" onclick="runCurrentOpenedFile()"><ion-icon name="play"></ion-icon></button>
+
+<button popovertarget="terminal-dialog" id="term-button" title="Abrir Terminal" data-toggle="tooltip" aria-label="terminal" aria-description="Abrir Terminal" style="color: var(--purple)" onclick="openOrCloseTerm()"><ion-icon name="terminal"></ion-icon></button>
+
+<button popovertarget="browser-dialog" id="browser-button" title="Abrir Navegador" data-toggle="tooltip" aria-label="navegador" aria-description="Abrir Navegador" style="color: var(--white)"><ion-icon name="{{ browser_icon }}"></ion-icon></button>

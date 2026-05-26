@@ -1,0 +1,27 @@
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+from django.utils import timezone
+
+from .models import LogRecord
+
+
+@receiver(user_logged_in)
+def user_logged_in(sender, request, user, **kwargs):
+    LogRecord.objects.create(user=user.username)
+
+
+@receiver(user_logged_out)
+def user_logged_out(sender, request, user, **kwargs):
+    ip = request.META.get("REMOTE_ADDR", "127.0.0.1")
+
+    if "HTTP_X_FORWARDED_FOR" in request.META:
+        ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+    set_last_activity(user.username, ip)
+
+
+def set_last_activity(username, ip):
+    lr = LogRecord.objects.filter(user=username).last()
+    if lr:
+        lr.check_out = timezone.now()
+        lr.ip = ip
+        lr.save()

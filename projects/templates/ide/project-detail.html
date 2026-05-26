@@ -1,0 +1,206 @@
+{% extends 'ide/base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/actions.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/workbench.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/filesystem.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/ide-editor.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/terminal.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/browser.css' %}" />
+
+  <link rel="stylesheet" href="{% static 'vendor/xterm/xterm.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/catppuccin/mocha.css' %} " />
+  <link rel="stylesheet" href="{% static 'vendor/catppuccin/latte.css' %} " />
+{% endblock %}
+
+{% block actions %}
+  <button id="file-tray-button" title="Mostar/Esconder Sistema de Arquivo" data-toggle="tooltip" aria-label="show-hidden-filesystem" aria-description="Mostar/Esconder Sistema de Arquivo" class="navbar-item"><ion-icon onclick="toggleFilesystemSidebar(this)" name="file-tray" id="file-tray-icon"></ion-icon></button>
+  <div id="actions-options-section-mobile" class="is-hidden-tablet">
+    {% include 'ide/workbench/actions.html' %}
+  </div>
+{% endblock %}
+
+{% block content %}
+  <main id="workbench">
+    <div id="actions-options-section" class="is-hidden-mobile">
+      {% include 'ide/workbench/actions.html' %}
+    </div>
+
+    <div id="filesystem-section">
+      <div id="file-system-tree__section" class="drac-text-white" open="">
+        <ul class="tree">
+          <li>
+            <div class="drac-text drac-text-green">
+              <ion-icon class="filesystem-folder-icon" name="folder-open"></ion-icon>
+              <span>home (~)</span>
+            </div>
+          </li>
+          <li>
+            <ul id="file-system-tree"></ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <section id="editor-term-section">
+      <div id="editor-section">
+        <nav id="file-title-bar">
+          <div class="tabs is-toggle" onWheel="this.scrollLeft+=event.deltaY>0?100:-100">
+            <ul id="tabs">
+              <li class="is-active" id="filename-tab" data-filepath="">
+                <a>scratch</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div id="editor-wrapper" style="position: relative">
+          <textarea name="editor" id="editor" cols="30" rows="10"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <dialog id="filename-dialog">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+      <div class="box">
+        <input class="input" type="text" id="input-filename" />
+      </div>
+    </dialog>
+
+    <dialog id="settings-dialog">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+
+      <div class="box">
+        <h1 class="title">Configurações</h1>
+        <form id="settings-form" class="form">
+          <fieldset>
+            <legend class="subtitle">
+              <ion-icon name="person"></ion-icon>Pessoal
+            </legend>
+            <div class="field">
+              <label class="drac-text drac-text-white" for="name">Nome:</label>
+              <input class="input" name="name" id="name" />
+            </div>
+            <br />
+            <div class="field">
+              <label class="drac-text drac-text-white" for="email">E-Mail:</label>
+              <input class="input" name="email" id="email" />
+            </div>
+          </fieldset>
+          <br />
+          <fieldset>
+            <legend class="subtitle">
+              <ion-icon name="logo-github"></ion-icon>GitHub
+            </legend>
+            <div class="field">
+              <label class="drac-text drac-text-white" for="github-username">GitHub Username:</label>
+              <input class="input" name="github-username" id="github-username" />
+            </div>
+            <br />
+            <div class="field">
+              <label class="drac-text drac-text-white" for="github-auth-token">GitHub Auth Token:</label>
+              <input class="input" type="password" name="github-auth-token" id="github-auth-token" />
+              <small id="github-auth-token-help" class="form-text drac-text-pink">
+                Crie uma <strong>Personal Access Token</strong> e cole aqui. Para mais informações
+                <a href="https://docs.github.com/pt/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">clique aqui</a>
+              </small>
+            </div>
+          </fieldset>
+
+          <hr />
+
+          <button id="cancel-settings-button" class="button is-danger" type="button">Cancelar<ion-icon name="close-circle"></ion-icon></button>
+
+          <button id="save-settings-button" class="button is-success" type="submit">Salvar<ion-icon name="save"></ion-icon></button>
+        </form>
+      </div>
+    </dialog>
+
+    <div id="terminal-dialog" popover>
+      <button class="close-dialog" onclick="this.parentNode.togglePopover()"><ion-icon name="close-circle"></ion-icon></button>
+      <div id="terminal-section" class="box">
+        <div id="terminal-buttons">
+          <button id="up" class="button is-small" data-key="UP" onclick="sendEsc(this)">Up</button>
+          <button id="tab" class="button is-small" data-key="Tab" onclick="sendTab(this)">Tab</button>
+          <button id="control-c" class="button is-small" data-key="C" onclick="sendControl(this)">^+C</button>
+          <button id="control-l" class="button is-small" data-key="L" onclick="sendControl(this)">^+L</button>
+          <button id="control-z" class="button is-small" data-key="Z" onclick="sendControl(this)">^+Z</button>
+          <button id="control-d" class="button is-small" data-key="D" onclick="sendControl(this)">^+D</button>
+        </div>
+        <div id="terminal"></div>
+      </div>
+    </div>
+
+    <div id="browser-dialog" popover>
+      <button class="close-dialog" onclick="this.parentNode.togglePopover()"><ion-icon name="close-circle"></ion-icon></button>
+      <div id="browser-section" class="box">
+        <div id="browser-navbar">
+          <div class="field is-grouped is-horizontal">
+            <div class="control is-hidden-mobile">
+              <button id="browser-refresh-button" class="button is-active" type="button">&nbsp;<ion-icon name="refresh"></ion-icon>&nbsp;</button>
+            </div>
+            <div class="control is-expanded">
+              <input id="browser-location-input" class="input" type="text" placeholder="http://echo.dannluciano.com.br" value="http://echo.dannluciano.com.br" />
+            </div>
+            <div class="control is-hidden-mobile">
+              <button id="browser-go-button" class="button is-success" type="button">&nbsp;<ion-icon name="enter"></ion-icon>&nbsp;</button>
+            </div>
+            <div class="control">
+              <a id="open-new-tab" class="button is-info" href="#" target="_blank" rel="noopener noreferrer">&nbsp;<ion-icon name="expand-outline"></ion-icon>&nbsp;</a>
+            </div>
+          </div>
+        </div>
+        <div id="browser-display">
+          <iframe id="browser-display-iframe" src="" sandbox="allow-scripts allow-forms allow-same-origin" frameborder="0" width="100%" height="100%"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="messages-dialog">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+
+      <div class="box">
+        <section id="messages-section"></section>
+        <br />
+        <button class="button is-success" onclick="window.location.reload()">Tentar Novamente</button>
+      </div>
+    </dialog>
+
+    <dialog id="loading-dialog" open="">
+      <button class="close-dialog" onclick="closeDialog(this)"><ion-icon name="close-circle"></ion-icon></button>
+      <div class="box">
+        <div id="loader-container">
+          <span class="loader"></span>
+        </div>
+      </div>
+    </dialog>
+  </main>
+{% endblock %}
+
+{% block js %}
+  <script src="{% static 'vendor/xterm/xterm.js' %}"></script>
+  <script src="{% static 'vendor/xterm/xterm-addon-attach.js' %}"></script>
+  <script src="{% static 'vendor/xterm/xterm-addon-fit.js' %}"></script>
+
+  <script src="{% static 'vendor/codemirror/lib/codemirror.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/addon/mode/simple.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/dockerfile/dockerfile.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/properties/properties.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/addons/loadmode.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/meta.js' %}"></script>
+
+  <script src="{% static 'vendor/codemirror/mode/xml/xml.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/JavaScript/JavaScript.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/CSS/CSS.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/clike/clike.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/htmlmixed/htmlmixed.js' %}"></script>
+  <script src="{% static 'vendor/codemirror/mode/php/php.js' %}"></script>
+
+  <script src="{% static 'js/term.js' %}"></script>
+  {{ project_payload|json_script:'project-data' }}
+  <script>
+    const project = JSON.parse(document.getElementById('project-data').textContent)
+  </script>
+  <script src="{% static 'js/app.js' %}"></script>
+{% endblock %}

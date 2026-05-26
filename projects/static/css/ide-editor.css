@@ -1,0 +1,18 @@
+#editor-section {
+  overflow-y: auto;
+  flex-shrink: 0;
+  background-color: var(--black);
+}
+
+.CodeMirror {
+  max-height: calc(100vh);
+  min-height: calc(100vh - 110px);
+}
+
+.cm-wrap {
+  height: 100%;
+}
+
+.cm-scroller {
+  overflow: auto;
+}

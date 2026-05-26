@@ -1,0 +1,178 @@
+{% extends 'platform/base.html' %}
+{% load static %}
+{% block title %}
+<title>SendIT - Quadro de Medalhas</title>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="box">
+        <h1 class="title has-text-centered">
+            Quadro de Medalhas
+        </h1>
+
+        <section class="section is-hidden-mobile">
+            <form class="form">
+                <div class="field has-addons">
+                    <p class="control is-expanded">
+                        <span class="select is-large is-fullwidth">
+                            <select name="group" id="group">
+                                <option value="all">Todas</option>
+                                {% for group in groups %}
+                                <option value="{{group.name}}" {% if group.name == current_group%} selected {% endif %}>
+                                    {{group.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </p>
+                    <p class="control">
+                        <button type="submit" class="button is-large is-link">Filtrar</button>
+                    </p>
+
+                </div>
+            </form>
+            <br>
+            <table class="table is-bordered is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Posição</th>
+                        <th>Nome de Usuario:</th>
+                        <th>Turma</th>
+                        <th>Experiencia:</th>
+                        <th>Level:</th>
+                        <th>Medalhas:</th>
+                    </tr>
+                </thead>
+                {% for user in users %}
+                {% if current_group == 'all' or user.group == current_group %}
+                {% if user.username == current_user %}
+                <tr class="is-selected is-link">
+                    {% else %}
+                <tr>
+                    {% endif %}
+                    <td class="has-text-centered">
+                        {% if forloop.counter == 1 %}
+                        <img src="{% static 'img/platform/podium/1.png' %}" alt="Medalha de Primeiro Lugar">
+                        {% elif forloop.counter == 2 %}
+                        <img src="{% static 'img/platform/podium/2.png' %}" alt="Medalha de Segundo Lugar">
+                        {% elif forloop.counter == 3 %}
+                        <img src="{% static 'img/platform/podium/3.png' %}" alt="Medalha de Terceiro Lugar">
+                        {% else %}
+                        {{forloop.counter}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{user.username}}
+                    </td>
+                    <td>
+                        {% if user.group != "None" %}
+                            {{user.group}}
+                        {% else %}
+                            "Sem grupo"
+                        {% endif %}
+                    </td>
+                    <td class="has-text-centered">{{user.xp}}</td>
+                    <td class="has-text-centered">{{user.level}}</td>
+                    <td class="has-text-centered">
+                        {% for achievement in achievements %}
+                            {% for user_achievement in user.achievements %}
+                                {% if achievement.id == user_achievement %}
+                                    <picture class="is-inline-flex">
+                                        <img 
+                                            src="{{achievement.badge.url}}" 
+                                            alt="{{achievement.name}} - {{achievement.xp}}" 
+                                            class="image is-32x32 is-cover is-rounded"
+                                            title="{{achievement}}"
+                                        >
+                                    </picture>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </section>
+
+        <div class="is-hidden-tablet">
+            <form class="form">
+                <div class="field has-addons">
+                    <p class="control is-expanded">
+                        <span class="select is-large is-fullwidth">
+                            <select name="group" id="group">
+                                <option value="all">Todas</option>
+                                {% for group in groups %}
+                                <option value="{{group.name}}" {% if group.name == current_group%} selected {% endif %}>
+                                    {{group.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </p>
+                    <p class="control">
+                        <button type="submit" class="button is-large is-primary">Filtrar</button>
+                    </p>
+
+                </div>
+            </form>
+            <br>
+            {% for user in users %}
+            {% if current_group == 'all' or user.group == current_group %}
+            <div class="cards">
+                <br>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-64x64">
+                                    {% if forloop.counter == 1 %}
+                                    <img src="{% static 'img/platform/podium/1.png' %}" alt="Medalha de Primeiro Lugar">
+                                    {% elif forloop.counter == 2 %}
+                                    <img src="{% static 'img/platform/podium/2.png' %}" alt="Medalha de Segundo Lugar">
+                                    {% elif forloop.counter == 3 %}
+                                    <img src="{% static 'img/platform/podium/3.png' %}" alt="Medalha de Terceiro Lugar">
+                                    {% else %}
+                                    <p class="title has-text-centered">
+                                        {{forloop.counter}}
+                                    </p>
+                                    {% endif %}
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4">
+                                    {{user.username}}
+                                </p>
+                                <p class="subtitle is-6">
+                                    <strong>Turma:</strong> {{user.group}}
+                                    <br>
+                                    <strong>XP:</strong> {{user.xp}}
+                                    <strong>LV:</strong> {{user.level}}
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            {% for achievement in achievements %}
+                                {% for user_achievement in user.achievements %}
+                                    {% if achievement.id == user_achievement %}
+                                        <picture class="is-inline-flex">
+                                            <img 
+                                                src="{{achievement.badge.url}}" 
+                                                alt="{{achievement.name}} - {{achievement.xp}}" 
+                                                class="image is-32x32 is-cover is-rounded"
+                                                title="{{achievement}}"
+                                            >
+                                        </picture>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

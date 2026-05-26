@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    {% block title %}
+
+    {% endblock %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    {% include 'core/favicon-pwa.html' %}
+
+    <link rel="stylesheet" href="{% static 'vendor/bulma/css/bulma.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gochi+Hand" />
+
+    {% block css %}
+
+    {% endblock %}
+  </head>
+
+  <body>
+    <header>
+      <nav class="nav has-shadow navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="/"><img src="{% static 'img/icon.png' %}" /></a>
+
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'home' %} link-accent{% endif %}" href="{% url 'core:home' %}"><ion-icon name="home"></ion-icon>&nbsp; Home</a>
+            <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'ranking' %} link-accent{% endif %}" href="{% url 'core:ranking' %}"><ion-icon name="medal"></ion-icon>&nbsp; Pontuações</a>
+            <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'submissions' %} link-accent{% endif %}" href="{% url 'core:submissions' %}"><ion-icon name="send"></ion-icon>&nbsp; Envios</a>
+            <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'editor' %} link-accent{% endif %}" href="{% url 'editor:editor' %}"><ion-icon name="code-slash"></ion-icon>&nbsp; Editor</a>
+            <a class="navbar-item is-tab {% if request.resolver_match.url_name == 'file-code-list' %} link-accent{% endif %}" href="{% url 'editor:file-code-list' %}"><ion-icon name="document"></ion-icon>&nbsp; Arquivos</a>
+          </div>
+
+          <div class="navbar-end">
+            {% include 'core/sendit-verse.html' %}
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <br />
+
+    <section class="section main">
+      {% block content %}
+
+      {% endblock %}
+    </section>
+
+    <script>
+      var js = document.createElement('script')
+      js.src = 'https://unpkg.com/cursor-effects@latest/dist/browser.js'
+      js.setAttribute('async', '')
+      js.onload = function () {
+        const now = new Date()
+        if (now.getMonth() === 5) {
+          new cursoreffects.rainbowCursor({})
+        }
+        if (now.getMonth() >= 10) {
+          new cursoreffects.fairyDustCursor({})
+        }
+        if (now.getMonth() == 11 && now.getDate() >= 15) {
+          new cursoreffects.emojiCursor({ emoji: ['🎁', '🎄', '❤️‍🔥', '🎅', '🎆', '❄️'] })
+        }
+      }
+      document.head.appendChild(js)
+    </script>
+
+    <script src="{% static 'vendor/ionicons/ionicons.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/clipboard.min.js' %}"></script>
+    <script src="{% static 'js/bulma.js' %}"></script>
+
+    {% comment %}
+    <link rel="stylesheet" href="{% static 'css/snow.css' %}" />
+    <div id="snow"></div>
+    <script src="{% static 'js/snow.js' %}"></script>
+    {% endcomment %}
+
+    {% include 'session_security/all.html' %}
+
+    {% block js %}
+
+    {% endblock %}
+  </body>
+</html>
