@@ -107,6 +107,7 @@ function getExtensionIcon(filename, style) {
 		py: "logo-python",
 		js: "logo-javascript",
 		mjs: "logo-javascript",
+		json: "logo-javascript",
 		java: "cafe",
 		html: "logo-html5",
 		file: "document",
@@ -134,6 +135,9 @@ function getExtensionIcon(filename, style) {
 		}
 		if (filename === "docker-compose.yml") {
 			iconName = "logo-docker";
+		}
+		if (filename.includes(".db.json")) {
+			iconName = "file-tray-stacked";
 		}
 	} catch (_error) {
 		const iconName = "bug";
@@ -353,7 +357,7 @@ function getRunCommandsWithFileExtensionAndFilepath(fileExtention, filepath) {
 			commands.push("npm start\n");
 		}
 		if (filepath.includes(".db.json")) {
-			commands.push(`npx --yes json-server ${filepath}\n`);
+			commands.push(`npx --yes json-server --watch ${filepath}\n`);
 		}
 
 		return commands;
