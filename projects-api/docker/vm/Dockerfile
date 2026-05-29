@@ -28,11 +28,11 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-instal
     vim \
     emacs \
     # TUI
-    neofetch \
+    # neofetch \
     nyancat \
-    cmatrix \
-    # Remove APT CACHE
-    # && rm -rf /var/lib/apt/lists/*
+    cmatrix
+# Remove APT CACHE
+# && rm -rf /var/lib/apt/lists/*
 
 COPY ./bin/ /usr/local/bin
 
