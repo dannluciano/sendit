@@ -18,6 +18,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-instal
     python3 \
     python3-pip \
     python3-venv \
+    python3-dev \
     openjdk-21-jdk-headless \
     php-cli \
     # Database
