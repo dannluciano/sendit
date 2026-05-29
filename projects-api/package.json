@@ -20,6 +20,7 @@
 		"dockerode": "^5.0.0",
 		"hono": "^4.12.16",
 		"nanoid": "^5.1.11",
+		"tar-fs": "^3.1.2",
 		"ws": "^8.20.0"
 	},
 	"devDependencies": {
