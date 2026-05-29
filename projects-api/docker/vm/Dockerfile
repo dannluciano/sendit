@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     # Tools
@@ -31,7 +31,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-instal
     nyancat \
     cmatrix \
     # Remove APT CACHE
-    && rm -rf /var/lib/apt/lists/*
+    # && rm -rf /var/lib/apt/lists/*
 
 COPY ./bin/ /usr/local/bin
 
