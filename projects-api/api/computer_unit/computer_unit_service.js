@@ -38,12 +38,12 @@ export default class ComputerUnitService {
           AutoRemove: true,
           PublishAllPorts: true,
           Memory: 512 * 1024 * 1024,
-          // StorageOpt: {
-          //   size: "2G",
-          // },
+          StorageOpt: {
+            size: "2G",
+          },
           Ulimits: [
             { Name: "nofile", Soft: 1024, Hard: 1048 },
-            { Name: "fsize", Soft: 10 * 1024 * 1024, Hard: 12 * 1024 * 1024 },
+            { Name: "fsize", Soft: 36 * 1024 * 1024, Hard: 38 * 1024 * 1024 },
           ],
         },
         Labels: {
