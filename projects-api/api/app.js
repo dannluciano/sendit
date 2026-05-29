@@ -9,7 +9,7 @@ import setupRoutes from "./routes.js";
 import { log } from "./utils.js";
 import apiWSConnection from "./websocket/api_websocket.js";
 import dockerWSConnection from "./websocket/docker_websocket.js";
-import buildVMImage from "./image.js";
+import { buildVMImage, searchVMImage } from "./image.js";
 
 const __dirname = new URL("./", import.meta.url).pathname;
 
@@ -22,7 +22,10 @@ try {
   dockerConnection = new dockerode.default(configs.DOCKER_ENGINE_SOCKET);
   const infos = await dockerConnection.version();
   log(`Docker Daemon Connection Info ${infos.Version}`);
-  buildVMImage(dockerConnection);
+  const senditVMImage = await searchVMImage(dockerConnection);
+  if (!senditVMImage) {
+    await buildVMImage(dockerConnection);
+  }
 } catch (error) {
   console.error(error);
   console.error("==> Cannot Connect to Docker Daemon!");

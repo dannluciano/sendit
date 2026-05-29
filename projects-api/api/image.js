@@ -10,7 +10,20 @@ import tar from 'tar-fs';
 import configs from "./configs.js";
 import { log } from "./utils.js";
 
-export default async function buildVMImage(dockerConnection) {
+export async function searchVMImage(dockerConnection) {
+    try {
+        const images = await dockerConnection.listImages();
+
+        const image = images.find(img =>
+            img.RepoTags?.some(tag => tag.includes('sendit-vm'))
+        );
+        return image;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function buildVMImage(dockerConnection) {
     try {
         log("Build VM Image", "Starting...");
 
