@@ -15,7 +15,7 @@ export default class ComputerUnitService {
       const envs = getEnvsFromSettings(settings);
 
       log("CPU", "Creating container");
-      const containerInstance = await this.dockerConnection.createContainer({
+      const defaultContainerConf = {
         Image: "sendit-vm",
         AttachStdin: false,
         AttachStdout: false,
@@ -38,9 +38,7 @@ export default class ComputerUnitService {
           AutoRemove: true,
           PublishAllPorts: true,
           Memory: 512 * 1024 * 1024,
-          StorageOpt: {
-            size: "2G",
-          },
+
           Ulimits: [
             { Name: "nofile", Soft: 1024, Hard: 1048 },
             { Name: "fsize", Soft: 36 * 1024 * 1024, Hard: 38 * 1024 * 1024 },
@@ -49,7 +47,22 @@ export default class ComputerUnitService {
         Labels: {
           "com.docker.instances.service": "vm",
         },
-      });
+      };
+      const productionContainerConf = {
+        HostConfig: {
+          StorageOpt: {
+            size: "2G",
+          },
+        },
+      };
+      const containerConf = {}
+      if (process.env.NODE_ENV === "production") {
+        Object.assign(containerConf, defaultContainerConf, productionContainerConf);
+      } else {
+        Object.assign(containerConf, defaultContainerConf);
+      }
+      log(containerConf);
+      const containerInstance = await this.dockerConnection.createContainer(containerConf);
 
       log("CPU", "Starting container: ", containerInstance.id);
       await containerInstance.start();
