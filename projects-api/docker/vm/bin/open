@@ -23,7 +23,7 @@ pathencoded=$(echo -n $filepath | basenc --base64url)
 
 hostname=$(uname -n)
 
-url="${domain}/fs/file/open/${hostname}/${pathencoded}"
+url="${domain}/api/fs/file/open/${hostname}/${pathencoded}"
 
 if [ $SENDIT_IDE_ENV == "development" ]; then
   echo $url
