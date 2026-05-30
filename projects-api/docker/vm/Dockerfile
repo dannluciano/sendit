@@ -28,7 +28,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-instal
     vim \
     emacs \
     # TUI
-    # neofetch \
+    fastfetch \
     nyancat \
     cmatrix
 # Remove APT CACHE
