@@ -1,5 +1,6 @@
 import { log } from "../utils.js";
 import ComputerUnit from "./computer_unit.js";
+import configs from "./configs.js";
 import { getEnvsFromSettings } from "./envs.js";
 import { createTempDir } from "./temp_dir.js";
 
@@ -16,7 +17,7 @@ export default class ComputerUnitService {
 
       log("CPU", "Creating container");
       const defaultContainerConf = {
-        Image: "sendit-vm",
+        Image: configs.SENDIT_IDE_VM_IMAGE_NAME,
         AttachStdin: false,
         AttachStdout: false,
         AttachStderr: false,
@@ -49,7 +50,7 @@ export default class ComputerUnitService {
         },
       };
       if (process.env.NODE_ENV === "production") {
-        defaultContainerConf.HostConfig.StorageOpt = { size: "2G" }
+        defaultContainerConf.HostConfig.StorageOpt = { size: "2G" };
       }
       const containerInstance =
         await this.dockerConnection.createContainer(defaultContainerConf);

@@ -1,10 +1,9 @@
-import path from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import * as dockerode from "dockerode";
 import tar from "tar-fs";
 
 import configs from "./configs.js";
@@ -15,7 +14,7 @@ export async function searchVMImage(dockerConnection) {
     const images = await dockerConnection.listImages();
 
     const image = images.find((img) =>
-      img.RepoTags?.some((tag) => tag.includes("sendit-vm")),
+      img.RepoTags?.some((tag) => tag.includes(configs.SENDIT_IDE_VM_IMAGE_NAME)),
     );
     return image;
   } catch (error) {
@@ -30,7 +29,7 @@ export async function buildVMImage(dockerConnection) {
     const context = tar.pack(path.join(__dirname, "../docker/vm"));
 
     const stream = await dockerConnection.buildImage(context, {
-      t: "sendit-vm",
+      t: configs.SENDIT_IDE_VM_IMAGE_NAME,
     });
     await new Promise((resolve, reject) => {
       dockerConnection.modem.followProgress(
@@ -45,7 +44,7 @@ export async function buildVMImage(dockerConnection) {
           }
 
           if (event.status) {
-            console.log(
+            log(
               `[${event.id ?? "build"}] ${event.status} ${event.progress ?? ""}`,
             );
           }

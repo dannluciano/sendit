@@ -13,6 +13,8 @@ const SENDIT_LOGIN =
     ? "http://localhost:8000"
     : "http://sendit.dannluciano.com.br";
 
+const SENDIT_IDE_VM_IMAGE_NAME = "sendit-vm";
+
 export default {
   DOCKER_ENGINE_SOCKET: {
     socketPath: "/var/run/docker.sock",
@@ -22,4 +24,5 @@ export default {
   COOKIE_SECRET,
   ENV,
   SENDIT_LOGIN,
+  SENDIT_IDE_VM_IMAGE_NAME,
 };
