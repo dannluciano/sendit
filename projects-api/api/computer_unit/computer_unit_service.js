@@ -55,14 +55,19 @@ export default class ComputerUnitService {
           },
         },
       };
-      const containerConf = {}
+      const containerConf = {};
       if (process.env.NODE_ENV === "production") {
-        Object.assign(containerConf, defaultContainerConf, productionContainerConf);
+        Object.assign(
+          containerConf,
+          defaultContainerConf,
+          productionContainerConf,
+        );
       } else {
         Object.assign(containerConf, defaultContainerConf);
       }
       log(containerConf);
-      const containerInstance = await this.dockerConnection.createContainer(containerConf);
+      const containerInstance =
+        await this.dockerConnection.createContainer(containerConf);
 
       log("CPU", "Starting container: ", containerInstance.id);
       await containerInstance.start();
