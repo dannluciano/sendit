@@ -48,26 +48,11 @@ export default class ComputerUnitService {
           "com.docker.instances.service": "vm",
         },
       };
-      const productionContainerConf = {
-        HostConfig: {
-          StorageOpt: {
-            size: "2G",
-          },
-        },
-      };
-      const containerConf = {};
       if (process.env.NODE_ENV === "production") {
-        Object.assign(
-          containerConf,
-          defaultContainerConf,
-          productionContainerConf,
-        );
-      } else {
-        Object.assign(containerConf, defaultContainerConf);
+        defaultContainerConf.HostConfig.StorageOpt = { size: "2G" }
       }
-      log(containerConf);
       const containerInstance =
-        await this.dockerConnection.createContainer(containerConf);
+        await this.dockerConnection.createContainer(defaultContainerConf);
 
       log("CPU", "Starting container: ", containerInstance.id);
       await containerInstance.start();
