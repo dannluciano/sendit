@@ -163,6 +163,5 @@ services:
 
 volumes:
   temp:
-    external: true
   minio-data:
   db-data:

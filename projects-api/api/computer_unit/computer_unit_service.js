@@ -1,6 +1,6 @@
 import { log } from "../utils.js";
 import ComputerUnit from "./computer_unit.js";
-import configs from "./configs.js";
+import configs from "../configs.js";
 import { getEnvsFromSettings } from "./envs.js";
 import { createTempDir } from "./temp_dir.js";
 
