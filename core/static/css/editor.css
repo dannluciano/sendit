@@ -9,7 +9,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background: var(--bg);
+    background: transparent;
     opacity: 0;
     z-index: -1;
     transition: opacity 0.3s;
@@ -30,5 +30,5 @@
 }
 
 .is-loading {
-position: relative;
+    position: relative;
 }
