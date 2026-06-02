@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
 
 from evaluation.models import Assessment
 
@@ -257,15 +258,24 @@ def medal_board(request):
 
     groups = Group.objects.filter(~Q(name="Staff")).order_by("-name")
 
+    users_pagination = Paginator(users, 50)
+    users_current_page = users_pagination.page(2)
+    has_next_page = users_current_page.has_next()
+    has_previous_page = users_current_page.has_previous()
+    count_pages = users_pagination.num_pages
+
     return render(
         request,
         "platform/medal-board.html",
         {
             "current_user": request.user.username,
             "current_group": current_group,
-            "users": users,
+            "users": users_current_page,
             "groups": groups,
             "achievements": achievements,
+            "count_pages": count_pages,
+            "has_next_page": has_next_page,
+            "has_previos_page": has_previous_page,
         },
     )
 
