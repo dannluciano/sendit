@@ -12,6 +12,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    ports:
+      - "5432:5432"
     volumes:
       - db-data:/data
 
@@ -81,7 +83,7 @@ services:
     command: python -u manage.py rqworker default
     volumes:
       - .:/app
-      - temp:/temp
+      - /tmp:/temp
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - APP=worker
@@ -121,8 +123,8 @@ services:
       - 8001:8001
     volumes:
       - ./projects-api/api:/app/api
+      - /tmp:/home/sendit
       - /var/run/docker.sock:/var/run/docker.sock
-      - temp:/home/sendit
     extra_hosts:
       - "host.docker.internal:host-gateway"
     develop:
@@ -162,6 +164,5 @@ services:
       - db
 
 volumes:
-  temp:
   minio-data:
   db-data:

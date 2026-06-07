@@ -66,7 +66,7 @@ class C_SubmissionRunnerTestCase(TestCase):
                 char str[5]
                 scanf("%s", str)
                 printf("Ola, %s", str)
-            
+
         """
         result = C_SubmissionRunner(
             work_dir,
@@ -90,7 +90,7 @@ int main() {
 
     free(p);
     *p = 10;
-    free(p); 
+    free(p);
     return 0;
 }
         """
@@ -342,7 +342,7 @@ class JavaScript_SubmissionRunnerTestCase(TestCase):
             expected_output_content,
             source_file_content,
         ).run()
-        self.assertEqual(result["status"], "RuntimeError")
+        self.assertEqual(result["status"], "TimeoutError")
 
     def test_run_diff_error_submission(self):
         work_dir = "tests-js-0-5"
@@ -395,8 +395,8 @@ class Java_SubmissionRunnerTestCase(TestCase):
                     Scanner entrada = new Scanner(System.in)
                     String nome = entrada.next()
                     System.out.println("Ola, " + nome)
-                
-            
+
+
         """
         result = Java_SubmissionRunner(
             work_dir,

@@ -5,6 +5,8 @@ import logging.handlers
 import os
 import shutil
 
+from django.conf import settings
+
 import docker
 from requests.exceptions import ReadTimeout
 from urllib3.exceptions import ReadTimeoutError
@@ -109,7 +111,7 @@ class SubmissionRunner(object):
                 name=container_name,
                 command=command,
                 volumes={
-                    "temp": {
+                    "/tmp": {
                         "bind": "/app",
                         "mode": "rw",
                     }
