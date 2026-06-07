@@ -174,5 +174,34 @@
             {% endfor %}
         </div>
     </div>
+    {% if users.has_other_pages %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% if users.has_previous %}
+        <a class="pagination-previous" href="?page={{ users.previous_page_number }}&group={{ current_group }}">
+             Anterior
+        </a>
+        {% else %}
+        <a class="pagination-previous" disabled>Anterior</a>
+        {% endif %}
+
+        {% if users.has_next %}
+        <a class="pagination-next" href="?page={{ users.next_page_number }}&group={{ current_group }}">
+            Próximo 
+        </a>
+        {% else %}
+        <a class="pagination-next" disabled>Próximo</a>
+        {% endif %}
+
+        <ul class="pagination-list">
+            {% for page in users.paginator.page_range %}
+            {% if users.number == page %}
+            <li><a class="pagination-link is-current" aria-current="page">{{ page }}</a></li>
+            {% else %}
+            <li><a class="pagination-link" href="?page={{ page }}&group={{ current_group }}">{{ page }}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
 </div>
 {% endblock %}
