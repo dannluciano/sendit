@@ -251,8 +251,11 @@ def create_submission(request, question_uuid):
 @login_required
 def medal_board(request):
     achievements = Achievement.objects.all()
+    
     users = compute_leaderboard()
+    
     current_group = request.GET.get("group", "all")
+    
     groups = Group.objects.filter(~Q(name="Staff")).order_by("-name")
 
     paginator = Paginator(users, 50)
@@ -299,8 +302,9 @@ def submission_detail(request, submission_uuid):
     if submission.is_waiting:
         return HttpResponseRedirect(submission.get_absolute_url())
 
-    return render(request, "platform/submission-detail.html", {"submission": submission})
-
+    return render(
+        request, "platform/submission-detail.html", {"submission": submission}
+    )
 
 @login_required
 def submission_status(request, submission_uuid):
