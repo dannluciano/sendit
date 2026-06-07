@@ -2,10 +2,12 @@ import tarfile
 from datetime import datetime
 from tempfile import mkdtemp
 
+from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib import messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.urls import path
@@ -175,7 +177,53 @@ class SubmissionsAdmin(admin.ModelAdmin):
     actions = (compare_submissions, download_submissions)
 
 
+class GroupActionForm(admin.helpers.ActionForm):
+    group = forms.ModelChoiceField(
+        label="Grupo",
+        queryset=Group.objects.all().order_by("name"),
+        required=False,
+    )
+
+
+def set_users_group(modeladmin, request, queryset):
+    group_id = request.POST.get("group")
+
+    if not group_id:
+        modeladmin.message_user(
+            request,
+            "Selecione um grupo antes de executar esta ação.",
+            level=messages.ERROR,
+        )
+        return
+
+    try:
+        group = Group.objects.get(pk=group_id)
+    except Group.DoesNotExist:
+        modeladmin.message_user(
+            request,
+            "O grupo selecionado não existe.",
+            level=messages.ERROR,
+        )
+        return
+
+    for user in queryset:
+        user.groups.set([group])
+
+    modeladmin.message_user(
+        request,
+        "%d usuário(s) movido(s) para o grupo %s."
+        % (queryset.count(), group.name),
+        level=messages.SUCCESS,
+    )
+
+
+set_users_group.short_description = "Definir grupo dos usuários selecionados"
+
+
 class UserAdmin(BaseUserAdmin):
+    action_form = GroupActionForm
+    actions = (set_users_group,)
+
     list_display = (
         "username",
         "profile_link",
