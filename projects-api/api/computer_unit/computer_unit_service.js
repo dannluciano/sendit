@@ -11,7 +11,8 @@ export default class ComputerUnitService {
 
   async getOrCreateComputerUnit(project, settings = {}) {
     try {
-      const tempDirPath = await createTempDir(project.temp_dir);
+      const ghestTempDirPath = await createTempDir(project.temp_dir);
+      const hostTempDirPath = ghestTempDirPath.replace("home/sendit", "tmp")
 
       const envs = getEnvsFromSettings(settings);
 
@@ -26,16 +27,13 @@ export default class ComputerUnitService {
         Env: envs,
         OpenStdin: true,
         StdinOnce: false,
-        WorkingDir: "/root",
+        WorkingDir: ghestTempDirPath,
         StopTimeout: 2,
-        Volumes: {
-          "/root": {},
-        },
         ExposedPorts: {
           "8080/tcp": {},
         },
         HostConfig: {
-          Binds: [`${tempDirPath}:/root`],
+          Binds: [`${hostTempDirPath}:${ghestTempDirPath}`],
           AutoRemove: true,
           PublishAllPorts: true,
           Memory: 512 * 1024 * 1024,
@@ -61,7 +59,7 @@ export default class ComputerUnitService {
       log("CPU", "Return New Container");
       return new ComputerUnit(
         containerInstance,
-        tempDirPath,
+        ghestTempDirPath,
         project.uuid,
         project.owner_id,
       );
