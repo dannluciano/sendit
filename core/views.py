@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
 
 from evaluation.models import Assessment
 
@@ -250,12 +251,15 @@ def create_submission(request, question_uuid):
 @login_required
 def medal_board(request):
     achievements = Achievement.objects.all()
-
+    
     users = compute_leaderboard()
-
+    
     current_group = request.GET.get("group", "all")
-
+    
     groups = Group.objects.filter(~Q(name="Staff")).order_by("-name")
+
+    paginator = Paginator(users, 50)
+    users_page = paginator.get_page(request.GET.get("page"))
 
     return render(
         request,
@@ -263,7 +267,7 @@ def medal_board(request):
         {
             "current_user": request.user.username,
             "current_group": current_group,
-            "users": users,
+            "users": users_page,
             "groups": groups,
             "achievements": achievements,
         },
@@ -301,7 +305,6 @@ def submission_detail(request, submission_uuid):
     return render(
         request, "platform/submission-detail.html", {"submission": submission}
     )
-
 
 @login_required
 def submission_status(request, submission_uuid):
