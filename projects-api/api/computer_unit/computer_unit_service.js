@@ -1,6 +1,6 @@
+import configs from "../configs.js";
 import { log } from "../utils.js";
 import ComputerUnit from "./computer_unit.js";
-import configs from "../configs.js";
 import { getEnvsFromSettings } from "./envs.js";
 import { createTempDir } from "./temp_dir.js";
 
@@ -11,8 +11,8 @@ export default class ComputerUnitService {
 
   async getOrCreateComputerUnit(project, settings = {}) {
     try {
-      const ghestTempDirPath = await createTempDir(project.temp_dir);
-      const hostTempDirPath = ghestTempDirPath.replace("home/sendit", "tmp")
+      const guestTempDirPath = await createTempDir(project.temp_dir);
+      const hostTempDirPath = guestTempDirPath.replace("home/sendit", "tmp");
 
       const envs = getEnvsFromSettings(settings);
 
@@ -27,13 +27,13 @@ export default class ComputerUnitService {
         Env: envs,
         OpenStdin: true,
         StdinOnce: false,
-        WorkingDir: ghestTempDirPath,
+        WorkingDir: guestTempDirPath,
         StopTimeout: 2,
         ExposedPorts: {
           "8080/tcp": {},
         },
         HostConfig: {
-          Binds: [`${hostTempDirPath}:${ghestTempDirPath}`],
+          Binds: [`${hostTempDirPath}:${guestTempDirPath}`],
           AutoRemove: true,
           PublishAllPorts: true,
           Memory: 512 * 1024 * 1024,
@@ -59,7 +59,7 @@ export default class ComputerUnitService {
       log("CPU", "Return New Container");
       return new ComputerUnit(
         containerInstance,
-        ghestTempDirPath,
+        guestTempDirPath,
         project.uuid,
         project.owner_id,
       );
