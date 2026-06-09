@@ -5,8 +5,6 @@ import logging.handlers
 import os
 import shutil
 
-from django.conf import settings
-
 import docker
 from requests.exceptions import ReadTimeout
 from urllib3.exceptions import ReadTimeoutError
@@ -25,7 +23,7 @@ log.setLevel(logging.INFO)
 log_capture_string = io.StringIO()
 log.addHandler(logging.StreamHandler(log_capture_string))
 
-tmp_dir = "/temp"
+tmp_dir = "/tmp"
 
 if not os.path.exists(tmp_dir):
     os.makedirs(tmp_dir)

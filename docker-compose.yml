@@ -83,7 +83,7 @@ services:
     command: python -u manage.py rqworker default
     volumes:
       - .:/app
-      - /tmp:/temp
+      - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - APP=worker
