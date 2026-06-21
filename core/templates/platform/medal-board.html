@@ -10,6 +10,71 @@
             Quadro de Medalhas
         </h1>
 
+        <section class="section">
+            {% if users.has_other_pages %}
+            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                {% if users.has_previous %}                
+                    <a class="pagination-previous" href="?page=1&group={{ current_group }}">
+                        &laquo; Primeira
+                    </a>
+
+                    <a class="pagination-previous" href="?page={{ users.previous_page_number }}&group={{ current_group }}">
+                        Anterior
+                    </a>
+                {% else %}
+                    <a class="pagination-previous" disabled>&laquo; Primeira</a>
+                    <a class="pagination-previous" disabled>Anterior</a>
+                {% endif %}
+
+                {% if users.has_next %}
+                    <a class="pagination-next" href="?page={{ users.next_page_number }}&group={{ current_group }}">
+                        Próximo                    
+                    </a>
+                    <a class="pagination-next" href="?page={{ users.paginator.num_pages }}&group={{ current_group }}">
+                        Última &raquo;
+                    </a>
+                {% else %}
+                    <a class="pagination-next" disabled>Próximo</a>
+                    <a class="pagination-next" disabled>Última &raquo;</a>
+                {% endif %}
+
+                <ul class="pagination-list">
+                    {% if users.paginator.num_pages > 3 %}
+                        {% if users.number > 1 %}
+                            <li>
+                                <span class="pagination-ellipsis">&hellip;</span>
+                            </li>
+                            <li>
+                                <a class="pagination-link" href="?page={{ users.number|add:"-1" }}&group={{ current_group }}">{{ users.number|add:"-1" }}</a>
+                            </li>
+                        {% endif %}
+                        
+                        <li>
+                            <a class="pagination-link is-current" aria-current="page">{{ users.number }}</a>
+                        </li>
+
+                        {% if users.number < users.paginator.num_pages %}
+                            <li>
+                                <a class="pagination-link" href="?page={{ users.number|add:"+1" }}&group={{ current_group }}">{{ users.number|add:"+1" }}</a></li>
+                            <li>
+                                <span class="pagination-ellipsis">&hellip;</span>
+                            </li>
+                        {% endif %}
+
+                    {% else %}
+                        {% for page in users.paginator.page_range %}
+                            {% if users.number == page %}
+                                <li><a class="pagination-link is-current" aria-current="page">{{ page }}</a></li>
+                            {% else %}
+                                <li><a class="pagination-link" href="?page={{ page }}&group={{ current_group }}">{{ page }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </section>
+
         <section class="section is-hidden-mobile">
             <form class="form">
                 <div class="field has-addons">
@@ -18,7 +83,7 @@
                             <select name="group" id="group">
                                 <option value="all">Todas</option>
                                 {% for group in groups %}
-                                <option value="{{group.name}}" {% if group.name == current_group%} selected {% endif %}>
+                                <option value="{{group.name}}" {% if group.name == current_group %} selected {% endif %}>
                                     {{group.name}}
                                 </option>
                                 {% endfor %}
@@ -46,19 +111,19 @@
                 {% for user in users %}
                 {% if current_group == 'all' or user.group == current_group %}
                 {% if user.username == current_user %}
-                <tr class="is-selected is-link">
-                    {% else %}
+                    <tr class="is-selected is-link">
+                {% else %}
                 <tr>
                     {% endif %}
                     <td class="has-text-centered">
-                        {% if forloop.counter == 1 %}
-                        <img src="{% static 'img/platform/podium/1.png' %}" alt="Medalha de Primeiro Lugar">
-                        {% elif forloop.counter == 2 %}
-                        <img src="{% static 'img/platform/podium/2.png' %}" alt="Medalha de Segundo Lugar">
-                        {% elif forloop.counter == 3 %}
-                        <img src="{% static 'img/platform/podium/3.png' %}" alt="Medalha de Terceiro Lugar">
+                        {% if user.position == 1 %}
+                            <img src="{% static 'img/platform/podium/1.png' %}" alt="Medalha de Primeiro Lugar">
+                        {% elif user.position == 2 %}
+                            <img src="{% static 'img/platform/podium/2.png' %}" alt="Medalha de Segundo Lugar">
+                        {% elif user.position == 3 %}
+                            <img src="{% static 'img/platform/podium/3.png' %}" alt="Medalha de Terceiro Lugar">
                         {% else %}
-                        {{forloop.counter}}
+                            {{ user.position }}
                         {% endif %}
                     </td>
                     <td>
@@ -75,18 +140,14 @@
                     <td class="has-text-centered">{{user.level}}</td>
                     <td class="has-text-centered">
                         {% for achievement in achievements %}
-                            {% for user_achievement in user.achievements %}
-                                {% if achievement.id == user_achievement %}
-                                    <picture class="is-inline-flex">
-                                        <img 
-                                            src="{{achievement.badge.url}}" 
-                                            alt="{{achievement.name}} - {{achievement.xp}}" 
-                                            class="image is-32x32 is-cover is-rounded"
-                                            title="{{achievement}}"
-                                        >
-                                    </picture>
-                                {% endif %}
-                            {% endfor %}
+                        {% for user_achievement in user.achievements %}
+                        {% if achievement.id == user_achievement %}
+                        <picture class="is-inline-flex">
+                            <img src="{{achievement.badge.url}}" alt="{{achievement.name}} - {{achievement.xp}}"
+                                class="image is-32x32 is-cover is-rounded" title="{{achievement}}">
+                        </picture>
+                        {% endif %}
+                        {% endfor %}
                         {% endfor %}
                     </td>
                 </tr>
@@ -103,7 +164,7 @@
                             <select name="group" id="group">
                                 <option value="all">Todas</option>
                                 {% for group in groups %}
-                                <option value="{{group.name}}" {% if group.name == current_group%} selected {% endif %}>
+                                <option value="{{group.name}}" {% if group.name == current_group %} selected {% endif %}>
                                     {{group.name}}
                                 </option>
                                 {% endfor %}
@@ -126,15 +187,15 @@
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-64x64">
-                                    {% if forloop.counter == 1 %}
+                                    {% if user.position == 1 %}
                                     <img src="{% static 'img/platform/podium/1.png' %}" alt="Medalha de Primeiro Lugar">
-                                    {% elif forloop.counter == 2 %}
+                                    {% elif user.position == 2 %}
                                     <img src="{% static 'img/platform/podium/2.png' %}" alt="Medalha de Segundo Lugar">
-                                    {% elif forloop.counter == 3 %}
+                                    {% elif user.position == 3 %}
                                     <img src="{% static 'img/platform/podium/3.png' %}" alt="Medalha de Terceiro Lugar">
                                     {% else %}
                                     <p class="title has-text-centered">
-                                        {{forloop.counter}}
+                                        {{ user.position }}
                                     </p>
                                     {% endif %}
                                 </figure>
@@ -153,18 +214,14 @@
                         </div>
                         <div>
                             {% for achievement in achievements %}
-                                {% for user_achievement in user.achievements %}
-                                    {% if achievement.id == user_achievement %}
-                                        <picture class="is-inline-flex">
-                                            <img 
-                                                src="{{achievement.badge.url}}" 
-                                                alt="{{achievement.name}} - {{achievement.xp}}" 
-                                                class="image is-32x32 is-cover is-rounded"
-                                                title="{{achievement}}"
-                                            >
-                                        </picture>
-                                    {% endif %}
-                                {% endfor %}
+                            {% for user_achievement in user.achievements %}
+                            {% if achievement.id == user_achievement %}
+                            <picture class="is-inline-flex">
+                                <img src="{{achievement.badge.url}}" alt="{{achievement.name}} - {{achievement.xp}}"
+                                    class="image is-32x32 is-cover is-rounded" title="{{achievement}}">
+                            </picture>
+                            {% endif %}
+                            {% endfor %}
                             {% endfor %}
                         </div>
                     </div>
@@ -173,35 +230,72 @@
             {% endif %}
             {% endfor %}
         </div>
-    </div>
-    {% if users.has_other_pages %}
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        {% if users.has_previous %}
-        <a class="pagination-previous" href="?page={{ users.previous_page_number }}&group={{ current_group }}">
-             Anterior
-        </a>
-        {% else %}
-        <a class="pagination-previous" disabled>Anterior</a>
-        {% endif %}
 
-        {% if users.has_next %}
-        <a class="pagination-next" href="?page={{ users.next_page_number }}&group={{ current_group }}">
-            Próximo 
-        </a>
-        {% else %}
-        <a class="pagination-next" disabled>Próximo</a>
-        {% endif %}
+        <section class="section">
+            {% if users.has_other_pages %}
+            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                {% if users.has_previous %}                
+                    <a class="pagination-previous" href="?page=1&group={{ current_group }}">
+                        &laquo; Primeira
+                    </a>
 
-        <ul class="pagination-list">
-            {% for page in users.paginator.page_range %}
-            {% if users.number == page %}
-            <li><a class="pagination-link is-current" aria-current="page">{{ page }}</a></li>
-            {% else %}
-            <li><a class="pagination-link" href="?page={{ page }}&group={{ current_group }}">{{ page }}</a></li>
+                    <a class="pagination-previous" href="?page={{ users.previous_page_number }}&group={{ current_group }}">
+                        Anterior
+                    </a>
+                {% else %}
+                    <a class="pagination-previous" disabled>&laquo; Primeira</a>
+                    <a class="pagination-previous" disabled>Anterior</a>
+                {% endif %}
+
+                {% if users.has_next %}
+                    <a class="pagination-next" href="?page={{ users.next_page_number }}&group={{ current_group }}">
+                        Próximo                    
+                    </a>
+                    <a class="pagination-next" href="?page={{ users.paginator.num_pages }}&group={{ current_group }}">
+                        Última &raquo;
+                    </a>
+                {% else %}
+                    <a class="pagination-next" disabled>Próximo</a>
+                    <a class="pagination-next" disabled>Última &raquo;</a>
+                {% endif %}
+
+                <ul class="pagination-list">
+                    {% if users.paginator.num_pages > 3 %}
+                        {% if users.number > 1 %}
+                            <li>
+                                <span class="pagination-ellipsis">&hellip;</span>
+                            </li>
+                            <li>
+                                <a class="pagination-link" href="?page={{ users.number|add:"-1" }}&group={{ current_group }}">{{ users.number|add:"-1" }}</a>
+                            </li>
+                        {% endif %}
+                        
+                        <li>
+                            <a class="pagination-link is-current" aria-current="page">{{ users.number }}</a>
+                        </li>
+
+                        {% if users.number < users.paginator.num_pages %}
+                            <li>
+                                <a class="pagination-link" href="?page={{ users.number|add:"+1" }}&group={{ current_group }}">{{ users.number|add:"+1" }}</a></li>
+                            <li>
+                                <span class="pagination-ellipsis">&hellip;</span>
+                            </li>
+                        {% endif %}
+
+                    {% else %}
+                        {% for page in users.paginator.page_range %}
+                            {% if users.number == page %}
+                                <li><a class="pagination-link is-current" aria-current="page">{{ page }}</a></li>
+                            {% else %}
+                                <li><a class="pagination-link" href="?page={{ page }}&group={{ current_group }}">{{ page }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </nav>
             {% endif %}
-            {% endfor %}
-        </ul>
-    </nav>
-    {% endif %}
+        </section>
+    </div>
+
 </div>
 {% endblock %}

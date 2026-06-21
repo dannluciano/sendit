@@ -252,9 +252,9 @@ def create_submission(request, question_uuid):
 def medal_board(request):
     achievements = Achievement.objects.all()
     
-    users = compute_leaderboard()
-    
     current_group = request.GET.get("group", "all")
+
+    users = compute_leaderboard(current_group)
     
     groups = Group.objects.filter(~Q(name="Staff")).order_by("-name")
 

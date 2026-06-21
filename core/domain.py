@@ -133,8 +133,16 @@ def get_user_profile(user_id):
     }
 
 
-def get_leaderboard():
-    SQL = """
+def get_leaderboard(group_name):
+    where_group = ""
+
+    params = []
+
+    if group_name != "all":
+        where_group = "AND auth_group.name = %s"
+        params.append(group_name)
+
+    SQL = f"""
 WITH ACHIEVEMENTS AS (
   SELECT
     *
@@ -193,6 +201,7 @@ DATA AS (
     JOIN auth_group ON (auth_group.id = auth_user_groups.group_id)
   WHERE
     auth_group.name <> 'Staff'
+    {where_group}
   GROUP BY
     auth_user.id,
     auth_group.name
@@ -205,10 +214,10 @@ SELECT
 FROM
   DATA;
 """
-    return raw_sql(SQL)
+    return raw_sql(SQL, params)
 
 
-def compute_leaderboard():
+def compute_leaderboard(group_name):
     leaderboard = [
         {
             "position": u.position,
@@ -218,6 +227,6 @@ def compute_leaderboard():
             "group": u.group,
             "achievements": u.achievements,
         }
-        for u in get_leaderboard()
+        for u in get_leaderboard(group_name)
     ]
     return cache.get_or_set("leaderboard", leaderboard)
