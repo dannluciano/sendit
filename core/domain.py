@@ -217,7 +217,10 @@ FROM
     return raw_sql(SQL, params)
 
 
-def compute_leaderboard(group_name):
+def compute_leaderboard(group_name="all"):
+    if cache.get(f"leaderboard-{group_name}", None):
+        return cache.get(f"leaderboard-{group_name}")
+
     leaderboard = [
         {
             "position": u.position,
@@ -229,4 +232,5 @@ def compute_leaderboard(group_name):
         }
         for u in get_leaderboard(group_name)
     ]
-    return cache.get_or_set("leaderboard", leaderboard)
+    cache.set(f"leaderboard-{group_name}", leaderboard)
+    return leaderboard
