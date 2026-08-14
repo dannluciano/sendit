@@ -144,7 +144,7 @@ class SubmissionRunner(object):
             self.last_output = logs.decode("utf-8")[:10000]
 
             if exit_code != 0:
-                raise SubmissionRuntimeError("RuntimeError")
+                raise SubmissionRuntimeError("CommandError")
 
         except docker.errors.APIError as e:
             raise SubmissionRuntimeError(f"Docker API Error: {str(e)}")
