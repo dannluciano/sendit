@@ -32,7 +32,9 @@ def create_runner(request):
         code=data["code"], language=data["lang"], input=data["input"]
     )
     ttl = 60 * 60 * 24 * 7
-    django_rq.enqueue(run_submission_from_editor, runner.uuid, ttl=ttl, result_ttl=ttl)
+    django_rq.enqueue(
+        run_submission_from_editor, runner.uuid, ttl=ttl, result_ttl=ttl
+    )
     log.info("Runner was to Queue")
     return JsonResponse(
         {
@@ -46,7 +48,9 @@ def create_runner(request):
 def runner_details(request, runner_uuid):
     try:
         runner = Runner.objects.get(uuid=runner_uuid)
-        return JsonResponse(model_to_dict(runner, fields=["status", "output"]))
+        return JsonResponse(
+            model_to_dict(runner, fields=["status", "output"])
+        )
     except ObjectDoesNotExist:
         return JsonResponse({"msg": "Not Found"}, status=404)
 
@@ -80,13 +84,17 @@ def file_code_save(request):
 def file_code_list(request):
     owner = request.user
     filecodes = FileCode.objects.filter(owner=owner).order_by("-updated_at")
-    return render(request, "editor/files.html", context={"filecodes": filecodes})
+    return render(
+        request, "editor/files.html", context={"filecodes": filecodes}
+    )
 
 
 @login_required
 def file_code_detail(request, file_code_uuid):
     file_code = get_object_or_404(FileCode, uuid=file_code_uuid)
-    return render(request, "editor/runner.html", context={"last_submission": file_code})
+    return render(
+        request, "editor/runner.html", context={"last_submission": file_code}
+    )
 
 
 @login_required
