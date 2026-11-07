@@ -6,31 +6,63 @@ from django.template.defaultfilters import pluralize
 register = template.Library()
 
 
-@register.filter
-def duration(value, mode=""):
-    assert mode in ["machine", "phrase", "clock"]
+def compute_machine_time(days, hours, minutes, seconds, microseconds):
+    return (
+        f"P{days}DT{hours}H{minutes}M{seconds}.{str(microseconds).zfill(6)}S"
+    )
 
-    remainder = value
-    response = ""
-    days = 0
-    hours = 0
-    minutes = 0
-    seconds = 0
-    microseconds = 0
 
-    if not remainder:
-        return "" 
+def compute_phrase_time(days, hours, minutes, seconds, microseconds):
+    response = []
+    if days:
+        response.append(f"{days} dia{pluralize(days)}")
+    if hours:
+        response.append(f"{hours} hora{pluralize(hours)}")
+    if minutes:
+        response.append(f"{minutes} minuto{pluralize(minutes)}")
+    if seconds:
+        response_seconds = f" e {seconds} segundo{pluralize(seconds)}"
 
+    # if microseconds:
+    #     response.append(
+    #         "{microseconds} microsegundo{plural_suffix}".format(
+    #             microseconds=microseconds,
+    #             plural_suffix=pluralize(microseconds),
+    #         )
+    #     )
+
+    response = ", ".join(response)
+    if seconds:
+        response += response_seconds
+
+
+def compute_clock_time(days, hours, minutes, seconds, microseconds):
+    response = []
+    if days:
+        response.append(f"{days} day{pluralize(days)}")
+    if hours or minutes or seconds or microseconds:
+        time_string = f"{str(hours).zfill(2)}:{str(minutes).zfill(2)}"
+        if seconds or microseconds:
+            time_string += f":{str(seconds).zfill(2)}"
+            if microseconds:
+                time_string += f".{str(microseconds).zfill(6)}"
+
+        response.append(time_string)
+
+    response = ", ".join(response)
+
+
+def compute_time_variables(remainder):
     if remainder.days > 0:
         days = remainder.days
         remainder -= datetime.timedelta(days=remainder.days)
 
     if round(remainder.seconds // 3600) > 1:
-        hours = (remainder.seconds // 3600)
+        hours = remainder.seconds // 3600
         remainder -= datetime.timedelta(hours=hours)
 
     if round(remainder.seconds // 60) > 1:
-        minutes = (remainder.seconds // 60)
+        minutes = remainder.seconds // 60
         remainder -= datetime.timedelta(minutes=minutes)
 
     if remainder.seconds > 0:
@@ -40,83 +72,24 @@ def duration(value, mode=""):
     if remainder.microseconds > 0:
         microseconds = remainder.microseconds
         remainder -= datetime.timedelta(microseconds=microseconds)
+    return days, hours, minutes, seconds, microseconds
 
-    response_seconds = ""
-    if mode == "machine":
-        response = "P{days}DT{hours}H{minutes}M{seconds}.{microseconds}S".format(
-            days=days,
-            hours=hours,
-            minutes=minutes,
-            seconds=seconds,
-            microseconds=str(microseconds).zfill(6),
-        )
 
-    elif mode == "phrase":
-        response = []
-        if days:
-            response.append(
-                "{days} dia{plural_suffix}".format(
-                    days=days,
-                    plural_suffix=pluralize(days),
-                )
-            )
-        if hours:
-            response.append(
-                "{hours} hora{plural_suffix}".format(
-                    hours=hours,
-                    plural_suffix=pluralize(hours),
-                )
-            )
-        if minutes:
-            response.append(
-                "{minutes} minuto{plural_suffix}".format(
-                    minutes=minutes,
-                    plural_suffix=pluralize(minutes),
-                )
-            )
-        if seconds:
-            response_seconds = " e {seconds} segundo{plural_suffix}".format(
-                seconds=seconds,
-                plural_suffix=pluralize(seconds),
-            )
+@register.filter
+def duration(remainder, mode=""):
+    assert mode in ["machine", "phrase", "clock"]
 
-        # if microseconds:
-        #     response.append(
-        #         "{microseconds} microsegundo{plural_suffix}".format(
-        #             microseconds=microseconds,
-        #             plural_suffix=pluralize(microseconds),
-        #         )
-        #     )
+    if not remainder:
+        return ""
 
-        response = ", ".join(response)
-        if seconds:
-            response += response_seconds
+    days, hours, minutes, seconds, microseconds = compute_time_variables(
+        remainder
+    )
 
-    elif mode == "clock":
-        response = []
-        if days:
-            response.append(
-                "{days} day{plural_suffix}".format(
-                    days=days,
-                    plural_suffix=pluralize(days),
-                )
-            )
-        if hours or minutes or seconds or microseconds:
-            time_string = "{hours}:{minutes}".format(
-                hours=str(hours).zfill(2),
-                minutes=str(minutes).zfill(2),
-            )
-            if seconds or microseconds:
-                time_string += ":{seconds}".format(
-                    seconds=str(seconds).zfill(2),
-                )
-                if microseconds:
-                    time_string += ".{microseconds}".format(
-                        microseconds=str(microseconds).zfill(6),
-                    )
+    modes_time = {
+        "machine": compute_machine_time,
+        "phrase": compute_phrase_time,
+        "clock": compute_clock_time,
+    }
 
-            response.append(time_string)
-
-        response = ", ".join(response)
-
-    return response
+    return modes_time[mode](days, hours, minutes, seconds, microseconds)
